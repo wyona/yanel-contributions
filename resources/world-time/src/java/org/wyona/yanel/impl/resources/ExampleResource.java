@@ -106,16 +106,7 @@ public class ExampleResource extends Resource implements ViewableV1, CreatableV2
 
         // TODO: Move the major part of the following code into Yanel Core
         // Create RTI ...
-        Path path = getPath();
-        log.error("DEBUG: Path: " + path);
-        org.wyona.commons.io.Path parent = path.getParent();
-        Path newPath = null;
-        if(parent.equals("null")) {
-            // getPath() is ROOT
-            newPath = new Path("/" + createName);
-        } else {
-            newPath = new Path(parent + "/" + createName);
-        }
+        Path newPath = getPath();
         log.error("DEBUG: New path: " + newPath);
 
         try {
@@ -126,7 +117,7 @@ public class ExampleResource extends Resource implements ViewableV1, CreatableV2
             writer.write(content);
             writer.close();
         } catch(Exception e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
     }
 
