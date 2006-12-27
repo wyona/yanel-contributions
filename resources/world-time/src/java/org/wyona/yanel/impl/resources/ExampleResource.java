@@ -27,18 +27,12 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Category;
+
 import org.wyona.yanel.core.Path;
 import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.ViewableV1;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
-/*
-import org.wyona.yarep.core.NoSuchNodeException;
-import org.wyona.yarep.core.Repository;
-import org.wyona.yarep.core.RepositoryFactory;
-import org.wyona.yarep.util.RepoPath;
-import org.wyona.yarep.util.YarepUtil;
-*/
 
 /**
  * 
@@ -80,7 +74,7 @@ public class ExampleResource extends Resource implements ViewableV1 {
         StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
         sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
         sb.append("<head>");
-        sb.append("<title>Example Resource</title>");
+        sb.append("<title>World Time Resource</title>");
         sb.append("</head>");
         sb.append("<body>");
         sb.append("<div id=\"contenBody\">");
