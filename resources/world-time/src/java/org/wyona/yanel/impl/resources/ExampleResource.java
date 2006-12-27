@@ -21,10 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.Calendar;
 import java.io.StringBufferInputStream;
-//import java.io.StringReader;
-//import java.util.Enumeration;
-//import java.util.HashMap;
-//import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.stream.StreamResult;
@@ -36,11 +32,13 @@ import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.ViewableV1;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
+/*
 import org.wyona.yarep.core.NoSuchNodeException;
 import org.wyona.yarep.core.Repository;
 import org.wyona.yarep.core.RepositoryFactory;
 import org.wyona.yarep.util.RepoPath;
 import org.wyona.yarep.util.YarepUtil;
+*/
 
 /**
  * 
@@ -59,6 +57,7 @@ public class ExampleResource extends Resource implements ViewableV1 {
      * 
      */
     public ViewDescriptor[] getViewDescriptors() {
+        log.warn("Not implemented yet!");
         return null;
     }
     
@@ -66,27 +65,18 @@ public class ExampleResource extends Resource implements ViewableV1 {
      * 
      */
     public View getView(Path path, String viewId) {
-        View defaultView = new View();
-        defaultView.setMimeType("application/xml");
-        StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
-        defaultView.setInputStream(new java.io.StringBufferInputStream(sb
-                .toString()));
-        return defaultView;
+        View view = new View();
+        StringBuffer sb = new StringBuffer(getTime());
+        view.setInputStream(new StringBufferInputStream(sb.toString()));
+        view.setMimeType("text/plain");
+        return view;
     }
 
     /**
-     * @throws Exception
      * 
      */
-    public View getView(HttpServletRequest request, String viewId)
-            throws Exception {
-        Path path = new Path(request.getServletPath());
-        View defaultView = new View();
-        return plainRequest(path, defaultView);
-
-    }
-
-    private View plainRequest(Path path, View defaultView) throws Exception {
+    public View getView(HttpServletRequest request, String viewId) throws Exception {
+        View view = new View();
         StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
         sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
         sb.append("<head>");
@@ -94,15 +84,15 @@ public class ExampleResource extends Resource implements ViewableV1 {
         sb.append("</head>");
         sb.append("<body>");
         sb.append("<div id=\"contenBody\">");
-        sb.append("<h1>"+this.getTime()+"</h1>");
+        sb.append("<h1>" + getTime() + "</h1>");
         sb.append("</div>");
         sb.append("</body>");
         sb.append("</html>");
 
-        defaultView.setMimeType("application/xhtml+xml");
-        defaultView.setInputStream(new java.io.StringBufferInputStream(sb.toString()));
+        view.setMimeType("application/xhtml+xml");
+        view.setInputStream(new StringBufferInputStream(sb.toString()));
+        return view;
 
-        return defaultView;
     }
 
     /**
