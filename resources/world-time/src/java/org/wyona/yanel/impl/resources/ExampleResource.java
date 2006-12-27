@@ -16,20 +16,16 @@
 
 package org.wyona.yanel.impl.resources;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.util.Calendar;
 import java.io.StringBufferInputStream;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Category;
 
 import org.wyona.yanel.core.Path;
 import org.wyona.yanel.core.Resource;
+import org.wyona.yanel.core.api.attributes.CreatableV2;
 import org.wyona.yanel.core.api.attributes.ViewableV1;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
@@ -37,7 +33,7 @@ import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 /**
  * 
  */
-public class ExampleResource extends Resource implements ViewableV1 {
+public class ExampleResource extends Resource implements ViewableV1, CreatableV2 {
 
     private static Category log = Category.getInstance(ExampleResource.class);
 
@@ -101,5 +97,67 @@ public class ExampleResource extends Resource implements ViewableV1 {
         sdf.setTimeZone(java.util.TimeZone.getDefault());          
             
         return sdf.format(cal.getTime());
+    }
+
+    /**
+     *
+     */
+    public void create(HttpServletRequest request, String createName) {
+
+        // TODO: Move the major part of the following code into Yanel Core
+        // Create RTI ...
+        Path path = getPath();
+        log.error("DEBUG: Path: " + path);
+        org.wyona.commons.io.Path parent = path.getParent();
+        Path newPath = null;
+        if(parent.equals("null")) {
+            // getPath() is ROOT
+            newPath = new Path("/" + createName);
+        } else {
+            newPath = new Path(parent + "/" + createName);
+        }
+        log.error("DEBUG: New path: " + newPath);
+
+        try {
+            org.wyona.yarep.core.Repository rtiRepo = getRealm().getRTIRepository();
+
+            String content = "<{http://www.wyona.org/yanel/resource/1.0}world-time/>";
+            java.io.Writer writer = rtiRepo.getWriter(new org.wyona.yarep.core.Path(newPath.getRTIPath().toString()));
+            writer.write(content);
+            writer.close();
+        } catch(Exception e) {
+            log.error(e);
+        }
+    }
+
+    /**
+     *
+     */
+    public String getPropertyType(String propertyName) {
+        log.warn("No properties!");
+        return null;
+    }
+
+    /**
+     *
+     */
+    public Object getProperty(String name) {
+        log.warn("No properties!");
+        return null;
+    }
+
+    /**
+     *
+     */
+    public void setProperty(String name, Object value) {
+        log.warn("No properties!");
+    }
+
+    /**
+     *
+     */
+    public String[] getPropertyNames() {
+        log.warn("No properties!");
+        return null;
     }
 }
