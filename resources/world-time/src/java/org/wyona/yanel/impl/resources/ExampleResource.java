@@ -102,7 +102,7 @@ public class ExampleResource extends Resource implements ViewableV1, CreatableV2
     /**
      *
      */
-    public void create(HttpServletRequest request, String createName) {
+    public void create(HttpServletRequest request) {
 
         // TODO: Move the major part of the following code into Yanel Core
         // Create RTI ...
