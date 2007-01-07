@@ -17,6 +17,7 @@
 package org.wyona.yanel.impl.resources;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.io.StringBufferInputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,6 +98,13 @@ public class ExampleResource extends Resource implements ViewableV1, CreatableV2
         sdf.setTimeZone(java.util.TimeZone.getDefault());          
             
         return sdf.format(cal.getTime());
+    }
+
+    /**
+     *
+     */
+    public HashMap createRTIProperties(HttpServletRequest request) {
+        return null;
     }
 
     /**
