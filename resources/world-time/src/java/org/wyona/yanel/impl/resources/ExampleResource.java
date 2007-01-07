@@ -111,22 +111,8 @@ public class ExampleResource extends Resource implements ViewableV1, CreatableV2
      *
      */
     public void create(HttpServletRequest request) {
-
-        // TODO: Move the major part of the following code into Yanel Core
-        // Create RTI ...
         Path newPath = getPath();
         log.error("DEBUG: New path: " + newPath);
-
-        try {
-            org.wyona.yarep.core.Repository rtiRepo = getRealm().getRTIRepository();
-
-            String content = "<{http://www.wyona.org/yanel/resource/1.0}world-time/>";
-            java.io.Writer writer = rtiRepo.getWriter(new org.wyona.yarep.core.Path(newPath.getRTIPath().toString()));
-            writer.write(content);
-            writer.close();
-        } catch(Exception e) {
-            log.error(e.getMessage(), e);
-        }
     }
 
     /**
