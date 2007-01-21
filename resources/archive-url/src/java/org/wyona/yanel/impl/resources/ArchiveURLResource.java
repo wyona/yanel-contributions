@@ -36,8 +36,8 @@ public class ArchiveURLResource extends Resource implements CreatableV2 {
      *
      */
     public String[] getPropertyNames() {
-        log.warn("No implemented yet!");
-        return null;
+        String[] props = {"url"};
+        return props;
     }
 
     /**
