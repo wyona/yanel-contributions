@@ -66,7 +66,6 @@ public class ArchiveURLResource extends Resource implements CreatableV2 {
      *
      */
     public String getPropertyType(String name) {
-        log.warn("No implemented yet!");
-        return null;
+        return CreatableV2.TYPE_STRING;
     }
 }
