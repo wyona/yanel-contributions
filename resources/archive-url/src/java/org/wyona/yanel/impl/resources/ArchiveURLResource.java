@@ -28,8 +28,7 @@ public class ArchiveURLResource extends Resource implements CreatableV2 {
      *
      */
     public Object getProperty(String name) {
-        log.warn("No implemented yet!");
-        return null;
+        return "http://www.foo.bar/some/url.html";
     }
 
     /**
