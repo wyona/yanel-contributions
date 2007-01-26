@@ -111,7 +111,7 @@ public class ExampleResource extends Resource implements ViewableV1, CreatableV2
      *
      */
     public void create(HttpServletRequest request) {
-        Path newPath = getPath();
+        Path newPath = new Path(getPath());
         log.error("DEBUG: New path: " + newPath);
     }
 
