@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<realms xmlns="http://www.wyona.org/yanel/1.0" version="2007050800">
+
+<realm id="manager" mount-point="/" root="true">
+  <name>Yanel Manager</name>
+  <config src="/home/simon/src/yanel-contributions/realms/manager/yanel/config/yanel-realm-config.xml"/>
+</realm>
+
+</realms>
