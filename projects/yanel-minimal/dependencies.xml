@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<project name="yanel-dependencies" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+  <target name="dependencies" description="Dependencies" >
+    <!--
+      INFO: http://maven.apache.org/ant-tasks.html
+            http://marcus-christie.blogspot.com/2006/08/using-ant-with-maven-1-and-maven-2.html
+    -->
+    <artifact:remoteRepository id="wyona.remote.repository" url="http://www.wyona.org/maven2/"/>
+
+    <artifact:dependencies pathId="maven2.classpath" filesetId="maven2.fileset">
+      <remoteRepository refid="wyona.remote.repository"/>
+      
+      <dependency groupId="apache-jakarta-commons" artifactId="apache-jakarta-commons-io"
+                  version="1.2"/>
+      <dependency groupId="avalon-framework" artifactId="avalon-framework-api"
+                  version="4.3"/>
+      <dependency groupId="avalon-framework" artifactId="avalon-framework-impl"
+                  version="4.3"/>  
+      <dependency groupId="log4j" artifactId="log4j"
+                  version="1.2.8"/>
+      <dependency groupId="javax.servlet" artifactId="servlet-api" 
+                  version="2.3" scope="provided" />
+      <dependency groupId="spring" artifactId="spring"
+                  version="2.0"/>
+      <dependency groupId="stax" artifactId="stax"
+                  version="1.1.2-dev"/>
+      <dependency groupId="stax" artifactId="stax-api"
+                  version="1.0"/>
+      <dependency groupId="wyona-org-commons" artifactId="wyona-org-commons"
+                  version="0.0.1-dev-r23672"/>
+      <dependency groupId="wyona-org-security" artifactId="wyona-org-security-core"
+                  version="0.0.1-dev-r23969"/>
+      <dependency groupId="wyona-org-security" artifactId="wyona-org-security-impl"
+                  version="0.0.1-dev-r23969"/>
+      <dependency groupId="wyona-org-yanel" artifactId="yanel-core"
+                  version="0.0.1-dev-r23202"/>
+      <dependency groupId="wyona-org-yanel" artifactId="yanel-impl"
+                  version="0.0.1-dev-r23672"/>
+      <dependency groupId="wyona-org-yanel" artifactId="yanel-webapp"
+                  version="0.0.1-dev-r23969"/> 
+      <dependency groupId="yarep" artifactId="yarep-core"
+                  version="0.0.1-dev-r23202"/>
+      <dependency groupId="yarep" artifactId="yarep-impl"
+                  version="0.0.1-dev-r23202"/>
+
+                  
+    </artifact:dependencies>
+
+    <property name="maven2.cp" refid="maven2.classpath"/>
+  </target>
+
+</project>
