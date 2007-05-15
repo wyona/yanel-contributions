@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<yanel xmlns="http://www.wyona.org/yanel/1.0" xmlns:yanel="http://www.wyona.org/yanel/1.0">
-<!-- NOTE: This file has been generated automatically from conf/yanel.xml!-->
-<version revision="22926" version="0.0.1-dev"/>
-<realms-config src="realms.xml"/>
-<resource-types-config src="resource-types.xml"/>
-</yanel>
