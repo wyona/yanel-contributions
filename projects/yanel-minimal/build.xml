@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<project name="yanel-minimal" default="build-webapp" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+  <description>Yanel-minimal Build</description>
+  
+  <property file="local.build.properties"/>
+  <property file="build.properties"/>
+  
+  <import file="dependencies.xml"/>
+  
+  <target name="init" depends="dependencies">
+    <mkdir dir="webapps"/>
+    <mkdir dir="webapps/${project.name}"/>
+    <mkdir dir="webapps/${project.name}/logs"/>
+    <mkdir dir="webapps/${project.name}/WEB-INF"/>
+    <mkdir dir="webapps/${project.name}/WEB-INF/classes"/>
+    <mkdir dir="webapps/${project.name}/WEB-INF/lib"/>
+    <property name="build.dir" value="."/>
+  </target>
+
+  <target name="build-webapp" depends="init, build-resources">
+    <copy file="config/web.xml" tofile="webapps/${project.name}/WEB-INF/web.xml" overwrite="true"/>
+    
+    <copy todir="webapps/${project.name}/WEB-INF/classes">
+      <fileset dir="config">
+        <exclude name="web.xml"/>
+      </fileset>
+    </copy>
+    
+    <copy todir="webapps/${project.name}/realms">
+      <fileset dir="realms"/>
+    </copy>
+
+    <copy todir="webapps/${project.name}/resource-types">
+      <fileset dir="resource-types"/>
+    </copy>
+    
+    
+    <copy todir="webapps/${project.name}/WEB-INF/lib">
+      <fileset refid="maven2.fileset"/>
+      <mapper type="flatten"/>
+    </copy>
+  </target>
+  
+  <target name="build-resources" description="Build resources">
+    <ant target="compile" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
+      <property value="0.0.1-dev-rREVISION" name="yanel.source.version"/>
+    </ant>
+    
+    <ant target="copy-dependencies" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
+      <property value="${build.dir}" name="build.dir"/>
+      <property value="yanel" name="servlet.context.prefix"/>
+      <property value="0.0.1-dev-rREVISION" name="yanel.source.version"/>
+    </ant>
+
+    <copy todir="${build.dir}/webapps/${project.name}/WEB-INF/lib">
+      <fileset dir="${build.dir}/resource-types/file/build/lib"/>
+    </copy>
+  </target>
+
+
+  
+  <target name="war" description="Build war file" depends="init">
+    <jar jarfile="${yanel.home.dir}/build/webapps/${servlet.context.prefix}.war" basedir="${yanel.home.dir}/build/webapps/${servlet.context.prefix}"/>
+  </target>  
+  
+</project>  
