@@ -35,11 +35,11 @@
       <dependency groupId="wyona-org-security" artifactId="wyona-org-security-impl"
                   version="0.0.1-dev-r23969"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-core"
-                  version="0.0.1-dev-r23202"/>
+                  version="0.0.1-dev-r22926"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-impl"
-                  version="0.0.1-dev-r23672"/>
+                  version="0.0.1-dev-r22926"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-webapp"
-                  version="0.0.1-dev-r23969"/> 
+                  version="0.0.1-dev-r22926"/> 
       <dependency groupId="yarep" artifactId="yarep-core"
                   version="0.0.1-dev-r23202"/>
       <dependency groupId="yarep" artifactId="yarep-impl"
