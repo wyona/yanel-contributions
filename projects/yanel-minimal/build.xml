@@ -35,7 +35,6 @@
       <fileset dir="resource-types"/>
     </copy>
     
-    
     <copy todir="webapps/${project.name}/WEB-INF/lib">
       <fileset refid="maven2.fileset"/>
       <mapper type="flatten"/>
@@ -57,8 +56,6 @@
       <fileset dir="${build.dir}/resource-types/file/build/lib"/>
     </copy>
   </target>
-
-
   
   <target name="war" description="Build war file" depends="init">
     <jar jarfile="${yanel.home.dir}/build/webapps/${servlet.context.prefix}.war" basedir="${yanel.home.dir}/build/webapps/${servlet.context.prefix}"/>
