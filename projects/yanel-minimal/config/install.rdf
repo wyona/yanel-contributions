@@ -4,9 +4,9 @@
      xmlns:um="http://www.wyona.org/update-manager/1.0#">
 
   <rdf:Description rdf:about="urn:wyona:application:install">
-    <um:id>yanel-webapp@wyona.org</um:id>
-    <um:version>0.0.1-dev-r22926</um:version>
-    <um:installtype>source</um:installtype>
+    <um:id>@PROJECTNAME@@wyona.org</um:id>
+    <um:version>@VERSION@</um:version>
+    <um:installtype>@INSTALLTYPE@</um:installtype>
     <um:name>Wyona Yanel Webapp</um:name>
     <um:description>Content Management Software</um:description>
     <um:creator>Wyona</um:creator>
@@ -14,7 +14,7 @@
     <um:updateURL>http://localhost:8080/yanel/downloads/update.rdf</um:updateURL>
     <um:protectedFiles>
       <rdf:Seq>
-       <rdf:li>WEB-INF/classes/yanel.properties</rdf:li>
+       <rdf:li>WEB-INF/classes/resource-types.xml</rdf:li>
        <rdf:li>WEB-INF/classes/realms.xml</rdf:li>
       </rdf:Seq>
     </um:protectedFiles>
