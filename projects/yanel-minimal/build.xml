@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="yanel-minimal" default="build-webapp" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="yanel-minimal" default="war" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
   <description>Yanel-minimal Build</description>
   
   <property file="local.build.properties"/>
@@ -26,7 +26,17 @@
         <exclude name="web.xml"/>
       </fileset>
     </copy>
-    
+
+    <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="${project.name}">
+      <replacetoken>@PROJECTNAME@</replacetoken>
+    </replace>
+    <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="${project.version}-r${project.revision}">
+      <replacetoken>@VERSION@</replacetoken>
+    </replace>
+    <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="war">
+      <replacetoken>@INSTALLTYPE@</replacetoken>
+    </replace>
+
     <copy todir="webapps/${project.name}/realms">
       <fileset dir="realms"/>
     </copy>
@@ -43,13 +53,13 @@
   
   <target name="build-resources" description="Build resources">
     <ant target="compile" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
-      <property value="0.0.1-dev-rREVISION" name="yanel.source.version"/>
+      <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
     
     <ant target="copy-dependencies" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
       <property value="${build.dir}" name="build.dir"/>
       <property value="yanel" name="servlet.context.prefix"/>
-      <property value="0.0.1-dev-rREVISION" name="yanel.source.version"/>
+      <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
 
     <copy todir="${build.dir}/webapps/${project.name}/WEB-INF/lib">
@@ -63,7 +73,7 @@
 
   <target name="clean" description="clean" depends="init">
     <ant target="clean" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
-      <property value="0.0.1-dev-rREVISION" name="yanel.source.version"/>
+      <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
     <delete dir="webapps"/>
   </target>  

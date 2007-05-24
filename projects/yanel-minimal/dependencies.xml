@@ -35,17 +35,15 @@
       <dependency groupId="wyona-org-security" artifactId="wyona-org-security-impl"
                   version="0.0.1-dev-r23969"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-core"
-                  version="0.0.1-dev-r22926"/>
+                  version="${yanel.version}-r${yanel.revision}"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-impl"
-                  version="0.0.1-dev-r22926"/>
+                  version="${yanel.version}-r${yanel.revision}"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-webapp"
-                  version="0.0.1-dev-r22926"/> 
+                  version="${yanel.version}-r${yanel.revision}"/> 
       <dependency groupId="yarep" artifactId="yarep-core"
                   version="0.0.1-dev-r23202"/>
       <dependency groupId="yarep" artifactId="yarep-impl"
                   version="0.0.1-dev-r23202"/>
-
-                  
     </artifact:dependencies>
 
     <property name="maven2.cp" refid="maven2.classpath"/>
