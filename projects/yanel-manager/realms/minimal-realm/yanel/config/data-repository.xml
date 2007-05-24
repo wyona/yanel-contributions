@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<repository>
+  <name>Yanel Manager Realm Data Repository</name>
+
+  <paths src="../data-paths" fallback="true">
+    <ignore pattern=".*\.svn"/>
+  </paths>
+
+  <storage class="org.wyona.yarep.core.impl.fs.FileSystemStorage">
+    <content src="../data"/>
+  </storage>
+</repository>
