@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="redirect"
+  namespace="http://www.wyona.org/yanel/resource/1.0"
+  class="org.wyona.yanel.impl.resources.RedirectResource"
+  >
+<description>
+Redirect whereas an XSLT or multiple XSLTs can be specified and applied
+</description>
+
+<rtd>
+  <property name="mime-type"/>
+  <property name="xslt" multiple="true"/>
+  <property name="yanel-path"/>
+</rtd>
+</resource>
