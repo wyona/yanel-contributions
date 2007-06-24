@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<tape xmlns="http://www.wyonapictures.com">
+  <name>7mins 001</name>
+  <location>Michi Home</location>
+
+  <clips>
+    <clip date="2007.06.23" snapshot="">
+      <timecode start="" end=""/>
+      <name>Clouds Horgenberg</name>
+      <description>Clouds Horgenberg</description>
+      <keywords>big clouds horgenberg</keywords>
+    </clip>
+    <clip date="2007.06.23" snapshot="">
+      <timecode start="" end=""/>
+      <name>Sleeping Vanya</name>
+      <keywords>sleeping night vanya</keywords>
+    </clip>
+  </clips>
+</tape>
