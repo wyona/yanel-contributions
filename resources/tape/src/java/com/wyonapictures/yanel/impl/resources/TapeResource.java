@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 Wyona
+ *  Copyright 2006 Wyona
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,17 +16,12 @@
 
 package com.wyonapictures.yanel.impl.resources;
 
-import org.wyona.yanel.core.ResourceTypeDefinition;
-import org.wyona.yanel.core.api.attributes.CreatableV1;
-import org.wyona.yanel.core.api.attributes.ViewableV1;
-import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
-
-import org.wyona.yanel.impl.ResourceDefaultImpl;
+import org.wyona.yanel.impl.resources.XMLResource;
 
 /**
  *
  */
-public class TapeResource extends ResourceDefaultImpl implements CreatableV1, ViewableV1 {
+public class TapeResource extends XMLResource {
 
     /**
      *
@@ -37,15 +32,10 @@ public class TapeResource extends ResourceDefaultImpl implements CreatableV1, Vi
     /**
      *
      */
+/*
     public String[] getPropertyNames() {
         String[] pn = {"name", "description", "video-format", "audio-format", "content"};
         return pn;
     }
-
-    /**
-     *
-     */
-    public ViewDescriptor[] getViewDescriptors() {
-        return null;
-    }
+*/
 }
