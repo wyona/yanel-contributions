@@ -13,7 +13,7 @@
       <dependency groupId="wyona-org-yanel" artifactId="yanel-impl"
                   version="0.0.1-dev-r17165"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-resource-xml"
-                  version="1.0-dev-r25346"/>
+                  version="1.0-dev-r25362"/>
     </artifact:dependencies>
 
     <artifact:dependencies pathId="maven2.resource.classpath" filesetId="maven2.resource.fileset">
