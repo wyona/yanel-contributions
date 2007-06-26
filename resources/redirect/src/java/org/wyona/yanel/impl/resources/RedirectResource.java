@@ -68,6 +68,9 @@ public class RedirectResource extends Resource implements ViewableV2 {
         return vd;
     }
 
+    /**
+     *
+     */
     public View getView(String viewId) throws Exception {
         return getView(viewId, null);
     }
@@ -78,39 +81,42 @@ public class RedirectResource extends Resource implements ViewableV2 {
     public View getView(String viewId, String revisionName) throws Exception {
         View view = new View();
         view.setResponse(false); // this resource writes the response itself
-        HttpServletRequest request = getRequest();
+
         HttpServletResponse response = getResponse();
 
         String defaultHref = getResourceConfigProperty("href");
+
+        if (defaultHref == null) throw new Exception("No default redirect has been set!");
+
+        response.setStatus(307);
+        response.setHeader("Location", defaultHref);
         
         String currentUser = null;
-        Identity identity = getIdentity(request);
+        Identity identity = getIdentity(getRequest());
         if (identity != null) {
             currentUser = identity.getUsername();
         }
         
-        ResourceConfiguration rc = getConfiguration();
-        Document customConfigDoc = rc.getCustomConfiguration();
-        if (customConfigDoc != null) {
-            Configuration config = ConfigurationUtil.toConfiguration(customConfigDoc.getDocumentElement());
-            Configuration[] redirectConfigs = config.getChildren("user");
-                if (redirectConfigs.length == 0) return null;
+        if (currentUser != null) {
+            ResourceConfiguration rc = getConfiguration();
+            Document customConfigDoc = rc.getCustomConfiguration();
+            if (customConfigDoc != null) {
+                Configuration config = ConfigurationUtil.toConfiguration(customConfigDoc.getDocumentElement());
+                Configuration[] redirectConfigs = config.getChildren("user");
+                
                 for (int i = 0; i < redirectConfigs.length; i++) {
                     try {
                         if (redirectConfigs[i].getAttribute("name") == currentUser || (currentUser).equals(redirectConfigs[i].getAttribute("name"))) {
                             response.setStatus(307);
                             response.setHeader("Location", redirectConfigs[i].getAttribute("href"));
-                        } else {
-                            response.setStatus(307);
-                            response.setHeader("Location", defaultHref);
                         }
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
-                        return null;
+                        throw e;
                     }
                 }
+            }
         }
-
         return view;
     }
     
@@ -137,37 +143,6 @@ public class RedirectResource extends Resource implements ViewableV2 {
     }
 
     /**
-     *
-     */
-    public String getPropertyType(String name) {
-        log.warn("Not implemented yet!");
-        return null;
-    }
-
-    /**
-     *
-     */
-    public Object getProperty(String name) {
-        log.warn("Not implemented yet!");
-        return null;
-    }
-
-    /**
-     *
-     */
-    public String[] getPropertyNames() {
-        log.warn("Not implemented yet!");
-        return null;
-    }
-
-    /**
-     *
-     */
-    public void setProperty(String name, Object value) {
-        log.warn("Not implemented yet!");
-    }
-    
-    /**
      * Gets the identity from the session associated with the given request.
      * @param request
      * @return identity or null if there is no identity in the session for the current
@@ -184,5 +159,4 @@ public class RedirectResource extends Resource implements ViewableV2 {
         }
         return null;
     }
-
 }
