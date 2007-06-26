@@ -1,30 +1,69 @@
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:um="http://www.wyona.org/update-manager/1.0#">
 
+  <rdf:Description rdf:about="urn:wyona:application">
+    <um:types>
+      <rdf:Seq>
+        <rdf:li rdf:resource="urn:wyona:application:updates"/>
+        <rdf:li rdf:resource="urn:wyona:application:updater"/>
+      </rdf:Seq>
+    </um:types>
+  </rdf:Description>
+
   <rdf:Description rdf:about="urn:wyona:application:updates">
+    <um:type>updates</um:type>
     <um:versions>
       <rdf:Seq>
-        <rdf:li rdf:resource="urn:wyona:application:update:0.0.2-dev-r22926"/>
+        <rdf:li rdf:resource="urn:wyona:application:updates:yanel-0.0.2-dev-r22926"/>
+      </rdf:Seq>
+    </um:versions>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="urn:wyona:application:updater">
+    <um:type>updater</um:type>
+    <um:versions>
+      <rdf:Seq>
+        <rdf:li rdf:resource="urn:wyona:application:updater:yanel-updater-0.0.2-dev-r22926"/>
       </rdf:Seq>
     </um:versions>
   </rdf:Description>
   
-  <rdf:Description rdf:about="urn:wyona:application:update:0.0.2-dev-r22926">
+  <rdf:Description rdf:about="urn:wyona:application:updates:yanel-0.0.2-dev-r22926">
     <um:id>yanel-webapp@wyona.org</um:id>
+    <um:title>Yanel Webapp</um:title>
     <um:version>0.0.2-dev-r22926</um:version>
     <um:changelog>this fixed and that improved</um:changelog>
     <um:targetApplication>
       <rdf:Seq>
-        <rdf:li rdf:resource="urn:wyona:targetapplication:tomcat:0.0.2-dev-r22926"/>
+        <rdf:li rdf:resource="urn:wyona:targetapplication:tomcat:yanel-0.0.2-dev-r22926"/>
       </rdf:Seq>
     </um:targetApplication>
   </rdf:Description>
 
-  <rdf:Description rdf:about="urn:wyona:targetapplication:tomcat:0.0.2-dev-r22926">
+  <rdf:Description rdf:about="urn:wyona:targetapplication:tomcat:yanel-0.0.2-dev-r22926">
     <um:id>Apache Tomcat</um:id>
     <um:minVersion>5.0.0</um:minVersion>
     <um:maxVersion>5.5.*</um:maxVersion>
     <um:updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</um:updateLink>
   </rdf:Description>
 
+  <rdf:Description rdf:about="urn:wyona:application:updater:yanel-updater-0.0.2-dev-r22926">
+    <um:id>yanel-updater@wyona.org</um:id>
+    <um:title>Yanel Updater</um:title>
+    <um:version>0.0.2-dev-r22926</um:version>
+    <um:changelog>this fixed and that improved</um:changelog>
+    <um:targetApplication>
+      <rdf:Seq>
+        <rdf:li rdf:resource="urn:wyona:targetapplication:updater:yanel-updater-0.0.2-dev-r22926"/>
+      </rdf:Seq>
+    </um:targetApplication>
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="urn:wyona:targetapplication:updater:yanel-updater-0.0.2-dev-r22926">
+    <um:id>yanel-webapp@wyona.org</um:id>
+    <um:minVersion>5.0.0</um:minVersion>
+    <um:maxVersion>5.5.*</um:maxVersion>
+    <um:updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-updater-0.0.2-dev-r22926.war</um:updateLink>
+  </rdf:Description>
+  
 </rdf:RDF>
