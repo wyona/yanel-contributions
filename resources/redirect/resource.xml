@@ -6,12 +6,11 @@
   class="org.wyona.yanel.impl.resources.RedirectResource"
   >
 <description>
-Redirect whereas an XSLT or multiple XSLTs can be specified and applied
+Redirect resource, whereas redirects can also be configured user specific within custom config
 </description>
 
 <rtd>
-  <property name="mime-type"/>
-  <property name="xslt" multiple="true"/>
-  <property name="yanel-path"/>
+  <!-- default redirect -->
+  <property name="href"/>
 </rtd>
 </resource>
