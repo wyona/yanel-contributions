@@ -6,6 +6,7 @@
   <rdf:Description rdf:about="urn:wyona:application:install">
     <um:id>@PROJECTNAME@@wyona.org</um:id>
     <um:version>@VERSION@</um:version>
+    <um:revision>@REVISION@</um:revision>
     <um:installtype>@INSTALLTYPE@</um:installtype>
     <um:name>Wyona Yanel Webapp</um:name>
     <um:description>Content Management Software</um:description>
