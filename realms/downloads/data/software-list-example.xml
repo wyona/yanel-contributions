@@ -5,10 +5,10 @@
     <type>updates</type>
     <title>Yanel Webapp</title>
     <id>yanel-webapp@wyona.org</id>
-    <version>0.0.2-dev</version>
+    <version>0.0.4-dev</version>
     <revision>22926</revision>
-    <changeLog>this fixed and that improved</changeLog>
-    <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</updateLink>
+    <changeLog>this fixed and that improved1</changeLog>
+    <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.4-dev-r22926.war</updateLink>
     <targetApplicationId>Apache Tomcat</targetApplicationId>
     <targetApplicationMinVersion>5.0.0</targetApplicationMinVersion>
     <targetApplicationMaxVersion>5.5.*</targetApplicationMaxVersion>
@@ -22,7 +22,7 @@
     <id>yanel-webapp@wyona.org</id>
     <version>0.0.2-dev</version>
     <revision>22926</revision>
-    <changeLog>this fixed and that improved</changeLog>
+    <changeLog>this fixed and that improved2</changeLog>
     <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</updateLink>
     <md5></md5>
     <targetApplicationId>Apache Tomcat</targetApplicationId>
@@ -38,7 +38,7 @@
     <id>yanel-updater@wyona.org</id>
     <version>0.0.2-dev</version>
     <revision>22926</revision>
-    <changeLog>this fixed and that improved</changeLog>
+    <changeLog>this fixed and that improved3</changeLog>
     <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-updater-0.0.2-dev-r22926.war</updateLink>
     <md5></md5>
     <targetApplicationId>yanel-webapp@wyona.org</targetApplicationId>
@@ -54,7 +54,7 @@
     <id>yanel-updater@wyona.org</id>
     <version>0.0.3-dev</version>
     <revision>27926</revision>
-    <changeLog>this fixed and that improved</changeLog>
+    <changeLog>this fixed and that improved4</changeLog>
     <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-updater-0.0.3-dev-r27926.war</updateLink>
     <md5></md5>
     <targetApplicationId>yanel-webapp@wyona.org</targetApplicationId>
