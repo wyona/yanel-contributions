@@ -9,7 +9,7 @@
     <revision>22926</revision>
     <changeLog>this fixed and that improved</changeLog>
     <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</updateLink>
-    <targetApplicationId>Apache Tomcat</targetApplication>
+    <targetApplicationId>Apache Tomcat</targetApplicationId>
     <targetApplicationMinVersion>5.0.0</targetApplicationMinVersion>
     <targetApplicationMaxVersion>5.5.*</targetApplicationMaxVersion>
     <targetApplicationMinRevision>120020</targetApplicationMinRevision>
@@ -25,7 +25,7 @@
     <changeLog>this fixed and that improved</changeLog>
     <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</updateLink>
     <md5></md5>
-    <targetApplicationId>Apache Tomcat</targetApplication>
+    <targetApplicationId>Apache Tomcat</targetApplicationId>
     <targetApplicationMinVersion>5.0.0</targetApplicationMinVersion>
     <targetApplicationMaxVersion>5.5.*</targetApplicationMaxVersion>
     <targetApplicationMinRevision>120020</targetApplicationMinRevision>
@@ -41,7 +41,7 @@
     <changeLog>this fixed and that improved</changeLog>
     <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-updater-0.0.2-dev-r22926.war</updateLink>
     <md5></md5>
-    <targetApplicationId>yanel-webapp@wyona.org</targetApplication>
+    <targetApplicationId>yanel-webapp@wyona.org</targetApplicationId>
     <targetApplicationMinVersion>0.0.1</targetApplicationMinVersion>
     <targetApplicationMaxVersion>1.0.0</targetApplicationMaxVersion>
     <targetApplicationMinRevision>223432</targetApplicationMinRevision>
@@ -57,7 +57,7 @@
     <changeLog>this fixed and that improved</changeLog>
     <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-updater-0.0.3-dev-r27926.war</updateLink>
     <md5></md5>
-    <targetApplicationId>yanel-webapp@wyona.org</targetApplication>
+    <targetApplicationId>yanel-webapp@wyona.org</targetApplicationId>
     <targetApplicationMinVersion>0.0.1</targetApplicationMinVersion>
     <targetApplicationMaxVersion>1.0.0</targetApplicationMaxVersion>
     <targetApplicationMinRevision>223432</targetApplicationMinRevision>
