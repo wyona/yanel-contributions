@@ -35,10 +35,10 @@
     <um:revision>22926</um:revision>
     <um:changelog>this fixed and that improved</um:changelog>
     <um:targetApplicationId>yanel-updater@wyona.org</um:targetApplicationId>
-    <um:targetApplicationIdMinVersion>0.0.1</um:targetApplicationIdMinVersion>
-    <um:targetApplicationIdMaxVersion>1.0.0</um:targetApplicationIdMaxVersion>
-    <um:targetApplicationIdMinRevision>22926</um:targetApplicationIdMinRevision>
-    <um:targetApplicationIdMaxRevision>22926</um:targetApplicationIdMaxRevision>
+    <um:targetApplicationMinVersion>0.0.1</um:targetApplicationMinVersion>
+    <um:targetApplicationMaxVersion>1.0.0</um:targetApplicationMaxVersion>
+    <um:targetApplicationMinRevision>22926</um:targetApplicationMinRevision>
+    <um:targetApplicationMaxRevision>22926</um:targetApplicationMaxRevision>
     <um:updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</um:updateLink>
     <um:md5>43trft45frq4ef</um:md5>
   </rdf:Description>
@@ -50,10 +50,10 @@
     <um:revision>22926</um:revision>
     <um:changelog>this fixed and that improved</um:changelog>
     <um:targetApplicationId>yanel-webapp@wyona.org</um:targetApplicationId>
-    <um:targetApplicationIdMinVersion>0.0.1</um:targetApplicationIdMinVersion>
-    <um:targetApplicationIdMaxVersion>1.0.0</um:targetApplicationIdMaxVersion>
-    <um:targetApplicationIdMinRevision>22926</um:targetApplicationIdMinRevision>
-    <um:targetApplicationIdMaxRevision>22926</um:targetApplicationIdMaxRevision>
+    <um:targetApplicationMinVersion>0.0.1</um:targetApplicationMinVersion>
+    <um:targetApplicationMaxVersion>1.0.0</um:targetApplicationMaxVersion>
+    <um:targetApplicationMinRevision>22926</um:targetApplicationMinRevision>
+    <um:targetApplicationMaxRevision>22926</um:targetApplicationMaxRevision>
     <um:updateLink>http://localhost:8081/yanel/downloads/yanel-updates/yanel-updater-0.0.2-dev-r22926.war</um:updateLink>
     <um:md5>43trft45frq4ef</um:md5>
   </rdf:Description>
