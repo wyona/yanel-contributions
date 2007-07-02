@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<softwarelist xmlns="http://www.wyona.org/yanel/1.0">
+  <software>
+    <type>updates</type>
+    <title>Yanel Webapp</title>
+    <id>yanel-webapp@wyona.org</id>
+    <version>0.0.2-dev</version>
+    <revision>22926</revision>
+    <changeLog>this fixed and that improved</changeLog>
+    <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</updateLink>
+    <targetApplicationId>Apache Tomcat</targetApplication>
+    <targetApplicationMinVersion>5.0.0</targetApplicationMinVersion>
+    <targetApplicationMaxVersion>5.5.*</targetApplicationMaxVersion>
+    <targetApplicationMinRevision>120020</targetApplicationMinRevision>
+    <targetApplicationMaxRevision>232233</targetApplicationMaxRevision>
+  </software>
+
+  <software>
+    <type>updates</type>
+    <title>Yanel Webapp</title>
+    <id>yanel-webapp@wyona.org</id>
+    <version>0.0.2-dev</version>
+    <revision>22926</revision>
+    <changeLog>this fixed and that improved</changeLog>
+    <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-UPDATE-0.0.2-dev-r22926.war</updateLink>
+    <targetApplicationId>Apache Tomcat</targetApplication>
+    <targetApplicationMinVersion>5.0.0</targetApplicationMinVersion>
+    <targetApplicationMaxVersion>5.5.*</targetApplicationMaxVersion>
+    <targetApplicationMinRevision>120020</targetApplicationMinRevision>
+    <targetApplicationMaxRevision>232233</targetApplicationMaxRevision>
+  </software>
+
+  <software>
+    <type>updater</type>
+    <title>Yanel Updater</title>
+    <id>yanel-updater@wyona.org</id>
+    <version>0.0.2-dev</version>
+    <revision>22926</revision>
+    <changeLog>this fixed and that improved</changeLog>
+    <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-updater-0.0.2-dev-r22926.war</updateLink>
+    <targetApplicationId>yanel-webapp@wyona.org</targetApplication>
+    <targetApplicationMinVersion>0.0.1</targetApplicationMinVersion>
+    <targetApplicationMaxVersion>1.0.0</targetApplicationMaxVersion>
+    <targetApplicationMinRevision>223432</targetApplicationMinRevision>
+    <targetApplicationMaxRevision>233434</targetApplicationMaxRevision>
+  </software>
+
+  <software>
+    <type>updater</type>
+    <title>Yanel Updater</title>
+    <id>yanel-updater@wyona.org</id>
+    <version>0.0.3-dev</version>
+    <revision>27926</revision>
+    <changeLog>this fixed and that improved</changeLog>
+    <updateLink>http://localhost:8081/yanel/downloads/yanel-updates/wyona-yanel-updater-0.0.3-dev-r27926.war</updateLink>
+    <targetApplicationId>yanel-webapp@wyona.org</targetApplication>
+    <targetApplicationMinVersion>0.0.1</targetApplicationMinVersion>
+    <targetApplicationMaxVersion>1.0.0</targetApplicationMaxVersion>
+    <targetApplicationMinRevision>223432</targetApplicationMinRevision>
+    <targetApplicationMaxRevision>233434</targetApplicationMaxRevision>
+  </software>
+</softwarelist>
