@@ -6,6 +6,7 @@ package org.wyona.yanel.impl.resources.yanelupdatemanager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Enumeration;
 
 import javax.xml.transform.TransformerFactory;
@@ -29,15 +30,20 @@ import org.wyona.yanel.core.util.PathUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
+import java.io.File;
+import java.net.URL;
 
-import src.java.org.wyona.yanel.impl.resources.updatefinder.UpdateFinder;
+import org.wyona.yanel.impl.resources.updatefinder.utils.*;
 
 /**
  *
  */
 public class YanelUpdateManager extends Resource implements ViewableV2 {
 
-    private static Category log = Category.getInstance(UpdateFinder.class);
+    private static Category log = Category.getInstance(YanelUpdateManager.class);
     private String defaultLanguage;
     private String language = null;
     
@@ -274,4 +280,41 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
             sb.append("<p>Update failed. Exception: " + e.getMessage() + "</p>");
         }
     }
+    
+    private InstallInfo getInstallInfo(StringBuffer sb) {
+        InstallInfo installInfo = null;
+        try {
+            return installInfo = new InstallInfo(request);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            sb.append("<p>Exception: " + e.getMessage() + "</p>");
+            return null;
+        }
+    }
+
+    private UpdateInfo getUpdateInfo(StringBuffer sb) {
+        UpdateInfo updateInfo = null;
+        try {
+            URL UpdateRdfUrl = new URL(getInstallInfo(sb).getUpdateURL());
+            InputStream updateRdfIn = UpdateRdfUrl.openStream();
+            return updateInfo = new UpdateInfo(updateRdfIn, getInstallInfo(sb));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            sb.append("<p>");
+            sb.append("Yanel could not get the Update information! " + e);
+            sb.append("</p>");
+            return null;
+        }
+    }
+    
+    /**
+     * Get XSLT path
+     */
+    private String[] getXSLTPath(String path) throws Exception {
+        String[] xsltPath = getResourceConfigProperties("xslt");
+        if (xsltPath != null)
+            return xsltPath;
+        log.info("No XSLT Path within: " + path);
+        return null;
+    }    
 }
