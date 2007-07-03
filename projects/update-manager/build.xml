@@ -65,10 +65,24 @@
     <copy todir="${build.dir}/webapps/${project.name}/WEB-INF/lib">
       <fileset dir="${build.dir}/resource-types/file/build/lib"/>
     </copy>
+
+    <ant target="compile" antfile="${build.dir}/resource-types/yanel-update-manager/build.xml" inheritAll="false">
+      <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
+    </ant>
+    
+    <ant target="copy-dependencies" antfile="${build.dir}/resource-types/yanel-update-manager/build.xml" inheritAll="false">
+      <property value="${build.dir}" name="build.dir"/>
+      <property value="yanel" name="servlet.context.prefix"/>
+      <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
+    </ant>
+
+    <copy todir="${build.dir}/webapps/${project.name}/WEB-INF/lib">
+      <fileset dir="${build.dir}/resource-types/yanel-update-manager/build/lib"/>
+    </copy>
   </target>
   
   <target name="war" description="Build war file" depends="build-webapp">
-    <jar jarfile="${project.name}.war" basedir="webapps/${project.name}"/>
+    <jar jarfile="${project.name}-v-${yanel.version}-r-${yanel.revision}.war" basedir="webapps/${project.name}"/>
   </target>  
 
   <target name="clean" description="clean" depends="init">
