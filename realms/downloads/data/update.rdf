@@ -14,7 +14,7 @@
     <um:type>updates</um:type>
     <um:versions>
       <rdf:Seq>
-        <rdf:li rdf:resource="urn:wyona:application:updates:yanel-webapp@wyona.org-v-0.0.2-dev-r-r22926"/>
+        <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-0.0.2-dev-r-r22926"/>
       </rdf:Seq>
     </um:versions>
   </rdf:Description>
@@ -23,18 +23,18 @@
     <um:type>updater</um:type>
     <um:versions>
       <rdf:Seq>
-        <rdf:li rdf:resource="urn:wyona:application:updater:yanel-updater@wyona.org-v-0.0.2-dev-r-22926"/>
+        <rdf:li rdf:resource="urn:wyona:application:updater:wyona-yanel-updater-v-0.0.2-dev-r-22926"/>
       </rdf:Seq>
     </um:versions>
   </rdf:Description>
   
-  <rdf:Description rdf:about="urn:wyona:application:updates:yanel-webapp@wyona.org-v-0.0.2-dev-r-r22926">
-    <um:id>yanel-webapp@wyona.org</um:id>
+  <rdf:Description rdf:about="urn:wyona:application:updates:wyona-yanel-webapp-v-0.0.2-dev-r-r22926">
+    <um:id>wyona-yanel-webapp</um:id>
     <um:title>Yanel Webapp</um:title>
     <um:version>0.0.2-dev</um:version>
     <um:revision>22926</um:revision>
     <um:changelog>this fixed and that improved</um:changelog>
-    <um:targetApplicationId>yanel-updater@wyona.org</um:targetApplicationId>
+    <um:targetApplicationId>wyona-yanel-updater</um:targetApplicationId>
     <um:targetApplicationMinVersion>0.0.1</um:targetApplicationMinVersion>
     <um:targetApplicationMaxVersion>1.0.0</um:targetApplicationMaxVersion>
     <um:targetApplicationMinRevision>22926</um:targetApplicationMinRevision>
@@ -43,13 +43,13 @@
     <um:md5>43trft45frq4ef</um:md5>
   </rdf:Description>
 
-  <rdf:Description rdf:about="urn:wyona:application:updater:yanel-updater@wyona.org-v-0.0.2-dev-r-22926">
-    <um:id>yanel-updater@wyona.org</um:id>
+  <rdf:Description rdf:about="urn:wyona:application:updater:wyona-yanel-updater-v-0.0.2-dev-r-22926">
+    <um:id>wyona-yanel-updater</um:id>
     <um:title>Yanel Updater</um:title>
     <um:version>0.0.2-dev</um:version>
     <um:revision>22926</um:revision>
     <um:changelog>this fixed and that improved</um:changelog>
-    <um:targetApplicationId>yanel-webapp@wyona.org</um:targetApplicationId>
+    <um:targetApplicationId>wyona-yanel-webapp</um:targetApplicationId>
     <um:targetApplicationMinVersion>0.0.1</um:targetApplicationMinVersion>
     <um:targetApplicationMaxVersion>1.0.0</um:targetApplicationMaxVersion>
     <um:targetApplicationMinRevision>22926</um:targetApplicationMinRevision>
