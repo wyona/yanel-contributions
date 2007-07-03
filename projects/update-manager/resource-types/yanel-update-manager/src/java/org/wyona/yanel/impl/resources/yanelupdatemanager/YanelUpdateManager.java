@@ -270,9 +270,9 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
                     + request.getServerPort() + "/" + id + "-v-" + version + "-r-" + revision + "/";
 
             sb.append("<p>");
-            sb.append("Update done.");
+            sb.append("Update done. <br/>");
             sb.append("<a href=\"" + pathToUpdater + "\">");
-            sb.append("go to the Updater!");
+            sb.append("go to the new installed version!");
             sb.append("</a>");
             sb.append("</p>");
         } catch (Exception e) {
