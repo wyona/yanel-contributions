@@ -30,8 +30,11 @@
     <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="${project.name}">
       <replacetoken>@PROJECTNAME@</replacetoken>
     </replace>
-    <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="${project.version}-r${project.revision}">
+    <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="${project.version}">
       <replacetoken>@VERSION@</replacetoken>
+    </replace>
+    <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="${project.revision}">
+      <replacetoken>@REVISION@</replacetoken>
     </replace>
     <replace file="webapps/${project.name}/WEB-INF/classes/install.rdf" value="war">
       <replacetoken>@INSTALLTYPE@</replacetoken>
