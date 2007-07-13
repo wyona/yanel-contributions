@@ -4,15 +4,15 @@
      xmlns:um="http://www.wyona.org/update-manager/1.0#">
 
   <rdf:Description rdf:about="urn:wyona:application:install">
-    <um:id>wyona-@PROJECTNAME@</um:id>
+    <um:id>@PROJECTID@</um:id>
     <um:version>@VERSION@</um:version>
     <um:revision>@REVISION@</um:revision>
     <um:installtype>@INSTALLTYPE@</um:installtype>
     <um:name>Wyona Yanel Webapp</um:name>
-    <um:description>Content Management Software</um:description>
+    <um:description>Yanel Update Manager Servlet, downloads and installs new yanel verison into tomcat.</um:description>
     <um:creator>Wyona</um:creator>
     <um:homepageURL>http://yanel.wyona.org/</um:homepageURL>
-    <um:updateURL>http://localhost:8080/yanel/downloads/update.rdf</um:updateURL>
+    <um:updateURL>http://localhost:8081/yanel/downloads/update.rdf</um:updateURL>
     <um:protectedFiles/>
   </rdf:Description>
   
