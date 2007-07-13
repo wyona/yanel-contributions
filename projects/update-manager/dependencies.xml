@@ -44,6 +44,11 @@
                   version="0.0.1-dev-r23202"/>
       <dependency groupId="yarep" artifactId="yarep-impl"
                   version="0.0.1-dev-r23202"/>
+      <!-- TODO, this should go to the resource probably, but didn't findout how -->
+      <dependency groupId="wyona-org-yanel" artifactId="yanel-resource-find-update"
+                  version="1.0-dev-r25709"/>
+      <dependency groupId="jena" artifactId="jena" version="2.1"/>
+      <dependency groupId="icu4j" artifactId="icu4j" version="2.6.1"/>
     </artifact:dependencies>
 
     <property name="maven2.cp" refid="maven2.classpath"/>
