@@ -53,8 +53,6 @@
     <um:revision><xsl:value-of select="yanel:revision"/></um:revision>
     <um:changelog><xsl:value-of select="yanel:changeLog"/></um:changelog>
     <um:targetApplicationId><xsl:value-of select="yanel:targetApplicationId"/></um:targetApplicationId>
-    <um:targetApplicationMinVersion><xsl:value-of select="yanel:targetApplicationMinVersion"/></um:targetApplicationMinVersion>
-    <um:targetApplicationMaxVersion><xsl:value-of select="yanel:targetApplicationMaxVersion"/></um:targetApplicationMaxVersion>
     <um:targetApplicationMinRevision><xsl:value-of select="yanel:targetApplicationMinRevision"/></um:targetApplicationMinRevision>
     <um:targetApplicationMaxRevision><xsl:value-of select="yanel:targetApplicationMaxRevision"/></um:targetApplicationMaxRevision>
     <um:updateLink><xsl:value-of select="yanel:updateLink"/></um:updateLink>
