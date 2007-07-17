@@ -58,7 +58,7 @@
     <um:targetApplicationMinRevision><xsl:value-of select="yanel:targetApplicationMinRevision"/></um:targetApplicationMinRevision>
     <um:targetApplicationMaxRevision><xsl:value-of select="yanel:targetApplicationMaxRevision"/></um:targetApplicationMaxRevision>
     <um:updateLink><xsl:value-of select="yanel:updateLink"/></um:updateLink>
-    <um:md5><xsl:value-of select="yanel:md5"/></um:md5>
+    <!-- <um:md5><xsl:value-of select="yanel:md5"/></um:md5> -->
   </rdf:Description>
 </xsl:template>
 
