@@ -6,7 +6,11 @@ package org.wyona.yanel.impl.resources.yanelupdatemanager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 
 import javax.xml.transform.TransformerFactory;
@@ -16,8 +20,6 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Category;
-import org.apache.xml.resolver.tools.CatalogResolver;
-import org.apache.xml.serializer.Serializer;
 import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
@@ -294,7 +296,13 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
             warFetcher.fetch();
 
             //here should the merging of the conf, realms etc happen
-            ArrayList  protectedFiles = installInfo.getProtectedFiles();
+            try {
+                reConfigureNewFromOld(installInfo, versionDetails, destDir);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                sb.append("<p>Update partly failed. Exception: " + e.getMessage() + "</p>");
+            }
+            
             
             TomcatContextHandler tomcatContextHandler = new TomcatContextHandler(request);
             tomcatContextHandler.setContext(id + "-v-" + version + "-r-" + revision, id + "-v-" + version + "-r-" + revision);
@@ -320,5 +328,34 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
             return xsltPath;
         log.info("No XSLT Path within: " + path);
         return null;
-    }    
+    }
+    
+    private void reConfigureNewFromOld(InstallInfo installInfo, HashMap versionDetails, String destDir) throws Exception{
+        //TODO copy is not really sufficient better do a kind of merge
+        ArrayList protectedFiles = installInfo.getProtectedFiles();
+        String srcDirectoryPath =  destDir + File.separator + installInfo.getId() + "-v-" + installInfo.getVersion() + "-r-" + installInfo.getRevision() + File.separator;
+        String dstDirectoryPath =  destDir + File.separator + (String) versionDetails.get("id") + "-v-" + (String) versionDetails.get("version") + "-r-" + (String) versionDetails.get("revision") + File.separator;
+        
+        try {
+            for (int i = 0; i < protectedFiles.size(); i++) {
+                copy(new File(srcDirectoryPath + protectedFiles.get(i)), new File(dstDirectoryPath + protectedFiles.get(i)) );
+            }
+        } catch (Exception e) {
+            log.error("Copy of configuration failed");
+            throw new Exception("Copy of configuration failed");
+        }
+    }
+    
+    private void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        OutputStream out = new FileOutputStream(dst);
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
+    }
 }
