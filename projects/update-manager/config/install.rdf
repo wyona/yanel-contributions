@@ -12,7 +12,7 @@
     <um:description>Yanel Update Manager Servlet, downloads and installs new yanel verison into tomcat.</um:description>
     <um:creator>Wyona</um:creator>
     <um:homepageURL>http://yanel.wyona.org/</um:homepageURL>
-    <um:updateURL>http://localhost:8081/yanel/downloads/update.rdf</um:updateURL>
+    <um:updateURL>http://yanel.wyona.org/downloads/update.rdf</um:updateURL>
     <um:protectedFiles/>
   </rdf:Description>
   
