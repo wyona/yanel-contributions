@@ -76,10 +76,11 @@
     <um:title>Yanel Webapp Updater</um:title>
     <um:version>1.0-dev</um:version>
     <um:revision>26227</um:revision>
-    <um:changelog>Updater for local webapp with version "v-1.0-dev-r-26195"</um:changelog>
+    <um:changelog>Updater for Yanel webapps with revisions in the range from 26193 to 26222</um:changelog>
     <um:targetApplicationId>wyona-yanel-webapp-local</um:targetApplicationId>
+    <!-- Both webapps (local and new) need to be within this range -->
     <um:targetApplicationMinRevision>26193</um:targetApplicationMinRevision>
-    <um:targetApplicationMaxRevision>26195</um:targetApplicationMaxRevision>
+    <um:targetApplicationMaxRevision>26222</um:targetApplicationMaxRevision>
     <um:updateLink>http://yanel.wyona.org/downloads/yanel-updater/wyona-yanel-updater-v-1.0-dev-r-26227.war</um:updateLink>
   </rdf:Description>
 
