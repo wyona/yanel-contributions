@@ -9,96 +9,97 @@
   <import file="dependencies.xml"/>
   
   <target name="init" depends="dependencies">
-    <mkdir dir="webapps"/>
-    <mkdir dir="webapps/${project.id}"/>
-    <mkdir dir="webapps/${project.id}/WEB-INF"/>
-    <mkdir dir="webapps/${project.id}/WEB-INF/logs"/>
-    <mkdir dir="webapps/${project.id}/WEB-INF/classes"/>
-    <mkdir dir="webapps/${project.id}/WEB-INF/lib"/>
-    <property name="build.dir" value="."/>
+    <property name="build.dir" value="build"/>
+    <property name="webapps.dir" value="${build.dir}/webapps"/>
+    <mkdir dir="${webapps.dir}"/>
+    <mkdir dir="${webapps.dir}/${project.id}"/>
+    <mkdir dir="${webapps.dir}/${project.id}/WEB-INF"/>
+    <mkdir dir="${webapps.dir}/${project.id}/WEB-INF/logs"/>
+    <mkdir dir="${webapps.dir}/${project.id}/WEB-INF/classes"/>
+    <mkdir dir="${webapps.dir}/${project.id}/WEB-INF/lib"/>
   </target>
 
   <target name="build-webapp" depends="init, build-resources">
-    <copy file="config/web.xml" tofile="webapps/${project.id}/WEB-INF/web.xml" overwrite="true"/>
+    <copy file="config/web.xml" tofile="${webapps.dir}/${project.id}/WEB-INF/web.xml" overwrite="true"/>
     
-    <copy todir="webapps/${project.id}/WEB-INF/classes">
+    <copy todir="${webapps.dir}/${project.id}/WEB-INF/classes">
       <fileset dir="config">
         <exclude name="web.xml"/>
       </fileset>
     </copy>
 
-    <replace file="webapps/${project.id}/WEB-INF/classes/install.rdf" value="${project.id}">
+    <replace file="${webapps.dir}/${project.id}/WEB-INF/classes/install.rdf" value="${project.id}">
       <replacetoken>@PROJECTID@</replacetoken>
     </replace>
-    <replace file="webapps/${project.id}/WEB-INF/classes/install.rdf" value="${project.version}">
+    <replace file="${webapps.dir}/${project.id}/WEB-INF/classes/install.rdf" value="${project.version}">
       <replacetoken>@VERSION@</replacetoken>
     </replace>
-    <replace file="webapps/${project.id}/WEB-INF/classes/install.rdf" value="${project.revision}">
+    <replace file="${webapps.dir}/${project.id}/WEB-INF/classes/install.rdf" value="${project.revision}">
       <replacetoken>@REVISION@</replacetoken>
     </replace>
-    <replace file="webapps/${project.id}/WEB-INF/classes/install.rdf" value="war">
+    <replace file="${webapps.dir}/${project.id}/WEB-INF/classes/install.rdf" value="war">
       <replacetoken>@INSTALLTYPE@</replacetoken>
     </replace>
-    <replace file="webapps/${project.id}/WEB-INF/classes/log4j.properties" value="yanel-webapps/${project.id}-v-${project.version}-r-${project.revision}">
+    <replace file="${webapps.dir}/${project.id}/WEB-INF/classes/log4j.properties" value="yanel-webapps/${project.id}-v-${project.version}-r-${project.revision}">
       <replacetoken>@WEBAPP@</replacetoken>
     </replace>
 
-    <copy todir="webapps/${project.id}/realms">
+    <copy todir="${webapps.dir}/${project.id}/realms">
       <fileset dir="realms"/>
     </copy>
 
-    <copy todir="webapps/${project.id}/resource-types">
+    <copy todir="${webapps.dir}/${project.id}/resource-types">
       <fileset dir="resource-types"/>
     </copy>
     
-    <copy todir="webapps/${project.id}/WEB-INF/lib">
+    <copy todir="${webapps.dir}/${project.id}/WEB-INF/lib">
       <fileset refid="maven2.fileset"/>
       <mapper type="flatten"/>
     </copy>
   </target>
   
   <target name="build-resources" description="Build resources">
-    <ant target="compile" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
+    <ant target="compile" antfile="resource-types/file/build.xml" inheritAll="false">
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
     
-    <ant target="copy-dependencies" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
+    <ant target="copy-dependencies" antfile="resource-types/file/build.xml" inheritAll="false">
       <property value="${build.dir}" name="build.dir"/>
       <property value="yanel" name="servlet.context.prefix"/>
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
 
-    <copy todir="${build.dir}/webapps/${project.id}/WEB-INF/lib">
-      <fileset dir="${build.dir}/resource-types/file/build/lib"/>
+    <copy todir="${webapps.dir}/${project.id}/WEB-INF/lib">
+      <fileset dir="resource-types/file/build/lib"/>
     </copy>
 
-    <ant target="compile" antfile="${build.dir}/resource-types/yanel-update-manager/build.xml" inheritAll="false">
+    <ant target="compile" antfile="resource-types/yanel-update-manager/build.xml" inheritAll="false">
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
     
-    <ant target="copy-dependencies" antfile="${build.dir}/resource-types/yanel-update-manager/build.xml" inheritAll="false">
+    <ant target="copy-dependencies" antfile="resource-types/yanel-update-manager/build.xml" inheritAll="false">
       <property value="${build.dir}" name="build.dir"/>
       <property value="yanel" name="servlet.context.prefix"/>
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
 
-    <copy todir="${build.dir}/webapps/${project.id}/WEB-INF/lib">
-      <fileset dir="${build.dir}/resource-types/yanel-update-manager/build/lib"/>
+    <copy todir="${webapps.dir}/${project.id}/WEB-INF/lib">
+      <fileset dir="resource-types/yanel-update-manager/build/lib"/>
     </copy>
   </target>
   
   <target name="war" description="Build war file" depends="build-webapp">
-    <jar jarfile="${project.id}-v-${project.version}-r-${project.revision}.war" basedir="webapps/${project.id}"/>
+    <jar jarfile="${project.id}-v-${project.version}-r-${project.revision}.war" basedir="${webapps.dir}/${project.id}"/>
   </target>  
 
   <target name="clean" description="clean" depends="init">
-    <ant target="clean" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
+    <ant target="clean" antfile="resource-types/file/build.xml" inheritAll="false">
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
-    <ant target="clean" antfile="${build.dir}/resource-types/yanel-update-manager/build.xml" inheritAll="false">
+    <ant target="clean" antfile="resource-types/yanel-update-manager/build.xml" inheritAll="false">
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
-    <delete dir="webapps"/>
+    <delete dir="${build.dir}"/>
     <delete file="${project.id}-v-${project.version}-r-${project.revision}.war"/>
   </target>  
   
