@@ -100,9 +100,6 @@
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
     <delete dir="${build.dir}"/>
-<!--
-    <delete file="${project.id}-v-${project.version}-r-${project.revision}.war"/>
--->
   </target>  
   
 </project>  
