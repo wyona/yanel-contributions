@@ -89,7 +89,7 @@
   </target>
   
   <target name="war" description="Build war file" depends="build-webapp">
-    <jar jarfile="${project.id}-v-${project.version}-r-${project.revision}.war" basedir="${webapps.dir}/${project.id}"/>
+    <jar destfile="${build.dir}/${project.id}-v-${project.version}-r-${project.revision}.war" basedir="${webapps.dir}/${project.id}"/>
   </target>  
 
   <target name="clean" description="clean" depends="init">
@@ -100,7 +100,9 @@
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
     <delete dir="${build.dir}"/>
+<!--
     <delete file="${project.id}-v-${project.version}-r-${project.revision}.war"/>
+-->
   </target>  
   
 </project>  
