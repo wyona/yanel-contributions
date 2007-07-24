@@ -88,14 +88,18 @@
   </target>
   
   <target name="war" description="Build war file" depends="build-webapp">
-    <jar jarfile="${project.id}-v-${yanel.version}-r-${yanel.revision}.war" basedir="webapps/${project.id}"/>
+    <jar jarfile="${project.id}-v-${project.version}-r-${project.revision}.war" basedir="webapps/${project.id}"/>
   </target>  
 
   <target name="clean" description="clean" depends="init">
     <ant target="clean" antfile="${build.dir}/resource-types/file/build.xml" inheritAll="false">
       <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
     </ant>
+    <ant target="clean" antfile="${build.dir}/resource-types/yanel-update-manager/build.xml" inheritAll="false">
+      <property value="${yanel.version}-r${yanel.revision}" name="yanel.source.version"/>
+    </ant>
     <delete dir="webapps"/>
+    <delete file="${project.id}-v-${project.version}-r-${project.revision}.war"/>
   </target>  
   
 </project>  
