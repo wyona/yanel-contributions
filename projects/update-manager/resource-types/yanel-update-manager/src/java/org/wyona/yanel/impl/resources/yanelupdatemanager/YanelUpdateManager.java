@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 Wyona
+ * Copyright 2007 Wyona
  */
 
 package org.wyona.yanel.impl.resources.yanelupdatemanager;
@@ -237,11 +237,11 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
         sb.append("<tbody>");
         Iterator iterator = contextAndWebapp.keySet().iterator();
         
+        if (!iterator.hasNext()) sb.append("<tr><td colspan=\"2\">No Yanel contexts found!</td></tr>");
         while (iterator.hasNext()) {
             String context = (String) iterator.next();
             String webapp = (String) contextAndWebapp.get(context);
-            sb.append("<tr><td><a href=\"" + "http://" + request.getServerName() + ":"
-                + request.getServerPort() + "/" + context.replaceAll("/", "") + "\" target=\"_blank\">" + context + "</a></td><td>" + webapp + "</td></tr>");
+            sb.append("<tr><td><a href=\"" + "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + context.replaceAll("/", "") + "/\">" + context + "</a></td><td>" + webapp + "</td></tr>");
         }
         sb.append("</tbody>");
         sb.append("</table>");
