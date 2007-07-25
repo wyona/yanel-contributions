@@ -4,7 +4,7 @@
 
 <realm id="updater" mount-point="/" root="true">
   <name>Yanel Updater Realm</name>
-  <config src="../../realms/updater-realm/yanel/config/yanel-realm-config.xml"/>
+  <config src="../../realms/updater-realm/"/>
 </realm>
 
 </realms>
