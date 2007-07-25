@@ -254,7 +254,7 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
             
             TomcatContextHandler tomcatContextHandler = new TomcatContextHandler(request);
             
-            HashMap versionDetails = updateInfo.getUpdateVersionDetail("updateLink", request.getParameter("updatelink"));
+            HashMap versionDetails = updateInfo.getUpdateVersionDetail("update-link", request.getParameter("updatelink"));
             String version = (String) versionDetails.get("version");
             String revision = (String) versionDetails.get("revision");
             String id = (String) versionDetails.get("id");
@@ -287,8 +287,7 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
                     + File.separator + "..";
             WarFetcher warFetcher = new WarFetcher(request, request.getParameter("updatelink"), destDir);
 
-            HashMap versionDetails = updateInfo.getUpdateVersionDetail("updateLink",
-                    request.getParameter("updatelink"));
+            HashMap versionDetails = updateInfo.getUpdateVersionDetail("update-link", request.getParameter("updatelink"));
             String version = (String) versionDetails.get("version");
             String revision = (String) versionDetails.get("revision");
             String id = (String) versionDetails.get("id");
