@@ -1,0 +1,8 @@
+<!--
+
+  Context configuration file for the Yanel Updater Web App
+  Needs to be copied to TOMCAT/conf/Catalina/localhost/wyona-yanel-updater-v-VERSION-r-REVISION.xml
+
+-->
+
+<Context docBase="${catalina.home}/yanel-webapps/wyona-yanel-updater-v-@VERSION@-r-@REVISION@"/>
