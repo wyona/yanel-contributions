@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "INFO: Build Yanel ..."
+echo "INFO: Build Yanel Updater ..."
 
 # ----- Parameters
 
@@ -28,7 +28,7 @@ unset CATALINA_HOME
 PATH=$PWD/tools/maven-2.0.4/bin:$ANT_HOME/bin:$PATH
 #echo $PATH
 
-# ----- Build Yanel
+# ----- Build Yanel Updater
 #mvn --version
 ant -version
 # One might want to use the option "-f" for building resources, e.g. "./build.sh -f src/resources/xml/build.xml" instead having to build everything
