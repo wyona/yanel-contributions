@@ -90,6 +90,13 @@
   
   <target name="war" description="Build war file" depends="build-webapp">
     <jar destfile="${build.dir}/${project.id}-v-${project.version}-r-${project.revision}.war" basedir="${webapps.dir}/${project.id}"/>
+    <copy file="config/tomcat-context-config.xml" tofile="${build.dir}/${project.id}-v-${project.version}-r-${project.revision}.xml" overwrite="true"/>
+    <replace file="${build.dir}/${project.id}-v-${project.version}-r-${project.revision}.xml" value="${project.version}">
+      <replacetoken>@VERSION@</replacetoken>
+    </replace>
+    <replace file="${build.dir}/${project.id}-v-${project.version}-r-${project.revision}.xml" value="${project.revision}">
+      <replacetoken>@REVISION@</replacetoken>
+    </replace>
   </target>  
 
   <target name="clean" description="clean" depends="init">
