@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<realm-config xmlns="http://www.wyona.org/yanel/realm/1.0">
+  <name>Minimal Yanel Realm</name>
+
+  <rti>yanel/config/rti-repository.xml</rti>
+  <data>yanel/config/data-repository.xml</data>
+  <ac-policies>yanel/config/ac-policies-repository.xml</ac-policies>
+  <ac-identities>yanel/config/ac-identities-repository.xml</ac-identities>
+</realm-config>
