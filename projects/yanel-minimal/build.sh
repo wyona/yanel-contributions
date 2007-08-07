@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "INFO: Build minila Yanel version ..."
+echo "INFO: Build minimal Yanel version ..."
 
 # ----- Parameters
 
