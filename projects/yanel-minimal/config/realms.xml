@@ -3,8 +3,8 @@
 <realms xmlns="http://www.wyona.org/yanel/1.0" version="2007050800">
 
 <realm id="manager" mount-point="/" root="true">
-  <name>Yanel Manager</name>
-  <config src="../../realms/minimal-realm/yanel/config/yanel-realm-config.xml"/>
+  <name>Minimal Yanel Realm</name>
+  <config src="../../realms/minimal-realm/"/>
 </realm>
 
 </realms>
