@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
+import javax.servlet.http.HttpSession;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
@@ -38,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
 import java.io.File;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.wyona.yanel.impl.resources.updatefinder.utils.*;
@@ -185,16 +187,16 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
      */
     private String getScreen() {
         StringBuffer sbContent = new StringBuffer();
-        //StringBuffer sbHeader = new StringBuffer();
+        StringBuffer sbHeader = new StringBuffer();
         Enumeration parameters = request.getParameterNames();
         if (!parameters.hasMoreElements()) {
             plainRequest(sbContent);
         } else {
             if (request.getParameter("updatelink") != null) {
-                if (request.getParameter("updateconfirmed") == null){
+                if (request.getParameter("usecase") == null){
                     getUpdateConfirmScreen(sbContent);                    
                 } else {
-                    getUpdateScreen(sbContent);
+                    getUpdateScreen(sbContent,sbHeader);
                 }
             } else {
                 log.info("Fallback ...");
@@ -206,7 +208,7 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
         sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
         sb.append("<head><title>Yanel Updater</title>");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + PathUtil.backToRealm(getPath()) + "css/updater.css\"/>");
-        //sb.append(sbHeader);
+        sb.append(sbHeader);
         sb.append("</head>");
         sb.append("<body>");
         sb.append("<img src=\"" + PathUtil.backToRealm(getPath()) + "img/yanel_updater.png\" alt=\"yanel updater\" id=\"title\"/>");
@@ -241,7 +243,7 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
         while (iterator.hasNext()) {
             String context = (String) iterator.next();
             String webapp = (String) contextAndWebapp.get(context);
-            sb.append("<tr><td><a href=\"" + "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + context.replaceAll("/", "") + "/\">" + context + "</a></td><td>" + webapp + "</td></tr>");
+            sb.append("<tr><td><a href=\"" + "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + context.replaceAll("/", "") + "\">" + context + "</a></td><td>" + webapp + "</td></tr>");
         }
         sb.append("</tbody>");
         sb.append("</table>");
@@ -252,9 +254,12 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
             InstallInfo installInfo = new InstallInfo(request, request.getParameter("requestingwebapp"));
             UpdateInfo updateInfo = new UpdateInfo(installInfo.getUpdateURL(), installInfo);
             
-            TomcatContextHandler tomcatContextHandler = new TomcatContextHandler(request);
+            //TomcatContextHandler tomcatContextHandler = new TomcatContextHandler(request);
             
-            HashMap versionDetails = updateInfo.getUpdateVersionDetail("update-link", request.getParameter("updatelink"));
+            HashMap versionDetails = updateInfo.getUpdateVersionDetail("updateLink", request.getParameter("updatelink"));
+            if (versionDetails == null) {
+                throw new Exception("The requested version: " + request.getParameter("updatelink") + "seems not to exist.");
+            }
             String version = (String) versionDetails.get("version");
             String revision = (String) versionDetails.get("revision");
             String id = (String) versionDetails.get("id");
@@ -264,7 +269,7 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
             htmlBodyContent.append("<p>");
             htmlBodyContent.append("<form method=\"post\" action=\".\">");
             htmlBodyContent.append("<input type=\"submit\" name=\"button\" value=\"YES\"/>");
-            htmlBodyContent.append("<input type=\"hidden\" name=\"updateconfirmed\" value=\"updateconfirmed\"/>");
+            htmlBodyContent.append("<input type=\"hidden\" name=\"usecase\" value=\"updateconfirmed\"/>");
             htmlBodyContent.append("<input type=\"hidden\" name=\"updatelink\" value=\"" + request.getParameter("updatelink") + "\"/>");
             htmlBodyContent.append("<input type=\"hidden\" name=\"requestingwebapp\" value=\"" + request.getParameter("requestingwebapp") + "\"/>");
             htmlBodyContent.append("</form>");
@@ -278,43 +283,84 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
         }
     }
     
-    private void getUpdateScreen(StringBuffer sb) {
+    private void getUpdateScreen(StringBuffer htmlBodyContent, StringBuffer head) {
+        HttpSession session = request.getSession();
         try {
             InstallInfo installInfo = new InstallInfo(request, request.getParameter("requestingwebapp"));
             UpdateInfo updateInfo = new UpdateInfo(installInfo.getUpdateURL(), installInfo);
             
-            String destDir = request.getSession().getServletContext().getRealPath(".")
-                    + File.separator + "..";
-            WarFetcher warFetcher = new WarFetcher(request, request.getParameter("updatelink"), destDir);
-
-            HashMap versionDetails = updateInfo.getUpdateVersionDetail("update-link", request.getParameter("updatelink"));
+            HashMap versionDetails = updateInfo.getUpdateVersionDetail("updateLink", request.getParameter("updatelink"));
+            if (versionDetails == null) {
+                throw new Exception("The requested version: " + request.getParameter("updatelink") + "seems not to exist.");
+            }
             String version = (String) versionDetails.get("version");
             String revision = (String) versionDetails.get("revision");
             String id = (String) versionDetails.get("id");
-
-            warFetcher.fetch();
-
-            //here should the merging of the conf, realms etc happen
-            try {
-                reConfigureNewFromOld(installInfo, versionDetails, destDir);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                sb.append("<p>Update partly failed. Exception: " + e.getMessage() + "</p>");
+            
+            String destDir = request.getSession().getServletContext().getRealPath(".")
+                    + File.separator + "..";
+            
+            URL updaterURL = new URL("http://" + request.getServerName() + ":" + request.getServerPort() + "/" + id + "-v-" + version + "-r-" + revision);
+            HttpURLConnection updaterURLConn = (HttpURLConnection)updaterURL.openConnection();
+            if (updaterURLConn.getResponseCode() == 200) {
+                session.removeAttribute(WarFetcher.SESSION_ATTR_TASK);
+                session.removeAttribute(WarFetcher.SESSION_ATTR_PROGRESS);
+                session.removeAttribute(WarFetcher.SESSION_ATTR_ITEMS_DONE);
+                session.removeAttribute(WarFetcher.SESSION_ATTR_ITEMS_TO_BE_DONE);
+                htmlBodyContent.append("<p>" + id + "-v-" + version + "-r-" + revision + " has been downloaded and installed.</p>");
+                htmlBodyContent.append("<p>Go to your fresh installed <a href=\""+"http://" + request.getServerName() + ":" + request.getServerPort() + "/" + id + "-v-" + version + "-r-" + revision + "\">" + id + "-v-" + version + "-r-" + revision + "</a></p>");
+                plainRequest(htmlBodyContent);
+                return;
             }
             
+            if (session.getAttribute(WarFetcher.SESSION_ATTR_TASK) == null ){
+                Runnable runFetcher = new WarFetcher(request, request.getParameter("updatelink"), destDir);
+                new Thread(runFetcher).start();
+                session.setAttribute(WarFetcher.SESSION_ATTR_TASK, "started");
+                session.setAttribute(WarFetcher.SESSION_ATTR_PROGRESS, "0");
+            }
             
-            TomcatContextHandler tomcatContextHandler = new TomcatContextHandler(request);
-            tomcatContextHandler.setContext(id + "-v-" + version + "-r-" + revision, id + "-v-" + version + "-r-" + revision);
-            String pathToUpdater = "http://" + request.getServerName() + ":"
-                    + request.getServerPort() + "/" + id + "-v-" + version + "-r-" + revision + "/";
+            //TODO here it should set a password for the updater
+            
+            if (session.getAttribute(WarFetcher.SESSION_ATTR_TASK) != null && session.getAttribute(WarFetcher.SESSION_ATTR_TASK).equals("downloaded")) {
+                session.setAttribute(WarFetcher.SESSION_ATTR_TASK, "reconfigure");
+                session.setAttribute(WarFetcher.SESSION_ATTR_PROGRESS, "50");
+                try {
+                    reConfigureNewFromOld(installInfo, versionDetails);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    htmlBodyContent.append("<p>Update partly failed. Exception: " + e.getMessage() + "</p>");
+                }
+                session.setAttribute(WarFetcher.SESSION_ATTR_TASK, "loading");
+            }
 
-            sb.append("<p>");
-            sb.append("Update done. <br/>");
-            plainRequest(sb);
-            sb.append("</p>");
+            if (session.getAttribute(WarFetcher.SESSION_ATTR_TASK) != null && session.getAttribute(WarFetcher.SESSION_ATTR_TASK).equals("loading")) {
+                TomcatContextHandler tomcatContextHandler = new TomcatContextHandler(request);
+                tomcatContextHandler.setContext(id + "-v-" + version + "-r-" + revision, id + "-v-" + version + "-r-" + revision);
+                //htmlBodyContent.append("<p>Working: Tomcat is loading and startup the update-manager</p>");
+                //head.append("<meta http-equiv=\"refresh\" content=\"2; URL=?usecase=updateconfirmed&amp;updatelink=" + request.getParameter("updatelink") + "&amp;requestingwebapp=" + request.getParameter("requestingwebapp") + "\"/>");
+                int pseudoprogress = Integer.valueOf((String) session.getAttribute(WarFetcher.SESSION_ATTR_PROGRESS)).intValue() + 1;
+                session.setAttribute(WarFetcher.SESSION_ATTR_PROGRESS, "" + pseudoprogress);
+            }
+            
+            if (session.getAttribute(WarFetcher.SESSION_ATTR_TASK) != null) {
+                head.append("<meta http-equiv=\"refresh\" content=\"2; URL=?usecase=updateconfirmed&amp;updatelink=" + request.getParameter("updatelink") + "&amp;requestingwebapp=" + request.getParameter("requestingwebapp") + "\"/>");
+                htmlBodyContent.append("<p>Working: " + session.getAttribute(WarFetcher.SESSION_ATTR_TASK));
+                if (session.getAttribute(WarFetcher.SESSION_ATTR_ITEMS_DONE) != null) {
+                    if (session.getAttribute(WarFetcher.SESSION_ATTR_TASK).equals("download")) {
+                        htmlBodyContent.append(" " + session.getAttribute(WarFetcher.SESSION_ATTR_ITEMS_DONE) + " bytes of " + session.getAttribute(WarFetcher.SESSION_ATTR_ITEMS_TO_BE_DONE) + " bytes");
+                    }
+                    if (session.getAttribute(WarFetcher.SESSION_ATTR_TASK).equals("extract")) {
+                        htmlBodyContent.append(" " + session.getAttribute(WarFetcher.SESSION_ATTR_ITEMS_DONE) + " items of " + session.getAttribute(WarFetcher.SESSION_ATTR_ITEMS_TO_BE_DONE) + " items");
+                    }
+                }
+                htmlBodyContent.append("</p>");
+                htmlBodyContent.append("<p>Progress: <div id=\"yanelprogressbarterminated\"><div id=\"yanelprogressbarindicatorterminated\" style=\"width:" + session.getAttribute(WarFetcher.SESSION_ATTR_PROGRESS) + "%\">" + session.getAttribute(WarFetcher.SESSION_ATTR_PROGRESS) +"%</div></div></p>");
+            }
+                
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            sb.append("<p>Update failed. Exception: " + e.getMessage() + "</p>");
+            htmlBodyContent.append("<p>Update failed. Exception: " + e.getMessage() + "</p>");
         }
     }
     
@@ -329,19 +375,21 @@ public class YanelUpdateManager extends Resource implements ViewableV2 {
         return null;
     }
     
-    private void reConfigureNewFromOld(InstallInfo installInfo, HashMap versionDetails, String destDir) throws Exception{
+    private void reConfigureNewFromOld(InstallInfo installInfo, HashMap versionDetails) throws Exception{
         //TODO copy is not really sufficient better do a kind of merge
         ArrayList protectedFiles = installInfo.getProtectedFiles();
-        String srcDirectoryPath =  destDir + File.separator + installInfo.getId() + "-v-" + installInfo.getVersion() + "-r-" + installInfo.getRevision() + File.separator;
-        String dstDirectoryPath =  destDir + File.separator + (String) versionDetails.get("id") + "-v-" + (String) versionDetails.get("version") + "-r-" + (String) versionDetails.get("revision") + File.separator;
+        
+        String srcDirectoryPath =  request.getSession().getServletContext().getRealPath(".") + File.separator + ".." + File.separator + (String) installInfo.getId() + "-v-" + (String) installInfo.getVersion() + "-r-" + (String) installInfo.getRevision() + File.separator;
+        String dstDirectoryPath =  request.getSession().getServletContext().getRealPath(".") + File.separator + ".." + File.separator + (String) versionDetails.get("id") + "-v-" + (String) versionDetails.get("version") + "-r-" + (String) versionDetails.get("revision") + File.separator;
         
         try {
             for (int i = 0; i < protectedFiles.size(); i++) {
                 copy(new File(srcDirectoryPath + protectedFiles.get(i)), new File(dstDirectoryPath + protectedFiles.get(i)) );
+                log.debug("DEBUG: copy from " + srcDirectoryPath + protectedFiles.get(i) + " to " + dstDirectoryPath + protectedFiles.get(i));
             }
         } catch (Exception e) {
-            log.error("Copy of configuration failed");
-            throw new Exception("Copy of configuration failed");
+            log.error("Copy of configuration failed" + e.getMessage());
+            throw new Exception("Copy of configuration failed" + e.getMessage());
         }
     }
     
