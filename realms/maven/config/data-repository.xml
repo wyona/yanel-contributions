@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 
-<repository class="org.wyona.yarep.impl.repo.fs.FileSystemRepository">
+<repository>
   <name>Maven Data Repository</name>
-  <paths class="org.wyona.yarep.impl.DefaultMapImpl" src="../data-paths" fallback="true">
+  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="/home/simon/.m2/repository/">
     <ignore pattern=".*\.svn"/>
     <ignore pattern=".*\.yarep"/>
   </paths>
-  <content src="/home/simon/.m2/repository/"/>
+
+  <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
+    <content src="/home/simon/.m2/repository/"/>
+  </storage>  
 </repository>
