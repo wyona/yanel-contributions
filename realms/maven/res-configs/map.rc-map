@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<rc-map>
+
+  <matcher pattern="**/" rcpath="/directory.yanel-rc"/>
+  <matcher pattern="**.pom" rcpath="/pom.yanel-rc"/>
+  <matcher pattern="**.md5" rcpath="/md5.yanel-rc"/>
+
+</rc-map>
