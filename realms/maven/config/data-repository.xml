@@ -2,7 +2,10 @@
 
 <repository>
   <name>Maven Data Repository</name>
-  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="/home/simon/.m2/repository/">
+  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../data">
+<!--
+  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="/home/michi/.m2/repository/">
+-->
     <ignore pattern=".*\.svn"/>
     <ignore pattern=".*\.yarep"/>
   </paths>
