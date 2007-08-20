@@ -8,6 +8,6 @@
   </paths>
 
   <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
-    <content src="/home/simon/.m2/repository/"/>
+    <content src="../data"/>
   </storage>  
 </repository>
