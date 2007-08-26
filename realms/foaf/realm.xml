@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<realm-config xmlns="http://www.wyona.org/yanel/realm/1.0">
+<name>FOAF</name>
+<rti>config/rti-repository.xml</rti>
+<data>config/data-repository.xml</data>
+<ac-policies>config/ac-policies-repository.xml</ac-policies>
+<ac-identities>config/ac-identities-repository.xml</ac-identities>
+<root-dir>/home/michi/src/wyona/public/yanel/trunk/src/realms/foaf</root-dir>
+</realm-config>
