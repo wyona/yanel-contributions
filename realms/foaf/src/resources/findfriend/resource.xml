@@ -10,8 +10,6 @@ Find a Friend
 </description>
 
 <rtd>
-<!--
-  <property name="foo" default-value="bar"/>
--->
+  <property name="parser" default-value="org.wyona.meguni.parser.impl.MSNParser"/>
 </rtd>
 </resource>
