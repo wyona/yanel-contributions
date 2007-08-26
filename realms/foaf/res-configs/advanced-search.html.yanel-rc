@@ -3,8 +3,8 @@
 <yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
   <yanel:rti name="findfriend" namespace="http://www.wyona.org/yanel/resource/1.0"/>
 
-<!--
   <yanel:property name="parser" value="org.wyona.meguni.parser.impl.GoogleParser"/>
--->
+<!--
   <yanel:property name="parser" value="org.wyona.meguni.parser.impl.MSNParser"/>
+-->
 </yanel:resource-config>
