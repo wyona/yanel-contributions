@@ -31,9 +31,9 @@
 <xsl:when test="/foaf:foaf/foaf:provider">
 <p>
 <!-- TODO: Do not hardcode the action ... -->
-<form action="index.html">
+<form action="." method="get">
 <input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
-<input type="submit" value="Search"/>
+<input type="submit" value="Search" name="submit"/>
 <br/>
 <a href="advanced-search.html?q={$query}">Advanced Search</a>
 </form>
@@ -51,12 +51,12 @@ Copyright &#169; 2007 Wyona
 
 <p>
 <!-- TODO: Do not hardcode the action ... -->
-<form action="index.html">
+<form action="." method="get">
 <input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
-<input type="submit" value="Search"/>
+<input type="submit" value="Search" name="submit"/>
+</form>
 <br/>
 <a href="advanced-search.html">Advanced Search</a>
-</form>
 </p>
 
 <p>
