@@ -1,5 +1,0 @@
-yarep_type<string>:resource
-yarep_isCheckedOut<boolean>:false
-yarep_checkoutDate<date>:2007-08-26T08:39:40+0200
-yarep_checkoutUserID<string>:lenya
-yarep_checkinDate<date>:2007-08-26T08:47:01+0200
