@@ -20,15 +20,66 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Find a friend</title>
+  <link rel="foaf-introspection" type="application/foaf+xml" href="foaf-introspection.xml"/>
 </head>
 
 <body>
-<h1>Find a friend</h1>
 <p>
-<a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
+<a href="">Sign in</a> | <a href="">Sign up</a> | <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
 </p>
+<xsl:choose>
+<xsl:when test="/foaf:foaf/foaf:provider">
+<p>
+<form action="advanced-search.html">
+<input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
+<input type="submit" value="Search"/>
+<br/>
+<a href="advanced-search.html?q={$query}">Advanced Search</a>
+</form>
+</p>
+<xsl:apply-templates select="/foaf:foaf/foaf:provider"/>
+<p>
+Copyright &#169; 2007 Wyona
+</p>
+</xsl:when>
+
+
+<xsl:otherwise>
+<center>
+<h1>Find a friend</h1>
+
+<p>
+<form action="advanced-search.html">
+<input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
+<input type="submit" value="Search"/>
+<br/>
+<a href="advanced-search.html">Advanced Search</a>
+</form>
+</p>
+
+<p>
+Copyright &#169; 2007 Wyona
+</p>
+</center>
+</xsl:otherwise>
+</xsl:choose>
 </body>
 </html>
+</xsl:template>
+
+<xsl:template match="foaf:provider">
+  <hr/>
+  <xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="foaf:result">
+  <p>
+  <b><a href="{foaf:url}"><xsl:value-of select="foaf:title"/></a></b>
+  <br/>
+  <xsl:value-of select="foaf:excerpt"/>
+  <br/>
+  <a href="sign-in.html">Add to your address book</a> | <a href="sign-in.html">Send invitation</a> | <a href="">Print</a>
+  </p>
 </xsl:template>
 
 </xsl:stylesheet>
