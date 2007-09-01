@@ -11,5 +11,6 @@ Find a Friend
 
 <rtd>
   <property name="parser" default-value="org.wyona.meguni.parser.impl.MSNParser"/>
+  <property name="type" default-value="simple"/><!-- other values: advanced -->
 </rtd>
 </resource>
