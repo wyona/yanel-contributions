@@ -12,9 +12,9 @@
 <!--
 <xsl:output method="html"/>
 -->
+
 <xsl:param name="query" select="'QUERY_IS_NULL'"/>
-
-
+<xsl:param name="type" select="'TYPE_IS_NULL'"/>
 
 <xsl:template match="/">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -25,8 +25,13 @@
 
 <body>
 <p>
-<a href="">Sign in</a> | <a href="">Sign up</a> | <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
+<a href="login.html">Login</a> | <a href="register.html">Register</a> | <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
 </p>
+
+<p>
+Type: <xsl:value-of select="$type"/>
+</p>
+
 <xsl:choose>
 <xsl:when test="/foaf:foaf/foaf:provider">
 <p>
