@@ -19,10 +19,14 @@ import javax.xml.transform.stream.StreamResult;
 
 import java.io.File;
 
+import org.apache.log4j.Category;
+
 /**
  *
  */
 public class FindFriendResource extends Resource implements ViewableV2 {
+
+    private static Category log = Category.getInstance(FindFriendResource.class);
 
     /**
      *
@@ -62,12 +66,17 @@ public class FindFriendResource extends Resource implements ViewableV2 {
         if (resultSet != null && resultSet.size() > 0) {
             sb.append("<provider source-name=\"" + resultSet.getSourceName() + "\" source-domain=\"" + resultSet.getSourceDomain() + "\" numberOfResults=\""+resultSet.size()+"\">");
             for (int k = 0;k < resultSet.size(); k++) {
-                sb.append("<result number=\"" + (k+1) + "\" source-name=\"" + resultSet.getSourceName() + "\">");
-                sb.append("<title><![CDATA[" + resultSet.get(k).title + "]]></title>");
-                sb.append("<excerpt><![CDATA[" + resultSet.get(k).excerpt + "]]></excerpt>");
-                sb.append("<url><![CDATA[" + resultSet.get(k).url + "]]></url>");
-                sb.append("<last-modified><![CDATA[" + resultSet.get(k).lastModified + "]]></last-modified>");
-                sb.append("</result>");
+                java.net.URL url = resultSet.get(k).url;
+                if (url.toString().endsWith("rdf")) {
+                    sb.append("<result number=\"" + (k+1) + "\" source-name=\"" + resultSet.getSourceName() + "\">");
+                    sb.append("<title><![CDATA[" + resultSet.get(k).title + "]]></title>");
+                    sb.append("<excerpt><![CDATA[" + resultSet.get(k).excerpt + "]]></excerpt>");
+                    sb.append("<url><![CDATA[" + resultSet.get(k).url + "]]></url>");
+                    sb.append("<last-modified><![CDATA[" + resultSet.get(k).lastModified + "]]></last-modified>");
+                    sb.append("</result>");
+                } else {
+                    log.warn("DEBUG: Does not seem to be a RDF: " + url);
+                }
             }
             sb.append("</provider>");
         }
