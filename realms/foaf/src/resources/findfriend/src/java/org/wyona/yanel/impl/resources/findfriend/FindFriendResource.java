@@ -124,6 +124,11 @@ public class FindFriendResource extends Resource implements ViewableV2 {
         if (getRequest().getParameter("q") != null) {
             tf.setParameter("query", getRequest().getParameter("q"));
         }
+        if (getResourceConfigProperty("type") != null) {
+            tf.setParameter("type", getResourceConfigProperty("type"));
+        } else {
+            tf.setParameter("type", "simple");
+        }
         return tf;
     }
 }
