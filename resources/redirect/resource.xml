@@ -17,6 +17,7 @@ Redirect resource, whereas redirects can also be configured user specific within
   <yanel:custom-config xmlns:rd="http://www.wyona.org/yanel/resource/redirect-resource/1.0">
     <rd:user name="bob" href="bob/index.html"/>
     <rd:user name="alice" href="alice/index.html"/>
+    <rd:language code="de" href="de/index.html"/>
   </yanel:custom-config>
 -->
 </rtd>
