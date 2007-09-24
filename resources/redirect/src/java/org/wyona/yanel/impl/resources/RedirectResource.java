@@ -100,7 +100,7 @@ public class RedirectResource extends Resource implements ViewableV2 {
             // Localization
             Configuration[] languageRedirectConfigs = config.getChildren("language");
             String localizationLanguage = getRequestedLanguage();
-            log.error("DEBUG: Localization: " + localizationLanguage);
+            log.debug("Localization: " + localizationLanguage);
             for (int i = 0; i < languageRedirectConfigs.length; i++) {
                 try {
                     if (languageRedirectConfigs[i].getAttribute("code").equals(localizationLanguage)) {
