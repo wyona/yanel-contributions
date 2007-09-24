@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 Wyona
+ * Copyright 2007 Wyona
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -88,27 +88,45 @@ public class RedirectResource extends Resource implements ViewableV2 {
 
         if (defaultHref == null) throw new Exception("No default redirect has been set!");
 
+        // Default
         response.setStatus(307);
         response.setHeader("Location", defaultHref);
+
+        ResourceConfiguration rc = getConfiguration();
+        Document customConfigDoc = rc.getCustomConfiguration();
+        if (customConfigDoc != null) {
+            Configuration config = ConfigurationUtil.toConfiguration(customConfigDoc.getDocumentElement());
+
+            // Localization
+            Configuration[] languageRedirectConfigs = config.getChildren("language");
+            String localizationLanguage = getRequestedLanguage();
+            log.error("DEBUG: Localization: " + localizationLanguage);
+            for (int i = 0; i < languageRedirectConfigs.length; i++) {
+                try {
+                    if (languageRedirectConfigs[i].getAttribute("code").equals(localizationLanguage)) {
+                        response.setStatus(307);
+                        response.setHeader("Location", languageRedirectConfigs[i].getAttribute("href"));
+                    }
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    throw e;
+                }
+            }
         
-        String currentUser = null;
-        Identity identity = getIdentity(getRequest());
-        if (identity != null) {
-            currentUser = identity.getUsername();
-        }
-        
-        if (currentUser != null) {
-            ResourceConfiguration rc = getConfiguration();
-            Document customConfigDoc = rc.getCustomConfiguration();
-            if (customConfigDoc != null) {
-                Configuration config = ConfigurationUtil.toConfiguration(customConfigDoc.getDocumentElement());
-                Configuration[] redirectConfigs = config.getChildren("user");
-                
-                for (int i = 0; i < redirectConfigs.length; i++) {
+
+            // Username
+            String currentUser = null;
+            Identity identity = getIdentity(getRequest());
+            if (identity != null) {
+                currentUser = identity.getUsername();
+            }
+            if (currentUser != null) {
+                Configuration[] userRedirectConfigs = config.getChildren("user");
+                for (int i = 0; i < userRedirectConfigs.length; i++) {
                     try {
-                        if (redirectConfigs[i].getAttribute("name") == currentUser || (currentUser).equals(redirectConfigs[i].getAttribute("name"))) {
+                        if (userRedirectConfigs[i].getAttribute("name") == currentUser || (currentUser).equals(userRedirectConfigs[i].getAttribute("name"))) {
                             response.setStatus(307);
-                            response.setHeader("Location", redirectConfigs[i].getAttribute("href"));
+                            response.setHeader("Location", userRedirectConfigs[i].getAttribute("href"));
                         }
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
