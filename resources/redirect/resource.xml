@@ -3,7 +3,7 @@
 <resource xmlns="http://www.wyona.org/yanel/1.0"
   name="redirect"
   namespace="http://www.wyona.org/yanel/resource/1.0"
-  class="org.wyona.yanel.impl.resources.RedirectResource"
+  class="org.wyona.yanel.impl.resources.redirect.RedirectResource"
   >
 <description>
 Redirect resource, whereas redirects can also be configured user specific within custom config
