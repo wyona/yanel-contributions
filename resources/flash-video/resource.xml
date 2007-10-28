@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="flash-video"
+  namespace="http://www.wyonapictures.com/yanel/resource/1.0"
+  class="com.wyonapictures.yanel.impl.resources.flv.FlashVideoResource"
+  >
+<description>
+Flash Video with Flash Player
+</description>
+
+<rtd>
+  <property name="href"/>
+  <property name="title"/>
+  <property name="height"/> <!-- sample value 250px -->
+</rtd>
+</resource>
