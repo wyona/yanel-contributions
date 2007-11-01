@@ -29,7 +29,6 @@ import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 import org.wyona.yanel.core.map.Realm;
 
 import org.wyona.security.core.api.Identity;
-import org.wyona.security.core.api.IdentityMap;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -167,14 +166,6 @@ public class RedirectResource extends Resource implements ViewableV2 {
      *                  realm or if there is no session at all
      */
     private Identity getIdentity(HttpServletRequest request) throws Exception {
-    	Realm realm = getRealm();
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            IdentityMap identityMap = (IdentityMap)session.getAttribute(IDENTITY_MAP_KEY);
-            if (identityMap != null) {
-                return (Identity)identityMap.get(realm.getID());
-            }
-        }
-        return null;
+        return getEnvironment().getIdentity();
     }
 }
