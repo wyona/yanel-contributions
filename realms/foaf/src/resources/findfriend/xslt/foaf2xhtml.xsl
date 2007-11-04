@@ -81,11 +81,11 @@ Copyright &#169; 2007 Wyona
 
 <xsl:template match="foaf:result">
   <p>
-  <b><a href="{foaf:url}"><xsl:value-of select="foaf:title"/></a></b>
+  <b><a href="print.html?href={foaf:url}"><xsl:value-of select="foaf:title"/></a></b>
   <br/>
   <xsl:value-of select="foaf:excerpt"/>
-  <br/>
-  <a href="sign-in.html">Add to your address book</a> | <a href="sign-in.html">Send invitation</a> | <a href="">Print</a>
+  <div class="original-href"><a href="{foaf:url}"><xsl:value-of select="foaf:url"/></a></div>
+  <a href="sign-in.html?usecase=add-friend&amp;href={foaf:url}">Add to your address book</a> | <a href="sign-in.html">Send invitation</a> | <a href="print.html?href={foaf:url}">Print</a>
   </p>
 </xsl:template>
 
