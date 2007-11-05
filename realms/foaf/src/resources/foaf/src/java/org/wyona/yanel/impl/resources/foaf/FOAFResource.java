@@ -8,6 +8,7 @@ import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
+import org.wyona.yanel.impl.resources.BasicXMLResource;
 
 import org.apache.log4j.Category;
 
@@ -16,7 +17,8 @@ import java.net.URL;
 /**
  *
  */
-public class FOAFResource extends Resource implements ViewableV2 {
+public class FOAFResource extends BasicXMLResource implements ViewableV2 {
+//public class FOAFResource extends Resource implements ViewableV2 {
 
     private static Category log = Category.getInstance(FOAFResource.class);
 
@@ -56,8 +58,11 @@ public class FOAFResource extends Resource implements ViewableV2 {
         View view = new View();
         try {
             URL url = new URL(getRequest().getParameter("href"));
+/*
             view.setInputStream(url.openConnection().getInputStream());
             view.setMimeType(getMimeType(viewId));
+*/
+            return getXMLView(viewId, url.openConnection().getInputStream());
         } catch (java.io.FileNotFoundException e) {
             log.error(e);
             view.setInputStream(new java.io.StringBufferInputStream(new StringBuffer("No such file: " + e.getMessage()).toString()));
