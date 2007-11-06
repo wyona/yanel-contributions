@@ -6,27 +6,4 @@
     <world permission="true"/>
   </role>
 
-  <role id="open">
-    <user id="lenya" permission="true"/>
-  </role>
-
-  <role id="write">
-    <user id="lenya" permission="true"/>
-  </role>
-
-  <role id="create">
-    <user id="lenya" permission="true"/>
-  </role>
-
-  <role id="toolbar">
-    <user id="lenya" permission="true"/>
-  </role>
-
-  <role id="introspection">
-    <world permission="true"/>
-<!--
-    <user id="lenya" permission="true"/>
--->
-  </role>
-
 </policy>
