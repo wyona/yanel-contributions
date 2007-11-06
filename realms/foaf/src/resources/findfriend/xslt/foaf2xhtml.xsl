@@ -32,11 +32,12 @@
 <xsl:when test="/foaf:foaf/foaf:provider">
 <p>
 <!-- TODO: Do not hardcode the action ... -->
+<xsl:if test="$type = 'advanced'"><h2>Advanced Search</h2></xsl:if>
 <form action="." method="get">
 <input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
 <input type="submit" value="Search" name="submit"/>
 <br/>
-2:<xsl:value-of select="$type"/> | <xsl:choose><xsl:when test="$type = 'simple'"><a href="advanced-search.html?q={$query}">Advanced Search</a></xsl:when><xsl:otherwise><a href="index.html?q={$query}">Simple Search</a></xsl:otherwise></xsl:choose> |  <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
+<!--DEBUG2:<xsl:value-of select="$type"/>--><xsl:choose><xsl:when test="$type = 'simple'"><a href="advanced-search.html?q={$query}">Advanced Search</a></xsl:when><xsl:otherwise><a href="index.html?q={$query}">Simple Search</a></xsl:otherwise></xsl:choose> |  <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
 </form>
 </p>
 <xsl:apply-templates select="/foaf:foaf/foaf:provider"/>
@@ -57,7 +58,7 @@ Copyright &#169; 2007 Wyona
 <input type="submit" value="Search" name="submit"/>
 </form>
 <br/>
-1:<xsl:value-of select="$type"/> | <xsl:choose><xsl:when test="$type = 'simple'"><a href="advanced-search.html?q={$query}">Advanced Search</a></xsl:when><xsl:otherwise><a href="index.html?q={$query}">Simple Search</a></xsl:otherwise></xsl:choose> |  <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
+<!--DEBUG1:<xsl:value-of select="$type"/>--><xsl:choose><xsl:when test="$type = 'simple'"><a href="advanced-search.html?q={$query}">Advanced Search</a></xsl:when><xsl:otherwise><a href="index.html?q={$query}">Simple Search</a></xsl:otherwise></xsl:choose> |  <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
 </p>
 
 <p>
