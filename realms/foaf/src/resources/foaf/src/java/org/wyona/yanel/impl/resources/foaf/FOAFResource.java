@@ -57,12 +57,16 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
     public View getView(String viewId) {
         View view = new View();
         try {
-            URL url = new URL(getRequest().getParameter("href"));
+            if (getRequest().getParameter("href") != null) {
+                URL url = new URL(getRequest().getParameter("href"));
 /*
-            view.setInputStream(url.openConnection().getInputStream());
-            view.setMimeType(getMimeType(viewId));
+                view.setInputStream(url.openConnection().getInputStream());
+                view.setMimeType(getMimeType(viewId));
 */
-            return getXMLView(viewId, url.openConnection().getInputStream());
+                return getXMLView(viewId, url.openConnection().getInputStream());
+            } else {
+                return getXMLView(viewId, getRealm().getRepository().getNode("/profiles/foo-bar.rdf").getInputStream());
+            }
         } catch (java.io.FileNotFoundException e) {
             log.error(e);
             view.setInputStream(new java.io.StringBufferInputStream(new StringBuffer("No such file: " + e.getMessage()).toString()));
@@ -79,6 +83,7 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
      *
      */
     public ViewDescriptor[] getViewDescriptors() {
+        ViewDescriptor[] vd = new ViewDescriptor[1];
         return null;
     }
 }
