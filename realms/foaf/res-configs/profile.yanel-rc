@@ -4,4 +4,5 @@
   <yanel:rti name="foaf" namespace="http://www.wyona.org/yanel/resource/1.0"/>
 
   <yanel:property name="xslt" value="/xslt/foaf2xhtml.xsl"/>
+  <yanel:property name="repo-config" value="/home/michi/src/wyona/wyona/misc/foaf/repository.xml"/>
 </yanel:resource-config>
