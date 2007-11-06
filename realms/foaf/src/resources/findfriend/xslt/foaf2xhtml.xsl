@@ -83,7 +83,7 @@ Copyright &#169; 2007 Wyona
   <br/>
   <xsl:value-of select="foaf:excerpt"/>
   <div class="original-href"><a href="{foaf:url}"><xsl:value-of select="foaf:url"/></a> (Profile Provider: TODO)</div>
-  <a href="sign-in.html?usecase=add-friend&amp;href={foaf:url}">Add to your address book</a> | <a href="sign-in.html">Send invitation</a> | <a href="print.html?href={foaf:url}">Print</a>
+  <a href="sign-in.html?usecase=add-friend&amp;href={foaf:url}">Add to your address book</a> | <a href="sign-in.html">Send invitation</a><xsl:if test="foaf:mime-type/@suffix = 'rdf'"> | <a href="print.html?href={foaf:url}">Print</a></xsl:if>
   </p>
 </xsl:template>
 
