@@ -79,7 +79,7 @@ Copyright &#169; 2007 Wyona
 
 <xsl:template match="foaf:result">
   <p>
-  <b><a href="print.html?href={foaf:url}"><xsl:value-of select="foaf:title"/></a></b>
+  <b><xsl:choose><xsl:when test="foaf:mime-type/@suffix = 'rdf'"><a href="print.html?href={foaf:url}"><xsl:value-of select="foaf:title"/></a></xsl:when><xsl:otherwise><a href="{foaf:url}"><xsl:value-of select="foaf:title"/></a></xsl:otherwise></xsl:choose></b>
   <br/>
   <xsl:value-of select="foaf:excerpt"/>
   <div class="original-href"><a href="{foaf:url}"><xsl:value-of select="foaf:url"/></a> (Profile Provider: TODO)</div>
