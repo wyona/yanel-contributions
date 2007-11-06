@@ -45,7 +45,11 @@ public class FindFriendResource extends Resource implements ViewableV2 {
      *
      */
     public String getMimeType(String viewId) {
-        return "application/xml";
+        if (viewId != null && viewId.equals("source")) {
+            return "application/xml";
+        } else {
+            return "application/xhtml+xml";
+        }
     }
 
     /**
@@ -60,11 +64,12 @@ public class FindFriendResource extends Resource implements ViewableV2 {
      */
     public View getView(String viewId) throws Exception {
         StringBuffer sb = new StringBuffer("<foaf xmlns=\"http://www.wyona.org/foaf/1.0\">");
+        String qs = getRequest().getParameter("q");
         try {
-            String qs = getRequest().getParameter("q");
             ResultSet resultSet = getSearchResults(qs.replaceAll(" ", "+") + "+FOAF");
+
         if (resultSet != null && resultSet.size() > 0) {
-            sb.append("<provider source-name=\"" + resultSet.getSourceName() + "\" source-domain=\"" + resultSet.getSourceDomain() + "\" numberOfResults=\""+resultSet.size()+"\">");
+            sb.append("<provider source-name=\"" + resultSet.getSourceName() + "\" source-domain=\"" + resultSet.getSourceDomain() + "\" numberOfResults=\"" + resultSet.size() + "\">");
             for (int k = 0;k < resultSet.size(); k++) {
                 java.net.URL url = resultSet.get(k).url;
                 if (url.toString().endsWith("rdf")) {
@@ -73,6 +78,7 @@ public class FindFriendResource extends Resource implements ViewableV2 {
                     sb.append("<excerpt><![CDATA[" + resultSet.get(k).excerpt + "]]></excerpt>");
                     sb.append("<url><![CDATA[" + resultSet.get(k).url + "]]></url>");
                     sb.append("<last-modified><![CDATA[" + resultSet.get(k).lastModified + "]]></last-modified>");
+                    sb.append("<mime-type suffix=\"rdf\">application/rdf+xml</mime-type>");
                     sb.append("</result>");
                 } else {
                     log.warn("DEBUG: Does not seem to be a RDF: " + url);
@@ -83,6 +89,20 @@ public class FindFriendResource extends Resource implements ViewableV2 {
         } catch (Exception e) {
             sb.append("<exception>" + e.getMessage() + "</exception>");
         }
+
+        // TODO: Remove hard-coded ...
+        if (qs != null) {
+            sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "1" + "\">");
+            sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
+            sb.append("<title><![CDATA[" + "Foo Bar" + "]]></title>");
+            sb.append("<excerpt><![CDATA[" + "About Foo Bar ..." + "]]></excerpt>");
+            sb.append("<url><![CDATA[" + "profiles/foo-bar.html" + "]]></url>");
+            sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
+            sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
+            sb.append("</result>");
+            sb.append("</provider>");
+        }
+
         sb.append("</foaf>");
 
         View view = new View();
