@@ -73,6 +73,7 @@ Copyright &#169; 2007 Wyona
 
 <xsl:template match="foaf:provider">
   <hr/>
+  <h4>Search Result Provider: <a href="{@source-domain}"><xsl:value-of select="@source-name"/></a></h4>
   <xsl:apply-templates/>
 </xsl:template>
 
@@ -81,7 +82,7 @@ Copyright &#169; 2007 Wyona
   <b><a href="print.html?href={foaf:url}"><xsl:value-of select="foaf:title"/></a></b>
   <br/>
   <xsl:value-of select="foaf:excerpt"/>
-  <div class="original-href"><a href="{foaf:url}"><xsl:value-of select="foaf:url"/></a></div>
+  <div class="original-href"><a href="{foaf:url}"><xsl:value-of select="foaf:url"/></a> (Profile Provider: TODO)</div>
   <a href="sign-in.html?usecase=add-friend&amp;href={foaf:url}">Add to your address book</a> | <a href="sign-in.html">Send invitation</a> | <a href="print.html?href={foaf:url}">Print</a>
   </p>
 </xsl:template>
