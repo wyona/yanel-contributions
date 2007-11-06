@@ -7,4 +7,6 @@
 <!--
   <yanel:property name="parser" value="org.wyona.meguni.parser.impl.MSNParser"/>
 -->
+
+  <yanel:property name="type" value="simple"/>
 </yanel:resource-config>
