@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<group id="login">
+  <name>Login</name>
+  <members>
+    <member id="foo-bar"/>
+<!--
+    <member id="lenya"/>
+-->
+  </members>
+</group>
