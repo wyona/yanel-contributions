@@ -72,13 +72,21 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
      */
     public View getView(String viewId) {
         View view = new View();
+        String path = getPath();
+
+
         try {
+	    if (path.lastIndexOf(".rdf") == path.length() - 4) {
+                view.setInputStream(getRDFAsInputStream());
+                view.setMimeType(getMimeType("rdf+xml"));
+                return view;
+            }
+
             StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
             sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\">");
             if (getRequest().getParameter("href") != null) {
                 sb.append("<wyona:third-party-source href=\"" + getRequest().getParameter("href") + "\"/>");
             } else {
-                String path = getPath();
                 sb.append("<wyona:source href=\"" + path.substring(0, path.lastIndexOf(".html")) + ".rdf\"/>");
             }
             // TODO: The following leads to errors if the RDF contains special characters!
@@ -151,7 +159,11 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
             return url.openConnection().getInputStream();
         } else {
             String path = getPath();
-            return getProfilesRepository().getNode(path.substring(0, path.lastIndexOf(".html")) + ".rdf").getInputStream();
+	    if (path.lastIndexOf(".rdf") == path.length() - 4) {
+                return getProfilesRepository().getNode(path).getInputStream();
+            } else {
+                return getProfilesRepository().getNode(path.substring(0, path.lastIndexOf(".html")) + ".rdf").getInputStream();
+            }
         }
     }
 
