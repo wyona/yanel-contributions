@@ -72,9 +72,10 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
             StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
             sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\">");
             if (getRequest().getParameter("href") != null) {
-                sb.append("<wyona:source href=\"" + getRequest().getParameter("href") + "\"/>");
+                sb.append("<wyona:third-party-source href=\"" + getRequest().getParameter("href") + "\"/>");
             } else {
-                sb.append("<wyona:source href=\"" + getPath() + "\"/>");
+                String path = getPath();
+                sb.append("<wyona:source href=\"" + path.substring(0, path.lastIndexOf(".html")) + "\"/>");
             }
             // TODO: The following leads to errors if the RDF contains special characters!
             BufferedReader br = new BufferedReader(new InputStreamReader(getRDFAsInputStream()));

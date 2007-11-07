@@ -9,6 +9,7 @@
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:foaf="http://xmlns.com/foaf/0.1/"
   xmlns:wyona="http://www.wyona.org/foaf/1.0"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 >
 
 <!-- IMPORTANT: Needs to correspond to the mime-type which is sent by the server! -->
@@ -35,15 +36,51 @@
 </head>
 
 <body>
-<a href="?yanel.resource.viewid=source">XML</a>
-<br/>
-<a href="{/wyona:foaf/wyona:source/@href}">FOAF RDF</a>
+<!-- XML Link -->
+<xsl:apply-templates select="/wyona:foaf/wyona:source" mode="source"/>
+<xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="source"/>
+
+<!-- RDF Link -->
+<xsl:apply-templates select="/wyona:foaf/wyona:source" mode="original"/>
+<xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="original"/>
+
 <h2>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
 <p>
-...
+Workplace Homepage: <a href="{/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage/@rdf:resource}"><xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage/@rdf:resource"/></a>
 </p>
+
+<h3>Friends</h3>
+<ul>
+<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:knows"/>
+</ul>
 </body>
 </html>
+</xsl:template>
+
+<xsl:template match="wyona:source" mode="source">
+<a href="?yanel.resource.viewid=source">XML</a>
+<br/>
+</xsl:template>
+
+<xsl:template match="wyona:third-party-source" mode="source">
+<a href="?href={@href}&amp;yanel.resource.viewid=source">XML</a>
+<br/>
+</xsl:template>
+
+<xsl:template match="wyona:source" mode="original">
+<a href="{$yarep.back2realm}{@href}.rdf">Original RDF</a> (TODO: Protect this data!)
+<br/>
+</xsl:template>
+
+<xsl:template match="wyona:third-party-source" mode="original">
+<a href="{@href}">Original RDF</a>
+<br/>
+</xsl:template>
+
+<xsl:template match="foaf:knows">
+<xsl:for-each select="foaf:Person">
+  <li><a href="{rdfs:seeAlso/@rdf:resource}"><xsl:value-of select="foaf:name"/></a></li>
+</xsl:for-each>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -5,3 +5,4 @@
   - Implement a Meguni Implementation of Facebook (http://www.facebook.com/srch.php?nm=Sam+Ruby)
   - Implement a Meguni Implementation of LinkedIn (http://www.linkedin.com/search?search=&sik=1194372540647&keywords=Michael+Wechner&sortCriteria=4)
   - Implement a FOAF Yanel User, such that one can use the E-Mail address to login
+  - Protect RDF data!
