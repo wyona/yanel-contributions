@@ -86,12 +86,12 @@
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="original">
-<a href="{$yarep.back2realm}{@href}">Original RDF</a> (TODO: Protect this data!)
+<a href="{$yarep.back2realm}{@href}">FOAF RDF</a> (TODO: Protect this data!)
 <br/>
 </xsl:template>
 
 <xsl:template match="wyona:third-party-source" mode="original">
-<a href="{@href}">Original RDF</a>
+<a href="{@href}">Original FOAF RDF</a>
 <br/>
 </xsl:template>
 
