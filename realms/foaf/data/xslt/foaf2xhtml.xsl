@@ -44,6 +44,10 @@
 <xsl:apply-templates select="/wyona:foaf/wyona:source" mode="original"/>
 <xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="original"/>
 
+<!-- OpenSocial People data API Link -->
+<xsl:apply-templates select="/wyona:foaf/wyona:source" mode="atom"/>
+<xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="atom"/>
+
 <h2>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
 <p>
 Workplace Homepage: <a href="{/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage/@rdf:resource}"><xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage/@rdf:resource"/></a>
@@ -74,6 +78,16 @@ Workplace Homepage: <a href="{/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHome
 
 <xsl:template match="wyona:third-party-source" mode="original">
 <a href="{@href}">Original RDF</a>
+<br/>
+</xsl:template>
+
+<xsl:template match="wyona:source" mode="atom">
+<a href="{$yarep.back2realm}{@href}?yanel.resource.viewid=atom">OpenSocial People data API</a>
+<br/>
+</xsl:template>
+
+<xsl:template match="wyona:third-party-source" mode="atom">
+<a href="?href={@href}&amp;yanel.resource.viewid=atom">OpenSocial People data API</a>
 <br/>
 </xsl:template>
 
