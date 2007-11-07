@@ -36,6 +36,27 @@
 </head>
 
 <body>
+<table>
+<tr>
+<td>
+<h2>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
+
+<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage"/>
+<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:homepage"/>
+<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:phone"/>
+
+
+<h3>Friends</h3>
+<ul>
+<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:knows"/>
+</ul>
+</td>
+
+<td>
+&#160;&#160;
+</td>
+
+<td valign="top">
 <!-- XML Link -->
 <xsl:apply-templates select="/wyona:foaf/wyona:source" mode="source"/>
 <xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="source"/>
@@ -47,16 +68,9 @@
 <!-- OpenSocial People data API Link -->
 <xsl:apply-templates select="/wyona:foaf/wyona:source" mode="atom"/>
 <xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="atom"/>
-
-<h2>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
-<p>
-Workplace Homepage: <a href="{/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage/@rdf:resource}"><xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage/@rdf:resource"/></a>
-</p>
-
-<h3>Friends</h3>
-<ul>
-<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:knows"/>
-</ul>
+</td>
+</tr>
+</table>
 </body>
 </html>
 </xsl:template>
@@ -95,6 +109,24 @@ Workplace Homepage: <a href="{/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHome
 <xsl:for-each select="foaf:Person">
   <li><a href="{rdfs:seeAlso/@rdf:resource}"><xsl:value-of select="foaf:name"/></a></li>
 </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="foaf:workplaceHomepage">
+<p>
+Workplace Homepage: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource"/></a>
+</p>
+</xsl:template>
+
+<xsl:template match="foaf:homepage">
+<p>
+Personal Homepage: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource"/></a>
+</p>
+</xsl:template>
+
+<xsl:template match="foaf:phone">
+<p>
+Phone: <xsl:value-of select="@rdf:resource"/>
+</p>
 </xsl:template>
 
 </xsl:stylesheet>
