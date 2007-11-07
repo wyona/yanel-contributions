@@ -12,6 +12,10 @@ import org.wyona.yanel.impl.resources.BasicXMLResource;
 
 import org.apache.log4j.Category;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringBufferInputStream;
 import java.net.URL;
 
 /**
@@ -40,7 +44,15 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
      *
      */
     public String getMimeType(String viewId) {
-        return "application/xml";
+        if (viewId !=  null && viewId.equals("source")) {
+            return "application/xml";
+        } else if (viewId !=  null && viewId.equals("rdf+xml")) {
+            return "application/rdf+xml";
+        } else if (viewId !=  null && viewId.equals("atom")) {
+            return "application/atom+xml";
+        } else {
+            return "application/xhtml+xml";
+        }
     }
 
     /**
@@ -57,23 +69,49 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
     public View getView(String viewId) {
         View view = new View();
         try {
+            StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
+            sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\">");
             if (getRequest().getParameter("href") != null) {
-                URL url = new URL(getRequest().getParameter("href"));
+                sb.append("<wyona:source href=\"" + getRequest().getParameter("href") + "\"/>");
+            } else {
+                sb.append("<wyona:source href=\"" + getPath() + "\"/>");
+            }
+            // TODO: The following leads to errors if the RDF contains special characters!
+            BufferedReader br = new BufferedReader(new InputStreamReader(getRDFAsInputStream()));
+            String line;
+            while((line = br.readLine()) != null){
+                if (line.indexOf("<?xml") < 0) {
+                    sb.append(line);
+                }
+            }
+            sb.append("</wyona:foaf>");
+
+            if (viewId != null && viewId.equals("source")) {
+                view.setInputStream(new StringBufferInputStream(sb.toString()));
+                view.setMimeType(getMimeType(viewId));
+                return view;
+	    } else if (viewId != null && viewId.equals("rdf+xml")) {
+                view.setInputStream(getRDFAsInputStream());
+                view.setMimeType(getMimeType(viewId));
+                return view;
+	    } else if (viewId != null && viewId.equals("atom")) {
+                view.setInputStream(new StringBufferInputStream(new StringBuffer("Not implemented yet!").toString()));
+                view.setMimeType("text/plain");
 /*
-                view.setInputStream(url.openConnection().getInputStream());
+                view.setInputStream(getRDFAsInputStream());
                 view.setMimeType(getMimeType(viewId));
 */
-                return getXMLView(viewId, url.openConnection().getInputStream());
+                return view;
             } else {
-                return getXMLView(viewId, getRealm().getRepository().getNode("/profiles/foo-bar.rdf").getInputStream());
+                return getXMLView(viewId, new StringBufferInputStream(sb.toString()));
             }
         } catch (java.io.FileNotFoundException e) {
             log.error(e);
-            view.setInputStream(new java.io.StringBufferInputStream(new StringBuffer("No such file: " + e.getMessage()).toString()));
+            view.setInputStream(new StringBufferInputStream(new StringBuffer("No such file: " + e.getMessage()).toString()));
             view.setMimeType("text/plain");
         } catch (Exception e) {
-            log.error(e);
-            view.setInputStream(new java.io.StringBufferInputStream(new StringBuffer("Exeception: " + e.getMessage()).toString()));
+            log.error(e.getMessage(), e);
+            view.setInputStream(new StringBufferInputStream(new StringBuffer("Exception: " + e.getMessage()).toString()));
             view.setMimeType("text/plain");
         }
         return view;
@@ -83,7 +121,31 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
      *
      */
     public ViewDescriptor[] getViewDescriptors() {
-        ViewDescriptor[] vd = new ViewDescriptor[1];
-        return null;
+        ViewDescriptor[] vd = new ViewDescriptor[4];
+
+        vd[0] = new ViewDescriptor("default");
+        vd[0].setMimeType(getMimeType(null));
+
+        vd[1] = new ViewDescriptor("source");
+        vd[1].setMimeType(getMimeType("source"));
+
+        vd[2] = new ViewDescriptor("rdf+xml");
+        vd[2].setMimeType(getMimeType("rdf+xml"));
+
+        vd[3] = new ViewDescriptor("atom");
+        vd[3].setMimeType(getMimeType("atom"));
+        return vd;
+    }
+
+    /**
+     *
+     */
+    private InputStream getRDFAsInputStream() throws Exception {
+        if (getRequest().getParameter("href") != null) {
+            URL url = new URL(getRequest().getParameter("href"));
+            return url.openConnection().getInputStream();
+        } else {
+            return getRealm().getRepository().getNode("/profiles/foo-bar.rdf").getInputStream();
+        }
     }
 }

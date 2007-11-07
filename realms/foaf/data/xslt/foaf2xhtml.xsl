@@ -8,6 +8,7 @@
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:wyona="http://www.wyona.org/foaf/1.0"
 >
 
 <!-- IMPORTANT: Needs to correspond to the mime-type which is sent by the server! -->
@@ -30,11 +31,14 @@
 <xsl:template match="/">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title><xsl:value-of select="/rdf:RDF/foaf:Person/foaf:name"/></title>
+  <title><xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></title>
 </head>
 
 <body>
-<h2>Profile of <xsl:value-of select="/rdf:RDF/foaf:Person/foaf:name"/></h2>
+<a href="?yanel.resource.viewid=source">XML</a>
+<br/>
+<a href="{/wyona:foaf/wyona:source/@href}">FOAF RDF</a>
+<h2>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
 <p>
 ...
 </p>
