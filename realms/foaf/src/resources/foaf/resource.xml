@@ -11,5 +11,6 @@ FOAF (People Data)
 
 <rtd>
   <property name="href"/>
+  <property name="repo-config"/>
 </rtd>
 </resource>

@@ -13,10 +13,14 @@ import org.wyona.yanel.impl.resources.BasicXMLResource;
 import org.apache.log4j.Category;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringBufferInputStream;
 import java.net.URL;
+
+import org.wyona.yarep.core.Repository;
+import org.wyona.yarep.core.RepositoryFactory;
 
 /**
  *
@@ -75,7 +79,7 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
                 sb.append("<wyona:third-party-source href=\"" + getRequest().getParameter("href") + "\"/>");
             } else {
                 String path = getPath();
-                sb.append("<wyona:source href=\"" + path.substring(0, path.lastIndexOf(".html")) + "\"/>");
+                sb.append("<wyona:source href=\"" + path.substring(0, path.lastIndexOf(".html")) + ".rdf\"/>");
             }
             // TODO: The following leads to errors if the RDF contains special characters!
             BufferedReader br = new BufferedReader(new InputStreamReader(getRDFAsInputStream()));
@@ -146,7 +150,20 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
             URL url = new URL(getRequest().getParameter("href"));
             return url.openConnection().getInputStream();
         } else {
-            return getRealm().getRepository().getNode("/profiles/foo-bar.rdf").getInputStream();
+            String path = getPath();
+            return getProfilesRepository().getNode(path.substring(0, path.lastIndexOf(".html")) + ".rdf").getInputStream();
         }
+    }
+
+    /**
+     *
+     */
+    private Repository getProfilesRepository() throws Exception {
+        Repository repo = getRealm().getRepository();
+	String repoConfig = getResourceConfigProperty("repo-config");
+        if (repoConfig != null) {
+            repo = new RepositoryFactory().newRepository("profiles", new File(repoConfig));
+        }
+        return repo;
     }
 }

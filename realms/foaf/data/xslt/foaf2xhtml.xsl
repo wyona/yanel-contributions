@@ -68,7 +68,7 @@ Workplace Homepage: <a href="{/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHome
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="original">
-<a href="{$yarep.back2realm}{@href}.rdf">Original RDF</a> (TODO: Protect this data!)
+<a href="{$yarep.back2realm}{@href}">Original RDF</a> (TODO: Protect this data!)
 <br/>
 </xsl:template>
 

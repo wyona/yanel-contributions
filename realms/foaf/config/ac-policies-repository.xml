@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <repository>
-  <name>Yanel From Scratch Access Control Policies</name>
+  <name>FOAF Access Control Policies</name>
 
   <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../ac-policies"/>
 

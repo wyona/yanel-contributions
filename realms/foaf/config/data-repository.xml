@@ -1,22 +1,10 @@
 <?xml version="1.0"?>
 
 <repository class="org.wyona.yarep.impl.repo.fs.FileSystemRepository">
-  <name>Yanel From Scratch Data Repository</name>
+  <name>FOAF Data Repository</name>
   <paths class="org.wyona.yarep.impl.DefaultMapImpl" src="../data-paths" fallback="true">
     <ignore pattern=".*\.svn"/>
     <ignore pattern=".*\.yarep"/>
   </paths>
   <content src="../data"/>
 </repository>
-
-<!--
-<repository>
-  <name>Yanel From Scratch Data Repository</name>
-
-  <paths class="org.wyona.yarep.impl.DefaultMapImpl" src="../data-paths" fallback="true"/>
-
-  <storage class="org.wyona.yarep.core.impl.fs.FileSystemStorage">
-    <content src="../data"/>
-  </storage>
-</repository>
--->
