@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="flow-player"
+  namespace="http://www.wyonapictures.com/yanel/resource/1.0"
+  class="com.wyonapictures.yanel.impl.resources.flv.FlowPlayerResource"
+  >
+<description>
+A Flash Player based on flowplayer
+</description>
+
+<rtd>
+  <property name="flvPath"/>
+  <property name="title"/>
+  <property name="splashImg"/> <!-- if not set standard splash image will be displayed. set to "none" if no splash image is desired. -->
+  <property name="width"/> <!-- optional. sample value 250px -->
+  <property name="height"/> <!-- optional. sample value 250px -->
+</rtd>
+</resource>
