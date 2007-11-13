@@ -92,6 +92,12 @@ public class FindFriendResource extends Resource implements ViewableV2 {
 
         // TODO: Remove hard-coded ...
         if (qs != null) {
+/*
+            Nodes[] nodes = getRealm().getRepository().search(qs);
+            Nodes[] nodes = getRealm().getRepository().searchProperty("firstname", firstname);
+            Nodes[] nodes = getRealm().getRepository().searchProperty("lastname", lastname);
+*/
+
             sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "1" + "\">");
             sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
             sb.append("<title><![CDATA[" + "Foo Bar" + "]]></title>");
