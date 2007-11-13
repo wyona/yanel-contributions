@@ -6,6 +6,8 @@
   <yanel:property name="parser" value="org.wyona.meguni.parser.impl.GoogleParser"/>
 <!--
   <yanel:property name="parser" value="org.wyona.meguni.parser.impl.MSNParser"/>
+  <yanel:property name="parser" value="org.wyona.foaf.meguni.parser.impl.FacebookParser"/>
+  <yanel:property name="parser" value="org.wyona.foaf.meguni.parser.impl.SwissDirectoriesParser"/>
 -->
 
   <yanel:property name="type" value="simple"/>
