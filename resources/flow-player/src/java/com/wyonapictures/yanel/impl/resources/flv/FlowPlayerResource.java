@@ -101,20 +101,33 @@ public class FlowPlayerResource extends BasicXMLResource {
             height = getResourceConfigProperty("height");
         }
         IOUtils.write("var fo = new SWFObject(\"?yanel.resource.viewid=flashplayer\", \"FlowPlayer\", \"" + width + "\", \"" + height +"\", \"7\", \"#000\", true);", baos);
+
         //IOUtils.write(" // need this next line for local testing, it's optional if your swf is on the same domain as your html page", baos);
-        IOUtils.write("fo.addParam(\"allowScriptAccess\", \"always\");", baos);
-        String splashImg = "";
-        if (getResourceConfigProperty("splashImg") == null) {
-            splashImg = "{ url: 'wyona-pictures.jpg' },";
+        //IOUtils.write("fo.addParam(\"allowScriptAccess\", \"always\");", baos);
+
+        if (getResourceConfigProperty("configFileName") != null) {
+            IOUtils.write("fo.addVariable(\"config\", \"{ configFileName: '" + getResourceConfigProperty("configFileName") +"' }\");", baos);
+        } else {
+            String splashImg = "";
+            if (getResourceConfigProperty("splashImg") == null) {
+                splashImg = "{ url: '" + PathUtil.getResourcesHtdocsPath(this) + "wyona-pictures.jpg' },";
+            }
+            if (getResourceConfigProperty("splashImg") != null && !getResourceConfigProperty("splashImg").equals("none")) {
+                splashImg = "{ url: '" + getResourceConfigProperty("splashImg") + "' },";
+            }
+            String flvPath;
+            if (getResourceConfigProperty("flvPath") == null) {
+                flvPath = getPath().substring(0, getPath().indexOf(".")) + ".flv";
+                Repository dataRepo = getRealm().getRepository();
+                if(!dataRepo.existsNode(flvPath)) {
+                    log.error("No .flv file specified. tried to guess (" + flvPath + ") but nothing found.");
+                    throw new Exception("No .flv file specified.");
+                }
+            } else {
+                flvPath = getResourceConfigProperty("flvPath");
+            }
+            IOUtils.write("fo.addVariable(\"config\", \"{ showPlayListButtons: true,  playList: [  " + splashImg + "  { url: '" + flvPath + "' } ], initialScale: 'fit' }\");", baos);
         }
-        if (getResourceConfigProperty("splashImg") != null && !getResourceConfigProperty("splashImg").equals("none")) {
-            splashImg = "{ url: '" + getResourceConfigProperty("splashImg") + "' },";
-        }
-        if (getResourceConfigProperty("flvPath") == null) {
-            log.error("No .flv file specified.");
-            throw new Exception("No .flv file specified.");
-        }
-        IOUtils.write("fo.addVariable(\"config\", \"{ showPlayListButtons: true,  playList: [  " + splashImg + "  { url: '" + getResourceConfigProperty("flvPath") + "' } ], initialScale: 'fit' }\");", baos);
         IOUtils.write("fo.write(\"flowplayerholder\");", baos);
         //IOUtils.write("// ]]>", baos);
         IOUtils.write("</script>", baos);
@@ -123,12 +136,10 @@ public class FlowPlayerResource extends BasicXMLResource {
         return new java.io.ByteArrayInputStream(baos.toByteArray());
     }
 
-
     private InputStream getFlashPlayerFile() {
         File flowPlayerFile = org.wyona.commons.io.FileUtil.file(this.getRTD().getConfigFile().getParentFile().getAbsolutePath(),  "htdocs" + File.separator + "FlowPlayer.swf");
         try {
-            InputStream test = new FileInputStream(flowPlayerFile);
-            return test;
+            return new FileInputStream(flowPlayerFile);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

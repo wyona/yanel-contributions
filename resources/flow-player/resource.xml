@@ -10,10 +10,11 @@ A Flash Player based on flowplayer
 </description>
 
 <rtd>
-  <property name="flvPath"/>
+  <property name="flvPath"/> <!-- ignored if configFileName is used. -->
   <property name="title"/>
-  <property name="splashImg"/> <!-- if not set standard splash image will be displayed. set to "none" if no splash image is desired. -->
+  <property name="splashImg"/> <!-- if not set standard splash image will be displayed. set to "none" if no splash image is desired. ignored if configFileName is used. -->
   <property name="width"/> <!-- optional. sample value 250px -->
   <property name="height"/> <!-- optional. sample value 250px -->
+  <property name="configFileName"/> <!-- see http://flowplayer.org/documentation/config how to config -->
 </rtd>
 </resource>
