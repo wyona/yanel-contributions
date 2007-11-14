@@ -12,6 +12,10 @@ import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 import org.wyona.meguni.parser.Parser;
 import org.wyona.meguni.util.ResultSet;
 
+import org.wyona.yarep.core.Node;
+import org.wyona.yarep.core.Repository;
+import org.wyona.yarep.core.RepositoryFactory;
+
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
@@ -92,13 +96,26 @@ public class FindFriendResource extends Resource implements ViewableV2 {
 
         // TODO: Remove hard-coded ...
         if (qs != null) {
+            sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "1" + "\">");
+
+            Repository pRepo = getProfilesRepository();
+            Node[] pNodes = pRepo.getNode("/profiles").getNodes();
+            for (int i = 0; i < pNodes.length; i++) {
+                sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
+                sb.append("<title><![CDATA[" + "Foo Bar" + "]]></title>");
+                sb.append("<excerpt><![CDATA[" + "About Foo Bar ..." + "]]></excerpt>");
+                sb.append("<url><![CDATA[" + "profiles/" + pNodes[i].getName() + ".html" + "]]></url>");
+                sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
+                sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
+                sb.append("</result>");
+            }
 /*
             Nodes[] nodes = getRealm().getRepository().search(qs);
             Nodes[] nodes = getRealm().getRepository().searchProperty("firstname", firstname);
             Nodes[] nodes = getRealm().getRepository().searchProperty("lastname", lastname);
 */
 
-            sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "1" + "\">");
+/*
             sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
             sb.append("<title><![CDATA[" + "Foo Bar" + "]]></title>");
             sb.append("<excerpt><![CDATA[" + "About Foo Bar ..." + "]]></excerpt>");
@@ -106,6 +123,8 @@ public class FindFriendResource extends Resource implements ViewableV2 {
             sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
             sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
             sb.append("</result>");
+*/
+
             sb.append("</provider>");
         }
 
@@ -156,5 +175,17 @@ public class FindFriendResource extends Resource implements ViewableV2 {
             tf.setParameter("type", "simple");
         }
         return tf;
+    }
+
+    /**
+     *
+     */
+    private Repository getProfilesRepository() throws Exception {
+        Repository repo = getRealm().getRepository();
+        String repoConfig = getResourceConfigProperty("repo-config");
+        if (repoConfig != null) {
+            repo = new RepositoryFactory().newRepository("profiles", new File(repoConfig));
+        }
+        return repo;
     }
 }
