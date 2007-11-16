@@ -107,7 +107,7 @@ public class FlowPlayerResource extends BasicXMLResource {
         //IOUtils.write("fo.addParam(\"allowScriptAccess\", \"always\");", baos);
 
         if (getResourceConfigProperty("configFileName") != null) {
-            IOUtils.write("fo.addVariable(\"config\", \"{ configFileName: '" + getResourceConfigProperty("configFileName") +"' }\");", baos);
+            IOUtils.write("fo.addVariable(\"config\", \"{ configFileName: '" + PathUtil.backToRealm(getPath())  + getResourceConfigProperty("configFileName") +"' }\");", baos);
         } else {
             String splashImg = "";
             if (getResourceConfigProperty("splashImg") == null) {
@@ -125,6 +125,10 @@ public class FlowPlayerResource extends BasicXMLResource {
                 flvPath = getResourceConfigProperty("flvPath");
             }
 
+            String showPlayListButtons = "showPlayListButtons: false, ";
+            if (getResourceConfigProperty("showPlayListButtons") != null && getResourceConfigProperty("showPlayListButtons").equals("true")) {
+                showPlayListButtons = "showPlayListButtons: true, ";
+            }
             String showFullScreenButton = ", showFullScreenButton: false ";
             if (getResourceConfigProperty("showFullScreenButton") != null && getResourceConfigProperty("showFullScreenButton").equals("true")) {
                 showFullScreenButton = ", showFullScreenButton: true ";
@@ -140,7 +144,7 @@ public class FlowPlayerResource extends BasicXMLResource {
                 initialScale = ", initialScale: '" + getResourceConfigProperty("initialScale") + "' ";
             }
 
-            IOUtils.write("fo.addVariable(\"config\", \"{ showPlayListButtons: true,  playList: [  " + splashImg + "  { url: '" + flvPath + "' } ]" + showMenu + showFullScreenButton + initialScale + " }\");", baos);
+            IOUtils.write("fo.addVariable(\"config\", \"{ " + showPlayListButtons + "  playList: [  " + splashImg + "  { url: '" + flvPath + "' } ]" + showMenu + showFullScreenButton + initialScale + " }\");", baos);
         }
         IOUtils.write("fo.write(\"flowplayerholder\");", baos);
         //IOUtils.write("// ]]>", baos);
