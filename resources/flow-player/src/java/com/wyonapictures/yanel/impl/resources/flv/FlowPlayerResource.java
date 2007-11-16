@@ -14,6 +14,7 @@ import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 import org.wyona.yanel.core.util.PathUtil;
+import org.wyona.yanel.core.util.WildcardReplacerHelper;
 import org.wyona.yanel.impl.resources.BasicXMLResource;
 import org.wyona.yarep.core.Repository;
 
@@ -113,20 +114,33 @@ public class FlowPlayerResource extends BasicXMLResource {
                 splashImg = "{ url: '" + PathUtil.getResourcesHtdocsPath(this) + "wyona-pictures.jpg' },";
             }
             if (getResourceConfigProperty("splashImg") != null && !getResourceConfigProperty("splashImg").equals("none")) {
-                splashImg = "{ url: '" + getResourceConfigProperty("splashImg") + "' },";
+                splashImg = "{ url: '" + PathUtil.backToRealm(getPath()) + getResourceConfigProperty("splashImg") + "' },";
             }
+
             String flvPath;
             if (getResourceConfigProperty("flvPath") == null) {
-                flvPath = getPath().substring(0, getPath().indexOf(".")) + ".flv";
-                Repository dataRepo = getRealm().getRepository();
-                if(!dataRepo.existsNode(flvPath)) {
-                    log.error("No .flv file specified. tried to guess (" + flvPath + ") but nothing found.");
-                    throw new Exception("No .flv file specified.");
-                }
+                WildcardReplacerHelper dataPath = new WildcardReplacerHelper(getResourceConfigProperty("path-replace-tokens"), getResourceConfigProperty("path-matcher"));
+                flvPath = dataPath.getReplacedString(getPath().substring(getPath().lastIndexOf("/") + 1, getPath().length()));
             } else {
                 flvPath = getResourceConfigProperty("flvPath");
             }
-            IOUtils.write("fo.addVariable(\"config\", \"{ showPlayListButtons: true,  playList: [  " + splashImg + "  { url: '" + flvPath + "' } ], initialScale: 'fit' }\");", baos);
+
+            String showFullScreenButton = ", showFullScreenButton: false ";
+            if (getResourceConfigProperty("showFullScreenButton") != null && getResourceConfigProperty("showFullScreenButton").equals("true")) {
+                showFullScreenButton = ", showFullScreenButton: true ";
+            }
+            String showMenu = ", showMenu: false ";
+            if (getResourceConfigProperty("showMenu") != null && getResourceConfigProperty("showMenu").equals("true")) {
+                showMenu = ", showMenu: true ";
+            }
+            String initialScale;
+            if (getResourceConfigProperty("initialScale") == null) {
+                initialScale = ", initialScale: 'fit' ";
+            } else {
+                initialScale = ", initialScale: '" + getResourceConfigProperty("initialScale") + "' ";
+            }
+
+            IOUtils.write("fo.addVariable(\"config\", \"{ showPlayListButtons: true,  playList: [  " + splashImg + "  { url: '" + flvPath + "' } ]" + showMenu + showFullScreenButton + initialScale + " }\");", baos);
         }
         IOUtils.write("fo.write(\"flowplayerholder\");", baos);
         //IOUtils.write("// ]]>", baos);

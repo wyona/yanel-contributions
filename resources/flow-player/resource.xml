@@ -10,11 +10,17 @@ A Flash Player based on flowplayer
 </description>
 
 <rtd>
-  <property name="flvPath"/> <!-- ignored if configFileName is used. -->
-  <property name="title"/>
-  <property name="splashImg"/> <!-- if not set standard splash image will be displayed. set to "none" if no splash image is desired. ignored if configFileName is used. -->
   <property name="width"/> <!-- optional. sample value 250px -->
   <property name="height"/> <!-- optional. sample value 250px -->
   <property name="configFileName"/> <!-- see http://flowplayer.org/documentation/config how to config -->
+  <!-- all following properties are ignored if configFileName is set -->
+  <property name="flvPath"/> <!-- ignored if configFileName is used. -->
+  <property name="path-replace-tokens"/> <!-- optional, example: {1}.flv, see: org.wyona.yanel.core.util.WildcardReplacerHelper, ignored if flvPath is set -->
+  <property name="path-matcher"/> <!-- optional, example: **.*, see: org.wyona.yanel.core.util.WildcardReplacerHelper, ignored if flvPath is set -->
+  <property name="title"/>
+  <property name="splashImg"/> <!-- if not set standard splash image will be displayed. set to "none" if no splash image is desired. ignored if configFileName is used. -->
+  <property name="showFullScreenButton"/> <!-- optional, [true/false], default false -->
+  <property name="showMenu"/> <!-- optional, [true/false], default false -->
+  <property name="initialScale"/> <!-- optional, [fit/half/orig/scale], default fit -->
 </rtd>
 </resource>
