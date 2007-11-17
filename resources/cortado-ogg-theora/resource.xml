@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="cortado-ogg-theora"
+  namespace="http://www.wyona.org/yanel/resource/1.0"
+  class="org.wyona.yanel.impl.resources.cortado.OggTheoraResource"
+  >
+<description>
+A Ogg-Theora player based on cortado
+</description>
+
+<rtd>
+  <property name="oggPath"/>
+  <property name="path-matcher"/> <!-- optional, see: org.wyona.yanel.core.util.WildcardReplacerHelper -->
+  <property name="title"/>
+  <property name="width"/> <!-- optional. default value 368 -->
+  <property name="height"/> <!-- optional. default value 288 -->
+</rtd>
+</resource>
