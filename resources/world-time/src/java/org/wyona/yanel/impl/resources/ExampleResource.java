@@ -145,4 +145,11 @@ public class ExampleResource extends Resource implements ViewableV1, CreatableV2
         log.warn("No properties!");
         return null;
     }
+
+    /**
+     *
+     */
+    public String getCreateName(String suggestedName) {
+        return null;
+    }
 }
