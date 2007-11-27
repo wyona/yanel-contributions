@@ -6,6 +6,7 @@
       - Facebook (http://www.facebook.com/srch.php?nm=Sam+Ruby)
       - LinkedIn (http://www.linkedin.com/search?search=&sik=1194372540647&keywords=Michael+Wechner&sortCriteria=4)
       - Swiss Directories (http://www.directories.ch)
+  - Implement Registration
   - Implement a FOAF Yanel User, such that one can use the E-Mail address to login
   - Protect RDF data!
   - Implement Friend opener: http://www.google.com/calendar/ical/k6i6o2dkb1sclkovo263ipucsg%40group.calendar.google.com/private-a519d57358ce1794c2f9da52b77d1ae8/basic.ics
