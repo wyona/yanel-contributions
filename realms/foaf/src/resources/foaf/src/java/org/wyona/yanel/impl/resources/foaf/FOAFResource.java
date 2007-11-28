@@ -9,6 +9,7 @@ import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 import org.wyona.yanel.impl.resources.BasicXMLResource;
+import org.wyona.yanel.impl.resources.xml.ConfigurableViewDescriptor;
 
 import org.apache.log4j.Category;
 
@@ -136,18 +137,18 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
      *
      */
     public ViewDescriptor[] getViewDescriptors() {
-        ViewDescriptor[] vd = new ViewDescriptor[4];
+        ConfigurableViewDescriptor[] vd = new ConfigurableViewDescriptor[4];
 
-        vd[0] = new ViewDescriptor("default");
+        vd[0] = new ConfigurableViewDescriptor("default");
         vd[0].setMimeType(getMimeType(null));
 
-        vd[1] = new ViewDescriptor("source");
+        vd[1] = new ConfigurableViewDescriptor("source");
         vd[1].setMimeType(getMimeType("source"));
 
-        vd[2] = new ViewDescriptor("rdf+xml");
+        vd[2] = new ConfigurableViewDescriptor("rdf+xml");
         vd[2].setMimeType(getMimeType("rdf+xml"));
 
-        vd[3] = new ViewDescriptor("atom");
+        vd[3] = new ConfigurableViewDescriptor("atom");
         vd[3].setMimeType(getMimeType("atom"));
         return vd;
     }
