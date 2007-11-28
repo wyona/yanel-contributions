@@ -99,6 +99,8 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
             }
             sb.append("</wyona:foaf>");
 
+            log.error("DEBUG: XML: " + sb.toString());
+
             if (viewId != null && viewId.equals("source")) {
                 view.setInputStream(new StringBufferInputStream(sb.toString()));
                 view.setMimeType(getMimeType(viewId));
@@ -159,11 +161,11 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
             return url.openConnection().getInputStream();
         } else {
             String path = getPath();
-	    if (path.lastIndexOf(".rdf") == path.length() - 4) {
-                return getProfilesRepository().getNode(path).getInputStream();
-            } else {
-                return getProfilesRepository().getNode(path.substring(0, path.lastIndexOf(".html")) + ".rdf").getInputStream();
+	    if (path.endsWith(".html")) {
+                path = path.substring(0, path.lastIndexOf(".html")) + ".rdf";
             }
+            log.error("DEBUG: RDF path: " + path);
+            return getProfilesRepository().getNode(path).getInputStream();
         }
     }
 
