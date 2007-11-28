@@ -104,7 +104,7 @@ public class FindFriendResource extends Resource implements ViewableV2 {
                 sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
                 sb.append("<title><![CDATA[" + "Foo Bar" + "]]></title>");
                 sb.append("<excerpt><![CDATA[" + "About Foo Bar ..." + "]]></excerpt>");
-                sb.append("<url><![CDATA[" + "profiles/" + pNodes[i].getName() + ".html" + "]]></url>");
+                sb.append("<url><![CDATA[" + "profiles/" + withoutSuffix(pNodes[i].getName()) + ".html" + "]]></url>");
                 sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
                 sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
                 sb.append("</result>");
@@ -187,5 +187,12 @@ public class FindFriendResource extends Resource implements ViewableV2 {
             repo = new RepositoryFactory().newRepository("profiles", new File(repoConfig));
         }
         return repo;
+    }
+
+    /**
+     *
+     */
+    private String withoutSuffix(String name) {
+        return name.substring(0, name.lastIndexOf("."));
     }
 }
