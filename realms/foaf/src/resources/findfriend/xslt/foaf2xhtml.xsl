@@ -96,6 +96,10 @@ Copyright &#169; 2007 Wyona
   <xsl:apply-templates/>
 </xsl:template>
 
+<xsl:template match="foaf:no-results">
+  <p>No results from this provider!</p>
+</xsl:template>
+
 <xsl:template match="foaf:result">
   <p>
   <b><xsl:choose><xsl:when test="foaf:mime-type/@suffix = 'rdf'"><a href="print.html?href={foaf:url}"><xsl:value-of select="foaf:title"/></a></xsl:when><xsl:otherwise><a href="{foaf:url}"><xsl:value-of select="foaf:title"/></a></xsl:otherwise></xsl:choose></b>
