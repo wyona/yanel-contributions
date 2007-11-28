@@ -29,6 +29,7 @@
 </p>
 
 <xsl:choose>
+<!-- Result Page Layout -->
 <xsl:when test="/foaf:foaf/foaf:provider">
 <p>
 <!-- TODO: Do not hardcode the action ... -->
@@ -57,18 +58,26 @@ Copyright &#169; 2007 Wyona
 </xsl:when>
 
 
+<!-- Homepage Layout -->
 <xsl:otherwise>
 <center>
 <h1>Find a friend</h1>
-
 <p>
 <!-- TODO: Do not hardcode the action ... -->
+<table border="0">
+<tr><td valign="top">
 <form action="." method="get">
 <input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
 <input type="submit" value="Search" name="submit"/>
 </form>
-<br/>
+</td>
+<td>&#160;</td>
+<td valign="top">
+<font size="-1">
 <!--DEBUG1:<xsl:value-of select="$type"/>-->  <!--<xsl:choose><xsl:when test="$type = 'simple'"><a href="advanced-search.html?q={$query}">Advanced Search</a></xsl:when><xsl:otherwise><a href="index.html?q={$query}">Simple Search</a></xsl:otherwise></xsl:choose> |-->  <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
+</font>
+</td></tr>
+</table>
 </p>
 
 <p>
