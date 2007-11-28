@@ -4,7 +4,7 @@
 
   Download Yanel (http://yanel.wyona.org) and install this realm to run your own FOAF server resp. to be your own Open Social Network provider. Add the following resources to your local.resources.xml:
     - src/resources/findfriend/
-    - src/resources/foaf/
+    - src/resources/foaf/ (package="org.wyona.yanel.impl.resources.foaf")
 
 
   For a productive environment one might want to re-configure the repository config within
