@@ -33,12 +33,22 @@
 <p>
 <!-- TODO: Do not hardcode the action ... -->
 <xsl:if test="$type = 'advanced'"><h2>Advanced Search</h2></xsl:if>
+<table border="0">
+<tr><td valign="top">
 <form action="." method="get">
-<input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
+<a href="index.html">Find a Friend:</a>&#160;<input type="text" name="q"><xsl:if test="$query != 'QUERY_IS_NULL'"><xsl:attribute name="value"><xsl:value-of select="$query"/></xsl:attribute></xsl:if></input>
 <input type="submit" value="Search" name="submit"/>
-<br/>
-<!--DEBUG2:<xsl:value-of select="$type"/>--> <!--<xsl:choose><xsl:when test="$type = 'simple'"><a href="advanced-search.html?q={$query}">Advanced Search</a></xsl:when><xsl:otherwise><a href="index.html?q={$query}">Simple Search</a></xsl:otherwise></xsl:choose> |-->  <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
 </form>
+</td>
+<td>
+&#160;
+</td>
+<td valign="top">
+<font size="-1">
+<!--DEBUG2:<xsl:value-of select="$type"/>--> <!--<xsl:choose><xsl:when test="$type = 'simple'"><a href="advanced-search.html?q={$query}">Advanced Search</a></xsl:when><xsl:otherwise><a href="index.html?q={$query}">Simple Search</a></xsl:otherwise></xsl:choose><br/>--> <a href="?q={$query}&amp;yanel.resource.viewid=source">XML view</a>
+</font>
+</td></tr>
+</table>
 </p>
 <xsl:apply-templates select="/foaf:foaf/foaf:provider"/>
 <p>
