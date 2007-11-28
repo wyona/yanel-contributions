@@ -17,5 +17,6 @@
 -->
 <!--
   <yanel:property name="repo-config" value="/home/michi/src/wyona-svn/wyona/misc/foaf/data-repository.xml"/>
--->
+  -->
+  <yanel:property name="repo-config" value="/home/michi/src/wyona-svn/wyona/misc/foaf/jcr-data-repository.xml"/>
 </yanel:resource-config>
