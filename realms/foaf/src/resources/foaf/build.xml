@@ -29,6 +29,7 @@
       classpathref="classpath"
       debug="true"
     />
+    <copy file="${resource.home.dir}/resource.xml" todir="${resource.classes.dir}/org/wyona/yanel/impl/resources/foaf"/>
     <mkdir dir="${resource.lib.dir}"/>
     <jar destfile="${resource.lib.dir}/yanel-resource-${resource.name}-${resource.version}.jar"
       basedir="${resource.classes.dir}"
