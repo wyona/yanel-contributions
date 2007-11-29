@@ -13,5 +13,8 @@ The resource acts as a Web service via SOAP
   <property name="mime-type" default-value="application/soap+xml"/>
   <!-- Is this actually being used? -->
   <property name="encoding" default-value="UTF-8"/>
+
+  <!-- Allows to specify a custom adapter, e.g. org.wyona.neutron.SOAP -->
+  <property name="adapter"/>
 </rtd>
 </resource>
