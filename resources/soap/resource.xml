@@ -11,6 +11,7 @@ The resource acts as a Web service via SOAP
 <rtd>
   <!-- Communication via SOAP -->
   <property name="mime-type" default-value="application/soap+xml"/>
+  <!-- Is this actually being used? -->
   <property name="encoding" default-value="UTF-8"/>
 </rtd>
 </resource>
