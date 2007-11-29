@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="soap"
+  namespace="http://www.wyona.org/yanel/resource/1.0"
+  class="org.wyona.yanel.impl.resources.soap.SOAPResource">
+<description>
+The resource acts as a Web service via SOAP
+</description>
+
+<rtd>
+  <!-- Communication via SOAP -->
+  <property name="mime-type" default-value="application/soap+xml"/>
+  <property name="encoding" default-value="UTF-8"/>
+</rtd>
+</resource>
