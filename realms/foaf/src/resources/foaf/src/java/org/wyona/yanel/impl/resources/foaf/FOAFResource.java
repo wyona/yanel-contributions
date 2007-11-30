@@ -250,6 +250,8 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             // TODO: create node recursively ...
             getProfilesRepository().getNode(new org.wyona.commons.io.Path(path).getParent().toString()).addNode(new org.wyona.commons.io.Path(path).getName().toString(), org.wyona.yarep.core.NodeType.RESOURCE);
         }
+        getProfilesRepository().getNode(path).setMimeType("application/xml");
+        //getProfilesRepository().getNode(path).setMimeType("text/xml");
         return getProfilesRepository().getNode(path).getOutputStream();
     }
 
