@@ -33,6 +33,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title><xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></title>
+  <link rel="neutron-introspection" type="application/neutron+xml" href="?yanel.resource.usecase=introspection"/>
 </head>
 
 <body>

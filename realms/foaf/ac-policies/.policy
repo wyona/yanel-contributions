@@ -6,4 +6,8 @@
     <world permission="true"/>
   </role>
 
+  <role id="introspection">
+    <world permission="true"/>
+  </role>
+
 </policy>
