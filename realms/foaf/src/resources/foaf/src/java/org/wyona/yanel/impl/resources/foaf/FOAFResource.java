@@ -6,6 +6,7 @@ package org.wyona.yanel.impl.resources.foaf;
 
 import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.IntrospectableV1;
+import org.wyona.yanel.core.api.attributes.ModifiableV2;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
@@ -21,13 +22,14 @@ import java.io.InputStreamReader;
 import java.io.StringBufferInputStream;
 import java.net.URL;
 
+import org.wyona.yarep.core.Node;
 import org.wyona.yarep.core.Repository;
 import org.wyona.yarep.core.RepositoryFactory;
 
 /**
  *
  */
-public class FOAFResource extends BasicXMLResource implements IntrospectableV1, ViewableV2 {
+public class FOAFResource extends BasicXMLResource implements IntrospectableV1, ModifiableV2, ViewableV2 {
 //public class FOAFResource extends Resource implements ViewableV2 {
 
     private static Category log = Category.getInstance(FOAFResource.class);
@@ -206,5 +208,81 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
         sb.append("</introspection>");
         
         return sb.toString();
+    }
+
+    /**
+     * Delete data of node resource
+     */
+    public boolean delete() throws Exception {
+        getProfilesRepository().getNode(getRDFPath()).delete();
+        return true;
+    }
+
+    /**
+     *
+     */
+    public long getLastModified() throws Exception {
+       Node node = getProfilesRepository().getNode(getRDFPath());
+       long lastModified;
+       if (node.isResource()) {
+           lastModified = node.getLastModified();
+       } else {
+           lastModified = 0;
+       }
+
+       return lastModified;
+   }
+
+    /**
+     *
+     */
+    public void write(InputStream in) throws Exception {
+        log.warn("Not implemented yet!");
+    }
+
+    /**
+     *
+     */
+    public java.io.OutputStream getOutputStream() throws Exception {
+        String path = getRDFPath();
+
+        if (!getProfilesRepository().existsNode(path)) {
+            // TODO: create node recursively ...
+            getProfilesRepository().getNode(new org.wyona.commons.io.Path(path).getParent().toString()).addNode(new org.wyona.commons.io.Path(path).getName().toString(), org.wyona.yarep.core.NodeType.RESOURCE);
+        }
+        return getProfilesRepository().getNode(path).getOutputStream();
+    }
+
+    /**
+     *
+     */
+    public java.io.Writer getWriter() throws Exception {
+        log.error("Not implemented yet!");
+        return null;
+    }
+
+    /**
+     *
+     */
+    public InputStream getInputStream() throws Exception {
+        return getProfilesRepository().getNode(getRDFPath()).getInputStream();
+    }
+
+    /**
+     *
+     */
+    public java.io.Reader getReader() throws Exception {
+        return new InputStreamReader(getInputStream(), "UTF-8");
+    }
+
+    /**
+     *
+     */
+    private String getRDFPath() {
+        String path = getPath();
+	if (path.endsWith(".html")) {
+            path = path.substring(0, path.lastIndexOf(".html")) + ".rdf";
+        }
+        return path;
     }
 }
