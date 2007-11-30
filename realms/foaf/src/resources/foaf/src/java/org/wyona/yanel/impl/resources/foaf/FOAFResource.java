@@ -174,7 +174,7 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
      *
      */
     private Repository getProfilesRepository() throws Exception {
-	Repository repoProfiles = ((FOAFRealm) getRealm()).getProfilesRepository();
+	Repository repoProfiles = ((org.wyona.yanel.impl.map.FOAFRealm) getRealm()).getProfilesRepository();
         if (repoProfiles != null) return repoProfiles;
 
         return getRealm().getRepository();
