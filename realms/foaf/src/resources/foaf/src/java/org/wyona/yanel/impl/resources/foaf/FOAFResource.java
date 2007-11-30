@@ -174,11 +174,9 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
      *
      */
     private Repository getProfilesRepository() throws Exception {
-        Repository repo = getRealm().getRepository();
-	String repoConfig = getResourceConfigProperty("repo-config");
-        if (repoConfig != null) {
-            repo = new RepositoryFactory().newRepository("profiles", new File(repoConfig));
-        }
-        return repo;
+	Repository repoProfiles = ((FOAFRealm) getRealm()).getProfilesRepository();
+        if (repoProfiles != null) return repoProfiles;
+
+        return getRealm().getRepository();
     }
 }
