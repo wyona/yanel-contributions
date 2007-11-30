@@ -222,12 +222,14 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
      *
      */
     public long getLastModified() throws Exception {
-       Node node = getProfilesRepository().getNode(getRDFPath());
-       long lastModified;
-       if (node.isResource()) {
-           lastModified = node.getLastModified();
-       } else {
-           lastModified = 0;
+       long lastModified = -1;
+       if (getRequest().getParameter("href") == null) {
+           Node node = getProfilesRepository().getNode(getRDFPath());
+           if (node.isResource()) {
+               lastModified = node.getLastModified();
+           } else {
+               lastModified = 0;
+           }
        }
 
        return lastModified;
