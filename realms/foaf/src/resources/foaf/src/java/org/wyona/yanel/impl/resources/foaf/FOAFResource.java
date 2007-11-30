@@ -5,6 +5,7 @@
 package org.wyona.yanel.impl.resources.foaf;
 
 import org.wyona.yanel.core.Resource;
+import org.wyona.yanel.core.api.attributes.IntrospectableV1;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
@@ -26,7 +27,7 @@ import org.wyona.yarep.core.RepositoryFactory;
 /**
  *
  */
-public class FOAFResource extends BasicXMLResource implements ViewableV2 {
+public class FOAFResource extends BasicXMLResource implements IntrospectableV1, ViewableV2 {
 //public class FOAFResource extends Resource implements ViewableV2 {
 
     private static Category log = Category.getInstance(FOAFResource.class);
@@ -178,5 +179,32 @@ public class FOAFResource extends BasicXMLResource implements ViewableV2 {
         if (repoProfiles != null) return repoProfiles;
 
         return getRealm().getRepository();
+    }
+    
+    /**
+     * Get introspection for Introspectable interface
+     * TODO: What about XML which is being generated dynamically, e.g. http://yanel.wyona.org/roadmap-timeline.html
+     */
+    public String getIntrospection() throws Exception {
+        String name = org.wyona.yanel.core.util.PathUtil.getName(getPath());
+        StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
+        sb.append("<introspection xmlns=\"http://www.wyona.org/neutron/2.0\">");
+    
+/*
+        sb.append("<navigation>");
+        sb.append("  <sitetree href=\"./\" method=\"PROPFIND\"/>");
+        sb.append("</navigation>");
+*/
+    
+        sb.append("<resource name=\"" + name + "\">");
+        sb.append("<edit mime-type=\"application/xml\">");
+        sb.append("<checkout url=\"" + "michael-wechner.rdf" + "?yanel.resource.usecase=checkout\" method=\"GET\"/>");
+        sb.append("<checkin  url=\"" + "michael-wechner.rdf" + "?yanel.resource.usecase=checkin\"  method=\"PUT\"/>");
+        sb.append("<release-lock url=\"" + "michael-wechner.rdf" + "?yanel.resource.usecase=release-lock\" method=\"GET\"/>");
+        sb.append("</edit>");
+        sb.append("</resource>");
+        sb.append("</introspection>");
+        
+        return sb.toString();
     }
 }
