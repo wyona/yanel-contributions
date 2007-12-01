@@ -12,4 +12,6 @@
 
     - realm.xml
 
-  by modifying the foaf:profiles-data value.
+  by modifying the foaf:profiles-data value and also the ac-identities repository config
+
+    - config/ac-identities-repository.xml
