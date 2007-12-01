@@ -1,11 +1,5 @@
 <?xml version="1.0"?>
 
 <yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
-  <yanel:rti name="redirect" namespace="http://www.wyona.org/yanel/resource/1.0"/>
-
-  <yanel:property name="href" value="index.html"/>
-
-  <yanel:custom-config xmlns:rd="http://www.wyona.org/yanel/resource/redirect-resource/1.0">
-    <rd:user name="foo-bar" href="profiles/foo-bar.html"/>
-  </yanel:custom-config>
+  <yanel:rti name="redirect" namespace="http://foaf.wyona.org/yanel/resource/1.0"/>
 </yanel:resource-config>
