@@ -92,7 +92,7 @@
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="original">
-<a href="{$yarep.back2realm}{@href}">FOAF RDF</a> (TODO: Protect this data!)
+<a href="{$yarep.back2realm}{@href}">FOAF RDF</a>
 <br/>
 </xsl:template>
 
@@ -102,7 +102,7 @@
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="atom">
-<a href="{$yarep.back2realm}{@href}?yanel.resource.viewid=atom">OpenSocial People data API</a>
+<a href="?yanel.resource.viewid=atom">OpenSocial People data API</a>
 <br/>
 </xsl:template>
 
