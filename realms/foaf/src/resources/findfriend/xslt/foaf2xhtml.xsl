@@ -15,6 +15,7 @@
 
 <xsl:param name="query" select="'QUERY_IS_NULL'"/>
 <xsl:param name="type" select="'TYPE_IS_NULL'"/>
+<xsl:param name="username" select="'USERNAME_IS_NULL'"/>
 
 <xsl:template match="/">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -108,7 +109,7 @@ Copyright &#169; 2007 Wyona
   <br/>
   <xsl:value-of select="foaf:excerpt"/>
   <div class="original-href"><a href="{foaf:url}"><xsl:value-of select="foaf:url"/></a> (Profile Provider: TODO)</div>
-  <a href="sign-in.html?usecase=add-friend&amp;href={foaf:url}">Add to your address book</a> | <a href="sign-in.html">Send invitation</a><xsl:if test="foaf:mime-type/@suffix = 'rdf'"> | <a href="print.html?href={foaf:url}">Print</a></xsl:if>
+  <a href="profiles/{$username}/add-friend.html?href={foaf:url}">Add to your address book</a> | <a href="profiles/{$username}/send-invitation.html?href={foaf:url}">Send invitation</a><xsl:if test="foaf:mime-type/@suffix = 'rdf'"> | <a href="print.html?href={foaf:url}">Print</a></xsl:if>
   </p>
 </xsl:template>
 
