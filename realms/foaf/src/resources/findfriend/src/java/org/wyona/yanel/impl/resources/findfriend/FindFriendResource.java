@@ -164,14 +164,20 @@ public class FindFriendResource extends Resource implements ViewableV2 {
     private Transformer getTransformer() throws Exception {
         File xsltFile = org.wyona.commons.io.FileUtil.file(rtd.getConfigFile().getParentFile().getAbsolutePath(), "xslt" + File.separator + "foaf2xhtml.xsl");
         Transformer tf = TransformerFactory.newInstance().newTransformer(new StreamSource(xsltFile));
+
         if (getRequest().getParameter("q") != null) {
             tf.setParameter("query", getRequest().getParameter("q"));
         }
+
         if (getResourceConfigProperty("type") != null) {
             tf.setParameter("type", getResourceConfigProperty("type"));
         } else {
             tf.setParameter("type", "simple");
         }
+
+        String username = getUsername();
+        if (username != null) tf.setParameter("username", username);
+
         return tf;
     }
 
@@ -190,5 +196,14 @@ public class FindFriendResource extends Resource implements ViewableV2 {
      */
     private String withoutSuffix(String name) {
         return name.substring(0, name.lastIndexOf("."));
+    }
+
+    /**
+     * Get username from session
+     */
+    private String getUsername() {
+        org.wyona.security.core.api.Identity identity = getEnvironment().getIdentity();
+        if (identity != null) return identity.getUsername();
+        return null;
     }
 }
