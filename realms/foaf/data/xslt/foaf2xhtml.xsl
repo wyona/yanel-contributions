@@ -22,6 +22,7 @@
 <xsl:param name="yanel.path" select="'PATH_IS_NULL'"/>
 <xsl:param name="yanel.back2context" select="'BACK2CONTEXT_IS_NULL'"/>
 <xsl:param name="yarep.back2realm" select="'BACK2REALM_IS_NULL'"/>
+<xsl:param name="username" select="'USERNAME_IS_NULL'"/>
 <xsl:param name="language" select="'LANGUAGE_IS_NULL'"/>
 <xsl:param name="content-language" select="'CONTENT_LANGUAGE_IS_NULL'"/>
 
@@ -40,7 +41,7 @@
 <body>
 <table border="1">
 <tr>
-<td colspan="3"><a href="{$yarep.back2realm}index.html">Find A Friend</a> | <a href="{$yarep.back2realm}login.html">Login</a> | <a href="?yanel.toolbar=on">Toolbar</a></td>
+<td colspan="2"><a href="{$yarep.back2realm}index.html">Find A Friend</a></td><td align="right"><xsl:choose><xsl:when test="$username != 'USERNAME_IS_NULL'"><a href="?yanel.usecase=logout">Logout</a></xsl:when><xsl:otherwise><a href="{$yarep.back2realm}login.html">Login</a></xsl:otherwise></xsl:choose> | <a href="?yanel.toolbar=on">Toolbar</a></td>
 </tr>
 <tr>
 <td>
