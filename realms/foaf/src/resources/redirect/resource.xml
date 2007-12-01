@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="redirect"
+  namespace="http://foaf.wyona.org/yanel/resource/1.0"
+  class="org.wyona.yanel.impl.resources.foaf.redirect.RedirectResource"
+  >
+<description>
+Redirects users (if authenticated) to their profile
+</description>
+
+<rtd>
+</rtd>
+</resource>
