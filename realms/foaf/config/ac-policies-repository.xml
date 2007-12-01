@@ -1,11 +1,8 @@
 <?xml version="1.0"?>
 
-<repository>
+<repository class="org.wyona.yarep.impl.repo.vfs.VirtualFileSystemRepository">
   <name>FOAF Access Control Policies</name>
 
-  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../ac-policies"/>
-
-  <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
-    <content src="../ac-policies"/>
-  </storage>
+  <content src="../ac-policies"/>
+  <meta src="../ac-policies-yarep-meta"/>
 </repository>
