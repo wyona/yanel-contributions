@@ -113,7 +113,14 @@
 
 <xsl:template match="foaf:knows">
 <xsl:for-each select="foaf:Person">
-  <li><a href="{rdfs:seeAlso/@rdf:resource}"><xsl:value-of select="foaf:name"/></a></li>
+  <xsl:choose>
+    <xsl:when test="rdfs:seeAlso/@rdf:resource">
+  <li><a href="print.html?href={rdfs:seeAlso/@rdf:resource}"><xsl:value-of select="foaf:name"/></a></li>
+    </xsl:when>
+    <xsl:otherwise>
+  <li><xsl:value-of select="foaf:name"/></li>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:for-each>
 </xsl:template>
 
