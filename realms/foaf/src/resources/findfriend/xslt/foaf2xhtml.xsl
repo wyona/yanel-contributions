@@ -26,7 +26,7 @@
 <body>
 <p>
 <font size="-1">
-<a href="login.html">Login</a> | <a href="register.html">Register</a> | <a href="about.html">About</a> | <a href="developers.html">Developers</a>
+<a href="login.html">Login</a> | <!--<a href="register.html">Register</a> | --><a href="about.html">About</a> | <a href="developers.html">Developers</a>
 </font>
 </p>
 
