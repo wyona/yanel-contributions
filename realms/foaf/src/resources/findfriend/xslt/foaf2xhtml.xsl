@@ -15,7 +15,7 @@
 
 <xsl:param name="query" select="'QUERY_IS_NULL'"/>
 <xsl:param name="type" select="'TYPE_IS_NULL'"/>
-<xsl:param name="username" select="'USERNAME_IS_NULL'"/>
+<xsl:param name="username" select="'foaf:uin'"/>
 
 <xsl:template match="/">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,7 +27,7 @@
 <body>
 <p>
 <font size="-1">
-<a href="login.html">Login</a> | <!--<a href="register.html">Register</a> | --><a href="about.html">About</a> | <a href="developers.html">Developers</a>
+<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="login.html">Login</a></xsl:when><xsl:otherwise><a href="?yanel.usecase=logout">Logout</a></xsl:otherwise></xsl:choose> | <!--<a href="register.html">Register</a> | --><a href="about.html">About</a> | <a href="developers.html">Developers</a>
 </font>
 </p>
 
