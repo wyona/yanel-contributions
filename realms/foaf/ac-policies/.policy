@@ -11,11 +11,15 @@
   </role>
 
   <role id="open">
-    <world permission="true"/>
+    <user id="foo-bar" permission="true"/>
   </role>
 
   <role id="write">
-    <world permission="true"/>
+    <user id="foo-bar" permission="true"/>
+  </role>
+
+  <role id="toolbar">
+    <user id="foo-bar" permission="true"/>
   </role>
 
 </policy>

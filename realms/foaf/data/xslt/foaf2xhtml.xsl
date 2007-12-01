@@ -38,7 +38,10 @@
 </head>
 
 <body>
-<table>
+<table border="1">
+<tr>
+<td colspan="3"><a href="{$yarep.back2realm}index.html">Find A Friend</a> | <a href="{$yarep.back2realm}login.html">Login</a> | <a href="?yanel.toolbar=on">Toolbar</a></td>
+</tr>
 <tr>
 <td>
 <h2>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
