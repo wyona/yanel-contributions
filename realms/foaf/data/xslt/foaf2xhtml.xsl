@@ -78,6 +78,11 @@
 <!-- OpenSocial People data API Link -->
 <xsl:apply-templates select="/wyona:foaf/wyona:source" mode="atom"/>
 <xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="atom"/>
+
+<br/><br/>
+- Send invitation
+<br/>
+- Add to your address book
 </td>
 </tr>
 </table>
