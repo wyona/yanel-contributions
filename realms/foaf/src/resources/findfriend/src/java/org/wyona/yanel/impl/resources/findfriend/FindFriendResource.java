@@ -88,6 +88,7 @@ public class FindFriendResource extends Resource implements ViewableV2 {
                         sb.append("<mime-type suffix=\"rdf\">application/rdf+xml</mime-type>");
                         sb.append("</result>");
                     } else {
+                        // TODO: Check mime type (application/rdf+xml) or take a look inside ...!
                         log.warn("DEBUG: Does not seem to be a RDF: " + url);
                     }
                 }
