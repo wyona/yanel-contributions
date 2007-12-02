@@ -11,11 +11,11 @@
   </role>
 
   <role id="open">
-    <user id="login" permission="true"/>
+    <group id="login" permission="true"/>
   </role>
 
   <role id="write">
-    <user id="login" permission="true"/>
+    <group id="login" permission="true"/>
   </role>
 
   <role id="toolbar">
