@@ -93,6 +93,7 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             } else {
                 sb.append("<wyona:source href=\"" + path.substring(0, path.lastIndexOf(".html")) + ".rdf\"/>");
             }
+/*
             // TODO: The following leads to errors if the RDF contains special characters!
             BufferedReader br = new BufferedReader(new InputStreamReader(getRDFAsInputStream()));
             String line;
@@ -101,12 +102,36 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
                     sb.append(line);
                 }
             }
+*/
+            if (getRequest().getParameter("href") != null) {
+                URL url = new URL(getRequest().getParameter("href"));
+                sb.append("<xi:include href=\"" + url.toString() + "\" xmlns:xi=\"http://www.w3.org/2001/XInclude\"/>");
+            } else {
+                String rdfPath = getPath();
+	        if (rdfPath.endsWith(".html")) {
+                    rdfPath = path.substring(0, path.lastIndexOf(".html")) + ".rdf";
+                }
+                sb.append("<xi:include href=\"yanelresource:" + rdfPath + "\" xmlns:xi=\"http://www.w3.org/2001/XInclude\"/>");
+            }
             sb.append("</wyona:foaf>");
+
+            org.xml.sax.XMLReader xmlReader = getXMLReader();
+            org.apache.xml.serializer.Serializer serializer = getSerializer();
+            java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+            serializer.setOutputStream(baos);
+            org.wyona.yanel.core.transformation.XIncludeTransformer xIncludeTransformer = new org.wyona.yanel.core.transformation.XIncludeTransformer();
+            org.wyona.yanel.core.source.SourceResolver resolver = new org.wyona.yanel.core.source.SourceResolver(this);
+            xIncludeTransformer.setResolver(resolver);
+            xmlReader.setContentHandler(new javax.xml.transform.sax.SAXResult(xIncludeTransformer).getHandler());
+            xIncludeTransformer.setResult(new javax.xml.transform.sax.SAXResult(serializer.asContentHandler()));
+            //xmlReader.setContentHandler(serializer.asContentHandler());
+            xmlReader.parse(new org.xml.sax.InputSource(new StringBufferInputStream(sb.toString())));
 
             //log.error("DEBUG: XML: " + sb.toString());
 
             if (viewId != null && viewId.equals("source")) {
-                view.setInputStream(new StringBufferInputStream(sb.toString()));
+                view.setInputStream(new java.io.ByteArrayInputStream(baos.toByteArray()));
+                //view.setInputStream(new StringBufferInputStream(sb.toString()));
                 view.setMimeType(getMimeType(viewId));
                 return view;
 	    } else if (viewId != null && viewId.equals("rdf+xml")) {
@@ -288,5 +313,23 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             path = path.substring(0, path.lastIndexOf(".html")) + ".rdf";
         }
         return path;
+    }
+
+    /**
+     *
+     */
+    private org.xml.sax.XMLReader getXMLReader() throws Exception {
+        org.xml.sax.XMLReader xmlReader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+        org.apache.xml.resolver.tools.CatalogResolver catalogResolver = new org.apache.xml.resolver.tools.CatalogResolver();
+        xmlReader.setEntityResolver(catalogResolver);
+        xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+        return xmlReader;
+    }
+
+    /**
+     *
+     */
+    private org.apache.xml.serializer.Serializer getSerializer() {
+        return org.wyona.yanel.core.serialization.SerializerFactory.getSerializer(org.wyona.yanel.core.serialization.SerializerFactory.XML);
     }
 }
