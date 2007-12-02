@@ -10,6 +10,7 @@
   xmlns:foaf="http://xmlns.com/foaf/0.1/"
   xmlns:wyona="http://www.wyona.org/foaf/1.0"
   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
 >
 
 <!-- IMPORTANT: Needs to correspond to the mime-type which is sent by the server! -->
@@ -116,14 +117,16 @@
 
 <xsl:template match="foaf:knows">
 <xsl:for-each select="foaf:Person">
+  <li>
   <xsl:choose>
     <xsl:when test="rdfs:seeAlso/@rdf:resource">
-  <li><a href="print.html?href={rdfs:seeAlso/@rdf:resource}"><xsl:value-of select="foaf:name"/></a></li>
+  <a href="print.html?href={rdfs:seeAlso/@rdf:resource}"><xsl:value-of select="foaf:name"/></a>
     </xsl:when>
     <xsl:otherwise>
-  <li><xsl:value-of select="foaf:name"/></li>
+  <xsl:value-of select="foaf:name"/>
     </xsl:otherwise>
   </xsl:choose>
+  <xsl:apply-templates select="@dc:description" mode="person"/></li>
 </xsl:for-each>
 </xsl:template>
 
@@ -143,6 +146,10 @@ Personal Homepage: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource
 <p>
 Phone: <xsl:value-of select="@rdf:resource"/>
 </p>
+</xsl:template>
+
+<xsl:template match="@dc:description" mode="person">
+&#160;(<xsl:value-of select="."/>)
 </xsl:template>
 
 </xsl:stylesheet>
