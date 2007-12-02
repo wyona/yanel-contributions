@@ -147,7 +147,7 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
 */
                 return view;
             } else {
-                return getXMLView(viewId, new StringBufferInputStream(sb.toString()));
+                return getXMLView(viewId, new java.io.ByteArrayInputStream(baos.toByteArray()));
             }
         } catch (java.io.FileNotFoundException e) {
             log.error(e);
