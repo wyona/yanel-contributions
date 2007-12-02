@@ -52,7 +52,10 @@
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:phone"/>
 
 
+<h3>People which <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/> knows about</h3>
+<!--
 <h3>Friends</h3>
+-->
 <ul>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:knows"/>
 </ul>
