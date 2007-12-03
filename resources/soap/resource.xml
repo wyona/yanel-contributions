@@ -15,6 +15,6 @@ The resource acts as a Web service via SOAP
   <property name="encoding" default-value="UTF-8"/>
 
   <!-- Allows to specify a custom adapter, e.g. org.wyona.neutron.SOAP -->
-  <property name="adapter"/>
+  <property name="interceptor-class"/>
 </rtd>
 </resource>

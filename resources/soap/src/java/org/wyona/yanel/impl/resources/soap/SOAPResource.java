@@ -87,6 +87,7 @@ public class SOAPResource extends Resource implements ViewableV2 {
         Element payload = (Element)xpath.evaluate("/soapenv:Envelope/soapenv:Body/*", soapMessage, XPathConstants.NODE);
 		
         ByteArrayInputStream bais = new ByteArrayInputStream(new ServiceInterceptor().handleRequest(payload).getBytes());
+        //ByteArrayInputStream bais = new ByteArrayInputStream(new classForName.getResourceConfigProerty("interceptor-class").handleRequest(payload).getBytes());
         v.setInputStream(bais);
 		
         return v;
