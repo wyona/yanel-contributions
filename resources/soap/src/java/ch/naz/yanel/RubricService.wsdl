@@ -1,0 +1,119 @@
+<wsdl:definitions
+	targetNamespace="http//www.naz.ch/eld/wyona/1.0"
+	xmlns:tns="http//www.naz.ch/eld/wyona/1.0"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+	<wsdl:types>
+			<xsd:schema 
+			attributeFormDefault="unqualified"
+			elementFormDefault="qualified"
+			targetNamespace="http//www.naz.ch/eld/wyona/1.0">
+			
+			<xsd:element name="CreateRubric">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="title_de" type="xsd:string"/>
+						<xsd:element name="title_fr" type="xsd:string"/>
+						<xsd:element name="title_it" type="xsd:string"/>
+						<xsd:element name="title_en" type="xsd:string"/>
+						<xsd:element name="name" type="xsd:string"/>
+						<xsd:element name="parent-node-path" type="xsd:anyURI"/>
+						<xsd:element name="axis" default="child">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:enumeration value="child"/>
+									<xsd:enumeration value="sibling"/>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="CreateRubricResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="node-path" type="xsd:anyURI"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="ListAllRubrics">
+			<!-- TODO -->
+			</xsd:element>
+			<xsd:element name="ListAllRubricsResponse">
+			<!-- TODO -->
+			</xsd:element>
+			
+			<xsd:element name="RubricFault">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="exception-message" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>	
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="CreateRubricMessage">
+		<wsdl:part name="part1" element="tns:CreateRubric"/>
+	</wsdl:message>
+	<wsdl:message name="CreateRubricResponseMessage">
+		<wsdl:part name="part1" element="tns:CreateRubricResponse" />
+	</wsdl:message>
+	
+	<wsdl:message name="ListAllRubricsMessage">
+		<wsdl:part name="part1" element="tns:ListAllRubrics"/>
+	</wsdl:message>
+	<wsdl:message name="ListAllRubricsResponseMessage">
+		<wsdl:part name="part1" element="tns:ListAllRubricsResponse" />
+	</wsdl:message>
+	
+	<wsdl:message name="RubricFaultMessage">
+		<wsdl:part name="part1" element="tns:RubricFault" />
+	</wsdl:message>
+	
+	<wsdl:portType name="RubricServicePortType">
+		<wsdl:operation name="createRubric">
+			<wsdl:input message="tns:CreateRubricMessage" />
+			<wsdl:output message="tns:CreateRubricResponseMessage" />
+			<wsdl:fault message="tns:RubricFaultMessage"
+				name="createFault" />
+		</wsdl:operation>
+		<wsdl:operation name="listAllRubrics">
+			<wsdl:input message="tns:ListAllRubricsMessage" />
+			<wsdl:output message="tns:ListAllRubricsResponseMessage" />
+			<wsdl:fault message="tns:RubricFaultMessage" name="listFault" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="RubricServiceSOAPBinding"
+		type="tns:RubricServicePortType">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="createRubric">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="createFault">
+				<soap:fault use="literal" name="createFault" />
+			</wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:binding>
+
+	<wsdl:service name="RubricService">
+		<wsdl:port name="RubricServiceSOAPport_http"
+			binding="tns:RubricServiceSOAPBinding">
+			<soap:address location="http://replace/on/initialization"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>
