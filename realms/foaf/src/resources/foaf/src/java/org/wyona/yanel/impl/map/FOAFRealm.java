@@ -37,7 +37,8 @@ public class FOAFRealm extends org.wyona.yanel.core.map.Realm {
         super(name, id, mountPoint, configFile);
         log.error("DEBUG: Custom FOAF Realm implementation!");
 
-	String repoConfig = "/home/michi/src/wyona-svn/wyona/misc/foaf/jcr-data-repository.xml";
+	String repoConfig = "/home/michi/src/wyona/wyona/misc/foaf/jcr-data-repository.xml";
+	//String repoConfig = "/home/michi/src/wyona-svn/wyona/misc/foaf/jcr-data-repository.xml";
         profilesRepo = new RepositoryFactory().newRepository("profiles", new java.io.File(repoConfig));
     }
 
