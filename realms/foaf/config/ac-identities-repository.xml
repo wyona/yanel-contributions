@@ -3,9 +3,12 @@
 <repository class="org.wyona.yarep.impl.repo.vfs.VirtualFileSystemRepository">
   <name>FOAF Access Control Indentities</name>
 
+<!--
   <content src="../ac-identities"/>
+-->
   <meta src="../ac-identities-yarep-meta"/>
   <!--
   <content src="/home/michi/src/wyona-svn/wyona/misc/foaf/ac-identities"/>
   -->
+  <content src="/home/michi/src/wyona/wyona/misc/foaf/ac-identities"/>
 </repository>

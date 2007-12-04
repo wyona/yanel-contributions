@@ -21,6 +21,11 @@ import org.apache.log4j.Category;
 import org.wyona.yarep.core.Repository;
 import org.wyona.yarep.core.RepositoryFactory;
 
+import org.wyona.commons.io.FileUtil;
+
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+
 /**
  *
  */
@@ -37,9 +42,15 @@ public class FOAFRealm extends org.wyona.yanel.core.map.Realm {
         super(name, id, mountPoint, configFile);
         log.error("DEBUG: Custom FOAF Realm implementation!");
 
-	String repoConfig = "/home/michi/src/wyona/wyona/misc/foaf/jcr-data-repository.xml";
-	//String repoConfig = "/home/michi/src/wyona-svn/wyona/misc/foaf/jcr-data-repository.xml";
-        profilesRepo = new RepositoryFactory().newRepository("profiles", new java.io.File(repoConfig));
+        DefaultConfigurationBuilder builder =  new DefaultConfigurationBuilder(true);
+        Configuration config = builder.buildFromFile(configFile);
+        java.io.File profilesDataRepoConfigFile = new java.io.File(config.getChild("profiles-data").getValue());
+        log.error("DEBUG: Profiles Data repo path: " + profilesDataRepoConfigFile);
+
+        if (!profilesDataRepoConfigFile.isAbsolute()) {
+            profilesDataRepoConfigFile = FileUtil.file(configFile.getParentFile().getAbsolutePath(), profilesDataRepoConfigFile.toString());
+        }
+        profilesRepo = new RepositoryFactory().newRepository("profiles", profilesDataRepoConfigFile);
     }
 
     /**
