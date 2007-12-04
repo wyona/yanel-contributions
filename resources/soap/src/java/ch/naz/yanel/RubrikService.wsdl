@@ -13,14 +13,20 @@
 			elementFormDefault="qualified"
 			targetNamespace="http//www.naz.ch/eld/wyona/1.0">
 			
-			<xsd:element name="CreateRubric">
+			<xsd:element name="CreateRubrik">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="title_de" type="xsd:string"/>
 						<xsd:element name="title_fr" type="xsd:string"/>
 						<xsd:element name="title_it" type="xsd:string"/>
 						<xsd:element name="title_en" type="xsd:string"/>
-						<xsd:element name="name" type="xsd:string"/>
+						<xsd:element name="name">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:pattern value="[a-zA-Z_0-9]+"></xsd:pattern>
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
 						<xsd:element name="parent-node-path" type="xsd:anyURI"/>
 						<xsd:element name="axis" default="child">
 							<xsd:simpleType>
@@ -34,7 +40,7 @@
 				</xsd:complexType>
 			</xsd:element>
 			
-			<xsd:element name="CreateRubricResponse">
+			<xsd:element name="CreateRubrikResponse">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="node-path" type="xsd:anyURI"/>
@@ -42,14 +48,14 @@
 				</xsd:complexType>
 			</xsd:element>
 			
-			<xsd:element name="ListAllRubrics">
+			<xsd:element name="ListAllRubriks">
 			<!-- TODO -->
 			</xsd:element>
-			<xsd:element name="ListAllRubricsResponse">
+			<xsd:element name="ListAllRubriksResponse">
 			<!-- TODO -->
 			</xsd:element>
 			
-			<xsd:element name="RubricFault">
+			<xsd:element name="RubrikFault">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="exception-message" type="xsd:string"/>
@@ -59,42 +65,42 @@
 		</xsd:schema>
 	</wsdl:types>
 	
-	<wsdl:message name="CreateRubricMessage">
-		<wsdl:part name="part1" element="tns:CreateRubric"/>
+	<wsdl:message name="CreateRubrikMessage">
+		<wsdl:part name="part1" element="tns:CreateRubrik"/>
 	</wsdl:message>
-	<wsdl:message name="CreateRubricResponseMessage">
-		<wsdl:part name="part1" element="tns:CreateRubricResponse" />
-	</wsdl:message>
-	
-	<wsdl:message name="ListAllRubricsMessage">
-		<wsdl:part name="part1" element="tns:ListAllRubrics"/>
-	</wsdl:message>
-	<wsdl:message name="ListAllRubricsResponseMessage">
-		<wsdl:part name="part1" element="tns:ListAllRubricsResponse" />
+	<wsdl:message name="CreateRubrikResponseMessage">
+		<wsdl:part name="part1" element="tns:CreateRubrikResponse" />
 	</wsdl:message>
 	
-	<wsdl:message name="RubricFaultMessage">
-		<wsdl:part name="part1" element="tns:RubricFault" />
+	<wsdl:message name="ListAllRubriksMessage">
+		<wsdl:part name="part1" element="tns:ListAllRubriks"/>
+	</wsdl:message>
+	<wsdl:message name="ListAllRubriksResponseMessage">
+		<wsdl:part name="part1" element="tns:ListAllRubriksResponse" />
 	</wsdl:message>
 	
-	<wsdl:portType name="RubricServicePortType">
-		<wsdl:operation name="createRubric">
-			<wsdl:input message="tns:CreateRubricMessage" />
-			<wsdl:output message="tns:CreateRubricResponseMessage" />
-			<wsdl:fault message="tns:RubricFaultMessage"
+	<wsdl:message name="RubrikFaultMessage">
+		<wsdl:part name="part1" element="tns:RubrikFault" />
+	</wsdl:message>
+	
+	<wsdl:portType name="RubrikServicePortType">
+		<wsdl:operation name="createRubrik">
+			<wsdl:input message="tns:CreateRubrikMessage" />
+			<wsdl:output message="tns:CreateRubrikResponseMessage" />
+			<wsdl:fault message="tns:RubrikFaultMessage"
 				name="createFault" />
 		</wsdl:operation>
-		<wsdl:operation name="listAllRubrics">
-			<wsdl:input message="tns:ListAllRubricsMessage" />
-			<wsdl:output message="tns:ListAllRubricsResponseMessage" />
-			<wsdl:fault message="tns:RubricFaultMessage" name="listFault" />
+		<wsdl:operation name="listAllRubriks">
+			<wsdl:input message="tns:ListAllRubriksMessage" />
+			<wsdl:output message="tns:ListAllRubriksResponseMessage" />
+			<wsdl:fault message="tns:RubrikFaultMessage" name="listFault" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
-	<wsdl:binding name="RubricServiceSOAPBinding"
-		type="tns:RubricServicePortType">
+	<wsdl:binding name="RubrikServiceSOAPBinding"
+		type="tns:RubrikServicePortType">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
-		<wsdl:operation name="createRubric">
+		<wsdl:operation name="createRubrik">
 			<soap:operation soapAction="" style="document" />
 			<wsdl:input>
 				<soap:body use="literal" />
@@ -109,10 +115,10 @@
 		</wsdl:operation>		
 	</wsdl:binding>
 
-	<wsdl:service name="RubricService">
-		<wsdl:port name="RubricServiceSOAPport_http"
-			binding="tns:RubricServiceSOAPBinding">
-			<soap:address location="http://replace/on/initialization"/>
+	<wsdl:service name="RubrikService">
+		<wsdl:port name="RubrikServiceSOAPport_http"
+			binding="tns:RubrikServiceSOAPBinding">
+			<soap:address location="http://replace/with/real/endpoint"/>
 		</wsdl:port>
 	</wsdl:service>
 	

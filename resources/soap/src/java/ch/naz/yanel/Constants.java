@@ -15,8 +15,9 @@ public class Constants {
 	public static final String PARENT_NODE_PATH_TAG = "parent-node-path";
 	public static final String AXIS_TAG = "axis";
 	
-	public static final String CREATE_RUBRIC_RESPONSE_TAG = "CreateRubricResponse";
-	public static final String CREATE_RUBRIC_TAG = "CreateRubric";
+	public static final String CREATE_RUBRIC_RESPONSE_TAG = "CreateRubrikResponse";
+	public static final String CREATE_RUBRIC_TAG = "CreateRubrik";
+	public static final String RUBRIC_FAULT_TAG = "RubrikFault";
 	
 	public static final String EXCEPTION_MESSAGE_TAG = "exception-message";
 	public static final String NODE_PATH_TAG = "node-path";
