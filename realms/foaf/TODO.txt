@@ -13,3 +13,4 @@
   - Implement advanced search (firstname, lastname, ...)
   - Implement Custom Policy Manager (also protect RDF ...)
   - Resolve rdf:resource (with Jena for instance) as triples to make it easier for XSLT, e.g. <foaf:member rdf:resource="#karin"/>
+  - Describe relationships (e.g. friendOf) with http://purl.org/vocab/relationship/
