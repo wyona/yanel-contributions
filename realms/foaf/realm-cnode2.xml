@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<realm-config class="org.wyona.yanel.impl.map.FOAFRealm" xmlns="http://www.wyona.org/yanel/realm/1.0">
+
+  <name>FOAF</name>
+
+  <rti>config/rti-repository.xml</rti>
+  <data>config/data-repository.xml</data>
+
+  <!-- TODO: Read by FOAFRealm -->
+<!--
+  <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">/home/michi/src/wyona/wyona/misc/foaf/jcr-data-repository.xml</foaf:profiles-data>
+-->
+  <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">/home/michi/src/wyona-svn/wyona/misc/foaf/jcr-data-repository-cnode2.xml</foaf:profiles-data>
+
+  <ac-policies>config/ac-policies-repository.xml</ac-policies>
+  <ac-identities>config/ac-identities-repository.xml</ac-identities>
+
+</realm-config>
