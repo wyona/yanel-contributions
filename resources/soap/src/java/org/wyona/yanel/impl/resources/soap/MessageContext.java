@@ -4,21 +4,35 @@ import org.w3c.dom.Element;
 import org.wyona.yanel.core.Resource;
 
 public class MessageContext {
-    private Element soapMessage = null;
-    private Resource resource = null;
+    private Element requestSOAPMessage = null;
+    private Element responseSOAPMessage = null;
     
-    public Element getSoapMessage() {
-        return soapMessage;
+    private Resource resource = null;
+
+    public Element getRequestSOAPMessage() {
+        return requestSOAPMessage;
     }
-    public void setSoapMessage(Element soapMessage) {
-        this.soapMessage = soapMessage;
+
+    public void setRequestSOAPMessage(Element requestSOAPMessage) {
+        this.requestSOAPMessage = requestSOAPMessage;
     }
+
+    public Element getResponseSOAPMessage() {
+        return responseSOAPMessage;
+    }
+
+    public void setResponseSOAPMessage(Element responseSOAPMessage) {
+        this.responseSOAPMessage = responseSOAPMessage;
+    }
+
     public Resource getResource() {
         return resource;
     }
+
     public void setResource(Resource resource) {
         this.resource = resource;
     }
+    
     
     
 }

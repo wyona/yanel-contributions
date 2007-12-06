@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>SOAP resource</title>
+<style type="text/css">
+.code {
+	font-family: monospace;
+	font-style: italic;
+	font-weight: bold;
+}
+pre.java {
+border: 1px solid black;
+}
+</style>
+</head>
+<body>
+<h2>Description</h2>
+<div>
+<p>The SOAP resource (yanel/contributions/resources/soap) can be used to implement Web services in Yanel.
+The dynamic architecture can be summarized as follows:</p>
+<ol>
+	<li>The resource configuration (e.g. hello.xml.yanel-rc) expects a SOAP message as an
+	incoming request</li>
+	<li>It parses the incoming SOAP message and performs the actions
+	requested in the message</li>
+	<li>Then it responds with a SOAP message</li>
+</ol>
+<p>The resource configuration has one property <span class="code">ws-impl</span>
+where you have to set the implementation of the Web service.</p>
+<p>Worth noticing that a better and a more elaborated solution for Web services in Yanel would be to wrap the whole <a href="ws.apache.org/axis2">Axis2</a> 
+engine into a resource. This would require to put all the logic from <span class="code">AxisServlet</span> into a <span class="code">Viewable2</span> 
+implementation as well as dealing with the Axis2 repository configuration on a resource level.</p>
+</div>
+<h2>"Hello World" example</h2>
+<div>
+<p>Let's create a Web service that when asked to <span class="code">SayHello</span>
+would respond with the message "Hello World".</p>
+<p>
+First we need to implement the Web service (the generic interfaces and classes are available in <span class="code">org.wyona.yanel.impl.resources.soap</span>):
+</p>
+<pre class="java">
+public class HelloWorldWebServiceImpl extends AbstractWebService{
+  
+  public class SayHelloOperation extends AbstractOperation{
+    /* &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http//my/ns">
+    *   &lt;soapenv:Header/>
+    *   &lt;soapenv:Body>
+    *     <b>&lt;ns:SayHelloResponse>Hello World&lt;ns:/SayHelloResponse></b>
+    *   &lt;/soapenv:Body>
+    * &lt;/soapenv:Envelope>
+    */ 
+    private static final Element HELLO_WORLD_SOAP_MESSAGE = ... initialize the response ...
+    
+    public SayHelloOperation(MessageContext context) {
+      super(context);
+    }
+	    
+    public void performOperation(Element payload) throws Exception{
+      // Assume that the request is correct
+      context.setResponseSoapMessage(HELLO_WORLD_SOAP_MESSAGE);
+    }
+  }
+  
+  protected IOperation detectOperation(MessageContext incomingMessageContext) {
+    return new SayHelloOperation();
+  }
+  
+  <b>public Element handle(MessageContext ctx)</b>{
+    IOperation op = detectOperation(ctx);
+    try {
+      op.performOperation(extractPayload(ctx.getRequestSOAPMessage()));
+    } catch (Exception e) {
+      // nothing
+    }
+    
+    return ctx.getResponseSOAPMessage();
+  }
+}
+</pre>
+<p>So this Web service gets some input and returns a SOAP message which says "Hello World". Now create a resource configuration 
+file for this Web service. It will call the <span class="code">handle</span> method of the provided implementation class.</p>
+<pre class="java">
+&lt;yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+  &lt;yanel:rti name="soap" namespace="http://www.wyona.org/yanel/resource/1.0"/>
+  &lt;yanel:property name="ws-impl" value="my.package.HelloWorldWebServiceImpl"/>
+&lt;/yanel:resource-config>
+</pre>
+
+<p>Assuming that all the necessary libraries are configured properly the Yanel should be built and started. Then using some SOAP client, 
+e.g. <a href="http://www.soapui.org">soapui</a>, you can call that Web service by passing the following SOAP message to the configured resource:</p>
+<pre class="java">
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http//my/ns">
+  &lt;soapenv:Header/>
+  &lt;soapenv:Body>
+    <b>&lt;ns:SayHello/></b>
+  &lt;/soapenv:Body>
+&lt;/soapenv:Envelope>
+</pre>
+
+<p>Of course a more sophisticated solution would provide a WSDL and an XSD describing the Web service. 
+Still the above "Hello World" example is simple and it works.</p>
+</div>
+</body>
+</html>

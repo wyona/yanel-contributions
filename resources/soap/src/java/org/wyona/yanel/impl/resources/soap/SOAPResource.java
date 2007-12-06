@@ -28,7 +28,7 @@ public class SOAPResource extends Resource implements ViewableV2 {
 	}
 
     /**
-     *
+     * The returned view is actually a SOAP response message
      */
     public View getView(String viewId) throws Exception {
         View v = new View();
@@ -39,7 +39,7 @@ public class SOAPResource extends Resource implements ViewableV2 {
         Document soapMessage = dbf.newDocumentBuilder().parse(getEnvironment().getRequest().getInputStream());
 		
         MessageContext ctx = new MessageContext();
-        ctx.setSoapMessage(soapMessage.getDocumentElement());
+        ctx.setRequestSOAPMessage(soapMessage.getDocumentElement());
         ctx.setResource(this);
         
         Element response = ((IWebService)Class.forName(getResourceConfigProperty("ws-impl")).newInstance()).handle(ctx);
@@ -55,11 +55,7 @@ public class SOAPResource extends Resource implements ViewableV2 {
         return v;
     }
 
-    /**
-     *
-     */
     public ViewDescriptor[] getViewDescriptors() {
-        // TODO Auto-generated method stub
         return null;
     }
 }
