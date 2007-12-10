@@ -109,7 +109,7 @@ Copyright &#169; 2007 Wyona
   <br/>
   <xsl:value-of select="foaf:excerpt"/>
   <div class="original-href"><a href="{foaf:url}"><xsl:value-of select="foaf:url"/></a> (Profile Provider: TODO)</div>
-  <a href="profiles/{$username}/add-friend.html?href={foaf:url}">Add to your address book</a> | <xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="send-invitation.html?profile-of-friend={foaf:url}">Send invitation</a></xsl:when><xsl:otherwise><a href="profiles/{$username}/send-invitation.html?profile-of-friend={foaf:url}">Send invitation</a></xsl:otherwise></xsl:choose><xsl:if test="foaf:mime-type/@suffix = 'rdf'"> | <a href="print.html?href={foaf:url}">Print</a></xsl:if>
+  <xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="add-friend.html?href={foaf:url}">Add to your address book</a> | <a href="send-invitation.html?profile-of-friend={foaf:url}">Send invitation</a></xsl:when><xsl:otherwise><a href="profiles/{$username}/add-friend.html?href={foaf:url}">Add to your address book</a> | <a href="profiles/{$username}/send-invitation.html?profile-of-friend={foaf:url}">Send invitation</a></xsl:otherwise></xsl:choose><xsl:if test="foaf:mime-type/@suffix = 'rdf'"> | <a href="print.html?href={foaf:url}">Print</a></xsl:if>
   </p>
 </xsl:template>
 
