@@ -216,6 +216,7 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
      */
     public String getIntrospection() throws Exception {
         String name = org.wyona.yanel.core.util.PathUtil.getName(getPath());
+        String username = name.substring(0, name.lastIndexOf(".html"));
         StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
         sb.append("<introspection xmlns=\"http://www.wyona.org/neutron/2.0\">");
     
@@ -225,11 +226,11 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
         sb.append("</navigation>");
 */
     
-        sb.append("<resource name=\"" + name + "\">");
+        sb.append("<resource name=\"Profile of '" + username + "'\">");
         sb.append("<edit mime-type=\"application/xml\">");
-        sb.append("<checkout url=\"" + "michael-wechner.rdf" + "?yanel.resource.usecase=checkout\" method=\"GET\"/>");
-        sb.append("<checkin  url=\"" + "michael-wechner.rdf" + "?yanel.resource.usecase=checkin\"  method=\"PUT\"/>");
-        sb.append("<release-lock url=\"" + "michael-wechner.rdf" + "?yanel.resource.usecase=release-lock\" method=\"GET\"/>");
+        sb.append("<checkout url=\"" + username + ".rdf" + "?yanel.resource.usecase=checkout\" method=\"GET\"/>");
+        sb.append("<checkin  url=\"" + username + ".rdf" + "?yanel.resource.usecase=checkin\"  method=\"PUT\"/>");
+        sb.append("<release-lock url=\"" + username + ".rdf" + "?yanel.resource.usecase=release-lock\" method=\"GET\"/>");
         sb.append("</edit>");
         sb.append("</resource>");
         sb.append("</introspection>");
