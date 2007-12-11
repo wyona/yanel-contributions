@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="shared"
+  namespace="http://foaf.wyona.org/yanel/resource/1.0"
+  class="org.wyona.foaf.yanel.impl.resources.shared.DummyResource"
+  >
+<description>
+Dummy resource as a home for java classes which are being shared among various resources
+</description>
+
+<rtd>
+<!--
+  <property name="foo" default-value="bar"/>
+-->
+</rtd>
+</resource>
