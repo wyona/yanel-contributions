@@ -104,11 +104,11 @@ public class FindFriendResource extends Resource implements ViewableV2 {
 
             Repository pRepo = getProfilesRepository();
             Node[] pNodes = pRepo.search(qs);
-            //Node[] pNodes = pRepo.getNode("/profiles").getNodes();
             if (pNodes != null) {
             for (int i = 0; i < pNodes.length; i++) {
+                org.wyona.foaf.api.basics.Person person = new org.wyona.foaf.impl.basics.PersonImpl();
                 sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
-                sb.append("<title><![CDATA[" + "Foo Bar" + "]]></title>");
+                sb.append("<title><![CDATA[" + person.getName() + "]]></title>");
                 sb.append("<excerpt><![CDATA[" + "About Foo Bar ..." + "]]></excerpt>");
                 sb.append("<url><![CDATA[" + "profiles/" + withoutSuffix(pNodes[i].getName()) + ".html" + "]]></url>");
                 sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
