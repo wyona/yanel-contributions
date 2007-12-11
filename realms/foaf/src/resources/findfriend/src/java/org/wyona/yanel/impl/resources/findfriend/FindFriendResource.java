@@ -89,7 +89,7 @@ public class FindFriendResource extends Resource implements ViewableV2 {
                         sb.append("</result>");
                     } else {
                         // TODO: Check mime type (application/rdf+xml) or take a look inside ...!
-                        log.warn("DEBUG: Does not seem to be a RDF: " + url);
+                        log.warn("Does not seem to be a RDF: " + url);
                     }
                 }
                 sb.append("</provider>");
@@ -106,10 +106,10 @@ public class FindFriendResource extends Resource implements ViewableV2 {
             Node[] pNodes = pRepo.search(qs);
             if (pNodes != null) {
             for (int i = 0; i < pNodes.length; i++) {
-                org.wyona.foaf.api.basics.Person person = new org.wyona.foaf.impl.basics.PersonImpl();
+                org.wyona.foaf.api.basics.Person person = new org.wyona.foaf.impl.basics.PersonImpl(pNodes[i].getInputStream());
                 sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
                 sb.append("<title><![CDATA[" + person.getName() + "]]></title>");
-                sb.append("<excerpt><![CDATA[" + "About Foo Bar ..." + "]]></excerpt>");
+                sb.append("<excerpt><![CDATA[" + "About " + person.getName() + " ..." + "]]></excerpt>");
                 sb.append("<url><![CDATA[" + "profiles/" + withoutSuffix(pNodes[i].getName()) + ".html" + "]]></url>");
                 sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
                 sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
