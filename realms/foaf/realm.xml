@@ -7,10 +7,9 @@
   <rti>config/rti-repository.xml</rti>
   <data>config/data-repository.xml</data>
 
-  <!-- TODO: Read by FOAFRealm -->
-  <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">/home/michi/src/wyona/wyona/misc/foaf/data-repository.xml</foaf:profiles-data>
+  <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">config/data-repository.xml</foaf:profiles-data>
 <!--
-  <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">/home/michi/src/wyona/wyona/misc/foaf/jcr-data-repository-cnode1.xml</foaf:profiles-data>
+  <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">/home/michi/src/wyona-svn/wyona/misc/foaf/data-repository.xml</foaf:profiles-data>
 -->
 <!--
   <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">/home/michi/src/wyona-svn/wyona/misc/foaf/jcr-data-repository-cnode1.xml</foaf:profiles-data>

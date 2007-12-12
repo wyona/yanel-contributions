@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 
-<repository class="org.wyona.yarep.impl.repo.fs.FileSystemRepository">
-  <name>FOAF Data Repository</name>
-  <paths class="org.wyona.yarep.impl.DefaultMapImpl" src="../data-paths" fallback="true">
-    <ignore pattern=".*\.svn"/>
-    <ignore pattern=".*\.yarep"/>
-  </paths>
+<repository class="org.wyona.yarep.impl.repo.vfs.VirtualFileSystemRepository">
+  <name>FOAF Local Data Repository</name>
   <content src="../data"/>
+  <meta src="../data-yarep-meta"/>
+  <search-index src="../data-search-index"/>
 </repository>
