@@ -4,8 +4,6 @@
   <name>Login</name>
   <members>
     <member id="foo-bar"/>
-<!--
-    <member id="lenya"/>
--->
+    <member id="aristotle"/>
   </members>
 </group>

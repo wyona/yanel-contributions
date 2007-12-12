@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<identity id="aristotle" xmlns="http://www.wyona.org/security/1.0">
+  <name>Aristotle</name>
+  <description>Greek philosopher</description>
+  <email>michael.wechner@wyona.com</email>
+  <password type="md5">8e07dafd13495561db9063ebe4db4b27</password>
+</identity>
