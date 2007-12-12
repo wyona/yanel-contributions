@@ -48,7 +48,7 @@
 -->
 
 <foaf:knows>
-  <foaf:Person rdf:ID="plato" dc:description="Friend and worked together">
+  <foaf:Person rdf:ID="plato" dc:description="Teacher of Aristotle">
     <foaf:name>Plato</foaf:name>
     <foaf:mbox_sha1sum>a8de95b22dfdd12319da88b10829fc12193edbde</foaf:mbox_sha1sum>
     <rdfs:seeAlso rdf:resource="plato.rdf"/>
@@ -57,7 +57,7 @@
 </foaf:knows>
 
 <foaf:knows>
-  <foaf:Person rdf:ID="socrates" dc:description="Friend and Neighbour">
+  <foaf:Person rdf:ID="socrates" dc:description="Teacher of Plato">
     <foaf:name>Socrates</foaf:name>
     <foaf:mbox_sha1sum>a8de95b22dfdd12319da88b10829fc12193edbde</foaf:mbox_sha1sum>
     <rdfs:seeAlso rdf:resource="socrates.rdf"/>
