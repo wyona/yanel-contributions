@@ -15,7 +15,7 @@
 </foaf:PersonalProfileDocument>
 
 <foaf:Person rdf:ID="me">
-<foaf:name>Aristotle</foaf:name>
+<foaf:name>Plato</foaf:name>
 <foaf:givenname>Michael</foaf:givenname>
 <foaf:family_name>Wechner</foaf:family_name>
 
@@ -24,7 +24,7 @@
 <foaf:phone rdf:resource="tel:+41-44-272-91-61"/>
 <foaf:workplaceHomepage rdf:resource="http://en.wikipedia.org/wiki/Platonic_Academy"/>
 <foaf:workInfoHomepage rdf:resource="Academy"/>
-<foaf:homepage rdf:resource="http://en.wikipedia.org/wiki/Aristotle"/>
+<foaf:homepage rdf:resource="http://en.wikipedia.org/wiki/Plato"/>
 
 <!--
 <foaf:Group>
@@ -48,21 +48,34 @@
 -->
 
 <foaf:knows>
-  <foaf:Person rdf:ID="plato" dc:description="Friend and worked together">
-    <foaf:name>Plato</foaf:name>
+  <foaf:Person rdf:ID="plato" dc:description="Student of Plato">
+    <foaf:name>Aristotle</foaf:name>
     <foaf:mbox_sha1sum>a8de95b22dfdd12319da88b10829fc12193edbde</foaf:mbox_sha1sum>
-    <rdfs:seeAlso rdf:resource="plato.rdf"/>
+    <rdfs:seeAlso rdf:resource="aristotle.rdf"/>
     <foaf:interest rdf:resource="http://www.foaf-project.org/2004/us/index.html"/>
   </foaf:Person>
 </foaf:knows>
 
 <foaf:knows>
-  <foaf:Person rdf:ID="socrates" dc:description="Friend and Neighbour">
+  <foaf:Person rdf:ID="socrates" dc:description="Teacher of Plato">
     <foaf:name>Socrates</foaf:name>
     <foaf:mbox_sha1sum>a8de95b22dfdd12319da88b10829fc12193edbde</foaf:mbox_sha1sum>
     <rdfs:seeAlso rdf:resource="socrates.rdf"/>
     <foaf:phone rdf:resource="tel:+41 44 268 89 94"/>
     <foaf:mbox rdf:resource="mailto:peter.brandt@ergon.ch"/>
+  </foaf:Person>
+</foaf:knows>
+
+<foaf:knows>
+  <foaf:Person rdf:ID="richard" dc:description="Richard">
+    <foaf:name>Richard</foaf:name>
+    <rdfs:seeAlso rdf:resource="http://richard.cyganiak.de/foaf.rdf"/>
+  </foaf:Person>
+</foaf:knows>
+
+<foaf:knows>
+  <foaf:Person rdf:ID="foo-bar" dc:description="Foo Bar indeed!">
+    <foaf:name>Foo Bar</foaf:name>
   </foaf:Person>
 </foaf:knows>
 
