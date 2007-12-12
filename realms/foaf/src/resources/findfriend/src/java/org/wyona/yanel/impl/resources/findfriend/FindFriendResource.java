@@ -70,63 +70,9 @@ public class FindFriendResource extends Resource implements ViewableV2 {
         StringBuffer sb = new StringBuffer("<foaf xmlns=\"http://www.wyona.org/foaf/1.0\">");
         String qs = getRequest().getParameter("q");
         if (qs != null) {
-
-        // Results from Google, Facebook, ...
-        try {
-            ResultSet resultSet = getSearchResults(qs.replaceAll(" ", "+") + "+FOAF");
-
-            if (resultSet != null && resultSet.size() > 0) {
-                sb.append("<provider source-name=\"" + resultSet.getSourceName() + "\" source-domain=\"" + resultSet.getSourceDomain() + "\" numberOfResults=\"" + resultSet.size() + "\">");
-                for (int k = 0;k < resultSet.size(); k++) {
-                    java.net.URL url = resultSet.get(k).url;
-                    if (url.toString().endsWith("rdf")) {
-                        sb.append("<result number=\"" + (k+1) + "\" source-name=\"" + resultSet.getSourceName() + "\">");
-                        sb.append("<title><![CDATA[" + resultSet.get(k).title + "]]></title>");
-                        sb.append("<excerpt><![CDATA[" + resultSet.get(k).excerpt + "]]></excerpt>");
-                        sb.append("<url><![CDATA[" + resultSet.get(k).url + "]]></url>");
-                        sb.append("<last-modified><![CDATA[" + resultSet.get(k).lastModified + "]]></last-modified>");
-                        sb.append("<mime-type suffix=\"rdf\">application/rdf+xml</mime-type>");
-                        sb.append("</result>");
-                    } else {
-                        // TODO: Check mime type (application/rdf+xml) or take a look inside ...!
-                        log.warn("Does not seem to be a RDF: " + url);
-                    }
-                }
-                sb.append("</provider>");
-            }
-        } catch (Exception e) {
-            sb.append("<exception>" + e.getMessage() + "</exception>");
+            sb.append(getLocalResults(qs));
+            sb.append(getThirdPartyResults(qs));
         }
-
-        // Results from Wyona-FOAF
-        // TODO: Remove hard-coded ...
-            sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "1" + "\">");
-
-            Repository pRepo = getProfilesRepository();
-            Node[] pNodes = pRepo.search(qs);
-            if (pNodes != null) {
-            for (int i = 0; i < pNodes.length; i++) {
-                org.wyona.foaf.api.basics.Person person = new org.wyona.foaf.impl.basics.PersonImpl(pNodes[i].getInputStream());
-                sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
-                sb.append("<title><![CDATA[" + person.getName() + "]]></title>");
-                sb.append("<excerpt><![CDATA[" + "About " + person.getName() + " ..." + "]]></excerpt>");
-                sb.append("<url><![CDATA[" + "profiles/" + withoutSuffix(pNodes[i].getName()) + ".html" + "]]></url>");
-                sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
-                sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
-                sb.append("</result>");
-            }
-            } else {
-                sb.append("<no-results/>");
-            }
-
-/*
-            Nodes[] nodes = getRealm().getRepository().searchProperty("firstname", firstname);
-            Nodes[] nodes = getRealm().getRepository().searchProperty("lastname", lastname);
-*/
-
-            sb.append("</provider>");
-        }
-
         sb.append("</foaf>");
 
         View view = new View();
@@ -157,6 +103,73 @@ public class FindFriendResource extends Resource implements ViewableV2 {
         if (className == null) className = "org.wyona.meguni.parser.impl.MSNParser";
         Parser parser = (Parser) Class.forName(className).newInstance();
         return parser.parse(queryString);
+    }
+
+    /**
+     * Results from Google, Facebook, ...
+     */
+    private StringBuffer getThirdPartyResults(String qs) {
+        StringBuffer sb = new StringBuffer("");
+        try {
+            ResultSet resultSet = getSearchResults(qs.replaceAll(" ", "+") + "+FOAF");
+
+            if (resultSet != null && resultSet.size() > 0) {
+                sb.append("<provider source-name=\"" + resultSet.getSourceName() + "\" source-domain=\"" + resultSet.getSourceDomain() + "\" numberOfResults=\"" + resultSet.size() + "\">");
+                for (int k = 0;k < resultSet.size(); k++) {
+                    java.net.URL url = resultSet.get(k).url;
+                    if (url.toString().endsWith("rdf")) {
+                        sb.append("<result number=\"" + (k+1) + "\" source-name=\"" + resultSet.getSourceName() + "\">");
+                        sb.append("<title><![CDATA[" + resultSet.get(k).title + "]]></title>");
+                        sb.append("<excerpt><![CDATA[" + resultSet.get(k).excerpt + "]]></excerpt>");
+                        sb.append("<url><![CDATA[" + resultSet.get(k).url + "]]></url>");
+                        sb.append("<last-modified><![CDATA[" + resultSet.get(k).lastModified + "]]></last-modified>");
+                        sb.append("<mime-type suffix=\"rdf\">application/rdf+xml</mime-type>");
+                        sb.append("</result>");
+                    } else {
+                        // TODO: Check mime type (application/rdf+xml) or take a look inside ...!
+                        log.warn("Does not seem to be a RDF: " + url);
+                    }
+                }
+                sb.append("</provider>");
+            }
+        } catch (Exception e) {
+            sb.append("<exception>" + e.getMessage() + "</exception>");
+        }
+        return sb;
+    }
+
+    /**
+     * Results from Wyona-FOAF
+     */
+    private StringBuffer getLocalResults(String qs) throws Exception {
+        StringBuffer sb = new StringBuffer("");
+        sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "1" + "\">");
+
+        Repository pRepo = getProfilesRepository();
+        Node[] pNodes = pRepo.search(qs);
+        if (pNodes != null) {
+            for (int i = 0; i < pNodes.length; i++) {
+                org.wyona.foaf.api.basics.Person person = new org.wyona.foaf.impl.basics.PersonImpl(pNodes[i].getInputStream());
+                sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
+                sb.append("<title><![CDATA[" + person.getName() + "]]></title>");
+                sb.append("<excerpt><![CDATA[" + "About " + person.getName() + " ..." + "]]></excerpt>");
+                sb.append("<url><![CDATA[" + "profiles/" + withoutSuffix(pNodes[i].getName()) + ".html" + "]]></url>");
+                sb.append("<last-modified><![CDATA[" + "null" + "]]></last-modified>");
+                sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
+                sb.append("</result>");
+            }
+            } else {
+                sb.append("<no-results/>");
+            }
+
+// TODO: Implement Advanced Search
+/*
+            Nodes[] nodes = getRealm().getRepository().searchProperty("firstname", firstname);
+            Nodes[] nodes = getRealm().getRepository().searchProperty("lastname", lastname);
+*/
+
+        sb.append("</provider>");
+        return sb;
     }
 
     /**
