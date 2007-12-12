@@ -115,9 +115,12 @@ public class FindFriendResource extends Resource implements ViewableV2 {
 
             if (resultSet != null && resultSet.size() > 0) {
                 sb.append("<provider source-name=\"" + resultSet.getSourceName() + "\" source-domain=\"" + resultSet.getSourceDomain() + "\" numberOfResults=\"" + resultSet.size() + "\">");
+
+                int numberOfDisplayedResults = 0;
                 for (int k = 0;k < resultSet.size(); k++) {
                     java.net.URL url = resultSet.get(k).url;
                     if (url.toString().endsWith("rdf")) {
+                        numberOfDisplayedResults = numberOfDisplayedResults + 1;
                         sb.append("<result number=\"" + (k+1) + "\" source-name=\"" + resultSet.getSourceName() + "\">");
                         sb.append("<title><![CDATA[" + resultSet.get(k).title + "]]></title>");
                         sb.append("<excerpt><![CDATA[" + resultSet.get(k).excerpt + "]]></excerpt>");
@@ -129,6 +132,9 @@ public class FindFriendResource extends Resource implements ViewableV2 {
                         // TODO: Check mime type (application/rdf+xml) or take a look inside ...!
                         log.warn("Does not seem to be a RDF: " + url);
                     }
+                }
+                if (numberOfDisplayedResults < 1) {
+                    sb.append("<no-results/>");
                 }
                 sb.append("</provider>");
             }
@@ -143,11 +149,11 @@ public class FindFriendResource extends Resource implements ViewableV2 {
      */
     private StringBuffer getLocalResults(String qs) throws Exception {
         StringBuffer sb = new StringBuffer("");
-        sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "1" + "\">");
 
         Repository pRepo = getProfilesRepository();
         Node[] pNodes = pRepo.search(qs);
-        if (pNodes != null) {
+        if (pNodes != null && pNodes.length > 0) {
+            sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + pNodes.length + "\">");
             for (int i = 0; i < pNodes.length; i++) {
                 org.wyona.foaf.api.basics.Person person = new org.wyona.foaf.impl.basics.PersonImpl(pNodes[i].getInputStream());
                 sb.append("<result number=\"" + "1" + "\" source-name=\"" + "Wyona-FOAF" + "\">");
@@ -158,9 +164,10 @@ public class FindFriendResource extends Resource implements ViewableV2 {
                 sb.append("<mime-type suffix=\"html\">application/xhtml+xml</mime-type>");
                 sb.append("</result>");
             }
-            } else {
-                sb.append("<no-results/>");
-            }
+        } else {
+            sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + "0" + "\">");
+            sb.append("<no-results/>");
+        }
 
 // TODO: Implement Advanced Search
 /*
