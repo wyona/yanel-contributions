@@ -135,6 +135,9 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
+    <xsl:when test="foaf:homepage">
+      <a href="{foaf:homepage/@rdf:resource}"><xsl:value-of select="foaf:name"/></a>
+    </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="foaf:name"/>
     </xsl:otherwise>
