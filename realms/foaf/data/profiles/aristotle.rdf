@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<rdf:RDF
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+      xmlns:foaf="http://xmlns.com/foaf/0.1/"
+      xmlns:admin="http://webns.net/mvcb/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+<foaf:PersonalProfileDocument rdf:about="">
+  <foaf:maker rdf:resource="#me"/>
+  <foaf:primaryTopic rdf:resource="#me"/>
+  <admin:generatorAgent rdf:resource="http://www.ldodds.com/foaf/foaf-a-matic"/>
+  <admin:errorReportsTo rdf:resource="mailto:leigh@ldodds.com"/>
+</foaf:PersonalProfileDocument>
+
+<foaf:Person rdf:ID="me">
+<foaf:name>Aristotle</foaf:name>
+<foaf:givenname>Michael</foaf:givenname>
+<foaf:family_name>Wechner</foaf:family_name>
+
+<foaf:mbox_sha1sum>5084c5a147cbf89417e05c55b25e4678b697fbdf</foaf:mbox_sha1sum>
+
+<foaf:phone rdf:resource="tel:+41-44-272-91-61"/>
+<foaf:workplaceHomepage rdf:resource="http://en.wikipedia.org/wiki/Platonic_Academy"/>
+<foaf:workInfoHomepage rdf:resource="Academy"/>
+<foaf:homepage rdf:resource="http://en.wikipedia.org/wiki/Aristotle"/>
+
+<!--
+<foaf:Group>
+  <foaf:name>Family</foaf:name>
+  <foaf:member rdf:resource="#karin"/>
+</foaf:Group>
+
+<foaf:Group>
+  <foaf:name>Friends</foaf:name>
+  <foaf:member rdf:resource="#gerrit"/>
+  <foaf:member rdf:resource="#waedi"/>
+  <foaf:member rdf:resource="#raemsi"/>
+</foaf:Group>
+
+<foaf:Group>
+  <foaf:name>Co-workers at Wyona Research and Development</foaf:name>
+  <foaf:member rdf:resource="#simon"/>
+  <foaf:member rdf:resource="#simone"/>
+  <foaf:member rdf:resource="#josias"/>
+</foaf:Group>
+-->
+
+<foaf:knows>
+  <foaf:Person rdf:ID="plato" dc:description="Friend and worked together">
+    <foaf:name>Plato</foaf:name>
+    <foaf:mbox_sha1sum>a8de95b22dfdd12319da88b10829fc12193edbde</foaf:mbox_sha1sum>
+    <rdfs:seeAlso rdf:resource="http://foaf.wyona.org/profiles/gerrit-nagel.rdf"/>
+    <foaf:interest rdf:resource="http://www.foaf-project.org/2004/us/index.html"/>
+  </foaf:Person>
+</foaf:knows>
+
+<foaf:knows>
+  <foaf:Person rdf:ID="socrates" dc:description="Friend and Neighbour">
+    <foaf:name>Socrates</foaf:name>
+    <foaf:mbox_sha1sum>a8de95b22dfdd12319da88b10829fc12193edbde</foaf:mbox_sha1sum>
+    <rdfs:seeAlso rdf:resource="http://foaf.wyona.org/profiles/walter-suter.rdf"/>
+    <foaf:phone rdf:resource="tel:+41 44 268 89 94"/>
+    <foaf:mbox rdf:resource="mailto:peter.brandt@ergon.ch"/>
+  </foaf:Person>
+</foaf:knows>
+
+</foaf:Person>
+</rdf:RDF>
