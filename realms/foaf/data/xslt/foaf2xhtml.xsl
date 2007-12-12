@@ -46,7 +46,7 @@
 </tr>
 <tr>
 <td>
-<h2>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
+<h2><xsl:if test="/wyona:foaf/wyona:third-party-source">Third-Party </xsl:if>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
 
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:homepage"/>
@@ -125,10 +125,18 @@
   <li>
   <xsl:choose>
     <xsl:when test="rdfs:seeAlso/@rdf:resource">
-  <a href="print.html?href={rdfs:seeAlso/@rdf:resource}"><xsl:value-of select="foaf:name"/></a>
+      <xsl:variable name="rdf-link" select="rdfs:seeAlso/@rdf:resource"/>
+      <xsl:choose>
+        <xsl:when test="starts-with($rdf-link, 'http')">
+          <a href="print.html?href={$rdf-link}"><xsl:value-of select="foaf:name"/></a>
+        </xsl:when>
+        <xsl:otherwise>
+          <a href="{substring-before($rdf-link, '.rdf')}.html"><xsl:value-of select="foaf:name"/></a>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:otherwise>
-  <xsl:value-of select="foaf:name"/>
+      <xsl:value-of select="foaf:name"/>
     </xsl:otherwise>
   </xsl:choose>
   <xsl:apply-templates select="@dc:description" mode="person"/></li>
