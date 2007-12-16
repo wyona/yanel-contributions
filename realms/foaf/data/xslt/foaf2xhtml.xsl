@@ -126,12 +126,12 @@
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="atom">
-<a href="?yanel.resource.viewid=atom">OpenSocial People data API</a>
+<a href="?yanel.resource.viewid=atom">OpenSocial People data API</a> (<a href="http://code.google.com/apis/opensocial/docs/gdata/people/developers_guide_protocol.html">TODO</a>)
 <br/>
 </xsl:template>
 
 <xsl:template match="wyona:third-party-source" mode="atom">
-<a href="?href={@href}&amp;yanel.resource.viewid=atom">OpenSocial People data API</a>
+<a href="?href={@href}&amp;yanel.resource.viewid=atom">OpenSocial People data API</a> (<a href="http://code.google.com/apis/opensocial/docs/gdata/people/developers_guide_protocol.html">TODO</a>)
 <br/>
 </xsl:template>
 
