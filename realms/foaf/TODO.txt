@@ -2,6 +2,11 @@
   TODO
   ----
 
+  SEE ALSO: http://foaf.wyona.org/bugzilla-redirect.html
+
+
+    todo: Move these tasks into Bugzilla (see above)
+
   - Implement Meguni Implementations of:
       - Facebook (http://www.facebook.com/srch.php?nm=Sam+Ruby)
       - LinkedIn (http://www.linkedin.com/search?search=&sik=1194372540647&keywords=Michael+Wechner&sortCriteria=4)
