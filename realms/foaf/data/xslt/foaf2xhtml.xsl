@@ -80,7 +80,7 @@
 <xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="atom"/>
 
 <br/><br/>
-<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="{$yarep.back2realm}add-friend.html?href=TODO">Add to your address book</a> | <a href="{$yarep.back2realm}send-invitation.html?profile-of-friend=TODO">Send invitation</a></xsl:when><xsl:otherwise><a href="{$yarep.back2realm}profiles/{$username}/add-friend.html?href=TODO">Add to your address book</a> | <a href="{$yarep.back2realm}profiles/{$username}/send-invitation.html?profile-of-friend=TODO">Send invitation</a></xsl:otherwise></xsl:choose>
+<xsl:choose><xsl:when test="$username = 'foaf:uin'"><xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="add-friend-uin"/><xsl:apply-templates select="/wyona:foaf/wyona:source" mode="add-friend-uin"/></xsl:when><xsl:otherwise><xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="add-friend"/><xsl:apply-templates select="/wyona:foaf/wyona:source" mode="add-friend"/></xsl:otherwise></xsl:choose>
 </td>
 </tr>
 </table>
@@ -97,6 +97,23 @@
 <a href="?href={@href}&amp;yanel.resource.viewid=source">XML</a>
 <br/>
 </xsl:template>
+
+<xsl:template match="wyona:third-party-source" mode="add-friend-uin">
+  <a href="{$yarep.back2realm}add-friend.html?href={@href}&amp;remote">Add to your address book</a> | <a href="{$yarep.back2realm}send-invitation.html?profile-of-friend={@href}&amp;remote">Send invitation</a>
+</xsl:template>
+
+<xsl:template match="wyona:source" mode="add-friend-uin">
+  <a href="{$yarep.back2realm}add-friend.html?href={@href}&amp;local">Add to your address book</a> | <a href="{$yarep.back2realm}send-invitation.html?profile-of-friend={@href}&amp;local">Send invitation</a>
+</xsl:template>
+
+<xsl:template match="wyona:third-party-source" mode="add-friend">
+  <a href="{$yarep.back2realm}profiles/{$username}/add-friend.html?href={@href}&amp;remote">Add to your address book</a> | <a href="{$yarep.back2realm}profiles/{$username}/send-invitation.html?profile-of-friend={@href}&amp;remote">Send invitation</a>
+</xsl:template>
+
+<xsl:template match="wyona:source" mode="add-friend">
+  <a href="{$yarep.back2realm}profiles/{$username}/add-friend.html?href={@href}&amp;local">Add to your address book</a> | <a href="{$yarep.back2realm}profiles/{$username}/send-invitation.html?profile-of-friend={@href}&amp;local">Send invitation</a>
+</xsl:template>
+
 
 <xsl:template match="wyona:source" mode="original">
 <a href="{$yarep.back2realm}{@href}">FOAF RDF</a>
