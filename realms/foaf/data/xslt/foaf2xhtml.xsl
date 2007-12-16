@@ -80,7 +80,7 @@
 <xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="atom"/>
 
 <br/><br/>
-<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="../add-friend.html?href=TODO">Add to your address book</a> | <a href="../send-invitation.html?profile-of-friend=TODO">Send invitation</a></xsl:when><xsl:otherwise><a href="../profiles/{$username}/add-friend.html?href=TODO">Add to your address book</a> | <a href="../profiles/{$username}/send-invitation.html?profile-of-friend=TODO">Send invitation</a></xsl:otherwise></xsl:choose>
+<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="{$yarep.back2realm}add-friend.html?href=TODO">Add to your address book</a> | <a href="{$yarep.back2realm}send-invitation.html?profile-of-friend=TODO">Send invitation</a></xsl:when><xsl:otherwise><a href="{$yarep.back2realm}profiles/{$username}/add-friend.html?href=TODO">Add to your address book</a> | <a href="{$yarep.back2realm}profiles/{$username}/send-invitation.html?profile-of-friend=TODO">Send invitation</a></xsl:otherwise></xsl:choose>
 </td>
 </tr>
 </table>
