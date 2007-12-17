@@ -26,6 +26,10 @@ import org.wyona.yarep.core.Node;
 import org.wyona.yarep.core.Repository;
 import org.wyona.yarep.core.RepositoryFactory;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+
 /**
  *
  */
@@ -96,8 +100,6 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
             sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\">");
 
-            // WORKAROUND: The XIncludeTransformer does to propagate the namespaces ...
-            //sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\" xmlns:admin=\"http://webns.net/mvcb/\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:i18n=\"http://www.wyona.org/yanel/i18n/1.0\" xmlns:xi=\"http://www.w3.org/2001/XInclude\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:foaf=\"http://xmlns.com/foaf/0.1/\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">");
             if (getRequest().getParameter("href") != null) {
                 sb.append("<wyona:third-party-source href=\"" + getRequest().getParameter("href") + "\"/>");
             } else {
@@ -135,6 +137,7 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
                 view.setMimeType(getMimeType(viewId));
                 return view;
 	    } else if (viewId != null && viewId.equals("atom")) {
+                Transformer atomTransformer = getAtomTransformer();
                 view.setInputStream(new StringBufferInputStream(new StringBuffer("Not implemented yet!").toString()));
                 view.setMimeType("text/plain");
 /*
@@ -326,5 +329,16 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
      */
     private org.apache.xml.serializer.Serializer getSerializer() {
         return org.wyona.yanel.core.serialization.SerializerFactory.getSerializer(org.wyona.yanel.core.serialization.SerializerFactory.XML);
+    }
+
+    /**
+     *
+     */
+    private Transformer getAtomTransformer() throws Exception {
+        //File xsltFile = org.wyona.commons.io.FileUtil.file(getRTD().getConfigFile().getParentFile().getAbsolutePath(), "foaf2opensocial.xsl");
+        URL xsltURL = FOAFResource.class.getClassLoader().getResource("org/wyona/yanel/impl/resources/foaf/foaf2opensocial.xsl");
+        log.error("DEBUG: XSLT url: " + xsltURL);
+        return TransformerFactory.newInstance().newTransformer(new StreamSource(xsltURL.openStream()));
+        //return TransformerFactory.newInstance().newTransformer(new StreamSource(new File(xsltURL.getFile())));
     }
 }
