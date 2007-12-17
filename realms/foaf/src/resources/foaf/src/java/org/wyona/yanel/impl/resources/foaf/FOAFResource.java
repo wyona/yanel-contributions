@@ -49,15 +49,18 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
     }
 
     /**
-     *
+     * Get mime type
      */
     public String getMimeType(String viewId) {
         if (viewId !=  null && viewId.equals("source")) {
             return "application/xml";
         } else if (viewId !=  null && viewId.equals("rdf+xml")) {
-            return "application/rdf+xml";
+            // TODO: Firefox somehow changes application/rdf+xml into application/vnd.mozilla.xul+xml
+            return "application/xml";
+            //return "application/rdf+xml";
         } else if (getPath().endsWith(".rdf")) {
-            return "application/rdf+xml";
+            return "application/xml";
+            //return "application/rdf+xml";
         } else if (viewId !=  null && viewId.equals("atom")) {
             return "application/atom+xml";
         } else if (getPath().startsWith("/feeds/people")) {
@@ -303,7 +306,7 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
         } else if (path.startsWith("/feeds/people")) {
             path = "/profiles" + path.substring(path.lastIndexOf("/")) + ".rdf";
         }
-        log.error("DEBUG: getPath(): " + getPath() + ", path: " + path);
+        if (log.isDebugEnabled()) log.debug("getPath(): " + getPath() + ", path: " + path);
         return path;
     }
 
