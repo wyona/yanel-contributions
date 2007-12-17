@@ -10,6 +10,6 @@ FOAF (People Data)
 </description>
 
 <rtd>
-  <property name="href"/>
+  <property name="xslt"/>
 </rtd>
 </resource>
