@@ -56,7 +56,11 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             return "application/xml";
         } else if (viewId !=  null && viewId.equals("rdf+xml")) {
             return "application/rdf+xml";
+        } else if (getPath().endsWith(".rdf")) {
+            return "application/rdf+xml";
         } else if (viewId !=  null && viewId.equals("atom")) {
+            return "application/atom+xml";
+        } else if (getPath().startsWith("/feeds/people")) {
             return "application/atom+xml";
         } else {
             return "application/xhtml+xml";
@@ -67,7 +71,7 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
      *
      */
     public long getSize() {
-        log.error("Implementation not done yet!");
+        log.warn("Not implemented yet!");
         return -1;
     }
 
@@ -87,32 +91,20 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             }
 
             StringBuffer sb = new StringBuffer("<?xml version=\"1.0\"?>");
-// WORKAROUND: The XIncludeTransformer does to propagate the namespaces ...
-            sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\" xmlns:admin=\"http://webns.net/mvcb/\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:i18n=\"http://www.wyona.org/yanel/i18n/1.0\" xmlns:xi=\"http://www.w3.org/2001/XInclude\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:foaf=\"http://xmlns.com/foaf/0.1/\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">");
+            sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\">");
+
+            // WORKAROUND: The XIncludeTransformer does to propagate the namespaces ...
+            //sb.append("<wyona:foaf xmlns:wyona=\"http://www.wyona.org/foaf/1.0\" xmlns:admin=\"http://webns.net/mvcb/\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:i18n=\"http://www.wyona.org/yanel/i18n/1.0\" xmlns:xi=\"http://www.w3.org/2001/XInclude\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:foaf=\"http://xmlns.com/foaf/0.1/\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">");
             if (getRequest().getParameter("href") != null) {
                 sb.append("<wyona:third-party-source href=\"" + getRequest().getParameter("href") + "\"/>");
             } else {
-                sb.append("<wyona:source href=\"" + path.substring(0, path.lastIndexOf(".html")) + ".rdf\"/>");
+                sb.append("<wyona:source href=\"" + getRDFPath() + "\"/>");
             }
-/*
-            // TODO: The following leads to errors if the RDF contains special characters!
-            BufferedReader br = new BufferedReader(new InputStreamReader(getRDFAsInputStream()));
-            String line;
-            while((line = br.readLine()) != null){
-                if (line.indexOf("<?xml") < 0) {
-                    sb.append(line);
-                }
-            }
-*/
             if (getRequest().getParameter("href") != null) {
                 URL url = new URL(getRequest().getParameter("href"));
                 sb.append("<xi:include href=\"" + url.toString() + "\" xmlns:xi=\"http://www.w3.org/2001/XInclude\"/>");
             } else {
-                String rdfPath = getPath();
-	        if (rdfPath.endsWith(".html")) {
-                    rdfPath = path.substring(0, path.lastIndexOf(".html")) + ".rdf";
-                }
-                sb.append("<xi:include href=\"yanelresource:" + rdfPath + "\" xmlns:xi=\"http://www.w3.org/2001/XInclude\"/>");
+                sb.append("<xi:include href=\"yanelresource:" + getRDFPath() + "\" xmlns:xi=\"http://www.w3.org/2001/XInclude\"/>");
             }
             sb.append("</wyona:foaf>");
 
@@ -191,12 +183,7 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             URL url = new URL(getRequest().getParameter("href"));
             return url.openConnection().getInputStream();
         } else {
-            String path = getPath();
-	    if (path.endsWith(".html")) {
-                path = path.substring(0, path.lastIndexOf(".html")) + ".rdf";
-            }
-            //log.error("DEBUG: RDF path: " + path);
-            return getProfilesRepository().getNode(path).getInputStream();
+            return getProfilesRepository().getNode(getRDFPath()).getInputStream();
         }
     }
 
@@ -212,7 +199,6 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
     
     /**
      * Get introspection for Introspectable interface
-     * TODO: What about XML which is being generated dynamically, e.g. http://yanel.wyona.org/roadmap-timeline.html
      */
     public String getIntrospection() throws Exception {
         String name = org.wyona.yanel.core.util.PathUtil.getName(getPath());
@@ -314,7 +300,10 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
         String path = getPath();
 	if (path.endsWith(".html")) {
             path = path.substring(0, path.lastIndexOf(".html")) + ".rdf";
+        } else if (path.startsWith("/feeds/people")) {
+            path = "/profiles" + path.substring(path.lastIndexOf("/")) + ".rdf";
         }
+        log.error("DEBUG: getPath(): " + getPath() + ", path: " + path);
         return path;
     }
 
