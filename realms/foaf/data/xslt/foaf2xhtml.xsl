@@ -51,12 +51,12 @@
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:homepage"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:phone"/>
+<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:depiction"/>
 
 
+<xsl:if test="/wyona:foaf/rdf:RDF/foaf:Person/foaf:knows">
 <h3>People which <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/> knows about</h3>
-<!--
-<h3>Friends</h3>
--->
+</xsl:if>
 <ul>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:knows"/>
 </ul>
@@ -176,6 +176,12 @@ Personal Homepage: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource
 <xsl:template match="foaf:phone">
 <p>
 Phone: <xsl:value-of select="@rdf:resource"/>
+</p>
+</xsl:template>
+
+<xsl:template match="foaf:depiction">
+<p>
+<img src="{@rdf:resource}" height="200"/>
 </p>
 </xsl:template>
 
