@@ -3,4 +3,5 @@
 <rc-map>
   <matcher pattern="/profiles/*.html" rcpath="/profile.yanel-rc"/>
   <matcher pattern="/profiles/*.rdf" rcpath="/profile.yanel-rc"/>
+  <matcher pattern="/feeds/people/*" rcpath="/profile-atom.yanel-rc"/>
 </rc-map>
