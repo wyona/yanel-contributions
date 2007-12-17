@@ -126,7 +126,7 @@
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="atom">
-<a href="?yanel.resource.viewid=atom">OpenSocial People data API</a> (<a href="http://code.google.com/apis/opensocial/docs/gdata/people/developers_guide_protocol.html">TODO</a>)
+<a href="{$yarep.back2realm}feeds/people/{$name-without-suffix}">OpenSocial People data API</a> (<a href="http://code.google.com/apis/opensocial/docs/gdata/people/developers_guide_protocol.html">TODO</a>)
 <br/>
 </xsl:template>
 
