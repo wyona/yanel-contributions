@@ -28,6 +28,7 @@ import org.wyona.yarep.core.RepositoryFactory;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 /**
@@ -136,10 +137,18 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
                 view.setInputStream(getRDFAsInputStream());
                 view.setMimeType(getMimeType(viewId));
                 return view;
-	    } else if (viewId != null && viewId.equals("atom")) {
+	    } else if (path.startsWith("/feeds/people") || (viewId != null && viewId.equals("atom"))) {
                 Transformer atomTransformer = getAtomTransformer();
+                java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
+                atomTransformer.transform(new StreamSource(getRDFAsInputStream()), new StreamResult(baout));
+                view.setInputStream(new java.io.ByteArrayInputStream(baout.toByteArray()));
+                view.setMimeType("application/xml");
+                //view.setMimeType(getMimeType(viewId));
+
+/*
                 view.setInputStream(new StringBufferInputStream(new StringBuffer("Not implemented yet!").toString()));
                 view.setMimeType("text/plain");
+*/
 /*
                 view.setInputStream(getRDFAsInputStream());
                 view.setMimeType(getMimeType(viewId));
@@ -335,10 +344,12 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
      *
      */
     private Transformer getAtomTransformer() throws Exception {
-        //File xsltFile = org.wyona.commons.io.FileUtil.file(getRTD().getConfigFile().getParentFile().getAbsolutePath(), "foaf2opensocial.xsl");
+/*
         URL xsltURL = FOAFResource.class.getClassLoader().getResource("org/wyona/yanel/impl/resources/foaf/foaf2opensocial.xsl");
         log.error("DEBUG: XSLT url: " + xsltURL);
         return TransformerFactory.newInstance().newTransformer(new StreamSource(xsltURL.openStream()));
-        //return TransformerFactory.newInstance().newTransformer(new StreamSource(new File(xsltURL.getFile())));
+*/
+
+        return TransformerFactory.newInstance().newTransformer(new StreamSource(getRealm().getRepository().getNode("/foaf2opensocial.xsl").getInputStream()));
     }
 }
