@@ -116,13 +116,15 @@
 
 
 <xsl:template match="wyona:source" mode="original">
-<a href="{$yarep.back2realm}{@href}">FOAF RDF</a>
 <br/>
+<a href="{$yarep.back2realm}{@href}"><img src="{$yarep.back2realm}foafTiny.gif" alt="FOAF RDF" border="0"/></a>
+<br/><br/>
 </xsl:template>
 
 <xsl:template match="wyona:third-party-source" mode="original">
-<a href="{@href}">Original FOAF RDF</a>
 <br/>
+<a href="{@href}"><img src="{$yarep.back2realm}foafTiny.gif" alt="Original FOAF RDF" border="0"/></a>
+<br/><br/>
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="atom">
