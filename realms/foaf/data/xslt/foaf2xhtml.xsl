@@ -123,7 +123,7 @@
 
 <xsl:template match="wyona:third-party-source" mode="original">
 <br/>
-<a href="{@href}"><img src="{$yarep.back2realm}foafTiny.gif" alt="Original FOAF RDF" border="0"/></a>
+<a href="{@href}"><img src="{$yarep.back2realm}foafTiny.gif" alt="Original FOAF RDF" border="0"/></a> (<a href="http://www.w3.org/RDF/Validator/ARPServlet?URI={@href}&amp;PARSE=Parse+URI%3A+&amp;TRIPLES_AND_GRAPH=PRINT_TRIPLES&amp;FORMAT=PNG_EMBED">Validate RDF</a>)
 <br/><br/>
 </xsl:template>
 
