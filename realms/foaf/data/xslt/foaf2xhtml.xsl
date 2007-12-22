@@ -51,6 +51,7 @@
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:homepage"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:phone"/>
+<xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:weblog"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:depiction"/>
 
 
@@ -178,6 +179,12 @@ Personal Homepage: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource
 <xsl:template match="foaf:phone">
 <p>
 Phone: <xsl:value-of select="@rdf:resource"/>
+</p>
+</xsl:template>
+
+<xsl:template match="foaf:weblog">
+<p>
+Weblog: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource"/></a>
 </p>
 </xsl:template>
 
