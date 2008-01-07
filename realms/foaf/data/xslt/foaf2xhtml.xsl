@@ -41,14 +41,18 @@
 </head>
 
 <body>
-<table border="1">
-<tr>
-<td colspan="2"><a href="{$yarep.back2realm}index.html">Find A Friend</a></td><td align="right"><xsl:choose><xsl:when test="$username != 'foaf:uin'">Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:when><xsl:otherwise><a href="{$yarep.back2realm}login.html">Login</a></xsl:otherwise></xsl:choose> | <a href="?yanel.toolbar=on">Toolbar</a></td>
+<table border="0">
+<tr height="50">
+<td><a href="{$yarep.back2realm}index.html">Find A Friend</a></td><td align="right"><xsl:choose><xsl:when test="$username != 'foaf:uin'">Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:when><xsl:otherwise><a href="{$yarep.back2realm}login.html">Login</a></xsl:otherwise></xsl:choose> | <a href="?yanel.toolbar=on">Toolbar</a></td>
 </tr>
+
+<tr>
+<td colspan="2">
+<fieldset>
+<legend><b><xsl:if test="/wyona:foaf/wyona:third-party-source">Third-Party </xsl:if>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></b></legend>
+<table border="0">
 <tr>
 <td>
-<h2><xsl:if test="/wyona:foaf/wyona:third-party-source">Third-Party </xsl:if>Profile of <xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></h2>
-
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:workplaceHomepage"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:homepage"/>
 <xsl:apply-templates select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:phone"/>
@@ -83,6 +87,10 @@
 
 <br/><br/>
 <xsl:choose><xsl:when test="$username = 'foaf:uin'"><xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="add-friend-uin"/><xsl:apply-templates select="/wyona:foaf/wyona:source" mode="add-friend-uin"/></xsl:when><xsl:otherwise><xsl:apply-templates select="/wyona:foaf/wyona:third-party-source" mode="add-friend"/><xsl:apply-templates select="/wyona:foaf/wyona:source" mode="add-friend"/></xsl:otherwise></xsl:choose>
+</td>
+</tr>
+</table>
+</fieldset>
 </td>
 </tr>
 </table>
