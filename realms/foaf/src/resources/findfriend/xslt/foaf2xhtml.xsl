@@ -22,12 +22,13 @@
 <head>
   <title>Find a friend</title>
   <link rel="foaf-introspection" type="application/foaf+xml" href="foaf-introspection.xml"/>
+  <link rel="stylesheet" type="text/css" href="css/homepage.css"/>
 </head>
 
 <body>
 <p>
 <font size="-1">
-<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="login.html">Login</a></xsl:when><xsl:otherwise><a href="?yanel.usecase=logout">Logout</a> (<xsl:value-of select="$username"/>)</xsl:otherwise></xsl:choose> | <!--<a href="register.html">Register</a> | --><a href="about.html">About</a> | <a href="developers.html">Developers</a> | <a href="http://yanel.wyona.org/en/download/index.html">Download</a>
+<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="login.html">Login</a></xsl:when><xsl:otherwise>Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:otherwise></xsl:choose> | <!--<a href="register.html">Register</a> | --><a href="about.html">About</a> | <a href="developers.html">Developers</a> | <a href="http://yanel.wyona.org/en/download/index.html">Download</a>
 </font>
 </p>
 
@@ -55,9 +56,10 @@
 </table>
 </p>
 <xsl:apply-templates select="/foaf:foaf/foaf:provider"/>
-<p>
-Copyright &#169; 2007 Wyona
-</p>
+
+<div id="copyright">
+Copyright &#169; 2008 Wyona
+</div>
 </xsl:when>
 
 
@@ -83,9 +85,9 @@ Copyright &#169; 2007 Wyona
 </table>
 </p>
 
-<p>
-Copyright &#169; 2007 Wyona
-</p>
+<div id="copyright">
+Copyright &#169; 2008 Wyona
+</div>
 </center>
 </xsl:otherwise>
 </xsl:choose>
