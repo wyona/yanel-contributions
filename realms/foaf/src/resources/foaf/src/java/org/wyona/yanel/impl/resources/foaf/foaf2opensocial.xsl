@@ -16,6 +16,7 @@
   
   <xsl:template match="/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
     <entry>
+<xsl:comment>TODO: http://code.google.com/apis/opensocial/docs/gdata/people/developers_guide_protocol.html</xsl:comment>
       <id><xsl:value-of select="$yanel.path"/></id>
       <title><xsl:value-of select="/rdf:RDF/foaf:Person/foaf:name"/></title>
     </entry>
