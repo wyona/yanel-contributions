@@ -1,0 +1,57 @@
+/*
+* Copyright 2008 Wyona
+*/
+
+body {
+  margin: 10px;
+  padding: 0px;
+}
+
+a {
+  text-decoration: none;  
+  font-weight: bold;
+  color: #0066CC;
+}
+
+a:hover {
+  font-weight: bold;
+  color: #3399FF;
+}
+
+a:visited {
+  font-weight: bold;
+  color: #FFCC00;
+}
+
+a:visited:hover {
+  font-weight: bold;
+  color: #3399FF;
+}
+
+#copyright{
+  font-family: verdana, sans-serif;
+  font-size: 9px;
+  /*text-align: center;*/
+  color: #333333;
+
+  /*border-top: solid 1px #b1b1b1;*/
+  border-left: solid 1px #b1b1b1;
+  border-right: solid 1px #b1b1b1;
+}
+  
+#copyright a {
+  text-decoration: none;
+  color: #3366cc;
+}
+
+#copyright a:hover {
+  color: #ff6600;
+}
+
+#copyright a:visited {
+  color: #909090;
+}
+
+#copyright a:visited:hover {
+  color: #ff6600;
+}
