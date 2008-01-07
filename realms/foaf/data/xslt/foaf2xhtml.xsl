@@ -37,12 +37,13 @@
   <title><xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></title>
   <link rel="neutron-introspection" type="application/neutron+xml" href="?yanel.resource.usecase=introspection"/>
   <link rel="meta" type="application/rdf+xml" title="FOAF" href="{$name-without-suffix}.rdf"/>
+  <link rel="stylesheet" type="text/css" href="{$yarep.back2realm}css/profile.css"/>
 </head>
 
 <body>
 <table border="1">
 <tr>
-<td colspan="2"><a href="{$yarep.back2realm}index.html">Find A Friend</a></td><td align="right"><xsl:choose><xsl:when test="$username != 'foaf:uin'"><a href="?yanel.usecase=logout">Logout</a> (<xsl:value-of select="$username"/>)</xsl:when><xsl:otherwise><a href="{$yarep.back2realm}login.html">Login</a></xsl:otherwise></xsl:choose> | <a href="?yanel.toolbar=on">Toolbar</a></td>
+<td colspan="2"><a href="{$yarep.back2realm}index.html">Find A Friend</a></td><td align="right"><xsl:choose><xsl:when test="$username != 'foaf:uin'">Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:when><xsl:otherwise><a href="{$yarep.back2realm}login.html">Login</a></xsl:otherwise></xsl:choose> | <a href="?yanel.toolbar=on">Toolbar</a></td>
 </tr>
 <tr>
 <td>
@@ -129,7 +130,7 @@
 </xsl:template>
 
 <xsl:template match="wyona:source" mode="atom">
-<a href="{$yarep.back2realm}feeds/people/{$name-without-suffix}">OpenSocial People data API</a> (<a href="http://code.google.com/apis/opensocial/docs/gdata/people/developers_guide_protocol.html">TODO</a>)
+<a href="{$yarep.back2realm}feeds/people/{$name-without-suffix}">OpenSocial People data API</a>
 <br/>
 </xsl:template>
 
