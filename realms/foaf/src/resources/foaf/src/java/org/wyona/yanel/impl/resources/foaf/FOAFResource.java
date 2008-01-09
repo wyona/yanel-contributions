@@ -198,6 +198,8 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             URL url = new URL(getRequest().getParameter("href"));
             return url.openConnection().getInputStream();
         } else {
+            // TODO: Check access control policies! Maybe using some AccessControlTransformer ... see the phone element of data/profiles/plato.rdf
+            //return checkPrivacy(getProfilesRepository().getNode(getRDFPath()).getInputStream());
             return getProfilesRepository().getNode(getRDFPath()).getInputStream();
         }
     }
