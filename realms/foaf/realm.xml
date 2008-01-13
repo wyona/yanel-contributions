@@ -15,7 +15,7 @@
   <foaf:profiles-data xmlns:foaf="http://www.wyona.org/foaf/1.0">/home/michi/src/wyona-svn/wyona/misc/foaf/jcr-data-repository-cnode1.xml</foaf:profiles-data>
 -->
 
-  <ac-policies>config/ac-policies-repository.xml</ac-policies>
+  <ac-policies class="org.wyona.security.impl.PolicyManagerFactoryImplVersion2">config/ac-policies-repository.xml</ac-policies>
   <ac-identities>config/ac-identities-repository.xml</ac-identities>
 
 </realm-config>
