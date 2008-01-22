@@ -28,6 +28,7 @@
 <xsl:param name="content-language" select="'CONTENT_LANGUAGE_IS_NULL'"/>
 
 <xsl:param name="yanel.meta.language" select="'en'"/>
+<xsl:param name="yanel.toolbar-status" select="'TOOLBAR_STATUS_IS_NULL'"/>
 
 <xsl:variable name="name-without-suffix" select="substring-before($yanel.path.name, '.')"/>
 
@@ -43,7 +44,7 @@
 <body>
 <table border="0">
 <tr height="50">
-<td><a href="{$yarep.back2realm}index.html">Find A Friend</a></td><td align="right"><xsl:choose><xsl:when test="$username != 'foaf:uin'">Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:when><xsl:otherwise><a href="{$yarep.back2realm}login.html">Login</a></xsl:otherwise></xsl:choose> | <a href="?yanel.toolbar=on">Toolbar</a></td>
+<td><a href="{$yarep.back2realm}index.html">Find A Friend</a></td><td align="right"><xsl:choose><xsl:when test="$username != 'foaf:uin'">Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:when><xsl:otherwise><a href="{$yarep.back2realm}login.html">Login</a></xsl:otherwise></xsl:choose> | <xsl:choose><xsl:when test="$yanel.toolbar-status = 'on'"><a href="?yanel.toolbar=off">Disable Toolbar</a></xsl:when><xsl:otherwise><a href="?yanel.toolbar=on">Enable Toolbar</a></xsl:otherwise></xsl:choose></td>
 </tr>
 
 <tr>
@@ -188,6 +189,9 @@ Personal Homepage: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource
 <xsl:template match="foaf:phone">
 <p>
 Phone: <xsl:value-of select="@rdf:resource"/>
+<xsl:if test="$yanel.toolbar-status='on'">
+&#160;(<a href="?phone">Privacy</a>)
+</xsl:if>
 </p>
 </xsl:template>
 
