@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="gallery"
+  namespace="http://www.wyona.org/yanel/resource/1.0"
+  class="org.wyona.yanel.impl.resources.gallery.GalleryResource"
+  >
+<description>
+A generic gallery for items
+</description>
+
+<rtd>
+  <!-- The collection where the galleries are -->
+  <property name="galleries-collection"/>
+</rtd>
+</resource>
