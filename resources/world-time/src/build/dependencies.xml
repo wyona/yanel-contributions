@@ -16,7 +16,9 @@
 <!--
       <dependency groupId="yarep" artifactId="yarep-core" version="0.0.1-dev-r21378"/>
 -->
-      <dependency groupId="wyona-org-commons" artifactId="wyona-org-commons" version="1.0-dev-r26137"/>
+<!-- Should not be necessary because Yanel core contains that already (referencing within pom-core.xml)
+      <dependency groupId="wyona-org-commons" artifactId="wyona-org-commons" version="1.0-dev-r30752"/>
+-->
     </artifact:dependencies>
 
     <artifact:dependencies pathId="maven2.resource.classpath" filesetId="maven2.resource.fileset">
