@@ -16,7 +16,37 @@ In case you need support or want to get in touch with the developers for whateve
 <p>
 </p><ol>
   <li>Download and install <a href="http://yanel.wyona.org">Yanel</a></li>
-  <li>Download and configure the <a href="http://svn.wyona.com/repos/public/yanel/contributions/realms/foaf/">FOAF realm</a> (Username: anonymous, Password: anonynous). See the documentation about realms at <a href="http://yanel.wyona.org/en/documentation/index.html">http://yanel.wyona.org/en/documentation/index.html</a></li>
+  <li>Download the <a href="http://svn.wyona.com/repos/public/yanel/contributions/realms/foaf/">FOAF realm</a> from subversion repository (Username: anonymous, Password: anonynous).<br />
+  Add the FOAF realm to your Yanel installation as follows (also see the documentation about realms at <a href="http://yanel.wyona.org/en/documentation/index.html">http://yanel.wyona.org/en/documentation/index.html</a>):<br/><br/>
+<ul>
+<li>
+  Add the following lines to your $YANEL_SRC/conf/local/local.realms.xml file:<br /><br />
+  &lt;realm id="foaf" mount-point="/foaf/"&gt;<br />
+ 	&#160;&#160;&lt;name&gt;FOAF&lt;/name&gt;<br />
+  	&#160;&#160;&lt;config src="$FOAF_REALM_SRC/"/&gt;<br />
+  &lt;/realm&gt;<br /><br />
+  Replace $FOAF_REALM_SRC by the directory which contains the downloaded FOAF realm.
+  </li>
+  <li>
+  Copy $YANEL_SRC/conf/resource-types.xml to the directory $YANEL_SRC/conf/local and rename it to $YANEL_SRC/conf/local/local.resource-types.xml.
+  </li>
+  <li>
+  Add the following resources to this new file:<br /><br />
+  &lt;resource-type src="$FOAF_REALM_SRC/src/resources/shared/" compile="true" /&gt;<br />
+  &lt;resource-type src="$FOAF_REALM_SRC/src/resources/foaf/" compile="true" /&gt;<br />
+  &lt;resource-type src="$FOAF_REALM_SRC/realms/foaf/src/resources/redirect/" compile="true" /&gt;<br />
+  &lt;resource-type src="$FOAF_REALM_SRC/realms/foaf/src/resources/findfriend/" compile="true" /&gt;<br /><br />
+  Replace $FOAF_REALM_SRC by the directory which contains the downloaded FOAF realm.
+  </li>
+  <li>Rebuild and restart Yanel.<br />
+  ./yanel.sh stop<br />
+  ./build.sh clean (just to make sure)<br />
+  ./build.sh<br />
+  ./yanel.sh start<br />
+  And browse to http://127.0.0.1:8080/yanel/foaf/
+  </li>
+</ul>
+</li>
 </ol>
 <h3>Task Tracker</h3>
 <a href="bugzilla-redirect.html">Bugzilla</a>
