@@ -54,7 +54,7 @@ import org.xml.sax.SAXException;
  * </p>
  */
 public class SimpleGallery extends GenericItemBase implements Gallery {
-    private static final String META_XML = "meta.xml";
+    public static final String META_XML = "meta.xml";
     private static final String ITEM_COLLECTION_PREFIX = "item-";
     
     private Repository repository = null;
@@ -165,7 +165,7 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
                     Node [] imageData = children[i].getNodes();
                     for (int j = 0; j < imageData.length; j++) {
                         // Detect mime type
-                        String mimeType = children[i].getMimeType();
+                        String mimeType = imageData[j].getMimeType();
                         if(null == mimeType){
                             mimeType = MimeTypeUtil.guessMimeType(PathUtil.getSuffix(imageData[j].getName()));
                         }
@@ -247,7 +247,7 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
         return imageItems.size();
     }
     
-    public final boolean removeItem(String id) {
+    public final GalleryItem removeItem(String id) {
         if(imageItems == null){
             imageItems = new ArrayList/*<Item>*/();
             loadRepository();
@@ -260,14 +260,14 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
             }
         }
         
-        return false;
+        return null;
     }
     
     /**
      * Override the method in order to remove differently.
      * @param the [item-X] node inside gallery
      * */
-    public boolean removeItem(GenericItem item) {
+    public GalleryItem removeItem(GalleryItem item) {
         boolean deleteOK = true;
         
         Node n = null;
@@ -289,7 +289,11 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
             deleteOK = false;
         }
         
-        return deleteOK;
+        if(deleteOK){
+            return item;
+        }else{
+            return null;
+        }
     }
     
     /**
@@ -306,7 +310,15 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
 
         Node itemNode = null;
         try {
-            itemNode = getRepository().getNode(getPath()).addNode(ITEM_COLLECTION_PREFIX+size(), NodeType.COLLECTION);
+            Node galleryNode = getRepository().getNode(getPath());
+            String itemNodeName = null;
+            for (int i = size(); i < Integer.MAX_VALUE; i++) {
+                itemNodeName = ITEM_COLLECTION_PREFIX+i;
+                if(!galleryNode.hasNode(itemNodeName)){
+                    break;
+                }
+            }
+            itemNode = galleryNode.addNode(itemNodeName, NodeType.COLLECTION);
             
             // Fix the system properties
             item.setProperty(ID_KEY, itemNode.getUUID());
@@ -321,14 +333,18 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
             StringBuffer sb = new StringBuffer("<?xml version='1.0'?>");
             sb.append("<meta>");
             
-            sb.append("<"+TITLE_KEY+"><![CDATA[");
-            sb.append(item.getProperty(TITLE_KEY));
-            sb.append("]]></"+TITLE_KEY+">");
+            if(item.getProperty(TITLE_KEY) != null){
+                sb.append("<"+TITLE_KEY+"><![CDATA[");
+                sb.append(item.getProperty(TITLE_KEY));
+                sb.append("]]></"+TITLE_KEY+">");
+            }
             
             // TODO: Other meta info
             
             sb.append("</meta>");
-            new PrintWriter(new OutputStreamWriter(metaXml.getOutputStream())).write(sb.toString());
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(metaXml.getOutputStream()));
+            pw.write(sb.toString());
+            pw.flush();
         } catch (Exception e) {
             log.warn("Could not create the item properly", e);
         }

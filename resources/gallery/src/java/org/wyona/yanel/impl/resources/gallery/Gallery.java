@@ -28,12 +28,12 @@ public interface Gallery extends GenericItem{
     Node createItem(GenericItem item);
     
     /**
-     * @return - success or failure
+     * @return - the removed item or <code>null</code> on failure
      * */
-    boolean removeItem(GenericItem item);
+    GalleryItem removeItem(GalleryItem item);
     
     /**
-     * @return - success or failure
+     * @return - the removed item or <code>null</code> on failure
      * */
-    boolean removeItem(String id);
+    GalleryItem removeItem(String id);
 }
