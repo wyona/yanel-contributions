@@ -72,8 +72,6 @@
     <foaf:name>Socrates</foaf:name>
     <foaf:mbox_sha1sum>a8de95b22dfdd12319da88b10829fc12193edbde</foaf:mbox_sha1sum>
     <rdfs:seeAlso rdf:resource="socrates.rdf"/>
-    <foaf:phone rdf:resource="tel:+41 44 268 89 94"/>
-    <foaf:mbox rdf:resource="mailto:peter.brandt@ergon.ch"/>
   </foaf:Person>
 </foaf:knows>
 
