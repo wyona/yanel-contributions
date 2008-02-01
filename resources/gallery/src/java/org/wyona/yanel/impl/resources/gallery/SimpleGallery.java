@@ -53,44 +53,20 @@ import org.xml.sax.SAXException;
  * </pre>
  * </p>
  */
-public class SimpleGallery extends GenericItemBase implements Gallery {
-    public static final String META_XML = "meta.xml";
+public class SimpleGallery extends ItemInTheRepositorySupport implements Gallery {
     private static final String ITEM_COLLECTION_PREFIX = "item-";
-    
-    private Repository repository = null;
-    private List/*<Item>*/ imageItems = null;
     
     /**
      * Clients should initialize the object properly after calling this constructor.
      * Repository and gallery collection must be set as well as loadRepository() must be performed.
      * */
-    public SimpleGallery(){
-        
+    public SimpleGallery(Repository repository, String collection) throws RepositoryException{
+        super(repository, collection);
     }
+
+    private SimpleGallery(){}
     
-    public SimpleGallery(Repository repository, String galleryCollection){
-        this.repository = repository;
-        setCollection(galleryCollection);
-        
-        loadRepository();
-    }
-    
-    public void setRepository(Repository repository) {
-        this.repository = repository;
-    }
-    
-    public Repository getRepository() {
-        return repository;
-    }
-    
-    public void setCollection(String path) {
-        if(!path.endsWith("/")){
-            path += "/";
-        }
-        setProperty(PATH_KEY, path);
-    }
-    
-    public final void loadRepository(){
+    public final void init(){
         initGallery();
         initItems();
     }
@@ -105,9 +81,9 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
             log.debug(e, e);
         }
         if(id == null)
-            setProperty(ID_KEY, getPath()); 
+            properties.setProperty(ID_KEY, getPath()); 
         else 
-            setProperty(ID_KEY, id);
+            properties.setProperty(ID_KEY, id);
         
         Date d = new Date();
         try {
@@ -115,28 +91,28 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
         } catch (Exception e) {
             // Do nothing
         }
-        setProperty(UPDATED_KEY, d);
+        properties.setProperty(UPDATED_KEY, XML_DATE_FORMAT.format(d));
         
-        setProperty(PATH_KEY, getPath());
+        properties.setProperty(PATH_KEY, getPath());
         
         
-        //--- Set properties in available in meta.xml
+        //--- Set properties if available in meta.xml
         try {
             Element meta = getMeta(getRepository().getNode(getPath()).getNode(META_XML));
             String title = getMetaValue(meta, TITLE_KEY);
             if(title == null){
                 title = getPath();
             }
-            setProperty(TITLE_KEY, title);
+            properties.setProperty(TITLE_KEY, title);
         } catch (Exception e) {
             log.debug(e, e);
-            setProperty(TITLE_KEY, getPath());
+            properties.setProperty(TITLE_KEY, getPath());
         }
     }
     
     protected void initItems(){
-        if(imageItems == null){
-            imageItems = new ArrayList/*<Item>*/();
+        if(subitems == null){
+            subitems = new ArrayList/*<Item>*/();
         }
         
         List/*<String>*/ imageTypes = new ArrayList/*<String>*/();
@@ -162,98 +138,34 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
                     // Don't care about the weired files
                     continue;
                 }else{
-                    Node [] imageData = children[i].getNodes();
-                    for (int j = 0; j < imageData.length; j++) {
-                        // Detect mime type
-                        String mimeType = imageData[j].getMimeType();
-                        if(null == mimeType){
-                            mimeType = MimeTypeUtil.guessMimeType(PathUtil.getSuffix(imageData[j].getName()));
-                        }
-                        
-                        if(imageData[j].isResource() && imageTypes.contains(mimeType)){
-                            LinkedImageGalleryItem item = new LinkedImageGalleryItem(mimeType, imageData[j].getPath());
-                            
-                            //--- Set item-X properties available in the repository
-                            Date d = new Date();
-                            
-                            String id = children[i].getUUID();
-                            if(null == id){
-                                id = children[i].getPath();
-                            }
-                            item.setProperty(ID_KEY, id);
-                            
-                            try {
-                                d = new Date(getRepository().getNode(getPath()).getLastModified());
-                            } catch (Exception e) {
-                                // Do nothing
-                            }
-                            item.setProperty(UPDATED_KEY, d);
-                            
-                            item.setProperty(PATH_KEY, children[i].getPath());
-                            
-                            //--- Set item properties from meta.xml
-                            try {
-                                Element meta = getMeta(getRepository().getNode(children[i].getPath()).getNode(META_XML));
-                                String title = getMetaValue(meta, TITLE_KEY);
-                                if(title == null){
-                                    title = imageData[j].getPath();
-                                }
-                                item.setProperty(TITLE_KEY, title);
-                            } catch (Exception e) {
-                                log.debug(e, e);
-                                item.setProperty(TITLE_KEY, imageData[j].getPath());
-                            }
-                            
-                            imageItems.add(item);
-                        }
-                    }
+                    subitems.add(new ImageItemInTheGallery(getRepository(), children[i].getPath()));
                 }
             } catch (RepositoryException e) {
-                log.debug(e, e);
+                log.debug("Could not load a gallery item", e);
             }
         }
     }
     
-    protected final Element getMeta(Node metaXml) throws Exception{
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-        Document d = dbf.newDocumentBuilder().parse(metaXml.getInputStream());
-        return d.getDocumentElement();
-    }
-    
-    protected final String getMetaValue(Element meta, String tag) throws Exception{
-        String value = null;
-        
-        NodeList nl = meta.getElementsByTagName(TITLE_KEY);
-        if(nl.getLength() > 0){
-            value = nl.item(0).getFirstChild().getNodeValue();
-        }
-        return value;
-    }
-    
     public final GalleryItem getItem(int index) throws IndexOutOfBoundsException {
-        if(imageItems == null){
-            imageItems = new ArrayList/*<Item>*/();
-            loadRepository();
+        return (GalleryItem)subitems.get(index);
+    }
+    
+    public GalleryItem getItem(String id){
+        for (Iterator i = subitems.iterator(); i.hasNext();) {
+            GalleryItem item = (GalleryItem) i.next();
+            if(item.getId().equals(id)){
+                return item;
+            }
         }
-        return (GalleryItem)imageItems.get(index);
+        return null;
     }
 
     public final int size() {
-        if(imageItems == null){
-            imageItems = new ArrayList/*<Item>*/();
-            loadRepository();
-        }
-        return imageItems.size();
+        return subitems.size();
     }
     
     public final GalleryItem removeItem(String id) {
-        if(imageItems == null){
-            imageItems = new ArrayList/*<Item>*/();
-            loadRepository();
-        }
-        
-        for (Iterator i = imageItems.iterator(); i.hasNext();) {
+        for (Iterator i = subitems.iterator(); i.hasNext();) {
             GalleryItem item = (GalleryItem) i.next();
             if(id.equals(item.getId())){
                 return removeItem(item);
@@ -303,11 +215,6 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
      * @return - created [item-X] node, or null if failed to create one. 
      * */
     public Node createItem(GenericItem item) {
-        if(imageItems == null){
-            imageItems = new ArrayList/*<Item>*/();
-            loadRepository();
-        }
-
         Node itemNode = null;
         try {
             Node galleryNode = getRepository().getNode(getPath());
@@ -319,11 +226,6 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
                 }
             }
             itemNode = galleryNode.addNode(itemNodeName, NodeType.COLLECTION);
-            
-            // Fix the system properties
-            item.setProperty(ID_KEY, itemNode.getUUID());
-            item.setProperty(PATH_KEY, itemNode.getPath());
-            imageItems.add(item);
             
             // Create meta of the item
             Node metaXml = itemNode.addNode(META_XML, NodeType.RESOURCE);
@@ -345,6 +247,10 @@ public class SimpleGallery extends GenericItemBase implements Gallery {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(metaXml.getOutputStream()));
             pw.write(sb.toString());
             pw.flush();
+            
+            // Fix the system properties
+            GalleryItem gi = new ImageItemInTheGallery(getRepository(), itemNode.getPath());
+            subitems.add(gi);
         } catch (Exception e) {
             log.warn("Could not create the item properly", e);
         }

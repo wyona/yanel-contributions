@@ -9,14 +9,14 @@ import org.apache.log4j.Logger;
 public abstract class GenericItemBase implements GenericItem {
     protected static final Logger log = Logger.getLogger(GenericItemBase.class);
     
-    private Properties p = new Properties();
+    protected Properties properties = new Properties();
     
     public Object getProperty(String key) {
-        return p.get(key);
+        return properties.get(key);
     }
 
     public void setProperty(String key, Object value) {
-        p.put(key, value);
+        properties.put(key, value);
     }
     
     public final String getId() {
