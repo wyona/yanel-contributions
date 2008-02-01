@@ -23,6 +23,8 @@ import org.wyona.yarep.core.RepositoryException;
  */
 public class GalleryResource extends BasicXMLResource implements ModifiableV2{
     protected static final Logger log = Logger.getLogger(GalleryResource.class);
+
+    static private String ENCODING = "utf-8";
     
     /**
      * On delete this parameter gives the item id for deletion
@@ -93,12 +95,12 @@ public class GalleryResource extends BasicXMLResource implements ModifiableV2{
             getEnvironment().getResponse().setHeader("Expires", "0");
         }
         
-        return new ByteArrayInputStream(content.getBytes());
+        return new ByteArrayInputStream(content.getBytes(ENCODING));
     }
     
     private String generateGalleryAtom(Gallery gallery){
-        StringBuffer feed = new StringBuffer("<?xml version='1.0' ?>"+"\n");
-        feed.append("<feed xmlns='http://www.w3.org/2005/Atom'>"+"\n");
+        StringBuffer feed = new StringBuffer("<?xml version=\"1.0\" encoding=\"" + ENCODING + "\"?>"+"\n");
+        feed.append("<feed xmlns=\"http://www.w3.org/2005/Atom\">"+"\n");
         
         feed.append("<id>"+gallery.getId()+"</id>"+"\n");
         feed.append("<title>"+gallery.getTitle()+"</title>"+"\n");
