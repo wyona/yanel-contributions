@@ -190,7 +190,14 @@ Personal Homepage: <a href="{@rdf:resource}"><xsl:value-of select="@rdf:resource
 <p>
 Phone: <xsl:value-of select="@rdf:resource"/>
 <xsl:if test="$yanel.toolbar-status='on'">
-&#160;(<a href="?phone">Privacy</a>)
+<xsl:choose>
+  <xsl:when test="s:policy" xmlns:s="http://www.wyona.org/security/1.0">
+&#160;(<a href="?yanel.policy=read&amp;content-element-id=phone">Show access policy</a>)
+  </xsl:when>
+  <xsl:otherwise>
+&#160;(<a href="?yanel.policy=create&amp;content-element-id=phone">No access policy yet!</a>)
+  </xsl:otherwise>
+</xsl:choose>
 </xsl:if>
 </p>
 </xsl:template>
