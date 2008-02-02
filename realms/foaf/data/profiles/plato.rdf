@@ -31,6 +31,17 @@
   </s:policy>
 </foaf:phone>
 
+<foaf:phone rdf:resource="tel:+41-44-272-91-62">
+<!--
+  <s:policy xmlns:s="http://www.wyona.org/security/1.0">
+    <s:usecase id="view">
+      <s:user id="plato" permission="true"/>
+      <s:user id="socrates" permission="true"/>
+    </s:usecase>
+  </s:policy>
+-->
+</foaf:phone>
+
 <foaf:workplaceHomepage rdf:resource="http://en.wikipedia.org/wiki/Platonic_Academy"/>
 <foaf:workInfoHomepage rdf:resource="Academy"/>
 <foaf:homepage rdf:resource="http://en.wikipedia.org/wiki/Plato"/>
