@@ -28,14 +28,24 @@
 	border: 1px solid #cecece;
 	background: url(bg_photo.gif) no-repeat;
 	*/
-	/*
-	height: 422px;
+	
+	height: auto;/*422px*/
 	width: 563px;
-	*/
+	
+	/*Hide the big image if it is too big*/
+	/*overflow: hidden;*/
+	
 	margin: 0 0 15px 0;
 	text-align: center;
 }
 
+/*Scale image*/
+/*
+.yanel-GalleryViewer-Item img{
+	width: inherit;
+	height: inherit;
+}
+*/
 
 .yanel-GalleryScroller{
 }

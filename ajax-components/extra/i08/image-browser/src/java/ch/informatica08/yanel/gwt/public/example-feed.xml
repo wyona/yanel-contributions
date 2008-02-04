@@ -26,7 +26,7 @@
 
 	<entry>
 		<id>urn:uuid:pic1</id>
-		<title>Pic 1</title>
+		<title><![CDATA[Pic 1 edxdsda asdsdald]]></title>
 		<updated>2008-01-01T00:00:00</updated>
 		<content type="image/png" src="yanel.png"/>
 		<summary>Some text.</summary>
