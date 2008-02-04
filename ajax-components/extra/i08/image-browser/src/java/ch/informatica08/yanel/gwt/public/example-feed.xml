@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- A valid but simplified Atom 1.0 feed -->
+<!-- Uncomment the DTD for testing -->
+
+<!--
+<!DOCTYPE feed [
+<!ATTLIST feed xmlns CDATA #FIXED "http://www.w3.org/2005/Atom">
+
+<!ELEMENT feed (id, title, updated, entry*)>
+
+<!ELEMENT entry (id, title, updated, content, summary?)>
+<!ATTLIST content type CDATA #REQUIRED>
+<!ATTLIST content src CDATA #REQUIRED>
+
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT updated (#PCDATA)>
+]>
+-->
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<id>urn:uuid:gallery</id>
+	<title>Event-Bildergalerie</title>
+	<updated>2008-01-01T00:00:00</updated>
+
+	<entry>
+		<id>urn:uuid:pic1</id>
+		<title>Pic 1</title>
+		<updated>2008-01-01T00:00:00</updated>
+		<content type="image/png" src="yanel.png"/>
+		<summary>Some text.</summary>
+	</entry>
+
+	<entry>
+		<id>urn:uuid:pic2</id>
+		<title>Pic 2</title>
+		<updated>2008-01-01T00:00:00</updated>
+		<content type="image/png" src="yanel.png"/>
+		<summary>Some text.</summary>
+	</entry>
+
+	<entry>
+		<id>urn:uuid:pic3</id>
+		<title>Pic 3</title>
+		<updated>2008-01-01T00:00:00</updated>
+		<content type="image/png" src="yanel.png"/>
+		<summary>Some text.</summary>
+	</entry>
+
+	<entry>
+		<id>urn:uuid:pic4</id>
+		<title>Pic 4</title>
+		<updated>2008-01-01T00:00:00</updated>
+		<content type="image/png" src="yanel.png"/>
+		<summary>Some text.</summary>
+	</entry>
+</feed>
