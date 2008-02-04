@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<project default="google.compile">
+	<!-- Canonical name of the GWT module -->
+	<property name="module.name" value="org.wyona.yanel.gwt.Upload" />
+
+	<target name="init" description="Initialize build properties">
+	    <echo>Initializinig build...</echo>
+	    <dirname property="component.home.dir" file="${ant.file}"/>
+	    <echo>Component home directory: ${component.home.dir}</echo>
+		
+		<!-- Property files -->
+	    <property file="${component.home.dir}/src/build/local.build.properties"/>
+	    <property file="${component.home.dir}/src/build/build.properties"/>
+		<!-- Global properties -->
+		<property file="${component.home.dir}/../build.properties"/>
+
+	    <property name="component.build.dir" value="${component.home.dir}/build"/>
+	    <property name="component.java.dir" value="${component.home.dir}/src/java"/>
+		
+		<!-- GWT uses this to translate from JAVA into JavaScript -->
+		<path id="google.compile.classpath">
+			<fileset dir="${gwt.home}">
+				<include name="gwt-user.jar" />
+				<include name="gwt-dev-windows.jar" />
+			</fileset>
+			
+			<!-- Sources need to be in the class path -->
+			
+			<!-- Core component sources-->
+			<pathelement path="${component.home.dir}/../core/src/java" />
+			
+			<!-- This component sources -->
+			<pathelement path="${component.java.dir}/" />
+		</path>
+		
+		<echo>Component initialized</echo>
+	</target>
+	
+	<target name="clean" depends="init" description="Remove previous build">
+		<delete dir="${component.build.dir}"/>
+		<echo>Cleaned</echo>
+	</target>
+
+	<target name="google.compile" depends="clean">
+		<echo>Converting *.java to *.js (${module.name}) ...</echo>
+		
+		<java classname="com.google.gwt.dev.GWTCompiler" fork="yes">
+			<classpath refid="google.compile.classpath" />
+			<arg value="-out" />
+			<arg value="${component.build.dir}" />
+			<arg value="-style" />
+			<arg value="OBF" />
+			<arg value="${module.name}" />
+		</java>
+	</target>
+</project>

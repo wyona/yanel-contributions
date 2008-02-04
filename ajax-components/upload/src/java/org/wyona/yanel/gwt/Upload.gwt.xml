@@ -1,0 +1,6 @@
+<module>
+	<inherits name='org.wyona.yanel.gwt.YanelCore'/>
+
+	<entry-point class='org.wyona.yanel.gwt.client.Upload'/>
+  
+</module>
