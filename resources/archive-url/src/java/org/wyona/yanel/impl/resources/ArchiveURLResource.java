@@ -25,7 +25,7 @@ public class ArchiveURLResource extends Resource implements CreatableV2 {
     }
 
     /**
-     *
+     * Get default values
      */
     public Object getProperty(String name) {
         return "http://www.foo.bar/some/url.html";
@@ -66,5 +66,12 @@ public class ArchiveURLResource extends Resource implements CreatableV2 {
      */
     public String getPropertyType(String name) {
         return CreatableV2.TYPE_STRING;
+    }
+
+    /**
+     *
+     */
+    public String getCreateName(String suggestedName) {
+        return suggestedName;
     }
 }
