@@ -1,2 +1,2 @@
-Ajax Components
+AJAX Components
 ---------------
