@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<project default="info" basedir=".">
+	<target name="info">
+		<echo>Please for now use build.xml of a component you need</echo>
+	</target>
+</project>
