@@ -6,7 +6,7 @@
   class="org.wyona.foaf.yanel.impl.resources.shared.DummyResource"
   >
 <description>
-Dummy resource as a home for java classes which are being shared among various resources
+Dummy FOAF resource as a home for java classes which are being shared among various FOAF resources
 </description>
 
 <rtd>
