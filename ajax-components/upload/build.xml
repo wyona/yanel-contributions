@@ -22,7 +22,7 @@
 		<path id="google.compile.classpath">
 			<fileset dir="${gwt.home}">
 				<include name="gwt-user.jar" />
-				<include name="gwt-dev-windows.jar" />
+				<include name="${gwt.dev.lib}" />
 			</fileset>
 			
 			<!-- Sources need to be in the class path -->
