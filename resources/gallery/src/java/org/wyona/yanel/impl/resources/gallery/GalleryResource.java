@@ -103,7 +103,7 @@ public class GalleryResource extends BasicXMLResource implements ModifiableV2{
         feed.append("<feed xmlns=\"http://www.w3.org/2005/Atom\">"+"\n");
         
         feed.append("<id>"+gallery.getId()+"</id>"+"\n");
-        feed.append("<title>"+gallery.getTitle()+"</title>"+"\n");
+        feed.append("<title><![CDATA["+gallery.getTitle()+"]]></title>\n");
         feed.append("<updated>"+gallery.getUpdated()+"</updated>"+"\n");
         
         for (int i = 0; i < gallery.size(); i++) {
@@ -111,7 +111,7 @@ public class GalleryResource extends BasicXMLResource implements ModifiableV2{
             
             GalleryItem entry = gallery.getItem(i);
             feed.append("<id>"+entry.getId()+"</id>"+"\n");
-            feed.append("<title>"+entry.getTitle()+"</title>"+"\n");
+            feed.append("<title><![CDATA["+entry.getTitle()+"]]></title>\n");
             feed.append("<updated>"+entry.getUpdated()+"</updated>"+"\n");
             
             if(entry.getContent().isLinkedContent()){
