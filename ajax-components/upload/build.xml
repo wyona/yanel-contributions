@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <project default="google.compile">
+
 	<!-- Canonical name of the GWT module -->
 	<property name="module.name" value="org.wyona.yanel.gwt.Upload" />
 
@@ -13,6 +14,7 @@
 	    <property file="${component.home.dir}/src/build/local.build.properties"/>
 	    <property file="${component.home.dir}/src/build/build.properties"/>
 		<!-- Global properties -->
+		<property file="${component.home.dir}/../local.build.properties"/>
 		<property file="${component.home.dir}/../build.properties"/>
 
 	    <property name="component.build.dir" value="${component.home.dir}/build"/>
