@@ -10,4 +10,4 @@
           - the operating system specific gwt dev lib name
        within local.build.properties
     5) Start building components (e.g. change directory to upload and run ant. A build directory should be created.)
-    6) Test components (e.g. open a browser and open one of the test files such as for instance ..../ajax-components/upload/build/org.wyona.yanel.gwt.Upload/Upload.html)
+    6) Test components (e.g. open a browser and open one of the test files, for example" ..../ajax-components/upload/build/org.wyona.yanel.gwt.Upload/Upload.html)
