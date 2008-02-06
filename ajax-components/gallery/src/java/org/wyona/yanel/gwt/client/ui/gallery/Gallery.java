@@ -10,7 +10,10 @@ import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.SourcesChangeEvents;
 
 public abstract class Gallery implements SourcesChangeEvents{
-	protected String title = null;
+	private String title = null;
+	private String subtitle = null;
+	private String summary = null;
+	
 	protected int size = 0;
 	
 	protected Map/*<Integer, Item>*/ itemCache = new HashMap/*<Integer, Item>*/();
@@ -26,19 +29,19 @@ public abstract class Gallery implements SourcesChangeEvents{
 	protected abstract void init();
 	protected abstract void retrieveItem(int index);
 	
-	public void addChangeListener(ChangeListener listener) {
+	public final void addChangeListener(ChangeListener listener) {
 		listeners.add(listener);
 	}
 	
-	public void removeChangeListener(ChangeListener listener) {
+	public final void removeChangeListener(ChangeListener listener) {
 		listeners.remove(listener);
 	}
 	
-	public Item getCurrentItem(){
+	public final Item getCurrentItem(){
 		return (Item)itemCache.get(currentIndex);
 	}
 	
-	public void selectItem(int index){
+	public final void selectItem(int index){
 		if(canSelect(index)){
 			Integer newIndex = new Integer(index);
 			if(itemCache.get(newIndex) == null){
@@ -52,7 +55,7 @@ public abstract class Gallery implements SourcesChangeEvents{
 		}
 	}
 	
-	public boolean canSelect(int index){
+	public final boolean canSelect(int index){
 		boolean can = true;
 		if(index < 0 || index >= getSize() || index == currentIndex.intValue()){
 			can = false;
@@ -61,7 +64,7 @@ public abstract class Gallery implements SourcesChangeEvents{
 		return can;
 	}
 	
-	public int getSize() {
+	public final int getSize() {
 		return size;
 	}
 	
@@ -69,9 +72,21 @@ public abstract class Gallery implements SourcesChangeEvents{
 		return currentIndex.intValue();
 	}
 	
-	public String getTitle() {
-		return title;
+	public final void setTitle(String title) {
+        this.title = title;
+    }
+	
+	public final String getSummary() {
+		return summary;
 	}
+	
+	public final void setSummary(String summary) {
+        this.summary = summary;
+    }
+    
+    public final String getTitle() {
+        return title;
+    }
 	
 	protected final void fireOnChange(){
 		for (Iterator i = listeners.iterator(); i.hasNext();) {
@@ -79,4 +94,12 @@ public abstract class Gallery implements SourcesChangeEvents{
 			l.onChange(null);
 		}
 	}
+
+    public final String getSubtitle() {
+        return subtitle;
+    }
+
+    public final void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
 }

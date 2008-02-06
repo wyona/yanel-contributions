@@ -1,41 +1,45 @@
 package org.wyona.yanel.gwt.client.ui.gallery;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * 
+ * This widget looks like:<br>
+ * &lt; x of y &gt;, where &lt; represents left, [x of y] - middle, &gt; - right.
+ * <p>
  * .yanel-GalleryScroller
  * .yanel-GalleryScroller-Left
  * .yanel-GalleryScroller-Left-Disabled
- * .yanel-GalleryScroller-Item
- * .yanel-GalleryScroller-Item-Disabled
+ * .yanel-GalleryScroller-Middle
  * .yanel-GalleryScroller-Right
  * .yanel-GalleryScroller-Right-Disabled
  * */
 public class GalleryScroller extends Composite implements ChangeListener{
 	public static final String STYLE = "yanel-GalleryScroller";
+	
 	public static final String STYLE_LEFT = "yanel-GalleryScroller-Left";
 	public static final String STYLE_LEFT_DISABLED = "yanel-GalleryScroller-Left-Disabled";
-	public static final String STYLE_ITEM = "yanel-GalleryScroller-Item";
-	public static final String STYLE_ITEM_DISABLED = "yanel-GalleryScroller-Item-Disabled";
+	
+	public static final String STYLE_MIDDLE = "yanel-GalleryScroller-Middle";
+	
 	public static final String STYLE_RIGHT = "yanel-GalleryScroller-Right";
 	public static final String STYLE_RIGHT_DISABLED = "yanel-GalleryScroller-Right-Disabled";
 	
-	private HorizontalPanel panel = new HorizontalPanel();
+	protected Panel panel = null;
 	
-	private Hyperlink left = null;
-	private List/*<FocusWidget>*/ enumeration = new ArrayList/*<FocusWidget>*/();
-	private Hyperlink right = null;
+	protected Widget left = null;
+	protected Panel middle = null;
+	protected Widget right = null;
 	
 	private Gallery model = null;
 	
@@ -64,17 +68,17 @@ public class GalleryScroller extends Composite implements ChangeListener{
 	private ClickListener navigateLeft = new NavigateLeft();
 	private ClickListener navigateRight = new NavigateRight();
 	
-	private boolean showEnumeration = true;
+	private boolean showMiddle = true;
 	
 	public GalleryScroller(Gallery gallery){
 		this(gallery, true);
 	}
 	
-	public GalleryScroller(Gallery gallery, boolean showEnumeration){
+	public GalleryScroller(Gallery gallery, boolean showMiddle){
 		this.model = gallery;
-		this.showEnumeration = showEnumeration;
+		this.showMiddle = showMiddle;
 		
-		buildGUI();
+		initGUI();
 		initWidget(panel);
 		
 		markNavigationAtCurrentItem();
@@ -83,61 +87,63 @@ public class GalleryScroller extends Composite implements ChangeListener{
 	}
 	
 	public final void onChange(Widget sender) {
-		buildGUI();
+		initGUI();
 		markNavigationAtCurrentItem();
 	}
 	
-	private void buildGUI(){
-		panel.setStyleName(STYLE);
+	/**
+	 * Override to create/initialize different layout
+	 * */
+	protected void initGUI(){
+	    if(panel == null){
+	        panel = new HorizontalPanel();
+	    }
+	    
+		panel.setStylePrimaryName(STYLE);
 		
-		for (int i = 0; i < model.getSize(); i++) {
-			final int visualIndex = i+1;
-			if(enumeration.size() < visualIndex){
-				FocusWidget w = new Button(new Integer(i+1).toString(), new ClickListener(){
-					public void onClick(Widget sender) {
-						model.selectItem(visualIndex - 1);
-					}
-				});
-				enumeration.add(w);
-			}else{
-				// widget already exists
-			}
-			
-			FocusWidget w = (FocusWidget)enumeration.get(i);
-			w.setStyleName(STYLE_ITEM);
-			w.setEnabled(true);
-			
+		if(middle == null){
+		    middle = new SimplePanel();
+		    middle.setStylePrimaryName(STYLE_MIDDLE);
 		}
+		middle.clear();
+		final int visualIndex = model.getCurrentIndex()+1;
+		middle.add(new Label(visualIndex + " of " + model.getSize()));
 		
 		if(left == null){
-			left = new Hyperlink(getLeftHTML(), true, "");
-			left.addClickListener(navigateLeft);
+			left = getLeft();
+			if (left instanceof SourcesClickEvents) {
+                SourcesClickEvents src = (SourcesClickEvents) left;
+                src.addClickListener(navigateLeft);
+            }
 		}
+		left.setStylePrimaryName(STYLE_LEFT);
+        left.setTitle("");
 		
 		if(right == null){
-			right = new Hyperlink(getRightHTML(), true, "");
-			right.addClickListener(navigateRight);
+			right = getRight();
+			if (right instanceof SourcesClickEvents) {
+                SourcesClickEvents src = (SourcesClickEvents) right;
+                src.addClickListener(navigateRight);
+			}
 		}
-		
-		left.setStyleName(STYLE_LEFT);
-		left.setTitle("");
-		right.setStyleName(STYLE_RIGHT);
+		right.setStylePrimaryName(STYLE_RIGHT);
 		right.setTitle("");
 		
 		panel.clear();
 		panel.add(left);
-		if(showEnumeration){
-			for (Iterator i = enumeration.iterator(); i.hasNext();) {
-				Widget w = (Widget) i.next();
-				panel.add(w);
-			}
+		if(showMiddle){
+		    panel.add(middle);
 		}
+		
 		panel.add(right);
 	}
 	
-	private void markNavigationAtCurrentItem(){
+	/**
+	 * Override to show the navigation state.
+	 * */
+	protected void markNavigationAtCurrentItem(){
 		if(!model.canSelect(model.getCurrentIndex()-1)){
-			left.setStyleName(STYLE_LEFT_DISABLED);
+			left.setStylePrimaryName(STYLE_LEFT_DISABLED);
 			if(neverEndingEnabled){
 				left.setTitle("Go to the last");
 			}else{
@@ -147,7 +153,7 @@ public class GalleryScroller extends Composite implements ChangeListener{
 		}
 		
 		if(!model.canSelect(model.getCurrentIndex()+1)){
-			right.setStyleName(STYLE_RIGHT_DISABLED);
+			right.setStylePrimaryName(STYLE_RIGHT_DISABLED);
 			if(neverEndingEnabled){
 				right.setTitle("Go to the first");
 			}else{
@@ -155,21 +161,21 @@ public class GalleryScroller extends Composite implements ChangeListener{
 			}
 //			right.setVisible(false);
 		}
-		
-		if(showEnumeration){
-			if(model.getCurrentIndex() >= 0 && model.getCurrentIndex() < enumeration.size()){
-				FocusWidget item = (FocusWidget)enumeration.get(model.getCurrentIndex());
-				item.setStyleName(STYLE_ITEM_DISABLED);
-				item.setEnabled(false);
-			}
-		}
 	}
 	
-	protected String getLeftHTML(){
-		return "&lt;";
+	protected Widget getLeft(){
+	    if(left == null){
+	        left = new Hyperlink("&lt;", true, "");
+//	        left = new Button("&lt;");
+	    }
+		return left;
 	}
 	
-	protected String getRightHTML(){
-		return "&gt;";
+	protected Widget getRight(){
+	    if(right == null){
+	        right = new Hyperlink("&gt;", true, "");
+//	        right = new Button("&gt;");
+	    }
+	    return right;
 	}
 }
