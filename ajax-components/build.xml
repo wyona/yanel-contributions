@@ -1,7 +1,45 @@
 <?xml version="1.0"?>
 
-<project default="info" basedir=".">
-	<target name="info">
-		<echo>Please for now use build.xml of a component you need</echo>
-	</target>
+<project default="google.compile" name="AJAX components">
+
+  <target name="init" description="Initialize build properties">
+    <echo>Initializing build</echo>
+
+    <property file="local.build.properties"/>
+    <property file="build.properties"/>
+
+    <!-- ant -Dcomponent.home.dir=src/hello-world -->
+    <property name="component.home.dir" value="src/hello-world"/>
+    <echo>Component home directory: ${component.home.dir}</echo>
+
+    <property name="component.build.dir" value="${component.home.dir}/build"/>
+    <property name="component.java.dir" value="${component.home.dir}/java"/>
+		
+    <path id="google.compile.classpath">
+      <fileset dir="${gwt.home}">
+        <include name="gwt-user.jar" />
+        <include name="${gwt.dev.lib}" />
+      </fileset>
+      <pathelement path="core/src/java" />
+      <pathelement path="${component.java.dir}/" />
+    </path>
+  </target>
+
+  <target name="clean" depends="init" description="Remove previous build">
+    <delete dir="${component.build.dir}"/>
+  </target>
+
+  <target name="google.compile" depends="clean" description="Compiles Java classes and transforms into Javascript">
+    <!-- Read module name from component specific build.properties -->
+    <property file="${component.home.dir}/build.properties"/>
+
+    <java classname="com.google.gwt.dev.GWTCompiler" fork="yes">
+      <classpath refid="google.compile.classpath" />
+      <arg value="-out" />
+      <arg value="${component.build.dir}" />
+      <arg value="-style" />
+      <arg value="OBF" />
+      <arg value="${module.name}" />
+    </java>
+  </target>
 </project>
