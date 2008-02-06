@@ -19,12 +19,16 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import org.wyona.yanel.gwt.accesspolicyeditor.client.AddRemoveIdentitiesWidget;
 
 /**
  * Access Policy Editor
@@ -50,30 +54,31 @@ public class AccessPolicyEditor implements EntryPoint {
 
         int visibleItemCount = 10;
 
-        ListBox identitiesLB = new ListBox();
+        ListBox identitiesLB = new ListBox(true);
         identitiesLB.setVisibleItemCount(visibleItemCount);
         identitiesLB.addItem("U: michi");
         identitiesLB.addItem("U: levi");
+        identitiesLB.addItem("U: vanya");
+        identitiesLB.addItem("U: ezra");
 
-        ListBox policyLB = new ListBox();
+        ListBox policyLB = new ListBox(true);
         policyLB.setVisibleItemCount(visibleItemCount);
         policyLB.addItem("U: alice");
+        policyLB.addItem("U: karin");
 
-        Button addIdentityButton = new Button(">", new ClickListener() {
-            public void onClick(Widget sender) {
-                Window.alert("Add selected identity to policy");
-            }
-        });
+	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLB);
 
+/*
         Button removeIdentityButton = new Button("<", new ClickListener() {
             public void onClick(Widget sender) {
                 Window.alert("Remove selected identity from policy");
             }
         });
+*/
 
         hp.add(identitiesLB);
-        hp.add(removeIdentityButton);
-        hp.add(addIdentityButton);
+        hp.add(ariw);
+        //hp.add(removeIdentityButton);
         hp.add(policyLB);
     }
 }
