@@ -19,7 +19,9 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -27,13 +29,33 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class AccessPolicyEditor implements EntryPoint {
 
+  /**
+   *
+   */
   public void onModuleLoad() {
-    Button b = new Button("Click me", new ClickListener() {
+
+    VerticalPanel vp = new VerticalPanel();
+    RootPanel.get().add(vp);
+
+    VerticalPanel searchFilterVP = new VerticalPanel();
+    vp.add(searchFilterVP);
+
+    HorizontalPanel hp = new HorizontalPanel();
+    vp.add(hp);
+
+    Button addIdentityButton = new Button(">", new ClickListener() {
       public void onClick(Widget sender) {
-        Window.alert("Hello, Access Policy Editor");
+        Window.alert("Add identity to policy");
       }
     });
 
-    RootPanel.get().add(b);
+    Button removeIdentityButton = new Button(">", new ClickListener() {
+      public void onClick(Widget sender) {
+        Window.alert("Remove identity from policy");
+      }
+    });
+
+    hp.add(addIdentityButton);
+    hp.add(removeIdentityButton);
   }
 }
