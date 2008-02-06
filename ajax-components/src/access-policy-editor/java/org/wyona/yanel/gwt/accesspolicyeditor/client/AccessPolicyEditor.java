@@ -20,7 +20,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -29,33 +31,49 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class AccessPolicyEditor implements EntryPoint {
 
-  /**
-   *
-   */
-  public void onModuleLoad() {
+    /**
+     *
+     */
+    public void onModuleLoad() {
+        VerticalPanel vp = new VerticalPanel();
+        RootPanel.get().add(vp);
 
-    VerticalPanel vp = new VerticalPanel();
-    RootPanel.get().add(vp);
+        VerticalPanel searchFilterVP = new VerticalPanel();
+        vp.add(searchFilterVP);
 
-    VerticalPanel searchFilterVP = new VerticalPanel();
-    vp.add(searchFilterVP);
+        TextBox searchTB = new TextBox();
+        searchTB.setVisibleLength(30);
+        searchFilterVP.add(searchTB);
 
-    HorizontalPanel hp = new HorizontalPanel();
-    vp.add(hp);
+        HorizontalPanel hp = new HorizontalPanel();
+        vp.add(hp);
 
-    Button addIdentityButton = new Button(">", new ClickListener() {
-      public void onClick(Widget sender) {
-        Window.alert("Add identity to policy");
-      }
-    });
+        int visibleItemCount = 10;
 
-    Button removeIdentityButton = new Button(">", new ClickListener() {
-      public void onClick(Widget sender) {
-        Window.alert("Remove identity from policy");
-      }
-    });
+        ListBox identitiesLB = new ListBox();
+        identitiesLB.setVisibleItemCount(visibleItemCount);
+        identitiesLB.addItem("U: michi");
+        identitiesLB.addItem("U: levi");
 
-    hp.add(addIdentityButton);
-    hp.add(removeIdentityButton);
-  }
+        ListBox policyLB = new ListBox();
+        policyLB.setVisibleItemCount(visibleItemCount);
+        policyLB.addItem("U: alice");
+
+        Button addIdentityButton = new Button(">", new ClickListener() {
+            public void onClick(Widget sender) {
+                Window.alert("Add selected identity to policy");
+            }
+        });
+
+        Button removeIdentityButton = new Button("<", new ClickListener() {
+            public void onClick(Widget sender) {
+                Window.alert("Remove selected identity from policy");
+            }
+        });
+
+        hp.add(identitiesLB);
+        hp.add(removeIdentityButton);
+        hp.add(addIdentityButton);
+        hp.add(policyLB);
+    }
 }
