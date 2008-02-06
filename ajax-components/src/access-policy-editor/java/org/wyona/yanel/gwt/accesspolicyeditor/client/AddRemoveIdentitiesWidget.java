@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class AddRemoveIdentitiesWidget extends Composite implements ClickListener {
 
     private ListBox identitiesLB;
+    private ListBox policyLB;
 
     private FlowPanel fp = new FlowPanel();
 
@@ -43,14 +44,16 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
     /**
      *
      */
-    public AddRemoveIdentitiesWidget(ListBox identitiesListBox) {
+    public AddRemoveIdentitiesWidget(ListBox identitiesListBox, ListBox policyListBox) {
         initWidget(fp);
 
-        removeButton = new Button("<");
+        removeButton = new Button("<", this);
         fp.add(removeButton);
-        addButton = new Button(">");
+        addButton = new Button(">", this);
         fp.add(addButton);
+
         this.identitiesLB = identitiesListBox;
+        this.policyLB = policyListBox;
     }
 
     /**
@@ -58,14 +61,17 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
      */
     public void onClick(Widget sender) {
         if (sender == addButton) {
-            Window.alert("Add selected identity to policy");
+            int i = identitiesLB.getSelectedIndex();
+            String selectedIdentity = identitiesLB.getValue(i);
+            Window.alert("Add selected identity " + selectedIdentity + " to policy");
+            identitiesLB.removeItem(i);
+            policyLB.addItem(selectedIdentity);
         } else if (sender == removeButton) {
-            Window.alert("Remove selected identity from policy");
+            int i = policyLB.getSelectedIndex();
+            String selectedIdentity = policyLB.getValue(i);
+            Window.alert("Remove selected identity " + selectedIdentity + " from policy");
+            policyLB.removeItem(i);
+            identitiesLB.addItem(selectedIdentity);
         }
-
-        //String selectedIdentity = identitiesLB.getValue(identitiesLB.getSelectedIndex());
-        //Window.alert("Add selected identity " + selectedIdentity + " to policy");
-        Window.alert("Add selected identity to policy");
-        identitiesLB.clear();
     }
 }

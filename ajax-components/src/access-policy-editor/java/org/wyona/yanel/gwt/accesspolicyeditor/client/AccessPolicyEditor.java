@@ -66,19 +66,28 @@ public class AccessPolicyEditor implements EntryPoint {
         policyLB.addItem("U: alice");
         policyLB.addItem("U: karin");
 
-	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLB);
+	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLB, policyLB);
 
-/*
-        Button removeIdentityButton = new Button("<", new ClickListener() {
-            public void onClick(Widget sender) {
-                Window.alert("Remove selected identity from policy");
-            }
-        });
-*/
+        //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
 
         hp.add(identitiesLB);
         hp.add(ariw);
         //hp.add(removeIdentityButton);
         hp.add(policyLB);
     }
+}
+
+/**
+ *
+ */
+class AddRemoveClickListener implements ClickListener {
+     private ListBox lb;
+
+     public AddRemoveClickListener (ListBox lb) {
+         this.lb = lb;
+     }
+
+     public void onClick(Widget sender) {
+         Window.alert("Hello DEBUG");
+     }
 }
