@@ -1,0 +1,91 @@
+<html>
+	<head>
+	
+		<!--                                           -->
+		<!-- Any title is fine                         -->
+		<!--                                           -->
+		<title>Wrapper HTML for ImageBrowser</title>
+
+		<!--                                           -->
+		<!-- Use normal html, such as style            -->
+		<!--                                           -->
+		<style>
+			body,td,a,div,.p{font-family:arial,sans-serif}
+			div,td{color:#000000}
+			a:link,.w,.w a:link{color:#0000cc}
+			a:visited{color:#551a8b}
+			a:active{color:#ff0000}
+		</style>
+
+		<!--                                           -->
+		<!-- This script loads your compiled module.   -->
+		<!-- If you add any GWT meta tags, they must   -->
+		<!-- be added before this line.                -->
+		<!--                                           -->
+		<script language='javascript' src='../ch.globus.yanel.gwt.ImageBrowser.nocache.js'></script>
+		<style type="text/css">
+          .tabContent{
+            position:absolute;
+          }
+          
+          .yanel-GlassPanel{
+            background-color: black;
+            filter:alpha(opacity=50);-moz-opacity:.50;opacity:.50;
+          }
+        </style>
+	</head>
+
+	<!--                                           -->
+	<!-- The body can have arbitrary html, or      -->
+	<!-- you can leave the body empty if you want  -->
+	<!-- to create a completely dynamic ui         -->
+	<!--                                           -->
+	<body>
+		<script type="text/javascript">
+			Yanel.ImageBrowser = {configurations : new Array()};
+			Yanel.ImageBrowser.configurations[0] = {id: "myID", gallery_provider_url: "test/example-feed.xml", blown_gallery_provider_url: "test/example-feed.xml"}
+		</script>
+    
+        <!-- Tab panel -->
+        <div>
+          <div>
+            <input type="button" value="Logo" onclick="javascript:show('tab1')"/>
+            <input type="button" value="Images" onclick="javascript:show('tab2')"/>
+            <input type="button" value="Video" onclick="javascript:show('tab3')"/>
+          </div>
+        
+          <div>
+            <div id="tab1" class="tabContent"><img src="yanel.png"/></div>
+            <div id="tab2" class="tabContent">
+              <div id="myID"></div>
+            </div>
+            <div id="tab3" class="tabContent">
+              <object width="425" height="373">
+                <param name="movie" value="http://www.youtube.com/v/f-ZWiNQ5x2s&rel=1&border=1"></param>
+                <param name="wmode" value="transparent"></param>
+                <embed src="http://www.youtube.com/v/f-ZWiNQ5x2s&rel=1&border=1" type="application/x-shockwave-flash" wmode="transparent" width="425" height="373"></embed>
+              </object>
+             </div>
+          </div>
+        </div>
+        
+        <script type="text/javascript">
+            var tabs = ["tab1", "tab2", "tab3"];
+            
+            function show(tab){
+              for(var i = 0; i < tabs.length; i++){
+                var newVisibility = 'hidden';
+                if(tab == tabs[i]){
+                  newVisibility = "visible";
+                }
+                document.getElementById(tabs[i]).style.visibility = newVisibility;
+              }
+            }
+            
+            show("tab2");
+        </script>
+		<!-- OPTIONAL: include this if you want history support -->
+		<iframe src="javascript:''" id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>
+
+	</body>
+</html>
