@@ -1,0 +1,8 @@
+<module>
+	<inherits name="org.wyona.yanel.gwt.Gallery" />	
+	<inherits name="com.google.gwt.xml.XML"/>
+	
+	<stylesheet src="extra/ImageBrowser.css"/>
+
+	<entry-point class="ch.globus.yanel.gwt.client.ImageBrowser" />	
+</module>

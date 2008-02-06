@@ -12,14 +12,19 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 public class ImageGalleryViewer extends GalleryViewer {
 	public static final String STYLE_TITLEBAR = "yanel-GalleryViewer-TitleBar";
 	
+	// Don't initialize the variables here, leave it to JVM
+	private GalleryScroller gs;
+	
 	public ImageGalleryViewer(Gallery gallery) {
 		super(gallery);
 	}
 	
-	protected void buildGUI() {
-		super.buildGUI();
+	protected void initGUI() {
+		super.initGUI();
 		
-		GalleryScroller gs = new GalleryScroller(model, false);
+		if(gs == null){
+            gs = new GalleryScroller(model, false);
+        }
 		
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.add(title);
@@ -28,7 +33,7 @@ public class ImageGalleryViewer extends GalleryViewer {
 		hp.setCellHorizontalAlignment(title, HorizontalPanel.ALIGN_LEFT);
 		hp.setCellHorizontalAlignment(gs, HorizontalPanel.ALIGN_RIGHT);
 		
-		hp.setStyleName(STYLE_TITLEBAR);
+		hp.setStylePrimaryName(STYLE_TITLEBAR);
 		
 		panel.add(hp);
 		

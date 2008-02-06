@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 .yanel-GalleryViewer{
-  width: 563px;
 }
 
 .yanel-GalleryViewer-TitleBar{
@@ -29,6 +28,9 @@
 	border: 1px solid #cecece;
 	background: url(bg_photo.gif) no-repeat;
 	*/
+	
+	height: auto;/*422px*/
+	width: 563px;
 	
 	/*Hide the big image if it is too big*/
 	/*overflow: hidden;*/
@@ -70,4 +72,9 @@
 }
 .yanel-GalleryScroller-Right a:hover{
 	background: url(bg_photo_next_on.gif) no-repeat;
+}
+
+.yanel-GalleryScroller-Item{
+}
+.yanel-GalleryScroller-Item-Disabled{
 }

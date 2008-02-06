@@ -21,12 +21,12 @@
 
 <feed xmlns="http://www.w3.org/2005/Atom">
 	<id>urn:uuid:gallery</id>
-	<title>Event-Bildergalerie</title>
+	<title><![CDATA[Pic 1 edxdsda asdsdald adfasd asdf asdfa sdfa sdfasd fasd fasdf asdf asdf asdfas ]]></title>
 	<updated>2008-01-01T00:00:00</updated>
 
 	<entry>
 		<id>urn:uuid:pic1</id>
-		<title><![CDATA[Pic 1 edxdsda asdsdald]]></title>
+		<title><![CDATA[Pic 1 edxdsda asdsdald adfasd asdf asdfa sdfa sdfasd fasd fasdf asdf asdf asdfas ]]></title>
 		<updated>2008-01-01T00:00:00</updated>
 		<content type="image/png" src="yanel.png"/>
 		<summary>Some text.</summary>

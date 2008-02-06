@@ -49,11 +49,18 @@ public class ImageBrowser extends ConfigurableComponentsAware implements EntryPo
     					public void onCompletion(String responseText) {
     						
     						final Element gallery = XMLParser.parse(responseText).getDocumentElement();
-    						title = gallery.getElementsByTagName("title").item(0).getFirstChild().getNodeValue();//.toString();
+    						String feedTitle = gallery.getElementsByTagName("title").item(0).getFirstChild().getNodeValue();//.toString();
+    						String feedSummary = gallery.getElementsByTagName("summary").item(0).getFirstChild().getNodeValue();//.toString();
     						
-    						if(title == null){
-    							title = "NO TITLE";
+    						if(feedTitle == null){
+    							feedTitle = "NO TITLE";
     						}
+    						if(feedSummary == null){
+    						    feedSummary = "NO SUMMARY";
+                            }
+    						
+    						setTitle(feedTitle);
+    						setSummary(feedSummary);
     						
 							NodeList nl = gallery.getElementsByTagName("entry");
     						for (int j = 0; j < nl.getLength(); j++) {
