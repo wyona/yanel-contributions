@@ -68,6 +68,6 @@ public class IdentitiesListBoxWidget extends Composite implements ClickListener 
      *
      */
     public void onClick(Widget sender) {
-        Window.alert("An identity has been selected!");
+        //Window.alert("An identity has been selected!");
     }
 }
