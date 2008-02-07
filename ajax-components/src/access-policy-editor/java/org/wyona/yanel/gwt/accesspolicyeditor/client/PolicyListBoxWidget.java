@@ -88,7 +88,34 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
             }
         } else if (sender == lb) {
-                Window.alert("Update check boxes!");
+            int i = lb.getSelectedIndex();
+            String selectedIdentity = lb.getValue(i);
+
+            Window.alert("Update check boxes!");
+            String[] rights = getRights(selectedIdentity);
+
+            boolean hasReadBeenChecked = false;
+            boolean hasWriteBeenChecked = false;
+            for (int j = 0; j < rights.length; j++) {
+                if (rights[j].equals("Read")) {
+                    readCB.setChecked(true);
+                    hasReadBeenChecked = true;
+                } else if (rights[j].equals("Write")) {
+                    writeCB.setChecked(true);
+                    hasWriteBeenChecked = true;
+                }
+            }
+            if (!hasReadBeenChecked) readCB.setChecked(false);
+            if (!hasWriteBeenChecked) writeCB.setChecked(false);
         }
+    }
+
+    /**
+     *
+     */
+    private String[] getRights(String identity) {
+        String[] rights = new String[1];
+        rights[0] = "Read";
+        return rights;
     }
 }
