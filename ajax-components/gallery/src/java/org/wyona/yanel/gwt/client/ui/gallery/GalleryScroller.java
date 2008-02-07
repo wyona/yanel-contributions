@@ -107,7 +107,7 @@ public class GalleryScroller extends Composite implements ChangeListener{
 		}
 		middle.clear();
 		final int visualIndex = model.getCurrentIndex()+1;
-		middle.add(new Label(visualIndex + " of " + model.getSize()));
+		middle.add(new Label(visualIndex + " / " + model.getSize()));
 		
 		if(left == null){
 			left = getLeft();
@@ -130,12 +130,17 @@ public class GalleryScroller extends Composite implements ChangeListener{
 		right.setTitle("");
 		
 		panel.clear();
+		
 		panel.add(left);
+		((HorizontalPanel)panel).setCellVerticalAlignment(left, HorizontalPanel.ALIGN_MIDDLE);
+		
 		if(showMiddle){
 		    panel.add(middle);
+		    ((HorizontalPanel)panel).setCellVerticalAlignment(middle, HorizontalPanel.ALIGN_MIDDLE);
 		}
 		
 		panel.add(right);
+		((HorizontalPanel)panel).setCellVerticalAlignment(right, HorizontalPanel.ALIGN_MIDDLE);
 	}
 	
 	/**

@@ -8,6 +8,8 @@ import java.util.Set;
 
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.SourcesChangeEvents;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
 
 public abstract class Gallery implements SourcesChangeEvents{
 	private String title = null;
