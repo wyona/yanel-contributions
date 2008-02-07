@@ -20,7 +20,7 @@
         <include name="gwt-user.jar" />
         <include name="${gwt.dev.lib}" />
       </fileset>
-      <pathelement path="core/src/java" />
+      <pathelement path="src/core/src/java" />
       <pathelement path="${component.java.dir}/" />
     </path>
   </target>
