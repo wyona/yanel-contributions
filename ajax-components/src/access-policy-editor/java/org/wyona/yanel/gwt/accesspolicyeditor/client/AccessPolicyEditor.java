@@ -55,20 +55,15 @@ public class AccessPolicyEditor implements EntryPoint {
 
         int visibleItemCount = 10;
 
-        ListBox identitiesLB = new ListBox(true);
-        identitiesLB.setVisibleItemCount(visibleItemCount);
-        identitiesLB.addItem("U: michi");
-        identitiesLB.addItem("U: levi");
-        identitiesLB.addItem("U: vanya");
-        identitiesLB.addItem("U: ezra");
+        IdentitiesListBoxWidget identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
 
         PolicyListBoxWidget policyLBW = new PolicyListBoxWidget(visibleItemCount);
 
-	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLB, policyLBW.getListBox());
+	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox());
 
         //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
 
-        hp.add(identitiesLB);
+        hp.add(identitiesLBW);
         hp.add(ariw);
         hp.add(policyLBW);
     }
