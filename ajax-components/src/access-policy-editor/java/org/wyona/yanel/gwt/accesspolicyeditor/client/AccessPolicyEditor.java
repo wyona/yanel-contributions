@@ -52,6 +52,9 @@ public class AccessPolicyEditor implements EntryPoint {
 
         HorizontalPanel hp = new HorizontalPanel();
         vp.add(hp);
+        vp.add(new Button("Apply Policy"));
+        vp.add(new Button("Save Policy and Exit"));
+        vp.add(new Button("Cancel"));
 
         int visibleItemCount = 10;
 
