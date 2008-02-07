@@ -13,7 +13,6 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -57,11 +56,11 @@ public class ImageBrowser extends ConfigurableComponentsAware implements EntryPo
                                 public void onClick(Widget sender) {
                                    if(dialog == null){
                                        dialog = new BlownUpImageGalleryViewerDialog(new AsynchronousGalleryBuilder(getConfiguration(ParameterNames.BLOWN_IMAGE_LISTER_URL, panelIndex)), gv.getGallery().getCurrentIndex());
+                                       dialog.show();
                                    }else{
                                        dialog.getGallery().selectItem(gv.getGallery().getCurrentIndex());
+                                       dialog.center();
                                    }
-
-                                   dialog.center();
                                 } 
                             });
                             

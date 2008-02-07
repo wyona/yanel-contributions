@@ -4,13 +4,17 @@ import org.wyona.yanel.gwt.client.ui.gallery.Gallery;
 import org.wyona.yanel.gwt.client.ui.gallery.GalleryScroller;
 import org.wyona.yanel.gwt.client.ui.gallery.GalleryViewer;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 
 
@@ -37,7 +41,15 @@ public class ImageGalleryViewer extends GalleryViewer {
 		panel.add(summary);
 		
 		if(gs == null){
-		    gs = new GalleryScroller(model, true);
+		    gs = new GalleryScroller(model, true){
+		        protected Widget getLeft() {
+		            return new Button("");
+		        }
+		        
+		        protected Widget getRight() {
+                    return new Button("");
+                }
+		    };
 		}
 		
 		if(blowUpButton == null){
@@ -45,16 +57,26 @@ public class ImageGalleryViewer extends GalleryViewer {
 		    blowUpButton.setStylePrimaryName(STYLE_BLOW);
 		    
 		}
-		Grid g = new Grid(1, 3);
 		
-		g.setWidget(0, 0, new HTML("<span/>"));
-		g.setWidget(0, 1, gs);
-		g.setWidget(0, 2, blowUpButton);
+		Grid p = new Grid(1, 3);
 		
-		g.setStylePrimaryName(STYLE_NAVIBAR);
+		p.setWidget(0, 1, gs);
+		p.setWidget(0, 2, blowUpButton);
 		
+		p.getCellFormatter().setAlignment(0, 0, HorizontalPanel.ALIGN_CENTER, VerticalPanel.ALIGN_MIDDLE);
+		p.getCellFormatter().setAlignment(0, 1, HorizontalPanel.ALIGN_CENTER, VerticalPanel.ALIGN_MIDDLE);
+		p.getCellFormatter().setAlignment(0, 2, HorizontalPanel.ALIGN_RIGHT, VerticalPanel.ALIGN_MIDDLE);
 		
-		panel.add(g);
+//		p.setBorderWidth(1);
+		
+		// We need left and right to be of the same size in order to centralize the middle part
+		// When the width of the button does not exceed 50px, then everything is fine
+		p.getCellFormatter().setWidth(0, 0, blowUpButton.getOffsetWidth()+"50px");
+		p.getCellFormatter().setWidth(0, 2, blowUpButton.getOffsetWidth()+"50px");
+
+		p.setStylePrimaryName(STYLE_NAVIBAR);
+		
+		panel.add(p);
 	}
 	
 	public Button getBlowUpButton(){
