@@ -71,7 +71,18 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
             String selectedIdentity = policyLB.getValue(i);
             Window.alert("Remove selected identity " + selectedIdentity + " from policy");
             policyLB.removeItem(i);
-            identitiesLB.addItem(selectedIdentity);
+            identitiesLB.addItem(removeRights(selectedIdentity));
+        }
+    }
+
+    /**
+     * Remove rights from string, e.g. "U: alice (Read, Write)" -> "U: alice"
+     */
+    private String removeRights(String identity) {
+        if (identity.indexOf("(") > 0) {
+            return identity.substring(0, identity.indexOf("("));
+        } else {
+            return identity;
         }
     }
 }

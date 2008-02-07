@@ -48,6 +48,7 @@ public class AccessPolicyEditor implements EntryPoint {
         TextBox searchTB = new TextBox();
         searchTB.setVisibleLength(30);
         searchFilterVP.add(searchTB);
+        searchFilterVP.add(new Button("Search within Identities"));
 
         HorizontalPanel hp = new HorizontalPanel();
         vp.add(hp);
@@ -61,19 +62,15 @@ public class AccessPolicyEditor implements EntryPoint {
         identitiesLB.addItem("U: vanya");
         identitiesLB.addItem("U: ezra");
 
-        ListBox policyLB = new ListBox(true);
-        policyLB.setVisibleItemCount(visibleItemCount);
-        policyLB.addItem("U: alice");
-        policyLB.addItem("U: karin");
+        PolicyListBoxWidget policyLBW = new PolicyListBoxWidget(visibleItemCount);
 
-	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLB, policyLB);
+	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLB, policyLBW.getListBox());
 
         //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
 
         hp.add(identitiesLB);
         hp.add(ariw);
-        //hp.add(removeIdentityButton);
-        hp.add(policyLB);
+        hp.add(policyLBW);
     }
 }
 
