@@ -85,7 +85,13 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 if (sender == readCB) {
                     Window.alert("Add/Remove Read right from selected identity " + selectedIdentity + " from policy");
                     String[] currentRights = getRights(selectedIdentity);
-                    Vector newRights = new Vector();
+                    String[] newRights;
+                    if (readCB.isChecked()) {
+                        newRights = addRight(currentRights, "Read");
+                    } else {
+                        newRights = removeRight(currentRights, "Read");
+                    }
+                    setListItem(newRights);
                 } else if (sender == writeCB) {
                     Window.alert("Add/Remove Write right from selected identity " + selectedIdentity + " from policy");
                 }
@@ -138,5 +144,43 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             return lb.getValue(i);
         }
         return null;
+    }
+
+    /**
+     *
+     */
+    private String[] addRight(String[] currentRights, String right) {
+        String[] newRights = new String[1];
+        newRights[0] = right;
+        return newRights;
+    }
+
+    /**
+     *
+     */
+    private String[] removeRight(String[] currentRights, String right) {
+        String[] newRights = new String[1];
+        newRights[0] = right;
+        return newRights;
+    }
+
+    /**
+     *
+     */
+    private void setListItem(String[] rights) {
+        int index = lb.getSelectedIndex();
+        if (index >= 0) {
+            StringBuffer sb = new StringBuffer("U: HUGO");
+            if (rights.length > 0) {
+                sb.append(" (" + rights[0]);
+                for (int j = 1; j < rights.length; j++) {
+                sb.append("," + rights[j]);
+                }
+                sb.append(")");
+            }
+            lb.setItemText(index, sb.toString());
+        } else {
+            Window.alert("Exception: No list item selected!");
+        }
     }
 }
