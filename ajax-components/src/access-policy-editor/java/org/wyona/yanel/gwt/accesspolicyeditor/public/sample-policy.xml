@@ -2,6 +2,30 @@
 
 <policy xmlns="http://www.wyona.org/security/1.0">
 
+  <world>
+    <right id="Read"/>
+    <right id="Write"/>
+    <right id="view"/>
+    <right id="introspection" permission="false"/>
+  </world>
+
+  <user id="http://michaelwechner.livejournal.com/">
+    <right id="open"/>
+    <right id="write"/>
+    <right id="toolbar"/>
+    <right id="policy.read"/>
+    <right id="policy.write"/>
+  </user>
+
+  <group id="login">
+    <right id="open"/>
+    <right id="write"/>
+    <right id="toolbar"/>
+  </group>
+
+
+
+<!--
   <usecase id="view">
     <world permission="true"/>
   </usecase>
@@ -34,5 +58,6 @@
     <group id="login" permission="true"/>
     <user id="http://michaelwechner.livejournal.com/" permission="true"/>
   </usecase>
+-->
 
 </policy>
