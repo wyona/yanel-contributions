@@ -30,6 +30,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import java.util.Vector;
+
 /**
  *
  */
@@ -55,6 +57,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         lb.addItem("U: alice (Read,Write)");
         lb.addItem("U: karin (Read)");
         lb.addItem("U: susi");
+        lb.addItem("WORLD");
         vp.add(lb);
 
         readCB = new CheckBox("Read");
@@ -77,11 +80,12 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      */
     public void onClick(Widget sender) {
         if (sender == readCB || sender == writeCB) {
-            int i = lb.getSelectedIndex();
-            if (i > 0) {
-                String selectedIdentity = lb.getValue(i);
+            String selectedIdentity = getSelectedItemValue();
+            if (selectedIdentity != null) {
                 if (sender == readCB) {
                     Window.alert("Add/Remove Read right from selected identity " + selectedIdentity + " from policy");
+                    String[] currentRights = getRights(selectedIdentity);
+                    Vector newRights = new Vector();
                 } else if (sender == writeCB) {
                     Window.alert("Add/Remove Write right from selected identity " + selectedIdentity + " from policy");
                 }
@@ -91,8 +95,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 writeCB.setChecked(false);
             }
         } else if (sender == lb) {
-            int i = lb.getSelectedIndex();
-            String selectedIdentity = lb.getValue(i);
+            String selectedIdentity = getSelectedItemValue();
 
             //Window.alert("Update check boxes!");
             String[] rights = getRights(selectedIdentity);
@@ -124,5 +127,16 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         } else {
             return new String[0];
         }
+    }
+
+    /**
+     *
+     */
+    private String getSelectedItemValue() {
+        int i = lb.getSelectedIndex();
+        if (i >= 0) {
+            return lb.getValue(i);
+        }
+        return null;
     }
 }
