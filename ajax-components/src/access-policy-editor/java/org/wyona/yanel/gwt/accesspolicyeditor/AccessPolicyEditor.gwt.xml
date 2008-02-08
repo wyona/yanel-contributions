@@ -13,6 +13,11 @@
 <!-- limitations under the License.                                         -->
 
 <module>
+<!-- Already inherited by YanelCore package -->
   <inherits name="com.google.gwt.user.User"/>
+  <inherits name="com.google.gwt.http.HTTP" />
+-->
+  <inherits name="org.wyona.yanel.gwt.YanelCore" />
+
   <entry-point class="org.wyona.yanel.gwt.accesspolicyeditor.client.AccessPolicyEditor"/>
 </module>
