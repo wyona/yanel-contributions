@@ -39,6 +39,8 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
+        // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
+
         VerticalPanel vp = new VerticalPanel();
         RootPanel.get().add(vp);
 
