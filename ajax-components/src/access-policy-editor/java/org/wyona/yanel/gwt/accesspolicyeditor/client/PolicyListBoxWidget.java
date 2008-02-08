@@ -52,8 +52,9 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         lb = new ListBox(true);
         lb.addClickListener(this);
         lb.setVisibleItemCount(visibleItemCount);
-        lb.addItem("U: alice (Read, Write)");
+        lb.addItem("U: alice (Read,Write)");
         lb.addItem("U: karin (Read)");
+        lb.addItem("U: susi");
         vp.add(lb);
 
         readCB = new CheckBox("Read");
@@ -86,12 +87,14 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 }
             } else {
                 Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
+                readCB.setChecked(false);
+                writeCB.setChecked(false);
             }
         } else if (sender == lb) {
             int i = lb.getSelectedIndex();
             String selectedIdentity = lb.getValue(i);
 
-            Window.alert("Update check boxes!");
+            //Window.alert("Update check boxes!");
             String[] rights = getRights(selectedIdentity);
 
             boolean hasReadBeenChecked = false;
@@ -114,8 +117,12 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      *
      */
     private String[] getRights(String identity) {
-        String[] rights = new String[1];
-        rights[0] = "Read";
-        return rights;
+        if (identity.indexOf("(") > 0) {
+            String rights = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")"));
+            //Window.alert("Rights: " + rights);
+            return rights.split(",");
+        } else {
+            return new String[0];
+        }
     }
 }
