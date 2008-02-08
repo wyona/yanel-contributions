@@ -10,8 +10,8 @@
     <group id="login">All registered users</group>
   </groups>
 
-  <usecases>
-    <usecase id="view">Read</group>
-    <usecase id="write">Write</group>
-  </usecases>
+  <rights>
+    <right id="view">Read</right>
+    <right id="write">Write</right>
+  </rights>
 </access-control>
