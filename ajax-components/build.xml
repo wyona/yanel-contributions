@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 
-<project default="google.compile" name="AJAX components">
+<project default="usage" name="AJAX components">
+
+  <target name="usage" description="Usage">
+    <echo>USAGE: ant -Dcomponent.home.dir=src/PROJECT_NAME google.compile</echo>
+    <echo>NOTE: Read the README.txt or execute "ant -projecthelp"</echo>
+  </target>
 
   <target name="init" description="Initialize build properties">
     <echo>Initializing build</echo>
