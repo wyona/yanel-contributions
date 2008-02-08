@@ -40,6 +40,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     private ListBox lb;
     private CheckBox readCB;
     private CheckBox writeCB;
+    private CheckBox policyInheritanceCB;
 
     private VerticalPanel vp = new VerticalPanel();
 
@@ -51,13 +52,17 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
         vp.add(new Label("Policy"));
 
+        CheckBox policyInheritanceCB = new CheckBox("Inherit rights from parent policies");
+        policyInheritanceCB.setChecked(true);
+        vp.add(policyInheritanceCB);
+
         lb = new ListBox(true);
         lb.addClickListener(this);
         lb.setVisibleItemCount(visibleItemCount);
-        lb.addItem("U: alice (Read,Write)");
-        lb.addItem("U: karin (Read)");
-        lb.addItem("U: susi");
-        lb.addItem("WORLD");
+        lb.addItem("U: alice (Read,Write)", "U: alice (Read,Write)");
+        lb.addItem("U: karin (Read)", "U: karin (Read)");
+        lb.addItem("U: susi", "U: susi");
+        lb.addItem("WORLD", "WORLD");
         vp.add(lb);
 
         readCB = new CheckBox("Read");
@@ -94,6 +99,14 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     setListItem(newRights);
                 } else if (sender == writeCB) {
                     Window.alert("Add/Remove Write right from selected identity " + selectedIdentity + " from policy");
+                    String[] currentRights = getRights(selectedIdentity);
+                    String[] newRights;
+                    if (readCB.isChecked()) {
+                        newRights = addRight(currentRights, "Write");
+                    } else {
+                        newRights = removeRight(currentRights, "Write");
+                    }
+                    setListItem(newRights);
                 }
             } else {
                 Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
@@ -138,10 +151,21 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
+    private String getIdentityWithoutRights(String identity) {
+        if (identity.indexOf("(") > 0) {
+            return identity.substring(0, identity.indexOf("(")).trim();
+        } else {
+            return identity.trim();
+        }
+    }
+
+    /**
+     *
+     */
     private String getSelectedItemValue() {
         int i = lb.getSelectedIndex();
         if (i >= 0) {
-            return lb.getValue(i);
+            return lb.getItemText(i);
         }
         return null;
     }
@@ -150,18 +174,40 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      *
      */
     private String[] addRight(String[] currentRights, String right) {
-        String[] newRights = new String[1];
-        newRights[0] = right;
-        return newRights;
+        boolean hasRight = false;
+        Vector newRights = new Vector();
+        for (int i = 0; i < currentRights.length; i++) {
+            if (currentRights[i].equals(right)) {
+                hasRight = true;
+            } else {
+                newRights.add(currentRights[i]);
+            }
+        }
+        if (!hasRight) newRights.add(right);
+
+        String[] nRights = new String[newRights.size()];
+        for (int i = 0; i < nRights.length; i++) {
+            nRights[i] = (String) newRights.elementAt(i);
+        }
+        return nRights;
     }
 
     /**
      *
      */
     private String[] removeRight(String[] currentRights, String right) {
-        String[] newRights = new String[1];
-        newRights[0] = right;
-        return newRights;
+        Vector newRights = new Vector();
+        for (int i = 0; i < currentRights.length; i++) {
+            if (!currentRights[i].equals(right)) {
+                newRights.add(currentRights[i]);
+            }
+        }
+
+        String[] nRights = new String[newRights.size()];
+        for (int i = 0; i < nRights.length; i++) {
+            nRights[i] = (String) newRights.elementAt(i);
+        }
+        return nRights;
     }
 
     /**
@@ -170,7 +216,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     private void setListItem(String[] rights) {
         int index = lb.getSelectedIndex();
         if (index >= 0) {
-            StringBuffer sb = new StringBuffer("U: HUGO");
+            StringBuffer sb = new StringBuffer(getIdentityWithoutRights(getSelectedItemValue()));
             if (rights.length > 0) {
                 sb.append(" (" + rights[0]);
                 for (int j = 1; j < rights.length; j++) {
