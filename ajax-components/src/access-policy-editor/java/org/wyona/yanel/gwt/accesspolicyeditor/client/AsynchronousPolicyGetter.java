@@ -15,18 +15,27 @@
  */
 package org.wyona.yanel.gwt.accesspolicyeditor.client;
 
-//import org.wyona.yanel.gwt.client.AsynchronousAgent;
+import org.wyona.yanel.gwt.client.AsynchronousAgent;
+
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
 
 /**
  *
  */
-public class AsynchronousPolicyGetter {
-//public class AsynchronousPolicyGetter extends AsynchronousAgent {
+public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
     /**
      *
      */
     public AsynchronousPolicyGetter(String url) {
-        //super(url);
+        super(url);
+    }
+
+    /**
+     *
+     */
+    public void onResponseReceived(final Request request, final Response response) {
+        // TODO
     }
 }
