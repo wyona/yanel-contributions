@@ -22,6 +22,7 @@ import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.ResourceConfiguration;
 import org.wyona.yanel.core.Yanel;
 
+import org.wyona.yanel.core.api.attributes.CreatableV2;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
@@ -29,6 +30,8 @@ import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 import org.wyona.yanel.core.map.Realm;
 
 import org.wyona.security.core.api.Identity;
+
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,18 +48,12 @@ import org.apache.xml.serializer.Serializer;
 /**
  *
  */
-public class RedirectResource extends Resource implements ViewableV2 {
+public class RedirectResource extends Resource implements ViewableV2, CreatableV2 {
 
     private static Category log = Category.getInstance(RedirectResource.class);
     
     public static String IDENTITY_MAP_KEY = "identity-map";
     
-    /**
-     *
-     */
-    public RedirectResource() {
-    }
-
     /**
      *
      */
@@ -167,5 +164,64 @@ public class RedirectResource extends Resource implements ViewableV2 {
      */
     private Identity getIdentity(HttpServletRequest request) throws Exception {
         return getEnvironment().getIdentity();
+    }
+
+    // All methods below are re CreatableV2 and CreatableV1 interface implementations
+
+    /**
+     *
+     */
+    public void create(HttpServletRequest request) {
+        log.warn("Not implemented yet!");
+    }
+
+    /**
+     *
+     */
+    public String getPropertyType(String propertyName) {
+        return CreatableV2.TYPE_STRING;
+    }
+
+    /**
+     *
+     */
+    public String getCreateName(String suggestedName) {
+        return suggestedName;
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.CreatableV2#createRTIProperties(HttpServletRequest)
+     */
+    public HashMap createRTIProperties(HttpServletRequest request) {
+        HashMap map = new HashMap();
+        map.put("href", request.getParameter("rp.redirectURL"));
+        return map;
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.CreatableV1#getProperty(String)
+     */
+    public Object getProperty(String name) {
+        return null;
+/*
+Object property = properties.get(name);
+return property;
+*/
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.CreatableV1#setProperty(String, Object)
+     */
+    public void setProperty(String name, Object value) {
+        log.warn("Not implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.CreatableV1#getPropertyNames()
+     */
+    public String[] getPropertyNames() {
+        String[] pn = new String[1];
+        pn[0] = "redirectURL";
+        return pn;
     }
 }
