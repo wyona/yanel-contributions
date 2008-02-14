@@ -53,6 +53,10 @@ public class RedirectResource extends Resource implements ViewableV2, CreatableV
     private static Category log = Category.getInstance(RedirectResource.class);
     
     public static String IDENTITY_MAP_KEY = "identity-map";
+
+    // Only a temporary variable needed during creation (roundtrip)
+    private String defaultHrefSetByCreator;
+    private static String REDIRECT_URL = "redirectURL";
     
     /**
      *
@@ -172,7 +176,7 @@ public class RedirectResource extends Resource implements ViewableV2, CreatableV
      *
      */
     public void create(HttpServletRequest request) {
-        log.warn("Not implemented yet!");
+        log.warn("Do nothing! Only resource configuration is needed.");
     }
 
     /**
@@ -194,7 +198,7 @@ public class RedirectResource extends Resource implements ViewableV2, CreatableV
      */
     public HashMap createRTIProperties(HttpServletRequest request) {
         HashMap map = new HashMap();
-        map.put("href", request.getParameter("rp.redirectURL"));
+        map.put("href", request.getParameter("rp." + REDIRECT_URL));
         return map;
     }
 
@@ -202,18 +206,16 @@ public class RedirectResource extends Resource implements ViewableV2, CreatableV
      * @see org.wyona.yanel.core.api.attributes.CreatableV1#getProperty(String)
      */
     public Object getProperty(String name) {
-        return null;
-/*
-Object property = properties.get(name);
-return property;
-*/
+        log.error("DEBUG: name: " + name);
+        return defaultHrefSetByCreator;
     }
 
     /**
      * @see org.wyona.yanel.core.api.attributes.CreatableV1#setProperty(String, Object)
      */
     public void setProperty(String name, Object value) {
-        log.warn("Not implemented yet!");
+        log.error("DEBUG: name: " + name);
+        defaultHrefSetByCreator = (String) value;
     }
 
     /**
@@ -221,7 +223,7 @@ return property;
      */
     public String[] getPropertyNames() {
         String[] pn = new String[1];
-        pn[0] = "redirectURL";
+        pn[0] = REDIRECT_URL;
         return pn;
     }
 }
