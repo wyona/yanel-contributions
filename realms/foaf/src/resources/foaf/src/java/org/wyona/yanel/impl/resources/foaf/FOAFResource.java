@@ -61,8 +61,8 @@ public class FOAFResource extends BasicXMLResource implements IntrospectableV1, 
             return "application/xml";
         } else if (viewId !=  null && viewId.equals("rdf+xml")) {
             // TODO: Firefox somehow changes application/rdf+xml into application/vnd.mozilla.xul+xml
-            return "application/xml";
-            //return "application/rdf+xml";
+            //return "application/xml";
+            return "application/rdf+xml";
         } else if (getPath().endsWith(".rdf")) {
             return "application/xml";
             //return "application/rdf+xml";
