@@ -7,68 +7,14 @@
 </head>
 <body>
 <h2>Developers</h2>
-<p>Please find more information about the technical implementation and source code at <a href="http://yanel.wyona.org/specification/foaf/index.html">http://yanel.wyona.org/specification/foaf/index.html</a>.
-</p>
-<p>
-In case you need support or want to get in touch with the developers for whatever reason, please subscribe to one of the <a href="http://yanel.wyona.org/mailing-lists.html">mailing lists</a>.
-</p>
-<h3>Install and run your own Open Social Network (Provider) Server</h3>
-<p>
-</p><ol>
-  <li>Download and install <a href="http://yanel.wyona.org">Yanel</a></li>
-  <li>Download the <a href="http://svn.wyona.com/repos/public/yanel/contributions/realms/foaf/">FOAF realm</a> from subversion repository (Username: anonymous, Password: anonynous).<br />
-  Add the FOAF realm to your Yanel installation as follows (also see the documentation about realms at <a href="http://yanel.wyona.org/en/documentation/index.html">http://yanel.wyona.org/en/documentation/index.html</a>):<br/><br/>
 <ul>
+<li>Please find more information about the technical implementation and source code at <a href="http://yanel.wyona.org/specification/foaf/index.html">http://yanel.wyona.org/specification/foaf/index.html</a>.</li>
 <li>
-  Add the following lines to your $YANEL_SRC/conf/local/local.realms.xml file:<br /><br />
-  &lt;realm id="foaf" mount-point="/foaf/"&gt;<br />
- 	&#160;&#160;&lt;name&gt;FOAF&lt;/name&gt;<br />
-  	&#160;&#160;&lt;config src="$FOAF_REALM_SRC/"/&gt;<br />
-  &lt;/realm&gt;<br /><br />
-  Replace $FOAF_REALM_SRC by the directory which contains the downloaded FOAF realm.
-  </li>
-  <li>
-  Copy $YANEL_SRC/conf/resource-types.xml to the directory $YANEL_SRC/conf/local and rename it to $YANEL_SRC/conf/local/local.resource-types.xml.
-  </li>
-  <li>
-  Add the following resources to this new file:<br /><br />
-  &lt;resource-type src="$FOAF_REALM_SRC/src/resources/shared/" compile="true" /&gt;<br />
-  &lt;resource-type src="$FOAF_REALM_SRC/src/resources/foaf/" compile="true" /&gt;<br />
-  &lt;resource-type src="$FOAF_REALM_SRC/src/resources/redirect/" compile="true" /&gt;<br />
-  &lt;resource-type src="$FOAF_REALM_SRC/src/resources/findfriend/" compile="true" /&gt;<br /><br />
-  Replace $FOAF_REALM_SRC by the directory which contains the downloaded FOAF realm.
-  </li>
-  <li>Rebuild and restart Yanel.<br />
-  ./yanel.sh stop<br />
-  ./build.sh clean (just to make sure)<br />
-  ./build.sh<br />
-  ./yanel.sh start<br />
-  And browse to http://127.0.0.1:8080/yanel/foaf/
-  </li>
-</ul>
+In case you need support or want to get in touch with the developers for whatever reason, please subscribe to one of the <a href="http://yanel.wyona.org/mailing-lists.html">mailing lists</a>.
 </li>
-</ol>
-<h3>Task Tracker</h3>
-<a href="bugzilla-redirect.html">Bugzilla</a>
-<h3>Related Projects</h3>
-<h4>Client Software</h4>
-<ul>
-  <li><a href="http://wiki.mozilla.org/Labs/The_Coop">Coop</a> (Also see &quot;<a href="http://zenit.senecac.on.ca/wiki/index.php/Desktop_Social_Networking_Integration">Coop Extended</a>&quot; by <a href="http://zenit.senecac.on.ca/wiki/index.php/User:Tjduavis#About_Me">Timothy Joseph Duavis</a>)<br/></li>
-  <li><a href="http://sioc-project.org/firefox">Semantic Radar for Firefox</a> (resp. <a href="https://addons.mozilla.org/en-US/firefox/addon/3886">https://addons.mozilla.org/en-US/firefox/addon/3886</a>)</li>
-  <li><a href="https://sommer.dev.java.net/source/browse/sommer/trunk/misc/AddressBook/www/">Beatnik</a> (Java)</li>
-</ul>
-<h4>Libraries</h4>
-<ul>
-  <li><a href="http://sourceforge.net/projects/jfoaf">jfoaf</a> (Java)</li>
-  <li><a href="http://www.ldodds.com/projects/">FOAF Beans</a> (Java)</li>
-</ul>
-<h4>Misc</h4>
-<ul>
-  <li><a href="http://foafme.opendfki.de/wiki">FoaFMe</a></li>
-  <li><a href="http://www.okkam.org/">Okkam</a></li>
-  <li><a href="http://freemyfriends.com/">Free my friends</a></li>
-  <li><a href="http://claimid.com/">claimID</a></li>
-  <li><a href="http://groups.google.com/group/opensocial">OpenSocial</a></li>
+<li><a href="en/getting-started/install.html">How to install and run your own Open Social Network (Provider) Server</a></li>
+<li><a href="bugzilla-redirect.html">Task Tracker: Bugzilla</a></li>
+<li><a href="en/related-projects.html">Related Projects</a></li>
 </ul>
 </body>
 </html>
