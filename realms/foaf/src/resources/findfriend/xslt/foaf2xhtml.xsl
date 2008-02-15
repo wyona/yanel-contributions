@@ -28,7 +28,7 @@
 <body>
 <p>
 <font size="-1">
-<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="login.html">Login</a></xsl:when><xsl:otherwise>Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:otherwise></xsl:choose> | <!--<a href="register.html">Register</a> | --><a href="about.html">About</a> | <a href="developers.html">Developers</a> | <a href="http://yanel.wyona.org/en/download/index.html">Download</a>
+<xsl:choose><xsl:when test="$username = 'foaf:uin'"><a href="login.html">Login</a></xsl:when><xsl:otherwise>Signed in as <b><xsl:value-of select="$username"/></b>&#160;(<a href="?yanel.usecase=logout">Logout</a>)</xsl:otherwise></xsl:choose> | <!--<a href="register.html">Register</a> | --><a href="about.html">About</a> | <a href="developers.html">Developers</a> | <a href="en/getting-started/install.html">Download</a>
 </font>
 </p>
 
