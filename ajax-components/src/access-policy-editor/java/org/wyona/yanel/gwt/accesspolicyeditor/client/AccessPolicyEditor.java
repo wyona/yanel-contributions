@@ -39,7 +39,7 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
-        // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
+        getUsers();
 
         VerticalPanel vp = new VerticalPanel();
         RootPanel.get().add(vp);
@@ -71,6 +71,15 @@ public class AccessPolicyEditor implements EntryPoint {
         hp.add(identitiesLBW);
         hp.add(ariw);
         hp.add(policyLBW);
+    }
+
+    /**
+     *
+     */
+    private void getUsers() {
+        // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
+        final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("http://127.0.0.1:8080/yanel/sample-identities-and-usecases.xml");
+        String[] users = apg.getUsers();
     }
 }
 
