@@ -20,10 +20,14 @@ import org.wyona.yanel.gwt.client.AsynchronousAgent;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 
+import java.util.Vector;
+
 /**
  *
  */
 public class AsynchronousPolicyGetter extends AsynchronousAgent {
+
+    Vector users = new Vector();
 
     /**
      *
@@ -33,9 +37,21 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
     }
 
     /**
-     *
+     * See src/gallery/src/java/org/wyona/yanel/gwt/client/ui/gallery/AsynchronousGalleryBuilder.java
+     * Also see src/access-policy-editor/java/org/wyona/yanel/gwt/accesspolicyeditor/public/sample-identities-and-usecases.xml
      */
     public void onResponseReceived(final Request request, final Response response) {
         // TODO
+        users.add("dz");
+    }
+
+    /**
+     * Get users
+     */
+    public String[] getUsers() {
+        String[] u = new String[2];
+        u[0] = "dz";
+        u[0] = "ep";
+        return u;
     }
 }
