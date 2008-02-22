@@ -39,8 +39,11 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
-        getUsers();
+        // Get data from server
+        getIdentitiesAndRights();
+        getPolicy();
 
+        // Setup GUI
         VerticalPanel vp = new VerticalPanel();
         RootPanel.get().add(vp);
 
@@ -54,7 +57,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         HorizontalPanel hp = new HorizontalPanel();
         vp.add(hp);
-        vp.add(new Button("Apply Policy"));
+        //vp.add(new Button("Apply Policy"));
         vp.add(new Button("Save Policy and Exit"));
         vp.add(new Button("Cancel"));
 
@@ -74,12 +77,23 @@ public class AccessPolicyEditor implements EntryPoint {
     }
 
     /**
-     *
+     * Get identities and rights
      */
-    private void getUsers() {
+    private void getIdentitiesAndRights() {
+        // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Identities and Rights Getter!
+
+        final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter("sample-identities-and-usecases.xml");
+        String[] users = ag.getUsers();
+    }
+
+    /**
+     * Get policy
+     */
+    private void getPolicy() {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
-        final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("http://127.0.0.1:8080/yanel/sample-identities-and-usecases.xml");
-        String[] users = apg.getUsers();
+
+        final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("sample-policy.xml");
+        String[] identities = apg.getIdentities();
     }
 }
 

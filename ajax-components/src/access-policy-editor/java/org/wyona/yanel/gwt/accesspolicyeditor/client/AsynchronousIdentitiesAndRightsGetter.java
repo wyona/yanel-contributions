@@ -51,7 +51,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
     public String[] getUsers() {
         String[] u = new String[2];
         u[0] = "dz";
-        u[0] = "ep";
+        u[1] = "ep";
         return u;
     }
 }

@@ -27,7 +27,7 @@ import java.util.Vector;
  */
 public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
-    Vector users = new Vector();
+    Vector identities = new Vector();
 
     /**
      *
@@ -42,16 +42,17 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
      */
     public void onResponseReceived(final Request request, final Response response) {
         // TODO
-        users.add("dz");
+        identities.add("u: jim (Write)");
     }
 
     /**
-     * Get users
+     * Get identities from access policy
      */
-    public String[] getUsers() {
-        String[] u = new String[2];
-        u[0] = "dz";
-        u[0] = "ep";
-        return u;
+    public String[] getIdentities() {
+        String[] ids = new String[3];
+        ids[0] = "u: alice (Read,Write)";
+        ids[1] = "u: bob (Read)";
+        ids[2] = "WORLD";
+        return ids;
     }
 }
