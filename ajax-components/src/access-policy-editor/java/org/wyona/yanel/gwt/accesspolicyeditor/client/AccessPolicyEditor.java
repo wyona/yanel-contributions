@@ -41,7 +41,7 @@ public class AccessPolicyEditor implements EntryPoint {
     public void onModuleLoad() {
         // Get data from server
         getIdentitiesAndRights();
-        getPolicy();
+        String[] policyIdentities = getPolicy();
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
@@ -65,7 +65,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         IdentitiesListBoxWidget identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
 
-        PolicyListBoxWidget policyLBW = new PolicyListBoxWidget(visibleItemCount);
+        PolicyListBoxWidget policyLBW = new PolicyListBoxWidget(visibleItemCount, policyIdentities);
 
 	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox());
 
@@ -89,11 +89,11 @@ public class AccessPolicyEditor implements EntryPoint {
     /**
      * Get policy
      */
-    private void getPolicy() {
+    private String[] getPolicy() {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
 
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("sample-policy.xml");
-        String[] identities = apg.getIdentities();
+        return apg.getIdentities();
     }
 }
 
