@@ -35,6 +35,10 @@ import org.wyona.yanel.gwt.accesspolicyeditor.client.AddRemoveIdentitiesWidget;
  */
 public class AccessPolicyEditor implements EntryPoint {
 
+    String[] users;
+    String[] groups;
+    String[] rights;
+
     /**
      *
      */
@@ -63,7 +67,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         int visibleItemCount = 10;
 
-        IdentitiesListBoxWidget identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
+        IdentitiesListBoxWidget identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
 
         PolicyListBoxWidget policyLBW = new PolicyListBoxWidget(visibleItemCount, policyIdentities);
 
@@ -83,7 +87,10 @@ public class AccessPolicyEditor implements EntryPoint {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Identities and Rights Getter!
 
         final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter("sample-identities-and-usecases.xml");
-        String[] users = ag.getUsers();
+        // TODO: Do not set them globally!
+        users = ag.getUsers();
+        groups = ag.getGroups();
+        rights = ag.getRights();
     }
 
     /**

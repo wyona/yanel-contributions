@@ -54,4 +54,25 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         u[1] = "ep";
         return u;
     }
+
+    /**
+     * Get groups
+     */
+    public String[] getGroups() {
+        String[] g = new String[2];
+        g[0] = "login";
+        g[1] = "admin";
+        return g;
+    }
+
+    /**
+     * Get rights
+     */
+    public String[] getRights() {
+        String[] r = new String[3];
+        r[0] = "Read";
+        r[1] = "Write";
+        r[2] = "Toolbar";
+        return r;
+    }
 }
