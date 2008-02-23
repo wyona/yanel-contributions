@@ -23,7 +23,7 @@ import com.google.gwt.http.client.Response;
 import java.util.Vector;
 
 /**
- *
+ * http://code.google.com/p/bunsenandbeaker/wiki/DevGuideHttpRequests
  */
 public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
 
@@ -42,6 +42,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
      */
     public void onResponseReceived(final Request request, final Response response) {
         // TODO
+        // http://groups.google.com/group/Google-Web-Toolkit/msg/a6f399bc4d46f795
         users.add("dz");
     }
 
