@@ -3,7 +3,7 @@
 <project default="usage" name="AJAX components">
 
   <target name="usage" description="Usage">
-    <echo>USAGE: ant -Dcomponent.home.dir=src/PROJECT_NAME google.compile</echo>
+    <echo>USAGE: ant google.compile -Dcomponent.home.dir=src/PROJECT_NAME</echo>
     <echo>NOTE: Read the README.txt or execute "ant -projecthelp"</echo>
   </target>
 
