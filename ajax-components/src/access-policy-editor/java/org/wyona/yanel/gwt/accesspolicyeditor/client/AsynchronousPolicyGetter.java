@@ -47,7 +47,23 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
     public void onResponseReceived(final Request request, final Response response) {
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
         //Window.alert("Root element: " + rootElement.getTagName());
-        identities.add("u: jim (Write)");
+        Element worldElement = null; //getFirstChildElement(rootElement, "world");
+        if (worldElement != null) {
+            identities.add("WORLD (Read,Write)");
+            Window.alert("World: " + (String) identities.elementAt(identities.size() - 1));
+        }
+        NodeList userElements = rootElement.getElementsByTagName("user");
+        for (int i = 0; i < userElements.getLength(); i++) {
+            identities.add("u: " + ((Element) userElements.item(i)).getAttribute("id") + " (Write,Read)");
+            Window.alert("User: " + (String) identities.elementAt(identities.size() - 1));
+        }
+
+        NodeList groupElements = rootElement.getElementsByTagName("group");
+        for (int i = 0; i < groupElements.getLength(); i++) {
+            identities.add("g: " + ((Element) groupElements.item(i)).getAttribute("id") + " (Write,Read)");
+            Window.alert("Group: " + (String) identities.elementAt(identities.size() - 1));
+        }
+
         //Window.alert("Policy response processed!");
     }
 
