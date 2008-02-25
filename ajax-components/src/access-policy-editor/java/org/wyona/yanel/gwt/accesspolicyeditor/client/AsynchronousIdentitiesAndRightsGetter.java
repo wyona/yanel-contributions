@@ -49,18 +49,21 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         // http://groups.google.com/group/Google-Web-Toolkit/msg/a6f399bc4d46f795
         // http://code.google.com/p/bunsenandbeaker/wiki/DevGuideXML
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
-        Window.alert("Root element: " + rootElement.getTagName());
+        //Window.alert("Root element: " + rootElement.getTagName());
         Element usersElement = getFirstChildElement(rootElement, "users");
         NodeList userElements = usersElement.getElementsByTagName("user");
         for (int i = 0; i < userElements.getLength(); i++) {
             users.add(((Element) userElements.item(i)).getAttribute("id"));
+            //Window.alert("User: " + (String) users.elementAt(i));
         }
+        //Window.alert("Identities response processed!");
     }
 
     /**
      * Get users
      */
     public String[] getUsers() {
+        Window.alert("Number of users: " + users.size());
         String[] u = new String[users.size()];
         for (int i = 0; i < users.size(); i++) {
             u[i] = (String) users.elementAt(i);

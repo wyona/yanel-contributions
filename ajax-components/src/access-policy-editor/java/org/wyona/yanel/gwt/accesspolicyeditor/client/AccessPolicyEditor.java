@@ -16,6 +16,7 @@
 package org.wyona.yanel.gwt.accesspolicyeditor.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -90,6 +91,22 @@ public class AccessPolicyEditor implements EntryPoint {
         try {
             final com.google.gwt.http.client.Request request = ag.execute();
             // TODO: Implement loop until request has finished execution
+            Window.alert("Just a second to process the identities response ...");
+
+            Timer t = new Timer() {
+                public void run() {
+                    if (request.isPending()) {
+                        scheduleRepeating(10);
+                    } else {
+                        this.cancel();
+                    }
+                }
+            };
+/*
+            while(request.isPending()) {
+                Window.alert("Response not processed yet!");
+            }
+*/
         } catch (Exception e) {
              //if (!com.google.gwt.core.client.GWT.isScript()) {
              e.printStackTrace();
@@ -111,6 +128,7 @@ public class AccessPolicyEditor implements EntryPoint {
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("sample-policy.xml");
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
+            Window.alert("Just a second to process the policy response ...");
             // TODO: Implement loop until request has finished execution
         } catch (Exception e) {
              Window.alert("Exception: " + e.getMessage());

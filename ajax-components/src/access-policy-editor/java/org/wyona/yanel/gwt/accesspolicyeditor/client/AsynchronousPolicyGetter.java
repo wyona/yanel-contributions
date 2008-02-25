@@ -19,6 +19,10 @@ import org.wyona.yanel.gwt.client.AsynchronousAgent;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.user.client.Window;
 
 import java.util.Vector;
 
@@ -41,8 +45,10 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
      * Also see src/access-policy-editor/java/org/wyona/yanel/gwt/accesspolicyeditor/public/sample-identities-and-usecases.xml
      */
     public void onResponseReceived(final Request request, final Response response) {
-        // TODO
+        Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
+        //Window.alert("Root element: " + rootElement.getTagName());
         identities.add("u: jim (Write)");
+        //Window.alert("Policy response processed!");
     }
 
     /**
