@@ -109,6 +109,15 @@ public class AccessPolicyEditor implements EntryPoint {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
 
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("sample-policy.xml");
+        try {
+            final com.google.gwt.http.client.Request request = apg.execute();
+            // TODO: Implement loop until request has finished execution
+        } catch (Exception e) {
+             Window.alert("Exception: " + e.getMessage());
+             //if (!com.google.gwt.core.client.GWT.isScript()) {
+             e.printStackTrace();
+             //}
+        }
         return apg.getIdentities();
     }
 }
