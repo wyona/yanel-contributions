@@ -20,6 +20,7 @@ import org.wyona.yanel.gwt.client.AsynchronousAgent;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.user.client.Window;
 
@@ -49,16 +50,22 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         // http://code.google.com/p/bunsenandbeaker/wiki/DevGuideXML
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
         Window.alert("Root element: " + rootElement.getTagName());
-        users.add("dz");
+        Element usersElement = getFirstChildElement(rootElement, "users");
+        NodeList userElements = usersElement.getElementsByTagName("user");
+        for (int i = 0; i < userElements.getLength(); i++) {
+            users.add(((Element) userElements.item(i)).getAttribute("id"));
+        }
     }
 
     /**
      * Get users
      */
     public String[] getUsers() {
-        String[] u = new String[2];
-        u[0] = "dz";
-        u[1] = "ep";
+        String[] u = new String[users.size()];
+        for (int i = 0; i < users.size(); i++) {
+            u[i] = (String) users.elementAt(i);
+            Window.alert("User: " + u[i]);
+        }
         return u;
     }
 
@@ -81,5 +88,13 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         r[1] = "Write";
         r[2] = "Toolbar";
         return r;
+    }
+
+    /**
+     * Get first child with a specific tag name
+     */
+    private Element getFirstChildElement(Element parent, String name) {
+        NodeList nl = parent.getElementsByTagName(name);
+        return (Element) nl.item(0);
     }
 }
