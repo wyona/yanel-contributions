@@ -47,7 +47,7 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
     public void onResponseReceived(final Request request, final Response response) {
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
         //Window.alert("Root element: " + rootElement.getTagName());
-        Element worldElement = null; //getFirstChildElement(rootElement, "world");
+        Element worldElement = getFirstChildElement(rootElement, "world");
         if (worldElement != null) {
             identities.add("WORLD (Read,Write)");
             Window.alert("World: " + (String) identities.elementAt(identities.size() - 1));
@@ -76,5 +76,17 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
         ids[1] = "u: bob (Read)";
         ids[2] = "WORLD";
         return ids;
+    }
+
+    /**
+     *
+     */
+    private Element getFirstChildElement(Element parent, String name) {
+        NodeList nl = parent.getElementsByTagName(name);
+        if (nl.getLength() > 0) {
+            return (Element) nl.item(0);
+        } else {
+            return null;
+        }
     }
 }
