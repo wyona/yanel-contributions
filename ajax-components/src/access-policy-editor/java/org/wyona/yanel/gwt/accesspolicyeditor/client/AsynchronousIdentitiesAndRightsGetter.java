@@ -43,6 +43,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
     public void onResponseReceived(final Request request, final Response response) {
         // TODO
         // http://groups.google.com/group/Google-Web-Toolkit/msg/a6f399bc4d46f795
+        // http://code.google.com/p/bunsenandbeaker/wiki/DevGuideXML
         users.add("dz");
     }
 
