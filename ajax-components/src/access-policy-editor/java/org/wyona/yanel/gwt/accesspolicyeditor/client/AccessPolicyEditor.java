@@ -45,19 +45,19 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
+        String identitiesURL = "sample-identities-and-usecases.xml";
+        String policyURL = "sample-policy.xml";
         try {
             Dictionary dict = Dictionary.getDictionary("getURLs");
-            String identitiesURL = dict.get("identities-url");
-            Window.alert("Identities URL: " + identitiesURL);
-            String policyURL = dict.get("policy-url");
-            Window.alert("Policy URL: " + policyURL);
+            identitiesURL = dict.get("identities-url");
+            policyURL = dict.get("policy-url");
         } catch (java.util.MissingResourceException e) {
             Window.alert("Exception: " + e.getMessage());
         }
 
         // Get data from server
-        getIdentitiesAndRights();
-        String[] policyIdentities = getPolicy();
+        getIdentitiesAndRights(identitiesURL);
+        String[] policyIdentities = getPolicy(policyURL);
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
@@ -95,9 +95,10 @@ public class AccessPolicyEditor implements EntryPoint {
     /**
      * Get identities and rights
      */
-    private void getIdentitiesAndRights() {
+    private void getIdentitiesAndRights(String url) {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Identities and Rights Getter!
 
+        Window.alert("Load identities: " + url);
         final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter("sample-identities-and-usecases.xml");
         try {
             final com.google.gwt.http.client.Request request = ag.execute();
@@ -133,10 +134,11 @@ public class AccessPolicyEditor implements EntryPoint {
     /**
      * Get policy
      */
-    private String[] getPolicy() {
+    private String[] getPolicy(String url) {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
 
-        final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("sample-policy.xml");
+        Window.alert("Load policy: " + url);
+        final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter(url);
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
             //Window.alert("Just a second to process the policy response ...");
