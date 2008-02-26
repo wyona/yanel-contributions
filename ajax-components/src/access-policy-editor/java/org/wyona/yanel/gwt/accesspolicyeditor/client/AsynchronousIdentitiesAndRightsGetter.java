@@ -67,7 +67,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         String[] u = new String[users.size()];
         for (int i = 0; i < users.size(); i++) {
             u[i] = (String) users.elementAt(i);
-            Window.alert("User: " + u[i]);
+            //Window.alert("User: " + u[i]);
         }
         return u;
     }

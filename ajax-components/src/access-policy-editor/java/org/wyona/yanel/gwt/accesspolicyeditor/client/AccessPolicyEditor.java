@@ -16,6 +16,7 @@
 package org.wyona.yanel.gwt.accesspolicyeditor.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -44,6 +45,16 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
+        try {
+            Dictionary dict = Dictionary.getDictionary("getURLs");
+            String identitiesURL = dict.get("identities-url");
+            Window.alert("Identities URL: " + identitiesURL);
+            String policyURL = dict.get("policy-url");
+            Window.alert("Policy URL: " + policyURL);
+        } catch (java.util.MissingResourceException e) {
+            Window.alert("Exception: " + e.getMessage());
+        }
+
         // Get data from server
         getIdentitiesAndRights();
         String[] policyIdentities = getPolicy();
@@ -91,7 +102,7 @@ public class AccessPolicyEditor implements EntryPoint {
         try {
             final com.google.gwt.http.client.Request request = ag.execute();
             // TODO: Implement loop until request has finished execution
-            Window.alert("Just a second to process the identities response ...");
+            //Window.alert("Just a second to process the identities response ...");
 
             Timer t = new Timer() {
                 public void run() {
@@ -128,7 +139,7 @@ public class AccessPolicyEditor implements EntryPoint {
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter("sample-policy.xml");
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
-            Window.alert("Just a second to process the policy response ...");
+            //Window.alert("Just a second to process the policy response ...");
             // TODO: Implement loop until request has finished execution
         } catch (Exception e) {
              Window.alert("Exception: " + e.getMessage());
