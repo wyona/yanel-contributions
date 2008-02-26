@@ -52,18 +52,24 @@ public class AccessPolicyEditor implements EntryPoint {
      */
     public void onModuleLoad() {
         String identitiesURL = "DEFAULT-identities-and-usecases.xml";
-        String policyURL = "DEFAULT-policy.xml";
+        String readPolicyURL = "DEFAULT-policy.xml";
+        String cancelURL = "DEFAULT-cancel.html";
+        String savePolicyURL = "DEFAULT-save-policy.xml";
         // Get URLs from host/html page
         try {
             Dictionary dict = Dictionary.getDictionary("getURLs");
             identitiesURL = dict.get("identities-url");
-            policyURL = dict.get("policy-url");
+            readPolicyURL = dict.get("policy-url");
+            cancelURL = dict.get("cancel-url");
+            savePolicyURL = dict.get("save-url");
         } catch (java.util.MissingResourceException e) {
             Window.alert("Exception: " + e.getMessage());
         }
+        Window.alert("Cancel URL: " + cancelURL);
+        Window.alert("Save policy URL: " + savePolicyURL);
 
         // Get data from server
-        getPolicy(policyURL);
+        getPolicy(readPolicyURL);
         getIdentitiesAndRights(identitiesURL); // TODO: Subtract policy identities!
 
         // Setup GUI
