@@ -69,7 +69,7 @@ public abstract class AsynchronousAgent implements RequestCallback{
      * Send request
      */
     public final Request execute() throws RequestException{
-        Window.alert("Send request: " + url);
+        //Window.alert("DEBUG: Send request: " + url);
         return requestBuilder.sendRequest(buildRequestData(), this);
     }
 	
