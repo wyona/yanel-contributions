@@ -41,6 +41,10 @@ public class AccessPolicyEditor implements EntryPoint {
     String[] groups;
     String[] rights;
 
+    IdentitiesListBoxWidget identitiesLBW;
+
+    int visibleItemCount = 10;
+
     /**
      *
      */
@@ -77,9 +81,7 @@ public class AccessPolicyEditor implements EntryPoint {
         vp.add(new Button("Save Policy and Exit"));
         vp.add(new Button("Cancel"));
 
-        int visibleItemCount = 10;
-
-        IdentitiesListBoxWidget identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
+        identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
 
         PolicyListBoxWidget policyLBW = new PolicyListBoxWidget(visibleItemCount, policyIdentities);
 
@@ -105,30 +107,28 @@ public class AccessPolicyEditor implements EntryPoint {
             // TODO: Implement loop until request has finished execution
             //Window.alert("Just a second to process the identities response ...");
 
+            // Start new thread
             Timer t = new Timer() {
                 public void run() {
                     if (request.isPending()) {
                         scheduleRepeating(10);
                     } else {
+                        users = ag.getUsers();
+                        groups = ag.getGroups();
+                        rights = ag.getRights();
+                        identitiesLBW.set(visibleItemCount, users, groups);
                         this.cancel();
+                        Window.alert("Timer still running!");
                     }
                 }
             };
-/*
-            while(request.isPending()) {
-                Window.alert("Response not processed yet!");
-            }
-*/
+            t.schedule(1);
+
         } catch (Exception e) {
              //if (!com.google.gwt.core.client.GWT.isScript()) {
              e.printStackTrace();
              //}
         }
-
-        // TODO: Do not set them globally!
-        users = ag.getUsers();
-        groups = ag.getGroups();
-        rights = ag.getRights();
     }
 
     /**

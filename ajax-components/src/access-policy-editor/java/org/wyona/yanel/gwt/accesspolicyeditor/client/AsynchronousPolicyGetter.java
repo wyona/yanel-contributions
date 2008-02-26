@@ -55,7 +55,7 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
         NodeList userElements = rootElement.getElementsByTagName("user");
         for (int i = 0; i < userElements.getLength(); i++) {
             identities.add("u: " + ((Element) userElements.item(i)).getAttribute("id") + " (Write,Read)");
-            //Window.alert("User: " + (String) identities.elementAt(identities.size() - 1));
+            Window.alert("User: " + (String) identities.elementAt(identities.size() - 1));
         }
 
         NodeList groupElements = rootElement.getElementsByTagName("group");
