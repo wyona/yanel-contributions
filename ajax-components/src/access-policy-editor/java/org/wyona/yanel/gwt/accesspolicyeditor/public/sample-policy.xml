@@ -3,16 +3,15 @@
 <policy xmlns="http://www.wyona.org/security/1.0" use-inherited-policies="false">
 
   <world>
-    <right id="Read"/>
-    <right id="Write"/>
-    <right id="view"/>
+    <right id="view">Read</right>
+    <right id="write">Write</right>
     <right id="introspection" permission="false"/>
   </world>
 
   <user id="http://michaelwechner.livejournal.com/">
     <right id="open"/>
     <right id="write"/>
-    <right id="toolbar"/>
+    <right id="toolbar">Toolbar</right>
     <right id="policy.read"/>
     <right id="policy.write"/>
   </user>
@@ -22,42 +21,5 @@
     <right id="write"/>
     <right id="toolbar"/>
   </group>
-
-
-
-<!--
-  <usecase id="view">
-    <world permission="true"/>
-  </usecase>
-
-  <usecase id="introspection">
-    <world permission="true"/>
-  </usecase>
-
-  <usecase id="open">
-    <group id="login" permission="true"/>
-    <user id="http://michaelwechner.livejournal.com/" permission="true"/>
-  </usecase>
-
-  <usecase id="write">
-    <group id="login" permission="true"/>
-    <user id="http://michaelwechner.livejournal.com/" permission="true"/>
-  </usecase>
-
-  <usecase id="toolbar">
-    <group id="login" permission="true"/>
-    <user id="http://michaelwechner.livejournal.com/" permission="true"/>
-  </usecase>
-
-  <usecase id="policy.read">
-    <group id="login" permission="true"/>
-    <user id="http://michaelwechner.livejournal.com/" permission="true"/>
-  </usecase>
-
-  <usecase id="policy.create">
-    <group id="login" permission="true"/>
-    <user id="http://michaelwechner.livejournal.com/" permission="true"/>
-  </usecase>
--->
 
 </policy>

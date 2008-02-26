@@ -53,6 +53,7 @@ public class AccessPolicyEditor implements EntryPoint {
     public void onModuleLoad() {
         String identitiesURL = "DEFAULT-identities-and-usecases.xml";
         String policyURL = "DEFAULT-policy.xml";
+        // Get URLs from host/html page
         try {
             Dictionary dict = Dictionary.getDictionary("getURLs");
             identitiesURL = dict.get("identities-url");
@@ -62,8 +63,8 @@ public class AccessPolicyEditor implements EntryPoint {
         }
 
         // Get data from server
-        getIdentitiesAndRights(identitiesURL);
         getPolicy(policyURL);
+        getIdentitiesAndRights(identitiesURL); // TODO: Subtract policy identities!
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
@@ -100,24 +101,22 @@ public class AccessPolicyEditor implements EntryPoint {
      * Get identities and rights
      */
     private void getIdentitiesAndRights(String url) {
-        // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Identities and Rights Getter!
-
         //Window.alert("Load identities: " + url);
         final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter(url);
         try {
             final com.google.gwt.http.client.Request request = ag.execute();
-            // TODO: Implement loop until request has finished execution
-            //Window.alert("Just a second to process the identities response ...");
 
             // Start new thread
             Timer t = new Timer() {
                 public void run() {
                     if (request.isPending()) {
+                        // TODO: Show loading ...
                         scheduleRepeating(10);
                     } else {
                         users = ag.getUsers();
                         groups = ag.getGroups();
                         rights = ag.getRights();
+                        // "Redraw" Listbox
                         identitiesLBW.set(visibleItemCount, users, groups);
                         this.cancel();
                         Window.alert("Identities have been loaded!");
@@ -137,21 +136,20 @@ public class AccessPolicyEditor implements EntryPoint {
      * Get policy
      */
     private void getPolicy(String url) {
-        // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
-
         //Window.alert("Load policy: " + url);
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter(url);
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
-            //Window.alert("Just a second to process the policy response ...");
 
             // Start new thread
             Timer t = new Timer() {
                 public void run() {
                     if (request.isPending()) {
+                        // TODO: Show loading ...
                         scheduleRepeating(10);
                     } else {
                         policyIdentities = apg.getIdentities();
+                        // "Redraw" Listbox
                         policyLBW.set(visibleItemCount, policyIdentities);
                         this.cancel();
                         Window.alert("Policy has been loaded!");
@@ -159,6 +157,7 @@ public class AccessPolicyEditor implements EntryPoint {
                 }
             };
             t.schedule(1);
+
         } catch (Exception e) {
              Window.alert("Exception: " + e.getMessage());
              //if (!com.google.gwt.core.client.GWT.isScript()) {

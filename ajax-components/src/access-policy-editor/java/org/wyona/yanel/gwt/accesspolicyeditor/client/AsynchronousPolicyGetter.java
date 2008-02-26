@@ -47,11 +47,17 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
     public void onResponseReceived(final Request request, final Response response) {
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
         //Window.alert("Root element: " + rootElement.getTagName());
+
+	// TODO: Parse inherit rights from parent
+
+        // TODO: Parse rights and use labels for formatting, e.g. "u: (Read,Write) benjamin", "u: (Read,-) susi"
+
         Element worldElement = getFirstChildElement(rootElement, "world");
         if (worldElement != null) {
             identities.add("WORLD (Read,Write)");
             //Window.alert("World: " + (String) identities.elementAt(identities.size() - 1));
         }
+
         NodeList userElements = rootElement.getElementsByTagName("user");
         for (int i = 0; i < userElements.getLength(); i++) {
             identities.add("u: " + ((Element) userElements.item(i)).getAttribute("id") + " (Write,Read)");
