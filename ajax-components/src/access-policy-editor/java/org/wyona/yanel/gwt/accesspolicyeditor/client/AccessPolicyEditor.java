@@ -99,7 +99,7 @@ public class AccessPolicyEditor implements EntryPoint {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Identities and Rights Getter!
 
         Window.alert("Load identities: " + url);
-        final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter("sample-identities-and-usecases.xml");
+        final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter(url);
         try {
             final com.google.gwt.http.client.Request request = ag.execute();
             // TODO: Implement loop until request has finished execution
