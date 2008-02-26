@@ -45,8 +45,8 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
-        String identitiesURL = "sample-identities-and-usecases.xml";
-        String policyURL = "sample-policy.xml";
+        String identitiesURL = "DEFAULT-identities-and-usecases.xml";
+        String policyURL = "DEFAULT-policy.xml";
         try {
             Dictionary dict = Dictionary.getDictionary("getURLs");
             identitiesURL = dict.get("identities-url");
