@@ -42,7 +42,7 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
     /**
      * See src/gallery/src/java/org/wyona/yanel/gwt/client/ui/gallery/AsynchronousGalleryBuilder.java
-     * Also see src/access-policy-editor/java/org/wyona/yanel/gwt/accesspolicyeditor/public/sample-identities-and-usecases.xml
+     * Also see src/access-policy-editor/java/org/wyona/yanel/gwt/accesspolicyeditor/public/sample-policy.xml
      */
     public void onResponseReceived(final Request request, final Response response) {
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
