@@ -65,8 +65,6 @@ public class AccessPolicyEditor implements EntryPoint {
         } catch (java.util.MissingResourceException e) {
             Window.alert("Exception: " + e.getMessage());
         }
-        Window.alert("Cancel URL: " + cancelURL);
-        Window.alert("Save policy URL: " + savePolicyURL);
 
         // Get data from server
         getPolicy(readPolicyURL);
@@ -88,7 +86,19 @@ public class AccessPolicyEditor implements EntryPoint {
         vp.add(hp);
         //vp.add(new Button("Apply Policy"));
         vp.add(new Button("Save Policy and Exit"));
-        vp.add(new Button("Cancel"));
+
+        // Cancel Button
+        final String cancelUrl = cancelURL;
+        Button cancelButton = new Button("Cancel", new ClickListener() {
+            public void onClick(Widget sender) {
+                Window.alert("Redirect to " + cancelUrl);
+                redirectTo(cancelUrl);
+            }
+            public native void redirectTo(String url) /*-{
+                $wnd.location.href=url;
+            }-*/; 
+        });
+        vp.add(cancelButton);
 
         identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
 
