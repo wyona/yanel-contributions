@@ -102,7 +102,7 @@ public class AccessPolicyEditor implements EntryPoint {
     private void getIdentitiesAndRights(String url) {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Identities and Rights Getter!
 
-        Window.alert("Load identities: " + url);
+        //Window.alert("Load identities: " + url);
         final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter(url);
         try {
             final com.google.gwt.http.client.Request request = ag.execute();
@@ -120,7 +120,7 @@ public class AccessPolicyEditor implements EntryPoint {
                         rights = ag.getRights();
                         identitiesLBW.set(visibleItemCount, users, groups);
                         this.cancel();
-                        Window.alert("Timer still running!");
+                        Window.alert("Identities have been loaded!");
                     }
                 }
             };
@@ -139,7 +139,7 @@ public class AccessPolicyEditor implements EntryPoint {
     private void getPolicy(String url) {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
 
-        Window.alert("Load policy: " + url);
+        //Window.alert("Load policy: " + url);
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter(url);
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
@@ -154,7 +154,7 @@ public class AccessPolicyEditor implements EntryPoint {
                         policyIdentities = apg.getIdentities();
                         policyLBW.set(visibleItemCount, policyIdentities);
                         this.cancel();
-                        Window.alert("Timer still running!");
+                        Window.alert("Policy has been loaded!");
                     }
                 }
             };

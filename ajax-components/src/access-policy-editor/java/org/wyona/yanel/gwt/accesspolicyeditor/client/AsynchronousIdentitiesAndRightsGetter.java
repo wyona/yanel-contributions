@@ -54,7 +54,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         NodeList userElements = usersElement.getElementsByTagName("user");
         for (int i = 0; i < userElements.getLength(); i++) {
             users.add(((Element) userElements.item(i)).getAttribute("id"));
-            Window.alert("User: " + (String) users.elementAt(i));
+            //Window.alert("User: " + (String) users.elementAt(i));
         }
         //Window.alert("Identities response processed!");
     }
@@ -63,7 +63,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
      * Get users
      */
     public String[] getUsers() {
-        Window.alert("Number of users: " + users.size());
+        //Window.alert("Number of users: " + users.size());
         String[] u = new String[users.size()];
         for (int i = 0; i < users.size(); i++) {
             u[i] = (String) users.elementAt(i);
