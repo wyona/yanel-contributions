@@ -40,8 +40,10 @@ public class AccessPolicyEditor implements EntryPoint {
     String[] users;
     String[] groups;
     String[] rights;
+    String[] policyIdentities;
 
     IdentitiesListBoxWidget identitiesLBW;
+    PolicyListBoxWidget policyLBW;
 
     int visibleItemCount = 10;
 
@@ -61,7 +63,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         // Get data from server
         getIdentitiesAndRights(identitiesURL);
-        String[] policyIdentities = getPolicy(policyURL);
+        getPolicy(policyURL);
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
@@ -83,7 +85,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
 
-        PolicyListBoxWidget policyLBW = new PolicyListBoxWidget(visibleItemCount, policyIdentities);
+        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyIdentities);
 
 	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox());
 
@@ -134,7 +136,7 @@ public class AccessPolicyEditor implements EntryPoint {
     /**
      * Get policy
      */
-    private String[] getPolicy(String url) {
+    private void getPolicy(String url) {
         // TODO: See src/extra/globus/image-browser/src/java/ch/globus/yanel/gwt/client/ImageBrowser.java how to use Asyn Policy Getter!
 
         Window.alert("Load policy: " + url);
@@ -142,14 +144,27 @@ public class AccessPolicyEditor implements EntryPoint {
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
             //Window.alert("Just a second to process the policy response ...");
-            // TODO: Implement loop until request has finished execution
+
+            // Start new thread
+            Timer t = new Timer() {
+                public void run() {
+                    if (request.isPending()) {
+                        scheduleRepeating(10);
+                    } else {
+                        policyIdentities = apg.getIdentities();
+                        policyLBW.set(visibleItemCount, policyIdentities);
+                        this.cancel();
+                        Window.alert("Timer still running!");
+                    }
+                }
+            };
+            t.schedule(1);
         } catch (Exception e) {
              Window.alert("Exception: " + e.getMessage());
              //if (!com.google.gwt.core.client.GWT.isScript()) {
              e.printStackTrace();
              //}
         }
-        return apg.getIdentities();
     }
 }
 

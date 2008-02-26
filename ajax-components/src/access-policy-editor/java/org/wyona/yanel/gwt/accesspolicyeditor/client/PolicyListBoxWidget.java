@@ -58,10 +58,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
         lb = new ListBox(true);
         lb.addClickListener(this);
-        lb.setVisibleItemCount(visibleItemCount);
-        for (int i = 0; i < identities.length; i++) {
-            lb.addItem(identities[i], identities[i]);
-        }
+        set(visibleItemCount, identities);
         vp.add(lb);
 
         readCB = new CheckBox("Read");
@@ -70,6 +67,21 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         writeCB = new CheckBox("Write");
         writeCB.addClickListener(this);
         vp.add(writeCB);
+    }
+
+    /**
+     *
+     */
+    public void set(int visibleItemCount, String[] identities) {
+        lb.clear();
+        lb.setVisibleItemCount(visibleItemCount);
+        if (identities != null) {
+            for (int i = 0; i < identities.length; i++) {
+                lb.addItem(identities[i], identities[i]);
+            }
+        } else {
+            lb.addItem("No identities yet!");
+        }
     }
 
     /**

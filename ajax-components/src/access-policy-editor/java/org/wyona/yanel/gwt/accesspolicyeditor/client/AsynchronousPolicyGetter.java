@@ -71,10 +71,10 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
      * Get identities from access policy
      */
     public String[] getIdentities() {
-        String[] ids = new String[3];
-        ids[0] = "u: alice (Read,Write)";
-        ids[1] = "u: bob (Read)";
-        ids[2] = "WORLD";
+        String[] ids = new String[identities.size()];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = (String)identities.elementAt(i);
+        }
         return ids;
     }
 
