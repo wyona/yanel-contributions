@@ -32,6 +32,8 @@ import java.util.Vector;
 public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
 
     Vector users = new Vector();
+    Vector groups = new Vector();
+    Vector rights = new Vector();
 
     /**
      *
@@ -45,18 +47,33 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
      * Also see src/access-policy-editor/java/org/wyona/yanel/gwt/accesspolicyeditor/public/sample-identities-and-usecases.xml
      */
     public void onResponseReceived(final Request request, final Response response) {
-        // TODO: Parse response XML
         // http://groups.google.com/group/Google-Web-Toolkit/msg/a6f399bc4d46f795
         // http://code.google.com/p/bunsenandbeaker/wiki/DevGuideXML
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
         //Window.alert("Root element: " + rootElement.getTagName());
+
         Element usersElement = getFirstChildElement(rootElement, "users");
         NodeList userElements = usersElement.getElementsByTagName("user");
         for (int i = 0; i < userElements.getLength(); i++) {
             users.add(((Element) userElements.item(i)).getAttribute("id"));
             //Window.alert("User: " + (String) users.elementAt(i));
         }
+
+        Element groupsElement = getFirstChildElement(rootElement, "groups");
+        NodeList groupElements = groupsElement.getElementsByTagName("group");
+        for (int i = 0; i < groupElements.getLength(); i++) {
+            groups.add(((Element) groupElements.item(i)).getAttribute("id"));
+            //Window.alert("Group: " + (String) groups.elementAt(i));
+        }
+
         //Window.alert("Identities response processed!");
+
+        Element rightsElement = getFirstChildElement(rootElement, "rights");
+        NodeList rightElements = rightsElement.getElementsByTagName("right");
+        for (int i = 0; i < rightElements.getLength(); i++) {
+            rights.add(((Element) rightElements.item(i)).getAttribute("id"));
+            //Window.alert("Right: " + (String) rights.elementAt(i));
+        }
     }
 
     /**
@@ -76,9 +93,11 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
      * Get groups
      */
     public String[] getGroups() {
-        String[] g = new String[2];
-        g[0] = "login";
-        g[1] = "admin";
+        String[] g = new String[groups.size()];
+        for (int i = 0; i < groups.size(); i++) {
+            g[i] = (String) groups.elementAt(i);
+            //Window.alert("Group: " + g[i]);
+        }
         return g;
     }
 
@@ -86,10 +105,11 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
      * Get rights
      */
     public String[] getRights() {
-        String[] r = new String[3];
-        r[0] = "Read";
-        r[1] = "Write";
-        r[2] = "Toolbar";
+        String[] r = new String[rights.size()];
+        for (int i = 0; i < rights.size(); i++) {
+            r[i] = (String) rights.elementAt(i);
+            //Window.alert("Right: " + r[i]);
+        }
         return r;
     }
 
