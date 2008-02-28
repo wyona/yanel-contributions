@@ -30,6 +30,11 @@
     <user id="http://michaelwechner.livejournal.com/" permission="true"/>
   </usecase>
 
+  <usecase id="policy.update">
+    <group id="login" permission="true"/>
+    <user id="http://michaelwechner.livejournal.com/" permission="true"/>
+  </usecase>
+
   <usecase id="policy.create">
     <group id="login" permission="true"/>
     <user id="http://michaelwechner.livejournal.com/" permission="true"/>
