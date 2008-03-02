@@ -49,7 +49,7 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();
         //Window.alert("Root element: " + rootElement.getTagName());
 
-	// TODO: Parse inherit rights from parent
+	// Get use-inherited-policies attribute
         String useInheritedPoliciesString = rootElement.getAttribute("use-inherited-policies");
         if (useInheritedPoliciesString == null) {
             useInheritedPolicies = true;
@@ -60,6 +60,7 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
                 useInheritedPolicies = true;
             }
         }
+        //Window.alert("use-inherited-policies: " + useInheritedPoliciesString);
 
         // TODO: Parse rights and use labels for formatting, e.g. "u: (Read,Write) benjamin", "u: (Read,-) susi"
 

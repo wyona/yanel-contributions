@@ -41,6 +41,7 @@ public class AccessPolicyEditor implements EntryPoint {
     String[] groups;
     String[] rights;
     String[] policyIdentities;
+    boolean useInheritedPolicies = true;
 
     IdentitiesListBoxWidget identitiesLBW;
     PolicyListBoxWidget policyLBW;
@@ -110,7 +111,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
 
-        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyIdentities);
+        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyIdentities, useInheritedPolicies);
 
 	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox());
 
@@ -176,7 +177,7 @@ public class AccessPolicyEditor implements EntryPoint {
                         // "Redraw" Listbox
                         policyLBW.setIdentities(visibleItemCount, policyIdentities);
 
-                        boolean useInheritedPolicies = apg.getUseInheritedPolicies();
+                        useInheritedPolicies = apg.getUseInheritedPolicies();
                         policyLBW.setInheritRightsFlag(useInheritedPolicies);
 
                         this.cancel();

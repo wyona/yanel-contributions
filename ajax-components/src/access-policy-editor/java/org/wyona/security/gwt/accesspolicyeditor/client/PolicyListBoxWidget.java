@@ -47,13 +47,13 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    public PolicyListBoxWidget(int visibleItemCount, String[] identities) {
+    public PolicyListBoxWidget(int visibleItemCount, String[] identities, boolean useInheritedPolicies) {
         initWidget(vp);
 
         vp.add(new Label("Policy"));
 
-        CheckBox policyInheritanceCB = new CheckBox("Inherit rights from parent policies");
-        policyInheritanceCB.setChecked(true);
+        policyInheritanceCB = new CheckBox("Inherit rights from parent policies");
+        setInheritRightsFlag(useInheritedPolicies);
         vp.add(policyInheritanceCB);
 
         lb = new ListBox(true);
@@ -88,8 +88,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      *
      */
     public void setInheritRightsFlag(boolean useInheritedPolicies) {
-        Window.alert("Set inherit rights checkbox: " + useInheritedPolicies);
-        //policyInheritanceCB.setChecked(useInheritedPolicies);
+        //Window.alert("Set inherit rights checkbox: " + useInheritedPolicies);
+        if (policyInheritanceCB != null) {
+            policyInheritanceCB.setChecked(useInheritedPolicies);
+        }
     }
 
     /**
