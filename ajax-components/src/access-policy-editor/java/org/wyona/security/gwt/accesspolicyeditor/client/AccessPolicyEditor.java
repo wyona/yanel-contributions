@@ -85,7 +85,15 @@ public class AccessPolicyEditor implements EntryPoint {
         HorizontalPanel hp = new HorizontalPanel();
         vp.add(hp);
         //vp.add(new Button("Apply Policy"));
-        vp.add(new Button("Save Policy and Exit"));
+
+        // Save Button
+        final String savePolicyUrl = savePolicyURL;
+        Button saveButton = new Button("Save Policy and Exit", new ClickListener() {
+            public void onClick(Widget sender) {
+                final AsynchronousPolicySetter aps = new AsynchronousPolicySetter(savePolicyUrl);
+            }
+        });
+        vp.add(saveButton);
 
         // Cancel Button
         final String cancelUrl = cancelURL;
@@ -166,7 +174,11 @@ public class AccessPolicyEditor implements EntryPoint {
                     } else {
                         policyIdentities = apg.getIdentities();
                         // "Redraw" Listbox
-                        policyLBW.set(visibleItemCount, policyIdentities);
+                        policyLBW.setIdentities(visibleItemCount, policyIdentities);
+
+                        boolean useInheritedPolicies = apg.getUseInheritedPolicies();
+                        policyLBW.setInheritRightsFlag(useInheritedPolicies);
+
                         this.cancel();
                         Window.alert("Policy has been loaded!");
                     }

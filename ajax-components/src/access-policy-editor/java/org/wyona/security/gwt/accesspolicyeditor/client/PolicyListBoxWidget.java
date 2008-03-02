@@ -58,7 +58,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
         lb = new ListBox(true);
         lb.addClickListener(this);
-        set(visibleItemCount, identities);
+        setIdentities(visibleItemCount, identities);
         vp.add(lb);
 
         readCB = new CheckBox("Read");
@@ -72,7 +72,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    public void set(int visibleItemCount, String[] identities) {
+    public void setIdentities(int visibleItemCount, String[] identities) {
         lb.clear();
         lb.setVisibleItemCount(visibleItemCount);
         if (identities != null) {
@@ -82,6 +82,14 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         } else {
             lb.addItem("No identities yet!");
         }
+    }
+
+    /**
+     *
+     */
+    public void setInheritRightsFlag(boolean useInheritedPolicies) {
+        Window.alert("Set inherit rights checkbox: " + useInheritedPolicies);
+        //policyInheritanceCB.setChecked(useInheritedPolicies);
     }
 
     /**

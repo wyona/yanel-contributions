@@ -31,6 +31,7 @@ import java.util.Vector;
  */
 public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
+    boolean useInheritedPolicies = true;
     Vector identities = new Vector();
 
     /**
@@ -49,6 +50,16 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
         //Window.alert("Root element: " + rootElement.getTagName());
 
 	// TODO: Parse inherit rights from parent
+        String useInheritedPoliciesString = rootElement.getAttribute("use-inherited-policies");
+        if (useInheritedPoliciesString == null) {
+            useInheritedPolicies = true;
+        } else {
+            if (useInheritedPoliciesString.equals("false")) {
+                useInheritedPolicies = false;
+            } else {
+                useInheritedPolicies = true;
+            }
+        }
 
         // TODO: Parse rights and use labels for formatting, e.g. "u: (Read,Write) benjamin", "u: (Read,-) susi"
 
@@ -82,6 +93,13 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
             ids[i] = (String)identities.elementAt(i);
         }
         return ids;
+    }
+
+    /**
+     * Get flag use-inherited-policies
+     */
+    public boolean getUseInheritedPolicies() {
+        return useInheritedPolicies;
     }
 
     /**
