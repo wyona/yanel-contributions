@@ -49,7 +49,7 @@ public class AsynchronousPolicySetter implements RequestCallback {
      *
      */
     public void onResponseReceived(Request request, Response response) {
-        Window.alert("Reponse received!");
+        Window.alert("Response received!");
     }
 
     /**
