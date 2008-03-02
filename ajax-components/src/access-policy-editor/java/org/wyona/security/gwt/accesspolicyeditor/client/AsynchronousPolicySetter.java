@@ -15,31 +15,47 @@
  */
 package org.wyona.security.gwt.accesspolicyeditor.client;
 
-/*
-import org.wyona.yanel.gwt.client.AsynchronousAgent;
-
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.XMLParser;
-
-import java.util.Vector;
-*/
-
 import com.google.gwt.user.client.Window;
 
 /**
- *
+ * http://code.google.com/p/bunsenandbeaker/wiki/DevGuideHttpRequests
+ * http://code.google.com/p/bunsenandbeaker/wiki/DevGuideXML
  */
-public class AsynchronousPolicySetter {
-//public class AsynchronousPolicySetter extends AsynchronousAgent {
+public class AsynchronousPolicySetter implements RequestCallback {
+
+    private RequestBuilder requestBuilder = null;
 
     /**
      *
      */
     public AsynchronousPolicySetter(String url) {
-        //super(url);
         Window.alert("Save policy to: " + url);
+        requestBuilder = new RequestBuilder(RequestBuilder.POST, url);
+    }
+
+    /**
+     *
+     */
+    public Request sendRequest() throws RequestException {
+        return requestBuilder.sendRequest("<?xml version=\"1.0\"?><policy/>", this);
+    }
+
+    /**
+     *
+     */
+    public void onResponseReceived(Request request, Response response) {
+        Window.alert("Reponse received!");
+    }
+
+    /**
+     *
+     */
+    public void onError(Request request, Throwable exception) {
+        Window.alert("Exception: " + exception.getMessage());
     }
 }

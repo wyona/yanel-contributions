@@ -92,6 +92,11 @@ public class AccessPolicyEditor implements EntryPoint {
         Button saveButton = new Button("Save Policy and Exit", new ClickListener() {
             public void onClick(Widget sender) {
                 final AsynchronousPolicySetter aps = new AsynchronousPolicySetter(savePolicyUrl);
+                try {
+                    com.google.gwt.http.client.Request request = aps.sendRequest();
+                } catch (Exception e) {
+                    Window.alert("Exception: " + e.getMessage());
+                }
             }
         });
         vp.add(saveButton);
