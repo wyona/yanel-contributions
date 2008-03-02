@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.wyona.yanel.gwt.accesspolicyeditor.client;
+package org.wyona.security.gwt.accesspolicyeditor.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.i18n.client.Dictionary;
@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import org.wyona.yanel.gwt.accesspolicyeditor.client.AddRemoveIdentitiesWidget;
+import org.wyona.security.gwt.accesspolicyeditor.client.AddRemoveIdentitiesWidget;
 
 /**
  * Access Policy Editor

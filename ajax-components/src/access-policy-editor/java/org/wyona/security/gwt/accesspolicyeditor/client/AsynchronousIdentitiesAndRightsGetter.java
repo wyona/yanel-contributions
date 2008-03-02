@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.wyona.yanel.gwt.accesspolicyeditor.client;
+package org.wyona.security.gwt.accesspolicyeditor.client;
 
 import org.wyona.yanel.gwt.client.AsynchronousAgent;
 
@@ -44,7 +44,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
 
     /**
      * See src/gallery/src/java/org/wyona/yanel/gwt/client/ui/gallery/AsynchronousGalleryBuilder.java
-     * Also see src/access-policy-editor/java/org/wyona/yanel/gwt/accesspolicyeditor/public/sample-identities-and-usecases.xml
+     * Also see src/access-policy-editor/java/org/wyona/security/gwt/accesspolicyeditor/public/sample-identities-and-usecases.xml
      */
     public void onResponseReceived(final Request request, final Response response) {
         // http://groups.google.com/group/Google-Web-Toolkit/msg/a6f399bc4d46f795

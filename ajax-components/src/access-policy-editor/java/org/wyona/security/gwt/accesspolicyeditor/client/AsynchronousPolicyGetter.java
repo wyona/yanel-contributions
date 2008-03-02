@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.wyona.yanel.gwt.accesspolicyeditor.client;
+package org.wyona.security.gwt.accesspolicyeditor.client;
 
 import org.wyona.yanel.gwt.client.AsynchronousAgent;
 
@@ -42,7 +42,7 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
     /**
      * See src/gallery/src/java/org/wyona/yanel/gwt/client/ui/gallery/AsynchronousGalleryBuilder.java
-     * Also see src/access-policy-editor/java/org/wyona/yanel/gwt/accesspolicyeditor/public/sample-policy.xml
+     * Also see src/access-policy-editor/java/org/wyona/security/gwt/accesspolicyeditor/public/sample-policy.xml
      */
     public void onResponseReceived(final Request request, final Response response) {
         Element rootElement = XMLParser.parse(response.getText()).getDocumentElement();

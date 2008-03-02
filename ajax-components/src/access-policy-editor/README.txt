@@ -2,10 +2,9 @@
   Communication between Client (access policy editor) and Server
   --------------------------------------------------------------
 
-  GET
-  ?yanel.policy=update&open=policy
-  ?yanel.policy=update&open=identities
-  ?yanel.policy=update&open=rights
+  See https://svn.wyona.com/repos/public/yanel/contributions/ajax-components/src/access-policy-editor/java/org/wyona/security/gwt/accesspolicyeditor/public re
 
-  POST
-  ?yanel.policy=upate&write=policy
+  GET "Users/Groups/Rights"
+  GET "Policy"
+
+  POST "Policy"
