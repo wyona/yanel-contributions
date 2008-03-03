@@ -32,7 +32,8 @@ import java.util.Vector;
 public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
     boolean useInheritedPolicies = true;
-    Vector identities = new Vector();
+    Vector users = new Vector();
+    Vector groups = new Vector();
 
     /**
      *
@@ -66,32 +67,46 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
         Element worldElement = getFirstChildElement(rootElement, "world");
         if (worldElement != null) {
-            identities.add("WORLD (Read,Write)");
+            // TODO: ...
+            //identities.add("WORLD (Read,Write)");
             //Window.alert("World: " + (String) identities.elementAt(identities.size() - 1));
         }
 
         NodeList userElements = rootElement.getElementsByTagName("user");
         for (int i = 0; i < userElements.getLength(); i++) {
-            identities.add("u: " + ((Element) userElements.item(i)).getAttribute("id") + " (Write,Read)");
-            //Window.alert("User: " + (String) identities.elementAt(identities.size() - 1));
+            String[] rights = {"Write", "Read"};
+            users.add(new User(((Element) userElements.item(i)).getAttribute("id"), rights));
+            //Window.alert("User: " + ((User) users.elementAt(users.size() - 1)).getId());
         }
 
         NodeList groupElements = rootElement.getElementsByTagName("group");
         for (int i = 0; i < groupElements.getLength(); i++) {
-            identities.add("g: " + ((Element) groupElements.item(i)).getAttribute("id") + " (Write,Read)");
-            //Window.alert("Group: " + (String) identities.elementAt(identities.size() - 1));
+            String[] rights = {"Write", "Read"};
+            groups.add(new Group(((Element) groupElements.item(i)).getAttribute("id"), rights));
+            //Window.alert("Group: " + ((Group) groups.elementAt(groups.size() - 1)).getId());
         }
 
         //Window.alert("Policy response processed!");
     }
 
     /**
-     * Get identities from access policy
+     * Get users from access policy
      */
-    public String[] getIdentities() {
-        String[] ids = new String[identities.size()];
+    public User[] getUsers() {
+        User[] ids = new User[users.size()];
         for (int i = 0; i < ids.length; i++) {
-            ids[i] = (String)identities.elementAt(i);
+            ids[i] = (User)users.elementAt(i);
+        }
+        return ids;
+    }
+
+    /**
+     * Get groups from access policy
+     */
+    public Group[] getGroups() {
+        Group[] ids = new Group[groups.size()];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = (Group)groups.elementAt(i);
         }
         return ids;
     }

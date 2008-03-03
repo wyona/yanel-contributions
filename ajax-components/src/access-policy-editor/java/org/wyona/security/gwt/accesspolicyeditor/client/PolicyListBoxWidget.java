@@ -47,7 +47,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    public PolicyListBoxWidget(int visibleItemCount, String[] identities, boolean useInheritedPolicies) {
+    public PolicyListBoxWidget(int visibleItemCount, User[] users, Group[] groups, boolean useInheritedPolicies) {
         initWidget(vp);
 
         vp.add(new Label("Policy"));
@@ -58,7 +58,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
         lb = new ListBox(true);
         lb.addClickListener(this);
-        setIdentities(visibleItemCount, identities);
+        setIdentities(visibleItemCount, users, groups);
         vp.add(lb);
 
         readCB = new CheckBox("Read");
@@ -72,12 +72,25 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    public void setIdentities(int visibleItemCount, String[] identities) {
+    public void setIdentities(int visibleItemCount, User[] users, Group[] groups) {
         lb.clear();
         lb.setVisibleItemCount(visibleItemCount);
-        if (identities != null) {
-            for (int i = 0; i < identities.length; i++) {
-                lb.addItem(identities[i], identities[i]);
+        if (users != null || groups != null) {
+            if (users != null) {
+                for (int i = 0; i < users.length; i++) {
+                    String label = "u: " + users[i].getId() + " (Read,Write)";
+                    String value = "u: " + users[i].getId();
+                    lb.addItem(label, value);
+                }
+            }
+            if (groups != null) {
+                for (int i = 0; i < groups.length; i++) {
+                    String label = "g: " + groups[i].getId() + " (Read,Write)";
+                    String value = "g: " + groups[i].getId();
+                    lb.addItem(label, value);
+                }
+            } else {
+                Window.alert("No groups!");
             }
         } else {
             lb.addItem("No identities yet!");
