@@ -177,13 +177,21 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
-     *
+     * Get rights from identity string, e.g. "u: (r,w) alice"
      */
     private String[] getRights(String identity) {
         if (identity.indexOf("(") > 0) {
-            String rights = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")"));
+            String[] rightsString = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")")).split(",");
             //Window.alert("Rights: " + rights);
-            return rights.split(",");
+            Vector r = new Vector();
+            for (int i = 0; i < rightsString.length; i++) {
+                if (!rightsString[i].equals("-")) r.add(rightsString[i]);
+            }
+            String[] rights = new String[r.size()];
+            for (int i = 0; i < rights.length; i++) {
+                rights[i] = (String) r.elementAt(i);
+            }
+            return rights;
         } else {
             return new String[0];
         }
@@ -223,21 +231,29 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      *
      */
     private String[] addRight(String[] currentRights, String right) {
-        boolean hasRight = false;
+        //Window.alert("addRight(): Number of current rights: " + currentRights.length);
+
+        // Copy all current rights
         Vector newRights = new Vector();
         for (int i = 0; i < currentRights.length; i++) {
+            newRights.add(currentRights[i]);
+        }
+
+        // Add new right if it doesn't exist yet
+        boolean hasRightAlready = false;
+        for (int i = 0; i < currentRights.length; i++) {
             if (currentRights[i].equals(right)) {
-                hasRight = true;
-            } else {
-                newRights.add(currentRights[i]);
+                hasRightAlready = true;
+                break;
             }
         }
-        if (!hasRight) newRights.add(right);
+        if (!hasRightAlready) newRights.add(right);
 
         String[] nRights = new String[newRights.size()];
         for (int i = 0; i < nRights.length; i++) {
             nRights[i] = (String) newRights.elementAt(i);
         }
+        //Window.alert("addRight(): Number of new rights: " + nRights.length);
         return nRights;
     }
 
@@ -280,13 +296,46 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      */
     private void setListItem(String type, String id, String[] rights, int index) {
         StringBuffer sb = new StringBuffer(type + ":");
-        if (rights.length > 0) {
-            sb.append(" (" + rights[0]);
-            for (int j = 1; j < rights.length; j++) {
-                sb.append("," + rights[j]);
+
+        // Set rights
+        // TODO: Do not hardcode the below, because it is very specific!
+        //if (rights.length > 0) {
+
+/*
+            String debug = "";
+            for (int j = 0; j < rights.length; j++) {
+                debug = debug + rights[j] + ", ";
             }
+            Window.alert("setListItem(): Number of rights: " + rights.length + ": " + debug);
+*/
+
+            sb.append(" (");
+            boolean readExists = false;
+            boolean writeExists = false;
+            for (int j = 0; j < rights.length; j++) {
+                if (rights[j].equals(READ_RIGHT)) {
+                    readExists = true;
+                    //Window.alert("setListItem(): read exists");
+                }
+                if (rights[j].equals(WRITE_RIGHT)) {
+                    writeExists = true;
+                    //Window.alert("setListItem(): write exists");
+                }
+            }
+            if (readExists) {
+                sb.append(READ_RIGHT);
+            } else {
+                sb.append("-");
+            }
+            sb.append(",");
+            if (writeExists) {
+                sb.append(WRITE_RIGHT);
+            } else {
+                sb.append("-");
+            }
+
             sb.append(")");
-        }
+        //}
         sb.append(" " + id);
         lb.setItemText(index, sb.toString());
     }
