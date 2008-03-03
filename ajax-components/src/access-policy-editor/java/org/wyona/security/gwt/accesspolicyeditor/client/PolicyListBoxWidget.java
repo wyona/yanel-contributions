@@ -44,6 +44,9 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
     private VerticalPanel vp = new VerticalPanel();
 
+    private String READ_RIGHT = "Read";
+    private String WRITE_RIGHT = "Write";
+
     /**
      *
      */
@@ -78,14 +81,14 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         if (users != null || groups != null) {
             if (users != null) {
                 for (int i = 0; i < users.length; i++) {
-                    String label = "u: (Read,Write) " + users[i].getId();
+                    String label = "u: ("+READ_RIGHT+","+WRITE_RIGHT+") " + users[i].getId();
                     String value = "u: " + users[i].getId();
                     lb.addItem(label, value);
                 }
             }
             if (groups != null) {
                 for (int i = 0; i < groups.length; i++) {
-                    String label = "g: (Read,Write) " + groups[i].getId();
+                    String label = "g: ("+READ_RIGHT+","+WRITE_RIGHT+") " + groups[i].getId();
                     String value = "g: " + groups[i].getId();
                     lb.addItem(label, value);
                 }
@@ -126,10 +129,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     String[] newRights;
                     if (readCB.isChecked()) {
                         Window.alert("Add Read right from selected identity " + selectedIdentity + " from policy");
-                        newRights = addRight(currentRights, "Read");
+                        newRights = addRight(currentRights, READ_RIGHT);
                     } else {
                         Window.alert("Remove Read right from selected identity " + selectedIdentity + " from policy");
-                        newRights = removeRight(currentRights, "Read");
+                        newRights = removeRight(currentRights, READ_RIGHT);
                     }
                     setSelectedListItem(newRights);
                 } else if (sender == writeCB) {
@@ -137,10 +140,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     String[] newRights;
                     if (writeCB.isChecked()) {
                         Window.alert("Add Write right from selected identity " + selectedIdentity + " from policy");
-                        newRights = addRight(currentRights, "Write");
+                        newRights = addRight(currentRights, WRITE_RIGHT);
                     } else {
                         Window.alert("Remove Write right from selected identity " + selectedIdentity + " from policy");
-                        newRights = removeRight(currentRights, "Write");
+                        newRights = removeRight(currentRights, WRITE_RIGHT);
                     }
                     setSelectedListItem(newRights);
                 }
@@ -158,10 +161,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             boolean hasReadBeenChecked = false;
             boolean hasWriteBeenChecked = false;
             for (int j = 0; j < rights.length; j++) {
-                if (rights[j].equals("Read")) {
+                if (rights[j].equals(READ_RIGHT)) {
                     readCB.setChecked(true);
                     hasReadBeenChecked = true;
-                } else if (rights[j].equals("Write")) {
+                } else if (rights[j].equals(WRITE_RIGHT)) {
                     writeCB.setChecked(true);
                     hasWriteBeenChecked = true;
                 }
