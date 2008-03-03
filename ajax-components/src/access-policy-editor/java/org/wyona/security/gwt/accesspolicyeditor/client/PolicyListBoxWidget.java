@@ -44,8 +44,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
     private VerticalPanel vp = new VerticalPanel();
 
-    private String READ_RIGHT = "Read";
-    private String WRITE_RIGHT = "Write";
+    private String READ_RIGHT = "r";
+    //private String READ_RIGHT = "Read";
+    private String WRITE_RIGHT = "w";
+    //private String WRITE_RIGHT = "Write";
 
     /**
      *
