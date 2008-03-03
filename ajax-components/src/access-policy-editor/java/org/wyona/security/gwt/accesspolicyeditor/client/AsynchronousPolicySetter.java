@@ -41,8 +41,16 @@ public class AsynchronousPolicySetter implements RequestCallback {
     /**
      *
      */
-    public Request sendRequest() throws RequestException {
-        return requestBuilder.sendRequest("<?xml version=\"1.0\"?><policy/>", this);
+    public Request sendRequest(User[] users) throws RequestException {
+        StringBuffer data = new StringBuffer("<?xml version=\"1.0\"?>");
+	data.append("<policy>");
+        if (users != null) {
+            for (int i = 0; i < users.length; i++) {
+                data.append("<user id=\"" + users[i].getId() + "\"/>");
+            }
+        }
+	data.append("</policy>");
+        return requestBuilder.sendRequest(data.toString(), this);
     }
 
     /**

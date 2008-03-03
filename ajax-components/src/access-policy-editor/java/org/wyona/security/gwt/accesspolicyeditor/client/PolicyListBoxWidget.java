@@ -250,4 +250,15 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             Window.alert("Exception: No list item selected!");
         }
     }
+
+    /**
+     *
+     */
+    public User[] getUsers() {
+        User[] users = new User[lb.getItemCount()];
+        for (int i = 0; i < users.length; i++) {
+            users[i] = new User(lb.getItemText(i));
+        }
+        return users;
+    }
 }
