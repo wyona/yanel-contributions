@@ -35,6 +35,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
 
     private ListBox identitiesLB;
     private ListBox policyLB;
+    private PolicyListBoxWidget policyLBW;
 
     private FlowPanel fp = new FlowPanel();
 
@@ -44,7 +45,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
     /**
      *
      */
-    public AddRemoveIdentitiesWidget(ListBox identitiesListBox, ListBox policyListBox) {
+    public AddRemoveIdentitiesWidget(ListBox identitiesListBox, ListBox policyListBox, PolicyListBoxWidget policyLBW) {
         initWidget(fp);
 
         removeButton = new Button("<", this);
@@ -54,6 +55,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
 
         this.identitiesLB = identitiesListBox;
         this.policyLB = policyListBox;
+        this.policyLBW = policyLBW;
     }
 
     /**
@@ -66,7 +68,9 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
                 String selectedIdentity = identitiesLB.getValue(i);
                 Window.alert("Add selected identity " + selectedIdentity + " to policy");
                 identitiesLB.removeItem(i);
-                policyLB.addItem(selectedIdentity);
+                // TODO: Use class PolicyListBoxWidget
+                //policyLBW.addItem(selectedIdentity);
+                policyLB.addItem(selectedIdentity.substring(0, 1) + ": (-,-) " + selectedIdentity.substring(2).trim(), selectedIdentity);
             } else {
                 Window.alert("No identity selected yet! Please select an identity.");
             }
