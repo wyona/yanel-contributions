@@ -78,14 +78,14 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         if (users != null || groups != null) {
             if (users != null) {
                 for (int i = 0; i < users.length; i++) {
-                    String label = "u: " + users[i].getId() + " (Read,Write)";
+                    String label = "u: (Read,Write) " + users[i].getId();
                     String value = "u: " + users[i].getId();
                     lb.addItem(label, value);
                 }
             }
             if (groups != null) {
                 for (int i = 0; i < groups.length; i++) {
-                    String label = "g: " + groups[i].getId() + " (Read,Write)";
+                    String label = "g: (Read,Write) " + groups[i].getId();
                     String value = "g: " + groups[i].getId();
                     lb.addItem(label, value);
                 }
@@ -119,7 +119,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      */
     public void onClick(Widget sender) {
         if (sender == readCB || sender == writeCB) {
-            String selectedIdentity = getSelectedItemValue();
+            String selectedIdentity = getSelectedItemText();
             if (selectedIdentity != null) {
                 if (sender == readCB) {
                     Window.alert("Add/Remove Read right from selected identity " + selectedIdentity + " from policy");
@@ -130,7 +130,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     } else {
                         newRights = removeRight(currentRights, "Read");
                     }
-                    setListItem(newRights);
+                    setSelectedListItem(newRights);
                 } else if (sender == writeCB) {
                     Window.alert("Add/Remove Write right from selected identity " + selectedIdentity + " from policy");
                     String[] currentRights = getRights(selectedIdentity);
@@ -140,7 +140,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     } else {
                         newRights = removeRight(currentRights, "Write");
                     }
-                    setListItem(newRights);
+                    setSelectedListItem(newRights);
                 }
             } else {
                 Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
@@ -148,7 +148,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 writeCB.setChecked(false);
             }
         } else if (sender == lb) {
-            String selectedIdentity = getSelectedItemValue();
+            String selectedIdentity = getSelectedItemText();
 
             //Window.alert("Update check boxes!");
             String[] rights = getRights(selectedIdentity);
@@ -183,20 +183,28 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
-     *
+     * @return Identity without rights, e.g. "u: alice" or "g: editors"
      */
-    private String getIdentityWithoutRights(String identity) {
-        if (identity.indexOf("(") > 0) {
-            return identity.substring(0, identity.indexOf("(")).trim();
-        } else {
-            return identity.trim();
-        }
+    private String getIdentityWithoutRights(int index) {
+        //Window.alert(getSelectedItemValue() + " --- " + getSelectedItemText());
+        return lb.getValue(index);
     }
 
     /**
      *
      */
     private String getSelectedItemValue() {
+        int i = lb.getSelectedIndex();
+        if (i >= 0) {
+            return lb.getValue(i);
+        }
+        return null;
+    }
+
+    /**
+     *
+     */
+    private String getSelectedItemText() {
         int i = lb.getSelectedIndex();
         if (i >= 0) {
             return lb.getItemText(i);
@@ -247,21 +255,33 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    private void setListItem(String[] rights) {
+    private void setSelectedListItem(String[] rights) {
         int index = lb.getSelectedIndex();
         if (index >= 0) {
-            StringBuffer sb = new StringBuffer(getIdentityWithoutRights(getSelectedItemValue()));
-            if (rights.length > 0) {
-                sb.append(" (" + rights[0]);
-                for (int j = 1; j < rights.length; j++) {
-                sb.append("," + rights[j]);
-                }
-                sb.append(")");
-            }
-            lb.setItemText(index, sb.toString());
+            String id = getIdentityWithoutRights(index);
+            setListItem(id.substring(0, 1), id.substring(2).trim(), rights, index);
         } else {
             Window.alert("Exception: No list item selected!");
         }
+    }
+
+    /**
+     * @param type u for user and g for group
+     * @param id
+     * @param rights Rights
+     * @param index Position of list item
+     */
+    private void setListItem(String type, String id, String[] rights, int index) {
+        StringBuffer sb = new StringBuffer(type + ":");
+        if (rights.length > 0) {
+            sb.append(" (" + rights[0]);
+            for (int j = 1; j < rights.length; j++) {
+                sb.append("," + rights[j]);
+            }
+            sb.append(")");
+        }
+        sb.append(" " + id);
+        lb.setItemText(index, sb.toString());
     }
 
     /**
@@ -272,7 +292,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         for (int i = 0; i < lb.getItemCount(); i++) {
             String itemText = lb.getItemText(i);
             String[] rights = getRights(itemText);
-            String id = getIdentityWithoutRights(itemText);
+            String id = getIdentityWithoutRights(i);
             if (id.startsWith("u:")) {
                 users.add(new User(id.substring(2).trim(), rights));
             }
@@ -293,7 +313,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         for (int i = 0; i < lb.getItemCount(); i++) {
             String itemText = lb.getItemText(i);
             String[] rights = getRights(itemText);
-            String id = getIdentityWithoutRights(itemText);
+            String id = getIdentityWithoutRights(i);
             if (id.startsWith("g:")) {
                 groups.add(new Group(id.substring(2).trim(), rights));
             }
