@@ -41,7 +41,7 @@ public class AsynchronousPolicySetter implements RequestCallback {
     /**
      *
      */
-    public Request sendRequest(User[] users) throws RequestException {
+    public Request sendRequest(User[] users, Group[] groups) throws RequestException {
         StringBuffer data = new StringBuffer("<?xml version=\"1.0\"?>");
 	data.append("<policy>");
         if (users != null) {
@@ -54,6 +54,18 @@ public class AsynchronousPolicySetter implements RequestCallback {
                     }
                 }
                 data.append("</user>");
+            }
+        }
+        if (groups != null) {
+            for (int i = 0; i < groups.length; i++) {
+                data.append("<group id=\"" + groups[i].getId() + "\">");
+                String[] rights = groups[i].getRights();
+                if (rights != null) {
+                    for (int k = 0; k < rights.length; k++) {
+                        data.append("<right id=\"" + rights[k] + "\">" + rights[k] + "</right>");
+                    }
+                }
+                data.append("</group>");
             }
         }
 	data.append("</policy>");

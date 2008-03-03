@@ -93,7 +93,7 @@ public class AccessPolicyEditor implements EntryPoint {
             public void onClick(Widget sender) {
                 final AsynchronousPolicySetter aps = new AsynchronousPolicySetter(savePolicyUrl);
                 try {
-                    com.google.gwt.http.client.Request request = aps.sendRequest(policyLBW.getUsers());
+                    com.google.gwt.http.client.Request request = aps.sendRequest(policyLBW.getUsers(), policyLBW.getGroups());
                 } catch (Exception e) {
                     Window.alert("Exception: " + e.getMessage());
                 }

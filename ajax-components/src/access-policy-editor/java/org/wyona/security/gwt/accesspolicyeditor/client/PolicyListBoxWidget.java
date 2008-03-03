@@ -255,15 +255,41 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      *
      */
     public User[] getUsers() {
-        User[] users = new User[lb.getItemCount()];
-        for (int i = 0; i < users.length; i++) {
+        Vector users = new Vector();
+        for (int i = 0; i < lb.getItemCount(); i++) {
             String itemText = lb.getItemText(i);
             String[] rights = getRights(itemText);
             String id = getIdentityWithoutRights(itemText);
             if (id.startsWith("u:")) {
-                users[i] = new User(id.substring(2).trim(), rights);
+                users.add(new User(id.substring(2).trim(), rights));
             }
         }
-        return users;
+
+        User[] u = new User[users.size()];
+        for (int i = 0; i < u.length; i++) {
+            u[i] = (User) users.elementAt(i);
+        }
+        return u;
+    }
+
+    /**
+     *
+     */
+    public Group[] getGroups() {
+        Vector groups = new Vector();
+        for (int i = 0; i < lb.getItemCount(); i++) {
+            String itemText = lb.getItemText(i);
+            String[] rights = getRights(itemText);
+            String id = getIdentityWithoutRights(itemText);
+            if (id.startsWith("g:")) {
+                groups.add(new Group(id.substring(2).trim(), rights));
+            }
+        }
+
+        Group[] g = new Group[groups.size()];
+        for (int i = 0; i < g.length; i++) {
+            g[i] = (Group) groups.elementAt(i);
+        }
+        return g;
     }
 }
