@@ -46,7 +46,14 @@ public class AsynchronousPolicySetter implements RequestCallback {
 	data.append("<policy>");
         if (users != null) {
             for (int i = 0; i < users.length; i++) {
-                data.append("<user id=\"" + users[i].getId() + "\"/>");
+                data.append("<user id=\"" + users[i].getId() + "\">");
+                String[] rights = users[i].getRights();
+                if (rights != null) {
+                    for (int k = 0; k < rights.length; k++) {
+                        data.append("<right id=\"" + rights[k] + "\">" + rights[k] + "</right>");
+                    }
+                }
+                data.append("</user>");
             }
         }
 	data.append("</policy>");

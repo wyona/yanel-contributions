@@ -21,12 +21,14 @@ package org.wyona.security.gwt.accesspolicyeditor.client;
 public class User {
 
     private String id;
+    private String[] rights;
 
     /**
      *
      */
-    public User(String id) {
+    public User(String id, String[] rights) {
         this.id = id;
+        this.rights = rights;
     }
 
     /**
@@ -34,5 +36,12 @@ public class User {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     *
+     */
+    public String[] getRights() {
+        return rights;
     }
 }
