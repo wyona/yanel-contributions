@@ -41,9 +41,9 @@ public class AsynchronousPolicySetter implements RequestCallback {
     /**
      *
      */
-    public Request sendRequest(User[] users, Group[] groups) throws RequestException {
+    public Request sendRequest(User[] users, Group[] groups, boolean useInheritedPolicies) throws RequestException {
         StringBuffer data = new StringBuffer("<?xml version=\"1.0\"?>");
-	data.append("<policy>");
+	data.append("<policy xmlns=\"http://www.wyona.org/security/1.0\" use-inherited-policies=\"" + useInheritedPolicies + "\">");
         if (users != null) {
             for (int i = 0; i < users.length; i++) {
                 data.append("<user id=\"" + users[i].getId() + "\">");
@@ -76,7 +76,11 @@ public class AsynchronousPolicySetter implements RequestCallback {
      *
      */
     public void onResponseReceived(Request request, Response response) {
-        Window.alert("Response received!");
+        if (response.getStatusCode() == 200) {
+            Window.alert("Policy has been saved successfully!");
+        } else {
+            Window.alert("Policy has NOT been saved! Please check log files on server.");
+        }
     }
 
     /**

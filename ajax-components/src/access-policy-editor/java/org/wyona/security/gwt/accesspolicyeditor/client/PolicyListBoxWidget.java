@@ -381,4 +381,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         }
         return g;
     }
+
+    /**
+     *
+     */
+    public boolean getUseInheritedPolicies() {
+        return policyInheritanceCB.isChecked();
+    }
 }
