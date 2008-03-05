@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -85,12 +86,18 @@ public class AccessPolicyEditor implements EntryPoint {
         searchFilterVP.add(new Button("Search within Identities"));
 
         HorizontalPanel hp = new HorizontalPanel();
+        hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         vp.add(hp);
-        //vp.add(new Button("Apply Policy"));
+
+	
+        HorizontalPanel buttonHP = new HorizontalPanel();
+        vp.add(buttonHP);
+        //buttonHP.add(new Button("Apply Policy"));
 
         // Save Button
         final String savePolicyUrl = savePolicyURL;
-        Button saveButton = new Button("Save Policy and Exit", new ClickListener() {
+        //Button saveButton = new Button("Save Policy and Exit", new ClickListener() {
+        Button saveButton = new Button("Save Policy", new ClickListener() {
             public void onClick(Widget sender) {
                 final AsynchronousPolicySetter aps = new AsynchronousPolicySetter(savePolicyUrl);
                 try {
@@ -100,7 +107,8 @@ public class AccessPolicyEditor implements EntryPoint {
                 }
             }
         });
-        vp.add(saveButton);
+        saveButton.setStyleName("gwt-wyona-SaveButton");
+        buttonHP.add(saveButton);
 
         // Cancel Button
         final String cancelUrl = cancelURL;
@@ -113,7 +121,8 @@ public class AccessPolicyEditor implements EntryPoint {
                 $wnd.location.href=url;
             }-*/; 
         });
-        vp.add(cancelButton);
+        saveButton.setStyleName("gwt-wyona-CancelButton");
+        buttonHP.add(cancelButton);
 
         identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
 
