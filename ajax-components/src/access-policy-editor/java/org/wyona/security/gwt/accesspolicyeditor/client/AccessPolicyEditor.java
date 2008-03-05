@@ -81,10 +81,20 @@ public class AccessPolicyEditor implements EntryPoint {
         VerticalPanel searchFilterVP = new VerticalPanel();
         vp.add(searchFilterVP);
 
-        TextBox searchTB = new TextBox();
+        final TextBox searchTB = new TextBox();
         searchTB.setVisibleLength(30);
         searchFilterVP.add(searchTB);
-        searchFilterVP.add(new Button("Search User or Group"));
+
+        Button searchButton = new Button("Save User or Group", new ClickListener() {
+            public void onClick(Widget sender) {
+                int itemCount = identitiesLBW.getListBox().getItemCount();
+                for (int i = 0; i < itemCount; i++) {
+                    String itemText = identitiesLBW.getListBox().getItemText(i);
+                    if (itemText.indexOf(searchTB.getText()) >= 0) Window.alert("Result: " + itemText);
+                }
+            }
+        });
+        searchFilterVP.add(searchButton);
 
         HorizontalPanel hp = new HorizontalPanel();
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
