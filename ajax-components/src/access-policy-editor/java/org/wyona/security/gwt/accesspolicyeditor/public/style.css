@@ -10,6 +10,12 @@
 /* Custom style */
 
 /* */
+.gwt-wyona-AddRemoveWidget {
+  margin: 20px;
+  font-size: 300%;
+*/
+
+/* */
 /*
 .gwt-wyona-SaveButton {
   font-size: 300%;
@@ -19,7 +25,7 @@
 
 /* */
 /*
-.gwt-wyona-CanelButton {
+.gwt-wyona-CancelButton {
   font-size: 300%;
   width: 200px;
 }

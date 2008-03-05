@@ -47,6 +47,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
     IdentitiesListBoxWidget identitiesLBW;
     PolicyListBoxWidget policyLBW;
+    Button saveButton;
 
     int visibleItemCount = 10;
 
@@ -83,7 +84,7 @@ public class AccessPolicyEditor implements EntryPoint {
         TextBox searchTB = new TextBox();
         searchTB.setVisibleLength(30);
         searchFilterVP.add(searchTB);
-        searchFilterVP.add(new Button("Search within Identities"));
+        searchFilterVP.add(new Button("Search User or Group"));
 
         HorizontalPanel hp = new HorizontalPanel();
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
@@ -96,12 +97,14 @@ public class AccessPolicyEditor implements EntryPoint {
 
         // Save Button
         final String savePolicyUrl = savePolicyURL;
-        //Button saveButton = new Button("Save Policy and Exit", new ClickListener() {
-        Button saveButton = new Button("Save Policy", new ClickListener() {
+        //saveButton = new Button("Save Policy and Exit", new ClickListener() {
+        saveButton = new Button("Save Policy", new ClickListener() {
             public void onClick(Widget sender) {
                 final AsynchronousPolicySetter aps = new AsynchronousPolicySetter(savePolicyUrl);
                 try {
                     com.google.gwt.http.client.Request request = aps.sendRequest(policyLBW.getUsers(), policyLBW.getGroups(), policyLBW.getUseInheritedPolicies());
+                    // TODO: Disable button during save (start a timer in order to enable when response has been received)
+                    //saveButton.setEnabled(false);
                 } catch (Exception e) {
                     Window.alert("Exception: " + e.getMessage());
                 }
@@ -129,6 +132,7 @@ public class AccessPolicyEditor implements EntryPoint {
         policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies);
 
 	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox(), policyLBW);
+        ariw.setStyleName("gwt-wyona-AddRemoveWidget");
 
         //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
 
