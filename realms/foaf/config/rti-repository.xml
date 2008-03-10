@@ -1,21 +1,13 @@
 <?xml version="1.0"?>
 
-<!--
-<repository class="org.wyona.yarep.impl.repo.fs.FileSystemRepository">
+<repository class="org.wyona.yarep.impl.repo.vfs.VirtualFileSystemRepository">
   <name>FOAF Resource Configurations Repository</name>
-  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../res-configs">
+
+  <content src="../res-configs">
     <ignore pattern=".*\.svn"/>
-  </paths>
-  <content src="../res-configs"/>
-</repository>
--->
+    <!--<ignore pattern=".*\.yarep"/>-->
+  </content>
 
-<repository>
-  <name>FOAF Resource Configurations Repository</name>
-
-  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../res-configs"/>
-
-  <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
-    <content src="../res-configs"/>
-  </storage>
+  <meta src="../res-configs-yarep-meta"/>
+  <search-index src="../res-configs-search-index"/>
 </repository>
