@@ -243,14 +243,19 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         if (identity.indexOf("(") > 0) {
             String[] rightsString = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")")).split(",");
 
-            Vector r = new Vector();
             Vector rs = new Vector();
             for (int i = 0; i < rightsString.length; i++) {
-                if (!rightsString[i].equals("-")) r.add(rightsString[i]);
                 if (!rightsString[i].equals("-")) {
                     rs.add(new Right(rightsString[i], true));
                 } else {
-                    rs.add(new Right("TODO", false));
+                    // TODO: Do not hardcode rights!
+                    if (i == 0) {
+                        rs.add(new Right("r", false));
+                    } else if (i == 1) {
+                        rs.add(new Right("w", false));
+                    } else {
+                        rs.add(new Right("TODO", false));
+                    }
                 }
             }
             Right[] rights = new Right[rs.size()];
