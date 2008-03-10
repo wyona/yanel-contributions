@@ -83,14 +83,74 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         if (users != null || groups != null) {
             if (users != null) {
                 for (int i = 0; i < users.length; i++) {
-                    String label = "u: ("+READ_RIGHT+","+WRITE_RIGHT+") " + users[i].getId();
+                    String label = "u: (";
+
+                    String[] rights = users[i].getRights();
+
+                    boolean readExists = false;
+                    for (int k = 0; k < rights.length; k++) {
+                        if (rights[k].equals(READ_RIGHT)) {
+                            readExists = true;
+                            break;
+                        }
+                    }
+                    if (readExists) {
+                        label = label + READ_RIGHT;
+                    } else {
+                        label = label + "-";
+                    }
+                    label = label + ",";
+                    boolean writeExists = false;
+                    for (int k = 0; k < rights.length; k++) {
+                        if (rights[k].equals(WRITE_RIGHT)) {
+                            writeExists = true;
+                            break;
+                        }
+                    }
+                    if (writeExists) {
+                        label = label + WRITE_RIGHT;
+                    } else {
+                        label = label + "-";
+                    }
+
+                    label = label +") " + users[i].getId();
+
                     String value = "u: " + users[i].getId();
                     lb.addItem(label, value);
                 }
             }
             if (groups != null) {
                 for (int i = 0; i < groups.length; i++) {
-                    String label = "g: ("+READ_RIGHT+","+WRITE_RIGHT+") " + groups[i].getId();
+                    String label = "g: (";
+                    String[] rights = groups[i].getRights();
+
+                    boolean readExists = false;
+                    for (int k = 0; k < rights.length; k++) {
+                        if (rights[k].equals(READ_RIGHT)) {
+                            readExists = true;
+                            break;
+                        }
+                    }
+                    if (readExists) {
+                        label = label + READ_RIGHT;
+                    } else {
+                        label = label + "-";
+                    }
+                    label = label + ",";
+                    boolean writeExists = false;
+                    for (int k = 0; k < rights.length; k++) {
+                        if (rights[k].equals(WRITE_RIGHT)) {
+                            writeExists = true;
+                            break;
+                        }
+                    }
+                    if (writeExists) {
+                        label = label + WRITE_RIGHT;
+                    } else {
+                        label = label + "-";
+                    }
+
+                    label = label + ") " + groups[i].getId();
                     String value = "g: " + groups[i].getId();
                     lb.addItem(label, value);
                 }
