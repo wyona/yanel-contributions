@@ -74,15 +74,33 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
 
         NodeList userElements = rootElement.getElementsByTagName("user");
         for (int i = 0; i < userElements.getLength(); i++) {
-            String[] rights = {"Write", "Read"};
+            Element userE = (Element) userElements.item(i);
+
+            NodeList rightElements = userE.getElementsByTagName("right");
+            String[] rights = new String[rightElements.getLength()];
+            for (int k = 0; k < rights.length; k++) {
+                Element rightE = (Element) rightElements.item(k);
+                rights[k] = rightE.getAttribute("id");
+                //Window.alert("User Right: " + rights[k]);
+            }
+
             users.add(new User(((Element) userElements.item(i)).getAttribute("id"), rights));
             //Window.alert("User: " + ((User) users.elementAt(users.size() - 1)).getId());
         }
 
         NodeList groupElements = rootElement.getElementsByTagName("group");
         for (int i = 0; i < groupElements.getLength(); i++) {
-            String[] rights = {"Write", "Read"};
-            groups.add(new Group(((Element) groupElements.item(i)).getAttribute("id"), rights));
+            Element groupE = (Element) groupElements.item(i);
+
+            NodeList rightElements = groupE.getElementsByTagName("right");
+            String[] rights = new String[rightElements.getLength()];
+            for (int k = 0; k < rights.length; k++) {
+                Element rightE = (Element) rightElements.item(k);
+                rights[k] = rightE.getAttribute("id");
+                //Window.alert("Group Right: " + rights[k]);
+            }
+
+            groups.add(new Group(groupE.getAttribute("id"), rights));
             //Window.alert("Group: " + ((Group) groups.elementAt(groups.size() - 1)).getId());
         }
 
