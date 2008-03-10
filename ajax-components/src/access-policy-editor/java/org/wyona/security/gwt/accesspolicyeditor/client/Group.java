@@ -21,12 +21,12 @@ package org.wyona.security.gwt.accesspolicyeditor.client;
 public class Group {
 
     private String id;
-    private String[] rights;
+    private Right[] rights;
 
     /**
      *
      */
-    public Group(String id, String[] rights) {
+    public Group(String id, Right[] rights) {
         this.id = id;
         this.rights = rights;
     }
@@ -41,7 +41,7 @@ public class Group {
     /**
      *
      */
-    public String[] getRights() {
+    public Right[] getRights() {
         return rights;
     }
 }

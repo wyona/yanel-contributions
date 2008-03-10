@@ -85,11 +85,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 for (int i = 0; i < users.length; i++) {
                     String label = "u: (";
 
-                    String[] rights = users[i].getRights();
+                    Right[] rights = users[i].getRights();
 
                     boolean readExists = false;
                     for (int k = 0; k < rights.length; k++) {
-                        if (rights[k].equals(READ_RIGHT)) {
+                        if (rights[k].getId().equals(READ_RIGHT)) {
                             readExists = true;
                             break;
                         }
@@ -122,11 +122,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             if (groups != null) {
                 for (int i = 0; i < groups.length; i++) {
                     String label = "g: (";
-                    String[] rights = groups[i].getRights();
+                    Right[] rights = groups[i].getRights();
 
                     boolean readExists = false;
                     for (int k = 0; k < rights.length; k++) {
-                        if (rights[k].equals(READ_RIGHT)) {
+                        if (rights[k].getId().equals(READ_RIGHT)) {
                             readExists = true;
                             break;
                         }
@@ -187,7 +187,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             String selectedIdentity = getSelectedItemText();
             if (selectedIdentity != null) {
                 if (sender == readCB) {
-                    String[] currentRights = getRights(selectedIdentity);
+                    Right[] currentRights = getRights(selectedIdentity);
                     String[] newRights;
                     if (readCB.isChecked()) {
                         Window.alert("Add Read right from selected identity " + selectedIdentity + " from policy");
@@ -198,7 +198,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     }
                     setSelectedListItem(newRights);
                 } else if (sender == writeCB) {
-                    String[] currentRights = getRights(selectedIdentity);
+                    Right[] currentRights = getRights(selectedIdentity);
                     String[] newRights;
                     if (writeCB.isChecked()) {
                         Window.alert("Add Write right from selected identity " + selectedIdentity + " from policy");
@@ -218,15 +218,15 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             String selectedIdentity = getSelectedItemText();
 
             //Window.alert("Update check boxes!");
-            String[] rights = getRights(selectedIdentity);
+            Right[] rights = getRights(selectedIdentity);
 
             boolean hasReadBeenChecked = false;
             boolean hasWriteBeenChecked = false;
             for (int j = 0; j < rights.length; j++) {
-                if (rights[j].equals(READ_RIGHT)) {
+                if (rights[j].getId().equals(READ_RIGHT)) {
                     readCB.setChecked(true);
                     hasReadBeenChecked = true;
-                } else if (rights[j].equals(WRITE_RIGHT)) {
+                } else if (rights[j].getId().equals(WRITE_RIGHT)) {
                     writeCB.setChecked(true);
                     hasWriteBeenChecked = true;
                 }
@@ -239,21 +239,28 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      * Get rights from identity string, e.g. "u: (r,w) alice"
      */
-    private String[] getRights(String identity) {
+    private Right[] getRights(String identity) {
         if (identity.indexOf("(") > 0) {
             String[] rightsString = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")")).split(",");
-            //Window.alert("Rights: " + rights);
+
             Vector r = new Vector();
+            Vector rs = new Vector();
             for (int i = 0; i < rightsString.length; i++) {
                 if (!rightsString[i].equals("-")) r.add(rightsString[i]);
+                if (!rightsString[i].equals("-")) {
+                    rs.add(new Right(rightsString[i], true));
+                } else {
+                    rs.add(new Right("TODO", false));
+                }
             }
-            String[] rights = new String[r.size()];
+            Right[] rights = new Right[rs.size()];
             for (int i = 0; i < rights.length; i++) {
-                rights[i] = (String) r.elementAt(i);
+                rights[i] = (Right) rs.elementAt(i);
             }
             return rights;
         } else {
-            return new String[0];
+            // TODO: Return all rights with permission false
+            return new Right[0];
         }
     }
 
@@ -290,19 +297,19 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    private String[] addRight(String[] currentRights, String right) {
+    private String[] addRight(Right[] currentRights, String right) {
         //Window.alert("addRight(): Number of current rights: " + currentRights.length);
 
         // Copy all current rights
         Vector newRights = new Vector();
         for (int i = 0; i < currentRights.length; i++) {
-            newRights.add(currentRights[i]);
+            newRights.add(currentRights[i].getId());
         }
 
         // Add new right if it doesn't exist yet
         boolean hasRightAlready = false;
         for (int i = 0; i < currentRights.length; i++) {
-            if (currentRights[i].equals(right)) {
+            if (currentRights[i].getId().equals(right)) {
                 hasRightAlready = true;
                 break;
             }
@@ -320,11 +327,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    private String[] removeRight(String[] currentRights, String right) {
+    private String[] removeRight(Right[] currentRights, String right) {
         Vector newRights = new Vector();
         for (int i = 0; i < currentRights.length; i++) {
-            if (!currentRights[i].equals(right)) {
-                newRights.add(currentRights[i]);
+            if (!currentRights[i].getId().equals(right)) {
+                newRights.add(currentRights[i].getId());
             }
         }
 
@@ -407,7 +414,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         Vector users = new Vector();
         for (int i = 0; i < lb.getItemCount(); i++) {
             String itemText = lb.getItemText(i);
-            String[] rights = getRights(itemText);
+            Right[] rights = getRights(itemText);
             String id = getIdentityWithoutRights(i);
             if (id.startsWith("u:")) {
                 users.add(new User(id.substring(2).trim(), rights));
@@ -428,7 +435,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         Vector groups = new Vector();
         for (int i = 0; i < lb.getItemCount(); i++) {
             String itemText = lb.getItemText(i);
-            String[] rights = getRights(itemText);
+            Right[] rights = getRights(itemText);
             String id = getIdentityWithoutRights(i);
             if (id.startsWith("g:")) {
                 groups.add(new Group(id.substring(2).trim(), rights));

@@ -77,10 +77,11 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
             Element userE = (Element) userElements.item(i);
 
             NodeList rightElements = userE.getElementsByTagName("right");
-            String[] rights = new String[rightElements.getLength()];
+            Right[] rights = new Right[rightElements.getLength()];
             for (int k = 0; k < rights.length; k++) {
                 Element rightE = (Element) rightElements.item(k);
-                rights[k] = rightE.getAttribute("id");
+                // TODO: Do not hardcode permission
+                rights[k] = new Right(rightE.getAttribute("id"), true);
                 //Window.alert("User Right: " + rights[k]);
             }
 
@@ -93,10 +94,11 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
             Element groupE = (Element) groupElements.item(i);
 
             NodeList rightElements = groupE.getElementsByTagName("right");
-            String[] rights = new String[rightElements.getLength()];
+            Right[] rights = new Right[rightElements.getLength()];
             for (int k = 0; k < rights.length; k++) {
                 Element rightE = (Element) rightElements.item(k);
-                rights[k] = rightE.getAttribute("id");
+                // TODO: Do not hardcode permission
+                rights[k] = new Right(rightE.getAttribute("id"), true);
                 //Window.alert("Group Right: " + rights[k]);
             }
 

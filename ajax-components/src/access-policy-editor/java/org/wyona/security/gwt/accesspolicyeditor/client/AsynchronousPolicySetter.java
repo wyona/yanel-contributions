@@ -47,11 +47,15 @@ public class AsynchronousPolicySetter implements RequestCallback {
         if (users != null) {
             for (int i = 0; i < users.length; i++) {
                 data.append("<user id=\"" + users[i].getId() + "\">");
-                String[] rights = users[i].getRights();
+                Right[] rights = users[i].getRights();
                 if (rights != null) {
                     for (int k = 0; k < rights.length; k++) {
-                        data.append("<right id=\"" + rights[k] + "\">" + rights[k] + "</right>");
+                        data.append("<right id=\"" + rights[k].getId() + "\" permission=\"" + rights[k].getPermission() + "\">" + rights[k].getId() + "</right>");
                     }
+                } else {
+                    // TODO: Do not hardcode rights
+                    data.append("<right id=\"r\" permission=\"false\">" + "r" + "</right>");
+                    data.append("<right id=\"w\" permission=\"false\">" + "w" + "</right>");
                 }
                 data.append("</user>");
             }
@@ -59,11 +63,15 @@ public class AsynchronousPolicySetter implements RequestCallback {
         if (groups != null) {
             for (int i = 0; i < groups.length; i++) {
                 data.append("<group id=\"" + groups[i].getId() + "\">");
-                String[] rights = groups[i].getRights();
+                Right[] rights = groups[i].getRights();
                 if (rights != null) {
                     for (int k = 0; k < rights.length; k++) {
-                        data.append("<right id=\"" + rights[k] + "\">" + rights[k] + "</right>");
+                        data.append("<right id=\"" + rights[k].getId() + "\" permission=\"" + rights[k].getPermission() + "\">" + rights[k].getId() + "</right>");
                     }
+                } else {
+                    // TODO: Do not hardcode rights
+                    data.append("<right id=\"r\" permission=\"false\">" + "r" + "</right>");
+                    data.append("<right id=\"w\" permission=\"false\">" + "w" + "</right>");
                 }
                 data.append("</group>");
             }
