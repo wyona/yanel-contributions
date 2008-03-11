@@ -45,8 +45,9 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     private VerticalPanel vp = new VerticalPanel();
 
     private String READ_RIGHT = "r";
-    //private String READ_RIGHT = "Read";
     private String WRITE_RIGHT = "w";
+
+    //private String READ_RIGHT = "Read";
     //private String WRITE_RIGHT = "Write";
 
     /**
@@ -86,9 +87,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     String label = "u: (";
 
                     Right[] rights = users[i].getRights();
+                    //Window.alert("User: " + users[i].getId() + " (Number of rights: " + rights.length + ")");
 
                     boolean readExists = false;
                     for (int k = 0; k < rights.length; k++) {
+                        //Window.alert("Check for READ right: " + rights[k].getId());
                         if (rights[k].getId().equals(READ_RIGHT)) {
                             readExists = true;
                             break;
@@ -102,14 +105,17 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     label = label + ",";
                     boolean writeExists = false;
                     for (int k = 0; k < rights.length; k++) {
-                        if (rights[k].equals(WRITE_RIGHT)) {
+                        //Window.alert("Check for WRITE right: " + rights[k].getId());
+                        if (rights[k].getId().equals(WRITE_RIGHT)) {
                             writeExists = true;
                             break;
                         }
                     }
                     if (writeExists) {
+                        //Window.alert("WRITE exists");
                         label = label + WRITE_RIGHT;
                     } else {
+                        //Window.alert("WRITE does NOT exist");
                         label = label + "-";
                     }
 
@@ -123,6 +129,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 for (int i = 0; i < groups.length; i++) {
                     String label = "g: (";
                     Right[] rights = groups[i].getRights();
+                    //Window.alert("Group: " + groups[i].getId() + " (Number of rights: " + rights.length + ")");
 
                     boolean readExists = false;
                     for (int k = 0; k < rights.length; k++) {
@@ -139,7 +146,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     label = label + ",";
                     boolean writeExists = false;
                     for (int k = 0; k < rights.length; k++) {
-                        if (rights[k].equals(WRITE_RIGHT)) {
+                        if (rights[k].getId().equals(WRITE_RIGHT)) {
                             writeExists = true;
                             break;
                         }
