@@ -230,10 +230,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             boolean hasReadBeenChecked = false;
             boolean hasWriteBeenChecked = false;
             for (int j = 0; j < rights.length; j++) {
-                if (rights[j].getId().equals(READ_RIGHT)) {
+                if (rights[j].getId().equals(READ_RIGHT) && rights[j].getPermission()) {
                     readCB.setChecked(true);
                     hasReadBeenChecked = true;
-                } else if (rights[j].getId().equals(WRITE_RIGHT)) {
+                } else if (rights[j].getId().equals(WRITE_RIGHT) && rights[j].getPermission()) {
                     writeCB.setChecked(true);
                     hasWriteBeenChecked = true;
                 }
