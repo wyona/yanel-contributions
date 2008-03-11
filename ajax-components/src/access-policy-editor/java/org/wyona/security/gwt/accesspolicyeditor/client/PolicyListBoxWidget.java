@@ -197,10 +197,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     Right[] currentRights = getRights(selectedIdentity);
                     String[] newRights;
                     if (readCB.isChecked()) {
-                        Window.alert("Add Read right from selected identity " + selectedIdentity + " from policy");
+                        Window.alert("Add Read right of selected identity " + selectedIdentity + " to policy");
                         newRights = addRight(currentRights, READ_RIGHT);
                     } else {
-                        Window.alert("Remove Read right from selected identity " + selectedIdentity + " from policy");
+                        Window.alert("Remove Read right of selected identity " + selectedIdentity + " from policy");
                         newRights = removeRight(currentRights, READ_RIGHT);
                     }
                     setSelectedListItem(newRights);
@@ -208,10 +208,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     Right[] currentRights = getRights(selectedIdentity);
                     String[] newRights;
                     if (writeCB.isChecked()) {
-                        Window.alert("Add Write right from selected identity " + selectedIdentity + " from policy");
+                        Window.alert("Add Write right of selected identity " + selectedIdentity + " to policy");
                         newRights = addRight(currentRights, WRITE_RIGHT);
                     } else {
-                        Window.alert("Remove Write right from selected identity " + selectedIdentity + " from policy");
+                        Window.alert("Remove Write right of selected identity " + selectedIdentity + " from policy");
                         newRights = removeRight(currentRights, WRITE_RIGHT);
                     }
                     setSelectedListItem(newRights);
@@ -315,13 +315,15 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         // Copy all current rights
         Vector newRights = new Vector();
         for (int i = 0; i < currentRights.length; i++) {
-            newRights.add(currentRights[i].getId());
+            if (currentRights[i].getPermission()) {
+                newRights.add(currentRights[i].getId());
+            }
         }
 
         // Add new right if it doesn't exist yet
         boolean hasRightAlready = false;
         for (int i = 0; i < currentRights.length; i++) {
-            if (currentRights[i].getId().equals(right)) {
+            if (currentRights[i].getId().equals(right) && currentRights[i].getPermission()) {
                 hasRightAlready = true;
                 break;
             }
@@ -342,7 +344,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     private String[] removeRight(Right[] currentRights, String right) {
         Vector newRights = new Vector();
         for (int i = 0; i < currentRights.length; i++) {
-            if (!currentRights[i].getId().equals(right)) {
+            if (!currentRights[i].getId().equals(right) && currentRights[i].getPermission()) {
                 newRights.add(currentRights[i].getId());
             }
         }
