@@ -40,12 +40,12 @@ public class FOAFRealm extends org.wyona.yanel.core.map.Realm {
      */
     public FOAFRealm(String name, String id, String mountPoint, java.io.File configFile) throws Exception {
         super(name, id, mountPoint, configFile);
-        log.error("DEBUG: Custom FOAF Realm implementation!");
+        log.debug("Custom FOAF Realm implementation!");
 
         DefaultConfigurationBuilder builder =  new DefaultConfigurationBuilder(true);
         Configuration config = builder.buildFromFile(configFile);
         java.io.File profilesDataRepoConfigFile = new java.io.File(config.getChild("profiles-data").getValue());
-        log.error("DEBUG: Profiles Data repo path: " + profilesDataRepoConfigFile);
+        log.debug("Profiles Data repo path: " + profilesDataRepoConfigFile);
 
         if (!profilesDataRepoConfigFile.isAbsolute()) {
             profilesDataRepoConfigFile = FileUtil.file(configFile.getParentFile().getAbsolutePath(), profilesDataRepoConfigFile.toString());
