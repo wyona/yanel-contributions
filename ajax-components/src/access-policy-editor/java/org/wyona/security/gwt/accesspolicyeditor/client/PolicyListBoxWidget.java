@@ -46,9 +46,9 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
     private String READ_RIGHT = "r";
     private String WRITE_RIGHT = "w";
+    private Right[] availableRights;
+    private CheckBox[] availableRightsCB;
 
-    //private String READ_RIGHT = "Read";
-    //private String WRITE_RIGHT = "Write";
 
     /**
      *
@@ -67,12 +67,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         setIdentities(visibleItemCount, users, groups);
         vp.add(lb);
 
-        readCB = new CheckBox("Read");
-        readCB.addClickListener(this);
-        vp.add(readCB);
-        writeCB = new CheckBox("Write");
-        writeCB.addClickListener(this);
-        vp.add(writeCB);
+        set(null);
     }
 
     /**
@@ -190,7 +185,31 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      *
      */
     public void onClick(Widget sender) {
-        if (sender == readCB || sender == writeCB) {
+        CheckBox selectedRightCB = null;
+        Right selectedRight = null;
+        for (int i = 0; i < availableRightsCB.length; i++) {
+            if (sender == availableRightsCB[i]) {
+                selectedRightCB = availableRightsCB[i];
+                selectedRight = availableRights[i];
+                break;
+            }
+        }
+        if (selectedRightCB != null) {
+            Window.alert("Right checkbox has been selected, but implementation is not finished yet!");
+            String selectedIdentity = getSelectedItemText();
+            if (selectedIdentity != null) {
+                if (selectedRightCB.isChecked()) {
+                    Window.alert("Add " + selectedRight.getLabel() + " right of selected identity " + selectedIdentity + " to policy");
+                    //newRights = addRight(currentRights, READ_RIGHT);
+                } else {
+                    Window.alert("Remove " + selectedRight.getLabel() + " right of selected identity " + selectedIdentity + " from policy");
+                    //newRights = removeRight(currentRights, READ_RIGHT);
+                }
+            } else {
+                Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
+                selectedRightCB.setChecked(false);
+            }
+	} else if (sender == readCB || sender == writeCB) {
             String selectedIdentity = getSelectedItemText();
             if (selectedIdentity != null) {
                 if (sender == readCB) {
@@ -468,5 +487,31 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      */
     public boolean getUseInheritedPolicies() {
         return policyInheritanceCB.isChecked();
+    }
+
+    /**
+     * Set available rights (checkboxes)
+     */
+    public void set(Right[] availableRights) {
+        this.availableRights = availableRights;
+        if (availableRights != null) {
+            availableRightsCB = new CheckBox[availableRights.length];
+            for (int i = 0; i < availableRightsCB.length; i++) {
+                // TODO: Also set label
+                availableRightsCB[i] = new CheckBox(availableRights[i].getId());
+                availableRightsCB[i].addClickListener(this);
+                vp.add(availableRightsCB[i]);
+            }
+
+            // TODO: Remove as soon as the array is working
+            readCB = new CheckBox("Read");
+            readCB.addClickListener(this);
+            vp.add(readCB);
+            writeCB = new CheckBox("Write");
+            writeCB.addClickListener(this);
+            vp.add(writeCB);
+        } else {
+            Window.alert("Available rights not loaded yet! Please don't worry, they will arrive soon hopefully!");
+        }
     }
 }

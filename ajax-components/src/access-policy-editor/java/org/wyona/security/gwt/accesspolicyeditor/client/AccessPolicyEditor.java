@@ -38,9 +38,6 @@ import org.wyona.security.gwt.accesspolicyeditor.client.AddRemoveIdentitiesWidge
  */
 public class AccessPolicyEditor implements EntryPoint {
 
-    String[] users;
-    String[] groups;
-    String[] rights;
     User[] policyUsers;
     Group[] policyGroups;
     boolean useInheritedPolicies = true;
@@ -137,7 +134,7 @@ public class AccessPolicyEditor implements EntryPoint {
         saveButton.setStyleName("gwt-wyona-CancelButton");
         buttonHP.add(cancelButton);
 
-        identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, users, groups);
+        identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
 
         policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies);
 
@@ -167,11 +164,10 @@ public class AccessPolicyEditor implements EntryPoint {
                         // TODO: Show loading ...
                         scheduleRepeating(10);
                     } else {
-                        users = ag.getUsers();
-                        groups = ag.getGroups();
-                        rights = ag.getRights();
                         // "Redraw" Listbox
-                        identitiesLBW.set(visibleItemCount, users, groups);
+                        identitiesLBW.set(visibleItemCount, ag.getUsers(), ag.getGroups());
+                        // TODO: "Redraw" Policy Listbox
+                        policyLBW.set(ag.getRights());
                         this.cancel();
                         Window.alert("Identities have been loaded!");
                     }

@@ -21,6 +21,7 @@ package org.wyona.security.gwt.accesspolicyeditor.client;
 public class Right {
 
     private String id;
+    private String label;
     private boolean permission;
 
     /**
@@ -32,10 +33,27 @@ public class Right {
     }
 
     /**
+     * @param id ID of right, for example "r" or "open"
+     * @param label Label of right, for example "Read" or "Open for editing"
+     */
+    public Right(String id, String label) {
+        this.id = id;
+        this.label = label;
+        this.permission = false;
+    }
+
+    /**
      *
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     *
+     */
+    public String getLabel() {
+        return label;
     }
 
     /**
