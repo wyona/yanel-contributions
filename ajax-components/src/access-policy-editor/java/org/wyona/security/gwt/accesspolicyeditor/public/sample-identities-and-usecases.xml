@@ -3,6 +3,10 @@
 <access-control xmlns="http://www.wyona.org/security/1.0">
 
   <!-- TODO
+  <i18n language="de"/>
+  -->
+
+  <!-- TODO
   <world/>
   -->
 
