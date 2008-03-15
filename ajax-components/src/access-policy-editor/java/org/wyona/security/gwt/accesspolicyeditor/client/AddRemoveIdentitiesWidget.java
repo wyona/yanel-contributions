@@ -68,9 +68,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
                 String selectedIdentity = identitiesLB.getValue(i);
                 Window.alert("Add selected identity " + selectedIdentity + " to policy");
                 identitiesLB.removeItem(i);
-                // TODO: Use class PolicyListBoxWidget
-                //policyLBW.addItem(selectedIdentity);
-                policyLB.addItem(selectedIdentity.substring(0, 1) + ": (-,-) " + selectedIdentity.substring(2).trim(), selectedIdentity);
+                policyLBW.addItem(selectedIdentity.substring(0, 1), selectedIdentity.substring(2).trim());
             } else {
                 Window.alert("No identity selected yet! Please select an identity.");
             }
