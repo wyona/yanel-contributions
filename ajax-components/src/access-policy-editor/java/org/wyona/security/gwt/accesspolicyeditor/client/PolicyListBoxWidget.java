@@ -195,14 +195,14 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             }
         }
         if (selectedRightCB != null) {
-            Window.alert("Right checkbox has been selected, but implementation is not finished yet!");
+            //Window.alert("Right checkbox has been selected, but implementation is not finished yet!");
             String selectedIdentity = getSelectedItemText();
             if (selectedIdentity != null) {
                 if (selectedRightCB.isChecked()) {
-                    Window.alert("Add " + selectedRight.getLabel() + " right of selected identity " + selectedIdentity + " to policy");
+                    Window.alert("Add \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " to policy");
                     //newRights = addRight(currentRights, READ_RIGHT);
                 } else {
-                    Window.alert("Remove " + selectedRight.getLabel() + " right of selected identity " + selectedIdentity + " from policy");
+                    Window.alert("Remove \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " from policy");
                     //newRights = removeRight(currentRights, READ_RIGHT);
                 }
             } else {
@@ -498,7 +498,8 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             availableRightsCB = new CheckBox[availableRights.length];
             for (int i = 0; i < availableRightsCB.length; i++) {
                 // TODO: Also set label
-                availableRightsCB[i] = new CheckBox(availableRights[i].getId());
+                availableRightsCB[i] = new CheckBox(availableRights[i].getLabel());
+                availableRightsCB[i].setName(availableRights[i].getId());
                 availableRightsCB[i].addClickListener(this);
                 vp.add(availableRightsCB[i]);
             }
