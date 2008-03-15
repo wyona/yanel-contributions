@@ -71,8 +71,7 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         Element rightsElement = getFirstChildElement(rootElement, "rights");
         NodeList rightElements = rightsElement.getElementsByTagName("right");
         for (int i = 0; i < rightElements.getLength(); i++) {
-            // TODO: Get actual label
-            String label = ((Element) rightElements.item(i)).getAttribute("id");
+            String label = ((Element) rightElements.item(i)).getFirstChild().getNodeValue();
             rights.add(new Right(((Element) rightElements.item(i)).getAttribute("id"), label));
             //Window.alert("Right: " + ((Right) rights.elementAt(i)).getId() + ", " + ((Right) rights.elementAt(i)).getLabel() );
         }
