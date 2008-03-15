@@ -515,4 +515,12 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             Window.alert("Available rights not loaded yet! Please don't worry, they will arrive soon hopefully!");
         }
     }
+
+    /*
+     * @param type User or Group
+     * @param name Name of user or group
+     */
+    public void addItem(String type, String name) {
+        lb.addItem(type + ": (-,-) " + name, type + ": " + name);
+    }
 }
