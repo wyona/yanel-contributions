@@ -512,7 +512,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             writeCB.addClickListener(this);
             vp.add(writeCB);
         } else {
-            Window.alert("Available rights not loaded yet! Please don't worry, they will arrive soon hopefully!");
+            //Window.alert("Available rights not loaded yet! Please don't worry, they will arrive soon hopefully!");
         }
     }
 
@@ -521,6 +521,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      * @param name Name of user or group
      */
     public void addItem(String type, String name) {
-        lb.addItem(type + ": (-,-) " + name, type + ": " + name);
+        StringBuffer emptyRights = new StringBuffer("(-");
+        for (int i = 1; i < availableRightsCB.length; i++) {
+            emptyRights.append(",-");
+        }
+        emptyRights.append(")");
+        lb.addItem(type + ": " + emptyRights + " " + name, type + ": " + name);
     }
 }
