@@ -172,10 +172,14 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         if (identity.indexOf("(") > 0) {
             String[] rightsString = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")")).split(",");
 
+            if (rightsString.length != availableRights.length) {
+                Window.alert("Exception: Validation of rights length failed!");
+                return null;
+            }
             Right[] rights = new Right[availableRights.length];
             for (int i = 0; i < rightsString.length; i++) {
                 if (rightsString[i].equals("-")) {
-                    rights[i] = new Right(rightsString[i], false);
+                    rights[i] = new Right(availableRights[i].getId(), false);
                 } else {
                     rights[i] = new Right(rightsString[i], true);
                 }
