@@ -38,8 +38,6 @@ import java.util.Vector;
 public class PolicyListBoxWidget extends Composite implements ClickListener {
 
     private ListBox lb;
-    private CheckBox readCB;
-    private CheckBox writeCB;
     private CheckBox policyInheritanceCB;
 
     private VerticalPanel vp = new VerticalPanel();
@@ -195,70 +193,37 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             }
         }
         if (selectedRightCB != null) {
-            //Window.alert("Right checkbox has been selected, but implementation is not finished yet!");
+
             String selectedIdentity = getSelectedItemText();
+            //Window.alert("Right checkbox has been selected (selected identity: " + selectedIdentity + ")!");
             if (selectedIdentity != null) {
+                Right[] currentRights = getRights(selectedIdentity);
+                String[] newRights;
                 if (selectedRightCB.isChecked()) {
                     Window.alert("Add \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " to policy");
-                    //newRights = addRight(currentRights, READ_RIGHT);
+                    newRights = addRight(currentRights, selectedRight);
                 } else {
                     Window.alert("Remove \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " from policy");
-                    //newRights = removeRight(currentRights, READ_RIGHT);
+                    newRights = removeRight(currentRights, selectedRight);
                 }
+                setSelectedListItem(newRights);
             } else {
                 Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
                 selectedRightCB.setChecked(false);
-            }
-	} else if (sender == readCB || sender == writeCB) {
-            String selectedIdentity = getSelectedItemText();
-            if (selectedIdentity != null) {
-                if (sender == readCB) {
-                    Right[] currentRights = getRights(selectedIdentity);
-                    String[] newRights;
-                    if (readCB.isChecked()) {
-                        Window.alert("Add Read right of selected identity " + selectedIdentity + " to policy");
-                        newRights = addRight(currentRights, READ_RIGHT);
-                    } else {
-                        Window.alert("Remove Read right of selected identity " + selectedIdentity + " from policy");
-                        newRights = removeRight(currentRights, READ_RIGHT);
-                    }
-                    setSelectedListItem(newRights);
-                } else if (sender == writeCB) {
-                    Right[] currentRights = getRights(selectedIdentity);
-                    String[] newRights;
-                    if (writeCB.isChecked()) {
-                        Window.alert("Add Write right of selected identity " + selectedIdentity + " to policy");
-                        newRights = addRight(currentRights, WRITE_RIGHT);
-                    } else {
-                        Window.alert("Remove Write right of selected identity " + selectedIdentity + " from policy");
-                        newRights = removeRight(currentRights, WRITE_RIGHT);
-                    }
-                    setSelectedListItem(newRights);
-                }
-            } else {
-                Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
-                readCB.setChecked(false);
-                writeCB.setChecked(false);
             }
         } else if (sender == lb) {
             String selectedIdentity = getSelectedItemText();
 
             //Window.alert("Update check boxes!");
             Right[] rights = getRights(selectedIdentity);
-
-            boolean hasReadBeenChecked = false;
-            boolean hasWriteBeenChecked = false;
-            for (int j = 0; j < rights.length; j++) {
-                if (rights[j].getId().equals(READ_RIGHT) && rights[j].getPermission()) {
-                    readCB.setChecked(true);
-                    hasReadBeenChecked = true;
-                } else if (rights[j].getId().equals(WRITE_RIGHT) && rights[j].getPermission()) {
-                    writeCB.setChecked(true);
-                    hasWriteBeenChecked = true;
+            //Window.alert("Update checkboxes: " + rights.length + ", " + availableRightsCB.length);
+            for (int j = 0; j < availableRightsCB.length; j++) {
+                if (rights[j].getPermission()) {
+                    availableRightsCB[j].setChecked(true);
+                } else {
+                    availableRightsCB[j].setChecked(false);
                 }
             }
-            if (!hasReadBeenChecked) readCB.setChecked(false);
-            if (!hasWriteBeenChecked) writeCB.setChecked(false);
         }
     }
 
@@ -269,24 +234,13 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         if (identity.indexOf("(") > 0) {
             String[] rightsString = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")")).split(",");
 
-            Vector rs = new Vector();
+            Right[] rights = new Right[availableRights.length];
             for (int i = 0; i < rightsString.length; i++) {
-                if (!rightsString[i].equals("-")) {
-                    rs.add(new Right(rightsString[i], true));
+                if (rightsString[i].equals("-")) {
+                    rights[i] = new Right(rightsString[i], false);
                 } else {
-                    // TODO: Do not hardcode rights!
-                    if (i == 0) {
-                        rs.add(new Right("r", false));
-                    } else if (i == 1) {
-                        rs.add(new Right("w", false));
-                    } else {
-                        rs.add(new Right("TODO", false));
-                    }
+                    rights[i] = new Right(rightsString[i], true);
                 }
-            }
-            Right[] rights = new Right[rs.size()];
-            for (int i = 0; i < rights.length; i++) {
-                rights[i] = (Right) rs.elementAt(i);
             }
             return rights;
         } else {
@@ -328,49 +282,43 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /**
      *
      */
-    private String[] addRight(Right[] currentRights, String right) {
+    private String[] addRight(Right[] currentRights, Right right) {
         //Window.alert("addRight(): Number of current rights: " + currentRights.length);
+        //Window.alert("addRight(): Number of available rights: " + availableRights.length);
 
-        // Copy all current rights
-        Vector newRights = new Vector();
-        for (int i = 0; i < currentRights.length; i++) {
-            if (currentRights[i].getPermission()) {
-                newRights.add(currentRights[i].getId());
-            }
-        }
-
-        // Add new right if it doesn't exist yet
-        boolean hasRightAlready = false;
-        for (int i = 0; i < currentRights.length; i++) {
-            if (currentRights[i].getId().equals(right) && currentRights[i].getPermission()) {
-                hasRightAlready = true;
-                break;
-            }
-        }
-        if (!hasRightAlready) newRights.add(right);
-
-        String[] nRights = new String[newRights.size()];
+        String[] nRights = new String[availableRights.length];
         for (int i = 0; i < nRights.length; i++) {
-            nRights[i] = (String) newRights.elementAt(i);
+            if (availableRights[i].getId().equals(right.getId())) {
+                nRights[i] = right.getId();
+            } else {
+                if (currentRights[i].getPermission()) {
+                    nRights[i] = currentRights[i].getId();
+                } else {
+                    nRights[i] = "-";
+                }
+            }
         }
-        //Window.alert("addRight(): Number of new rights: " + nRights.length);
         return nRights;
     }
 
     /**
      *
      */
-    private String[] removeRight(Right[] currentRights, String right) {
-        Vector newRights = new Vector();
-        for (int i = 0; i < currentRights.length; i++) {
-            if (!currentRights[i].getId().equals(right) && currentRights[i].getPermission()) {
-                newRights.add(currentRights[i].getId());
-            }
-        }
+    private String[] removeRight(Right[] currentRights, Right right) {
+        //Window.alert("removeRight(): Number of current rights: " + currentRights.length);
+        //Window.alert("removeRight(): Number of available rights: " + availableRights.length);
 
-        String[] nRights = new String[newRights.size()];
+        String[] nRights = new String[availableRights.length];
         for (int i = 0; i < nRights.length; i++) {
-            nRights[i] = (String) newRights.elementAt(i);
+            if (availableRights[i].getId().equals(right.getId())) {
+                nRights[i] = "-";
+            } else {
+                if (currentRights[i].getPermission()) {
+                    nRights[i] = currentRights[i].getId();
+                } else {
+                    nRights[i] = "-";
+                }
+            }
         }
         return nRights;
     }
@@ -397,45 +345,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     private void setListItem(String type, String id, String[] rights, int index) {
         StringBuffer sb = new StringBuffer(type + ":");
 
-        // Set rights
-        // TODO: Do not hardcode the below, because it is very specific!
-        //if (rights.length > 0) {
-
-/*
-            String debug = "";
-            for (int j = 0; j < rights.length; j++) {
-                debug = debug + rights[j] + ", ";
-            }
-            Window.alert("setListItem(): Number of rights: " + rights.length + ": " + debug);
-*/
-
-            sb.append(" (");
-            boolean readExists = false;
-            boolean writeExists = false;
-            for (int j = 0; j < rights.length; j++) {
-                if (rights[j].equals(READ_RIGHT)) {
-                    readExists = true;
-                    //Window.alert("setListItem(): read exists");
-                }
-                if (rights[j].equals(WRITE_RIGHT)) {
-                    writeExists = true;
-                    //Window.alert("setListItem(): write exists");
-                }
-            }
-            if (readExists) {
-                sb.append(READ_RIGHT);
-            } else {
-                sb.append("-");
-            }
-            sb.append(",");
-            if (writeExists) {
-                sb.append(WRITE_RIGHT);
-            } else {
-                sb.append("-");
-            }
-
-            sb.append(")");
-        //}
+        sb.append("(" + rights[0]);
+        for (int i = 1; i < rights.length; i ++) {
+            sb.append("," + rights[i]);
+        }
+        sb.append(")");
         sb.append(" " + id);
         lb.setItemText(index, sb.toString());
     }
@@ -503,14 +417,6 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 availableRightsCB[i].addClickListener(this);
                 vp.add(availableRightsCB[i]);
             }
-
-            // TODO: Remove as soon as the array is working
-            readCB = new CheckBox("Read");
-            readCB.addClickListener(this);
-            vp.add(readCB);
-            writeCB = new CheckBox("Write");
-            writeCB.addClickListener(this);
-            vp.add(writeCB);
         } else {
             //Window.alert("Available rights not loaded yet! Please don't worry, they will arrive soon hopefully!");
         }
