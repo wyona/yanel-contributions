@@ -42,8 +42,6 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
     private VerticalPanel vp = new VerticalPanel();
 
-    private String READ_RIGHT = "r";
-    private String WRITE_RIGHT = "w";
     private Right[] availableRights;
     private CheckBox[] availableRightsCB;
 
@@ -77,82 +75,22 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         if (users != null || groups != null) {
             if (users != null) {
                 for (int i = 0; i < users.length; i++) {
-                    String label = "u: (";
-
+                    String type = "u";
+                    String id = users[i].getId();
                     Right[] rights = users[i].getRights();
                     //Window.alert("User: " + users[i].getId() + " (Number of rights: " + rights.length + ")");
-
-                    boolean readExists = false;
-                    for (int k = 0; k < rights.length; k++) {
-                        //Window.alert("Check for READ right: " + rights[k].getId());
-                        if (rights[k].getId().equals(READ_RIGHT)) {
-                            readExists = true;
-                            break;
-                        }
-                    }
-                    if (readExists) {
-                        label = label + READ_RIGHT;
-                    } else {
-                        label = label + "-";
-                    }
-                    label = label + ",";
-                    boolean writeExists = false;
-                    for (int k = 0; k < rights.length; k++) {
-                        //Window.alert("Check for WRITE right: " + rights[k].getId());
-                        if (rights[k].getId().equals(WRITE_RIGHT)) {
-                            writeExists = true;
-                            break;
-                        }
-                    }
-                    if (writeExists) {
-                        //Window.alert("WRITE exists");
-                        label = label + WRITE_RIGHT;
-                    } else {
-                        //Window.alert("WRITE does NOT exist");
-                        label = label + "-";
-                    }
-
-                    label = label +") " + users[i].getId();
-
-                    String value = "u: " + users[i].getId();
-                    lb.addItem(label, value);
+                    String value = type+": " + id;
+                    lb.addItem(getListLabel(type, id, rights), value);
                 }
             }
             if (groups != null) {
                 for (int i = 0; i < groups.length; i++) {
-                    String label = "g: (";
+                    String type = "g";
+                    String id = groups[i].getId();
                     Right[] rights = groups[i].getRights();
                     //Window.alert("Group: " + groups[i].getId() + " (Number of rights: " + rights.length + ")");
-
-                    boolean readExists = false;
-                    for (int k = 0; k < rights.length; k++) {
-                        if (rights[k].getId().equals(READ_RIGHT)) {
-                            readExists = true;
-                            break;
-                        }
-                    }
-                    if (readExists) {
-                        label = label + READ_RIGHT;
-                    } else {
-                        label = label + "-";
-                    }
-                    label = label + ",";
-                    boolean writeExists = false;
-                    for (int k = 0; k < rights.length; k++) {
-                        if (rights[k].getId().equals(WRITE_RIGHT)) {
-                            writeExists = true;
-                            break;
-                        }
-                    }
-                    if (writeExists) {
-                        label = label + WRITE_RIGHT;
-                    } else {
-                        label = label + "-";
-                    }
-
-                    label = label + ") " + groups[i].getId();
-                    String value = "g: " + groups[i].getId();
-                    lb.addItem(label, value);
+                    String value = type+": " + id;
+                    lb.addItem(getListLabel(type, id, rights), value);
                 }
             } else {
                 Window.alert("No groups!");
@@ -343,6 +281,15 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
      * @param index Position of list item
      */
     private void setListItem(String type, String id, String[] rights, int index) {
+        lb.setItemText(index, getListLabel(type, id, rights));
+    }
+
+    /**
+     * @param type u for user and g for group
+     * @param id
+     * @param rights Rights
+     */
+    private String getListLabel(String type, String id, String[] rights) {
         StringBuffer sb = new StringBuffer(type + ":");
 
         sb.append("(" + rights[0]);
@@ -351,7 +298,42 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         }
         sb.append(")");
         sb.append(" " + id);
-        lb.setItemText(index, sb.toString());
+        return sb.toString();
+    }
+
+    /**
+     * @param type u for user and g for group
+     * @param id
+     * @param rights Rights
+     */
+    private String getListLabel(String type, String id, Right[] rights) {
+        StringBuffer sb = new StringBuffer(type + ":");
+
+        if (availableRights != null) {
+        sb.append("(");
+        for (int i = 0; i < availableRights.length; i ++) {
+            boolean rightExists = false;
+            for (int k = 0; k < rights.length; k ++) {
+                if (availableRights[i].getId().equals(rights[k].getId()) && rights[k].getPermission()) {
+                    rightExists = true;
+                    break;
+                }
+            }
+            if (i > 0) {
+                sb.append(",");
+            }
+            if (rightExists) {
+                sb.append(availableRights[i].getId());
+            } else {
+                sb.append("-");
+            }
+        }
+        sb.append(")");
+        } else {
+            Window.alert("Available rights not loaded yet!");
+        }
+        sb.append(" " + id);
+        return sb.toString();
     }
 
     /**

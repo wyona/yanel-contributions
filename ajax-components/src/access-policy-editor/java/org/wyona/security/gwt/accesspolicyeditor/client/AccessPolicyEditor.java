@@ -68,8 +68,10 @@ public class AccessPolicyEditor implements EntryPoint {
         }
 
         // Get data from server
-        getPolicy(readPolicyURL);
         getIdentitiesAndRights(identitiesURL); // TODO: Subtract policy identities!
+
+        // TODO: Do not load policy before available rights have been loaded, because these are needed for validation of the policy. See timer of identities and rights loading!
+        getPolicy(readPolicyURL);
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
