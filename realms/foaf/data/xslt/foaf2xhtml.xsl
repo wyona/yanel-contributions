@@ -39,6 +39,7 @@
   <link rel="neutron-introspection" type="application/neutron+xml" href="?yanel.resource.usecase=introspection"/>
   <link rel="meta" type="application/rdf+xml" title="FOAF" href="{$name-without-suffix}.rdf"/>
   <link rel="stylesheet" type="text/css" href="{$yarep.back2realm}css/profile.css"/>
+  <link type="image/vnd.microsoft.icon" href="{$yarep.back2realm}favicon.ico" rel="shortcut icon"/>
 </head>
 
 <body>
