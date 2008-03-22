@@ -45,4 +45,8 @@
     </copy>
   </target>
 
+  <target name="import" depends="init">
+    <echo>Import FOAF files ...</echo>
+  </target>
+
 </project>
