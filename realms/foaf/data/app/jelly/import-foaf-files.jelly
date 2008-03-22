@@ -2,12 +2,6 @@
 
 <j:jelly xmlns:j="jelly:core">
 
-<!--
-  <j:set var="editGroupFormID" value="editGroupForm"/>
-  <j:set var="userListContainerID" value="userListContainer"/>
-  <j:set var="groupSelectName" value="group"/>  
--->
-
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:i18n="http://www.wyona.org/yanel/i18n/1.0">
     <head>
       <title>Import FOAF files</title>

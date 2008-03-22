@@ -8,8 +8,10 @@
   <yanel:custom-config>
     <views>
       <view id="default" type="jelly">
-        <!--<xslt>/app/xslt/usecase.xsl</xslt>-->
         <template>/app/jelly/import-foaf-files.jelly</template>
+      </view>
+      <view id="done" type="jelly">
+        <template>/app/jelly/import-foaf-files-done.jelly</template>
       </view>
     </views>
   </yanel:custom-config>
