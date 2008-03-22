@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="import-foaf"
+  namespace="http://foaf.wyona.org/yanel/resource/1.0"
+  class="org.wyona.foaf.yanel.impl.resources.impfoaf.ImportFOAFResource"
+  >
+<description>
+Import FOAF files into realm data repository
+</description>
+
+<rtd>
+<!--
+  <property name="foo" default-value="bar"/>
+-->
+</rtd>
+</resource>
