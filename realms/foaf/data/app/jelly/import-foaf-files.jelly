@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<j:jelly xmlns:j="jelly:core">
+
+<!--
+  <j:set var="editGroupFormID" value="editGroupForm"/>
+  <j:set var="userListContainerID" value="userListContainer"/>
+  <j:set var="groupSelectName" value="group"/>  
+-->
+
+  <html xmlns="http://www.w3.org/1999/xhtml" xmlns:i18n="http://www.wyona.org/yanel/i18n/1.0">
+    <head>
+      <title>Import FOAF files</title>
+    </head>
+    <body>
+      <h1>Import FOAF files</h1>
+      <p>Import directory: "${resource.getImportDirectory()}"</p>
+    </body>
+  </html>
+</j:jelly>
