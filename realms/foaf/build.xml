@@ -46,7 +46,7 @@
   </target>
 
   <target name="import" depends="init">
-    <echo>Import FOAF files ...</echo>
+    <echo>Import FOAF files: NOT implemented yet!</echo>
   </target>
 
 </project>
