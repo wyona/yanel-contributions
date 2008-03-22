@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+  <yanel:rti name="import-foaf" namespace="http://foaf.wyona.org/yanel/resource/1.0"/>
+
+  <yanel:property name="import-directory" value="/home/michi/src/wyona/wyona/misc/foaf/data/profiles"/>
+
+  <yanel:custom-config>
+    <views>
+      <view id="default" type="jelly">
+        <!--<xslt>/app/xslt/usecase.xsl</xslt>-->
+        <template>/app/jelly/import-foaf-files.jelly</template>
+      </view>
+    </views>
+  </yanel:custom-config>
+</yanel:resource-config>
