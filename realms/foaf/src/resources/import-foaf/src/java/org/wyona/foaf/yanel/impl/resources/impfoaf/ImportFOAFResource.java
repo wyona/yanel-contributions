@@ -74,10 +74,27 @@ public class ImportFOAFResource extends ExecutableUsecaseResource {
         File[] filesAndDirs = importDir.listFiles();
         for (int i = 0; i < filesAndDirs.length; i++) {
             if (filesAndDirs[i].isFile()) {
-                log.error("DEBUG: File: " + filesAndDirs[i].getAbsolutePath());
+                log.error("DEBUG: Import File: " + filesAndDirs[i].getAbsolutePath());
                 try {
-                    Node newFOAFNode = ((org.wyona.yanel.impl.map.FOAFRealm) getRealm()).getProfilesRepository().getNode("/profiles").addNode(filesAndDirs[i].getName(), org.wyona.yarep.core.NodeType.RESOURCE);
+                    Node newFOAFNode = null;
+                    org.wyona.yarep.core.Repository repo = ((org.wyona.yanel.impl.map.FOAFRealm) getRealm()).getProfilesRepository();
+                    if (repo.existsNode("/profiles/" + filesAndDirs[i].getName())) {
+                        newFOAFNode = repo.getNode("/profiles/" + filesAndDirs[i].getName());
+                        log.warn("New node created: " + newFOAFNode.getPath());
+                    } else {
+                        newFOAFNode = repo.getNode("/profiles").addNode(filesAndDirs[i].getName(), org.wyona.yarep.core.NodeType.RESOURCE);
+                    }
                     newFOAFNode.setMimeType("application/xml");
+
+                    byte buffer[] = new byte[8192];
+                    int bytesRead;
+                    java.io.FileInputStream in = new java.io.FileInputStream(filesAndDirs[i].getAbsolutePath());
+                    java.io.OutputStream out = newFOAFNode.getOutputStream();
+                    while ((bytesRead = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, bytesRead);
+                    }
+                    out.close();
+                    in.close(); 
                 } catch(Exception e) {
                     log.error(e, e);
                 }
