@@ -8,6 +8,7 @@
     - src/resources/foaf/ (package="org.wyona.yanel.impl.resources.foaf")
     - src/resources/redirect/ (package="org.wyona.yanel.impl.resources.foaf.redirect")
     - src/resources/findfriend/
+    - src/resources/import-foaf/
 
 
   For a productive environment one might want to re-configure the profiles repository config within
