@@ -4,6 +4,7 @@
 
 <!--
   <usecase id="view">
+    <world permission="true"/>
     <group id="login" permission="true"/>
   </usecase>
 -->
