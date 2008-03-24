@@ -4,26 +4,34 @@
 <head>
   <title>Importing FOAF files</title>
   <link rel="neutron-introspection" href="?yanel.resource.usecase=introspection" type="application/neutron+xml"/>
+  <link href="../css/documentation.css" type="text/css" rel="stylesheet"/>  
 </head>
 <body>
+<div class="instructions">
+
 <h1>Importing FOAF files</h1>
 
 <ul>
-  <li>Add &lt;resource-type src="/home/USERNAME/wyona/public/yanel/contributions/realms/foaf/src/resources/import-foaf/" compile="true"/> to your local.resource-types.xml</li>
+  <li>Add the following line to your $YANEL_HOME/conf/local/local.resource-types.xml
 
-  <li>Re-build and re-start Yanel</li>
+<pre>
+&lt;resource-type src="/home/USERNAME/wyona/public/yanel/contributions/realms/foaf/src/resources/import-foaf/" compile="true"/> 
+</pre>
 
-  <li>Update access rights by editing FOAF_REAL_SRC/ac-policies/import-foaf-files.html.policy
+</li>
 
-  <li>Browse to http://127.0.0.1:8080/yanel/foaf/import-foaf-files.html</li>
+  <li><a href="../../yanel-website/en/getting-started/index.html">Re-build and re-start</a> Yanel.</li>
 
-  <li>Change the Import directory within FOAF_REAL_SRC/res-configs/import-foaf-files.html.yanel-rc
- (Some arbitrary directory where you have dumped the FOAF files)</li>
+  <li>Update <a href="../../yanel-website/en/documentation/security/access-policies.html">access rights</a> by editing FOAF_REALM_SRC/ac-policies/import-foaf-files.html.policy</li>
 
-  <li>Reload page http://127.0.0.1:8080/yanel/foaf/import-foaf-files.html and click Import</li>
+  <li>Browse to <a href="http://127.0.0.1:8080/yanel/foaf/import-foaf-files.html">http://127.0.0.1:8080/yanel/foaf/import-foaf-files.html</a></li>
 
-  <li>Search for some keyword to test import</li>
+  <li>Change the Import directory within FOAF_REALM_SRC/res-configs/import-foaf-files.html.yanel-rc to the directory where the FOAF files you would like to import are stored.</li>
+
+  <li>Reload page  <a href="http://127.0.0.1:8080/yanel/foaf/import-foaf-files.html">http://127.0.0.1:8080/yanel/foaf/import-foaf-files.html</a> and click 'Import'.</li>
+
+  <li>Search for some keyword to test the import.</li>
 </ul>
-
+</div>
 </body>
 </html>
