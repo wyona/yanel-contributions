@@ -66,7 +66,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
             int i = identitiesLB.getSelectedIndex();
             if (i >= 0) {
                 String selectedIdentity = identitiesLB.getValue(i);
-                Window.alert("Add selected identity " + selectedIdentity + " to policy");
+                //Window.alert("Add selected identity " + selectedIdentity + " to policy");
                 identitiesLB.removeItem(i);
                 policyLBW.addItem(selectedIdentity.substring(0, 1), selectedIdentity.substring(2).trim());
             } else {
@@ -76,7 +76,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
             int i = policyLB.getSelectedIndex();
             if (i >= 0) {
                 String selectedIdentity = policyLB.getValue(i);
-                Window.alert("Remove selected identity " + selectedIdentity + " from policy");
+                //Window.alert("Remove selected identity " + selectedIdentity + " from policy");
                 policyLB.removeItem(i);
                 identitiesLB.addItem(removeRights(selectedIdentity));
             } else {
