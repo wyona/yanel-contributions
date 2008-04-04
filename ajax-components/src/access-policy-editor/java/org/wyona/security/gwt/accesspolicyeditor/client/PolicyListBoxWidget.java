@@ -138,10 +138,10 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                 Right[] currentRights = getRights(selectedIdentity);
                 String[] newRights;
                 if (selectedRightCB.isChecked()) {
-                    Window.alert("Add \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " to policy");
+                    //Window.alert("Add \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " to policy");
                     newRights = addRight(currentRights, selectedRight);
                 } else {
-                    Window.alert("Remove \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " from policy");
+                    //Window.alert("Remove \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " from policy");
                     newRights = removeRight(currentRights, selectedRight);
                 }
                 setSelectedListItem(newRights);
