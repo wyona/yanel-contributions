@@ -12,6 +12,6 @@
           - the operating system specific gwt dev lib name
        within local.build.properties
 
-    5) Start building components (e.g. "ant -Dcomponent.home.dir=src/hello-world". A build directory should be created within the component directory, e.g. src/hello-world/build)
+    3) Start building components (e.g. "ant -Dcomponent.home.dir=src/hello-world". A build directory should be created within the component directory, e.g. src/hello-world/build)
 
-    6) Test components (e.g. open a browser and open one of the test files, for example src/hello-world/build/org.wyona.yanel.gwt.helloworld.HelloWorld/TestHelloWorld.html)
+    4) Test components (e.g. open a browser and open one of the test files, for example src/hello-world/build/org.wyona.yanel.gwt.helloworld.HelloWorld/TestHelloWorld.html)
