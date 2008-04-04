@@ -75,7 +75,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
-        RootPanel.get().add(vp);
+        RootPanel.get("access-policy-editor-hook").add(vp);
 
         VerticalPanel searchFilterVP = new VerticalPanel();
         vp.add(searchFilterVP);
@@ -105,7 +105,7 @@ public class AccessPolicyEditor implements EntryPoint {
         //buttonHP.add(new Button("Apply Policy"));
 
         // Save Button
-        final String savePolicyUrl = savePolicyURL;
+        final String savePolicyUrl = savePolicyURL.replaceAll("&amp;", "&");
         //saveButton = new Button("Save Policy and Exit", new ClickListener() {
         saveButton = new Button("Save Policy", new ClickListener() {
             public void onClick(Widget sender) {
@@ -126,7 +126,7 @@ public class AccessPolicyEditor implements EntryPoint {
         final String cancelUrl = cancelURL;
         Button cancelButton = new Button("Cancel", new ClickListener() {
             public void onClick(Widget sender) {
-                Window.alert("Redirect to " + cancelUrl);
+                //Window.alert("Redirect to " + cancelUrl);
                 redirectTo(cancelUrl);
             }
             public native void redirectTo(String url) /*-{
@@ -155,6 +155,7 @@ public class AccessPolicyEditor implements EntryPoint {
      */
     private void getIdentitiesAndRights(String url) {
         //Window.alert("Load identities: " + url);
+        url = url.replaceAll("&amp;", "&");
         final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter(url);
         try {
             final com.google.gwt.http.client.Request request = ag.execute();
@@ -171,7 +172,7 @@ public class AccessPolicyEditor implements EntryPoint {
                         // TODO: "Redraw" Policy Listbox
                         policyLBW.set(ag.getRights());
                         this.cancel();
-                        Window.alert("Identities have been loaded!");
+                        //Window.alert("Identities have been loaded!");
                     }
                 }
             };
@@ -189,6 +190,7 @@ public class AccessPolicyEditor implements EntryPoint {
      */
     private void getPolicy(String url) {
         //Window.alert("Load policy: " + url);
+        url = url.replaceAll("&amp;", "&");
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter(url);
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
@@ -209,7 +211,7 @@ public class AccessPolicyEditor implements EntryPoint {
                         policyLBW.setInheritRightsFlag(useInheritedPolicies);
 
                         this.cancel();
-                        Window.alert("Policy has been loaded!");
+                        //Window.alert("Policy has been loaded!");
                     }
                 }
             };
