@@ -121,4 +121,9 @@ public class AsynchronousIdentitiesAndRightsGetter extends AsynchronousAgent {
         NodeList nl = parent.getElementsByTagName(name);
         return (Element) nl.item(0);
     }
+
+    public void onError(Request arg0, Throwable arg1) {
+        // TODO Auto-generated method stub
+        
+    }
 }

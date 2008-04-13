@@ -149,4 +149,9 @@ public class AsynchronousPolicyGetter extends AsynchronousAgent {
             return null;
         }
     }
+
+    public void onError(Request arg0, Throwable arg1) {
+        // TODO Auto-generated method stub
+        
+    }
 }

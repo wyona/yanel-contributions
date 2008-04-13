@@ -15,16 +15,21 @@
  */
 package org.wyona.security.gwt.accesspolicyeditor.client;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -32,6 +37,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import org.wyona.security.gwt.accesspolicyeditor.client.AddRemoveIdentitiesWidget;
+import org.wyona.yanel.gwt.client.AsynchronousAgent;
 
 /**
  * Access Policy Editor
@@ -46,6 +52,10 @@ public class AccessPolicyEditor implements EntryPoint {
     PolicyListBoxWidget policyLBW;
     Button saveButton;
 
+    String[] identitiesAllUsers;
+    String[] identitiesAllGroups;
+    Right[] allRights;
+    
     int visibleItemCount = 10;
 
     /**
@@ -70,7 +80,13 @@ public class AccessPolicyEditor implements EntryPoint {
         // Get data from server
         getIdentitiesAndRights(identitiesURL); // TODO: Subtract policy identities!
 
-        // TODO: Do not load policy before available rights have been loaded, because these are needed for validation of the policy. See timer of identities and rights loading!
+        identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
+        
+        identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
+        
+        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies);
+
+        
         getPolicy(readPolicyURL);
 
         // Setup GUI
@@ -84,16 +100,51 @@ public class AccessPolicyEditor implements EntryPoint {
         searchTB.setVisibleLength(30);
         searchFilterVP.add(searchTB);
 
-        Button searchButton = new Button("Save User or Group", new ClickListener() {
-            public void onClick(Widget sender) {
-                int itemCount = identitiesLBW.getListBox().getItemCount();
-                for (int i = 0; i < itemCount; i++) {
-                    String itemText = identitiesLBW.getListBox().getItemText(i);
-                    if (itemText.indexOf(searchTB.getText()) >= 0) Window.alert("Result: " + itemText);
-                }
-            }
-        });
-        searchFilterVP.add(searchButton);
+        searchTB.addKeyboardListener(
+                new KeyboardListenerAdapter() {
+                    public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+                        ListBox idlb = identitiesLBW.getListBox();
+                        ArrayList tmpUsers = new ArrayList();
+                        ArrayList tmpGroups = new ArrayList();
+                        idlb.clear();
+                        int itemCountU = identitiesAllUsers.length;
+                        for (int i = 0; i < itemCountU; i++) {
+                            String itemText = identitiesAllUsers[i];
+                            if (itemText.indexOf(searchTB.getText()) >= 0) {
+                                tmpUsers.add(itemText);
+                            }
+                        }
+                        int itemCountG = identitiesAllGroups.length;
+                        for (int i = 0; i < itemCountG; i++) {
+                            String itemText = identitiesAllGroups[i];
+                            if (itemText.indexOf(searchTB.getText()) >= 0) {
+                                tmpGroups.add(itemText);
+                            }
+                        }
+                        
+                        String tmpUsersStr [] = new String [tmpUsers.size ()];
+                        tmpUsers.toArray(tmpUsersStr);
+                        String tmpGroupStr [] = new String [tmpGroups.size ()];
+                        tmpGroups.toArray(tmpGroupStr);
+                        
+                        identitiesLBW.set(visibleItemCount, tmpUsersStr, tmpGroupStr);
+                        // filterList(list, filter.getText());
+                    }
+                });
+        
+        
+//        Button searchButton = new Button("Search User or Group", new ClickListener() {
+//            public void onClick(Widget sender) {
+//                int itemCount = identitiesLBW.getListBox().getItemCount();
+//                for (int i = 0; i < itemCount; i++) {
+//                    String itemText = identitiesLBW.getListBox().getItemText(i);
+//                    if (itemText.indexOf(searchTB.getText()) >= 0) Window.alert("Result: " + itemText);
+//                    
+//                }
+//            }
+//  
+//        });
+//        searchFilterVP.add(searchButton);
 
         HorizontalPanel hp = new HorizontalPanel();
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
@@ -105,7 +156,7 @@ public class AccessPolicyEditor implements EntryPoint {
         //buttonHP.add(new Button("Apply Policy"));
 
         // Save Button
-        final String savePolicyUrl = savePolicyURL.replaceAll("&amp;", "&");
+        final String savePolicyUrl = GWT.getHostPageBaseURL() + savePolicyURL.replaceAll("&amp;", "&");
         //saveButton = new Button("Save Policy and Exit", new ClickListener() {
         saveButton = new Button("Save Policy", new ClickListener() {
             public void onClick(Widget sender) {
@@ -127,7 +178,7 @@ public class AccessPolicyEditor implements EntryPoint {
         Button cancelButton = new Button("Cancel", new ClickListener() {
             public void onClick(Widget sender) {
                 //Window.alert("Redirect to " + cancelUrl);
-                redirectTo(cancelUrl);
+                redirectTo(GWT.getHostPageBaseURL() + cancelUrl);
             }
             public native void redirectTo(String url) /*-{
                 $wnd.location.href=url;
@@ -136,11 +187,10 @@ public class AccessPolicyEditor implements EntryPoint {
         saveButton.setStyleName("gwt-wyona-CancelButton");
         buttonHP.add(cancelButton);
 
-        identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
+        
 
-        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies);
-
-	AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox(), policyLBW);
+        
+        AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox(), policyLBW);
         ariw.setStyleName("gwt-wyona-AddRemoveWidget");
 
         //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
@@ -154,34 +204,48 @@ public class AccessPolicyEditor implements EntryPoint {
      * Get identities and rights
      */
     private void getIdentitiesAndRights(String url) {
-        //Window.alert("Load identities: " + url);
-        url = url.replaceAll("&amp;", "&");
-        final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter(url);
-        try {
-            final com.google.gwt.http.client.Request request = ag.execute();
+        if (identitiesAllUsers == null || identitiesAllGroups == null || allRights == null) {
+            //Window.alert("Load identities: " + url);
+            url = GWT.getHostPageBaseURL() + url.replaceAll("&amp;", "&");
+            //Window.alert("Load IdentitiesAndRights: "+ url);
+            final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter(url);
 
-            // Start new thread
-            Timer t = new Timer() {
-                public void run() {
-                    if (request.isPending()) {
-                        // TODO: Show loading ...
-                        scheduleRepeating(10);
-                    } else {
-                        // "Redraw" Listbox
-                        identitiesLBW.set(visibleItemCount, ag.getUsers(), ag.getGroups());
-                        // TODO: "Redraw" Policy Listbox
-                        policyLBW.set(ag.getRights());
-                        this.cancel();
-                        //Window.alert("Identities have been loaded!");
+            try {
+                final com.google.gwt.http.client.Request request = ag.execute();
+                
+                // Start new thread
+                Timer t = new Timer() {
+                    public void run() {
+                        if (request.isPending()) {
+                            // TODO: Show loading ...
+                            scheduleRepeating(10);
+                        } else {
+                            // "Redraw" Listbox
+                            //identitiesLBW.set(visibleItemCount, ag.getUsers(), ag.getGroups());
+                            // TODO: "Redraw" Policy Listbox
+                            //policyLBW.set();
+                            
+                            allRights = ag.getRights();
+                            identitiesAllUsers = ag.getUsers();
+                            identitiesAllGroups = ag.getGroups();
+                            this.cancel();
+                            if (allRights.length > 0 || identitiesAllUsers.length > 0 || identitiesAllGroups.length > 0 ) {
+                                policyLBW.set(allRights);
+                                identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
+                                //Window.alert("Identities have been loaded!" + allRights.length + " " + identitiesAllUsers.length + " " + identitiesAllGroups.length);
+                            } else {
+                                Window.alert("No Identities have been loaded!");
+                            }
+                        }
                     }
-                }
-            };
-            t.schedule(1);
-
-        } catch (Exception e) {
-             //if (!com.google.gwt.core.client.GWT.isScript()) {
-             e.printStackTrace();
-             //}
+                };
+                t.schedule(1);
+                
+            } catch (Exception e) {
+                //if (!com.google.gwt.core.client.GWT.isScript()) {
+                e.printStackTrace();
+                //}
+            }
         }
     }
 
@@ -189,8 +253,8 @@ public class AccessPolicyEditor implements EntryPoint {
      * Get policy
      */
     private void getPolicy(String url) {
+        url = GWT.getHostPageBaseURL() + url.replaceAll("&amp;", "&");
         //Window.alert("Load policy: " + url);
-        url = url.replaceAll("&amp;", "&");
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter(url);
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
@@ -211,6 +275,58 @@ public class AccessPolicyEditor implements EntryPoint {
                         policyLBW.setInheritRightsFlag(useInheritedPolicies);
 
                         this.cancel();
+                        
+                        //remove policy users from users
+                        ArrayList tmpUsers = new ArrayList(Arrays.asList(identitiesAllUsers));
+                        ArrayList tmpGroups = new ArrayList(Arrays.asList(identitiesAllGroups));
+                        
+                        
+                        
+                        
+//                        int itemCountUI = identitiesAllUsers.length;
+//                        for (int j = 0; j < itemCountUI; j++) {
+//                            String itemTextIAU = identitiesAllUsers[j];
+//                            if (!itemText.equals(itemTextIAU) && !tmpUsers.contains(itemTextIAU)) {
+//                                tmpUsers.add(itemTextIAU);
+//                            } else {
+//                                //Window.alert("not add: " + itemTextIAU + " = " +  itemText);
+//                            }
+//                        }
+                        int itemCountUP = policyUsers.length;
+                        for (int i = 0; i < itemCountUP; i++) {
+                            String itemText = policyUsers[i].getId();
+                            tmpUsers.remove(itemText);
+                            
+                        }
+
+                        int itemCountGP = policyGroups.length;
+                        for (int i = 0; i < itemCountGP; i++) {
+                            String itemText = policyGroups[i].getId();
+                            tmpGroups.remove(itemText);
+                        }
+
+//                        int itemCountUI = identitiesAllGroups.length;
+//                        for (int j = 0; j < itemCountUI; j++) {
+//                            String itemTextIAG = identitiesAllGroups[j];
+//                            if (!itemText.equals(itemTextIAG)  && !tmpGroups.contains(itemTextIAG)) {
+//                                tmpGroups.add(itemTextIAG);
+//                            } else {
+//                                //Window.alert("not add: " + itemTextIAG + " = " +  itemText);
+//                            }
+//                        }
+                        
+                        
+                        
+                        String tmpUsersStr [] = new String [tmpUsers.size ()];
+                        tmpUsers.toArray(tmpUsersStr);
+                        identitiesAllUsers = tmpUsersStr;
+                        
+                        String tmpGroupStr [] = new String [tmpGroups.size ()];
+                        tmpGroups.toArray(tmpGroupStr);
+                        identitiesAllGroups = tmpGroupStr;
+                        
+                        identitiesLBW.set(visibleItemCount, new String[0], new String[0]);
+                        identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
                         //Window.alert("Policy has been loaded!");
                     }
                 }
@@ -224,6 +340,8 @@ public class AccessPolicyEditor implements EntryPoint {
              //}
         }
     }
+    
+
 }
 
 /**
