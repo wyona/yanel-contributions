@@ -4,6 +4,7 @@
 
   <target name="usage" description="Usage">
     <echo>USAGE: ant google.compile -Dcomponent.home.dir=src/PROJECT_NAME</echo>
+    <echo>USAGE gwt host mode browser: ant google.hostmode -Dcomponent.home.dir=src/PROJECT_NAME</echo>
     <echo>NOTE: Read the README.txt or execute "ant -projecthelp"</echo>
   </target>
 
@@ -45,6 +46,22 @@
       <arg value="-style" />
       <arg value="OBF" />
       <arg value="${module.name}" />
+    </java>
+  </target>
+
+  <target name="google.hostmode" depends="clean" description="Opens your component in the gwt host mode browser">
+    <!-- Read module and class name from component specific build.properties -->
+    <property file="${component.home.dir}/build.properties"/>
+    <fail unless="hostmode.hostpage.name">
+      Could not read property hostmode.hostpage.name. 
+      if you want to use google.hostedmode set hostmode.hostpage.name in your componets build.properties.
+      e.g. in ${component.home.dir}/build.properties add hostmode.hostpage.name=NameOfYourTestFile.html
+     </fail>
+     <java classname="com.google.gwt.dev.GWTShell"
+      fork="true">
+      <classpath refid="google.compile.classpath" />
+      <arg line="-out ./www"/>
+      <arg line="${module.name}/${hostmode.hostpage.name}"/>
     </java>
   </target>
 </project>
