@@ -146,10 +146,9 @@ public class RedirectResource extends Resource implements ViewableV2, CreatableV
     }
     
     /**
-     *
+     * Always return true, because if a resource config is set, then it also exists. TODO: One might want to consider a more sophisticated exists() ...
      */
     public boolean exists() throws Exception {
-        log.warn("Not implemented yet!");
         return true; 
     }
     
