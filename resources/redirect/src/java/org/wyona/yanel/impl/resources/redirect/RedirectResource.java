@@ -99,7 +99,10 @@ public class RedirectResource extends Resource implements ViewableV2, CreatableV
 
             // Localization
             Configuration[] languageRedirectConfigs = config.getChildren("language");
-            String localizationLanguage = getRequestedLanguage();
+
+            // NOTE: Within realm.xml one can overwrite the language handler, for example using the content language instead, which is overwriting getRequestedLanguage(), but this doesn't make sense in the case of the redirect resource (also see http://lists.wyona.org/pipermail/yanel-development/2008-April/002150.html)
+            String localizationLanguage = new org.wyona.yanel.impl.DefaultLanguageHandler().getLocalizationLanguage(this);
+            //String localizationLanguage = getRequestedLanguage();
             log.debug("Localization: " + localizationLanguage);
             for (int i = 0; i < languageRedirectConfigs.length; i++) {
                 try {
