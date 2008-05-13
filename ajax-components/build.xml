@@ -28,6 +28,8 @@
       </fileset>
       <pathelement path="src/core/java" />
       <pathelement path="${component.java.dir}/" />
+      <!-- TODO: make this configurable per project -->
+      <pathelement location="src/navigation-tree/lib/gwtext.jar"/>
     </path>
   </target>
 
