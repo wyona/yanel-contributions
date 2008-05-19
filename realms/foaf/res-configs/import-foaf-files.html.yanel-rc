@@ -3,7 +3,7 @@
 <yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
   <yanel:rti name="import-foaf" namespace="http://foaf.wyona.org/yanel/resource/1.0"/>
 
-  <yanel:property name="import-directory" value="/home/michi/src/wyona/wyona/misc/foaf/data/profiles"/>
+  <yanel:property name="import-directory" value="/home/michi/src/wyona/public/yanel/contributions/realms/foaf/dump"/>
 
   <yanel:custom-config>
     <views>
