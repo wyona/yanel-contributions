@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<policy xmlns="http://www.wyona.org/security/1.0">
+
+  <usecase id="view">
+    <world permission="true"/>
+  </usecase>
+
+  <usecase id="open">
+    <user id="lenya" permission="true"/>
+  </usecase>
+
+  <usecase id="write">
+    <user id="lenya" permission="true"/>
+  </usecase>
+
+<!--
+  <usecase id="resource.create">
+    <user id="lenya" permission="true"/>
+  </usecase>
+-->
+
+  <usecase id="delete">
+    <user id="lenya" permission="true"/>
+  </usecase>
+
+  <usecase id="toolbar">
+    <user id="lenya" permission="true"/>
+  </usecase>
+
+  <usecase id="policy.read">
+    <user id="lenya" permission="true"/>
+  </usecase>
+
+  <usecase id="policy.update">
+    <user id="lenya" permission="true"/>
+  </usecase>
+
+  <usecase id="introspection">
+    <world permission="true"/>
+<!--
+    <user id="lenya" permission="true"/>
+-->
+  </usecase>
+
+</policy>

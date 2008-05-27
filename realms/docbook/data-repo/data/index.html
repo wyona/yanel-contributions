@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
+  <title>Homepage - Docbook Realm</title>
+<!--
+  <link rel="neutron-introspection" type="application/neutron+xml" href="?yanel.resource.usecase=introspection"/>
+-->
+
+  <!-- Use this custom introspection document, because in the case of "/" instead of "index.html", one will edit the directory "/" instead of "index.html" and a RepositoryException will be thrown. TODO: Fix createRevision() of yarep VirtualFileSystemRepo implementation by using the alternative directory node name! -->
+  <link rel="neutron-introspection" type="application/neutron+xml" href="introspection-index.xml"/>
+</head>
+
+<body>
+<h1>Welcome to the &quot;Docbook&quot; Realm</h1>
+
+<a href="docbook-xsl-1.73.2/RELEASE-NOTES.xml">docbook-xsl-1.73.2/RELEASE-NOTES.xml</a>
+</body>
+</html>
