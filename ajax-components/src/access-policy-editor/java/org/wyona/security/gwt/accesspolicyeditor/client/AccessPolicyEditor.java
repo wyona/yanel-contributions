@@ -56,7 +56,7 @@ public class AccessPolicyEditor implements EntryPoint {
     String[] identitiesAllGroups;
     Right[] allRights;
     
-    int visibleItemCount = 10;
+    int visibleItemCount = 20;
 
     /**
      *
