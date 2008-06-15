@@ -61,6 +61,22 @@ Westin Market Street Hotel, San Francisco, USA
 </s:content>
 </s:slide>
 
+<s:slide id="qanda" status="ready">
+<s:title>Thanks and QA</s:title>
+<s:content>
+<p>
+<ol>
+
+  <li>Thanks</li>
+  <li>Questions and Answers</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+
+
+
 <!--
 <s:slide id="goals" status="wip">
 <s:title>Goals - Creature Comforts with Yulup and Neutron</s:title>
