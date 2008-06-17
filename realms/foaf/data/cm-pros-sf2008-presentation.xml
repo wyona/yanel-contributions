@@ -76,7 +76,7 @@ Westin Market Street Hotel, San Francisco, USA
 </s:slide>
 
 <s:slide id="history-email-part-1" status="ready">
-<s:title>Short history of e-mail (part 1)</s:title>
+<s:title>Brief history of e-mail (part 1)</s:title>
 <s:content>
 <p>
 <ol>
@@ -93,15 +93,16 @@ Westin Market Street Hotel, San Francisco, USA
 </s:slide>
 
 <s:slide id="history-email-part-2" status="ready">
-<s:title>Short history of e-mail (part 2)</s:title>
+<s:title>Brief history of e-mail (part 2)</s:title>
 <s:content>
 <p>
 <ol>
   <li>1976: 9925 messages at MIT AI lab during first quarter</li>
   <li>1976: Stefferud predicts "Desktop computers will make the perfect mailbox"</li>
   <li>1980: Place to share work and build friendships</li>
-  <li>1982: RFC 822 (RFC 821, SMTP)</li>
-  <li>????: Yahoo</li>
+  <li>1982: RFC 822 Format of text messages, RFC 821 SMTP</li>
+  <li>1996: Hotmail as first webmail provider</li>
+  <li>2003: According to MS, Hotmail has 145 million visitors</li>
   <li>2004: FTC jurisdiction over SPAM was codified into the law</li>
 </ol>
 </p>
