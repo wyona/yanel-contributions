@@ -28,6 +28,12 @@ Software:      http://www.tm4j.org/
   </baseName>
 </topic>
 
+<topic id="speaker">
+  <baseName>
+    <baseNameString>Speaker</baseNameString>
+  </baseName>
+</topic>
+
 <topic id="conference">
   <baseName>
     <baseNameString>Conference</baseNameString>
@@ -101,13 +107,39 @@ Software:      http://www.tm4j.org/
 -->
 </topic>
 
+<topic id="william">
+  <baseName>
+    <baseNameString>William Rogers</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://www.ektron.com/corporate.aspx?id=947"/>
+  </occurrence>
+</topic>
+
+<topic id="mark">
+  <baseName>
+    <baseNameString>Mark Patla</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://www.linkedin.com/pub/4/7B9/917"/>
+  </occurrence>
+</topic>
+
 <topic id="gilbane-sf-2008">
   <baseName>
     <baseNameString>Gilbane San Francisco 2008</baseNameString>
   </baseName>
   <instanceOf><topicRef xlink:href="#conference"/></instanceOf>
   <occurrence>
-    <resourceRef xlink:href="http://gilbane.com"/>
+    <resourceRef xlink:href="http://gilbanesf.com/"/>
   </occurrence>
 </topic>
 
@@ -117,7 +149,7 @@ Software:      http://www.tm4j.org/
   </baseName>
   <instanceOf><topicRef xlink:href="#conference"/></instanceOf>
   <occurrence>
-    <resourceRef xlink:href="http://www.cmspros.com"/>
+    <resourceRef xlink:href="http://summit.cmprofessionals.org/"/>
   </occurrence>
 </topic>
 
@@ -212,5 +244,76 @@ Software:      http://www.tm4j.org/
 </member>
 </association>
 
+<association id="speaker-at-vendor-session">
+<instanceOf>
+  <topicRef xlink:href="#speaker-at"/>
+</instanceOf>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#speaker"/>
+  </roleSpec>
+  <topicRef xlink:href="#michi"/>
+</member>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#session"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-vendor-session"/>
+</member>
+</association>
+
+<association id="speaker-at-vendor-session">
+<instanceOf>
+  <topicRef xlink:href="#speaker-at"/>
+</instanceOf>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#speaker"/>
+  </roleSpec>
+  <topicRef xlink:href="#mark"/>
+</member>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#session"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-vendor-session"/>
+</member>
+</association>
+
+<association id="speaker-at-vendor-session">
+<instanceOf>
+  <topicRef xlink:href="#speaker-at"/>
+</instanceOf>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#speaker"/>
+  </roleSpec>
+  <topicRef xlink:href="#william"/>
+</member>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#session"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-vendor-session"/>
+</member>
+</association>
+
+<association id="speaker-at-vendor-session">
+<instanceOf>
+  <topicRef xlink:href="#speaker-at"/>
+</instanceOf>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#speaker"/>
+  </roleSpec>
+  <topicRef xlink:href="#dan-mcgraw"/>
+</member>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#session"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-vendor-session"/>
+</member>
+</association>
 
 </topicMap>
