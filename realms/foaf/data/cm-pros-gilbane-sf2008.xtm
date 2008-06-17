@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+
+<!--
+Specification: http://www.topicmaps.org/
+Software:      http://www.tm4j.org/
+-->
+
+<topicMap
+  xmlns="http://www.topicmaps.org/xtm/1.0/"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+
+<topic id="person">
+  <baseName>
+    <baseNameString>Person</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="panelist">
+  <baseName>
+    <baseNameString>Panelist</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="host">
+  <baseName>
+    <baseNameString>Host</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="conference">
+  <baseName>
+    <baseNameString>Conference</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="session">
+  <baseName>
+    <baseNameString>Session</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="michi">
+  <baseName>
+    <baseNameString>Michael Wechner</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+</topic>
+
+<topic id="andrew">
+  <baseName>
+    <baseNameString>Andrew Wilcox</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://www.linkedin.com/in/everage"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+</topic>
+
+<topic id="geoff">
+  <baseName>
+    <baseNameString>Geoffrey Bock</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://gilbane.com/collaboration/Geoffrey_Bock.html"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+</topic>
+
+<topic id="dries">
+  <baseName>
+    <baseNameString>Dries Buytaert</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://buytaert.net/"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+</topic>
+
+<topic id="dan-mcgraw">
+  <baseName>
+    <baseNameString>Dan McGraw</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+<!--
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+-->
+</topic>
+
+<topic id="gilbane-sf-2008">
+  <baseName>
+    <baseNameString>Gilbane San Francisco 2008</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#conference"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://gilbane.com"/>
+  </occurrence>
+</topic>
+
+<topic id="cms-pros-spring-summit-2008">
+  <baseName>
+    <baseNameString>CMS Pros Spring Summit 2008</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#conference"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://www.cmspros.com"/>
+  </occurrence>
+</topic>
+
+<topic id="cms-pros-vendor-session">
+  <baseName>
+    <baseNameString>Vendor Session</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#session"/></instanceOf>
+<!--
+  <occurrence>
+    <resourceRef xlink:href="http://www.cmspros.com"/>
+  </occurrence>
+-->
+</topic>
+
+<topic id="session-of">
+  <baseName>
+    <baseNameString>Session of</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="host-of">
+  <baseName>
+    <baseNameString>Host of</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="speaker-at">
+  <baseName>
+    <baseNameString>Speaker at</baseNameString>
+  </baseName>
+</topic>
+
+<topic id="hosted-by">
+  <baseName>
+    <baseNameString>Hosted by</baseNameString>
+  </baseName>
+</topic>
+
+<association id="session-of-cms-pros-conference">
+<instanceOf>
+  <topicRef xlink:href="#session-of"/>
+</instanceOf>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#conference"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-spring-summit-2008"/>
+</member>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#session"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-vendor-session"/>
+</member>
+</association>
+
+<association id="host-of-vendor-session">
+<instanceOf>
+  <topicRef xlink:href="#host-of"/>
+</instanceOf>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#host"/>
+  </roleSpec>
+  <topicRef xlink:href="#andrew"/>
+</member>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#session"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-vendor-session"/>
+</member>
+</association>
+
+<!-- TODO: Doesn't get displayed! -->
+<association id="hosted-by-andrew">
+<instanceOf>
+  <topicRef xlink:href="#hosted-by"/>
+</instanceOf>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#session"/>
+  </roleSpec>
+  <topicRef xlink:href="#cms-pros-vendor-session"/>
+</member>
+<member>
+  <roleSpec>
+    <topicRef xlink:href="#host"/>
+  </roleSpec>
+  <topicRef xlink:href="#andrew"/>
+</member>
+</association>
+
+
+</topicMap>
