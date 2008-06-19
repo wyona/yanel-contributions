@@ -66,75 +66,11 @@ Westin Market Street Hotel, San Francisco, USA
 <s:content>
 <p>
 <ol>
-  <li>Neighbours</li>
-  <li>Commuters</li>
-  <li>Developers in India</li>
-  <li>People in Jordan</li>
-</ol>
-</p>
-</s:content>
-</s:slide>
-
-<s:slide id="history-email-part-1" status="ready">
-<s:title>Brief history of e-mail (part 1)</s:title>
-<s:content>
-<p>
-<ol>
-  <li>1961: "Compatible Time-Sharing System", multiple users log into from remote dial-up terminals</li>
-  <li>1966/69: Network E-mail (ARPANET)</li>
-  <li>1970: ARPA report: "The largest single surprise of the ARPANET program has been the incredible popularity and success of network email"</li>
-  <li>1971: @ sign introduced by Ray Tomlinson</li>
-  <li>1972/73: Still using FTP for mail transmission</li>
-  <li>1975: RFC 680, Message Transmission Protocol, "Header Wars"</li>
-  <li>1976: Report to U.S. postmaster general "We are being bypassed technologically"</li>
-</ol>
-</p>
-</s:content>
-</s:slide>
-
-<s:slide id="history-email-part-2" status="ready">
-<s:title>Brief history of e-mail (part 2)</s:title>
-<s:content>
-<p>
-<ol>
-  <li>1976: 9925 messages at MIT AI lab during first quarter</li>
-  <li>1976: Stefferud predicts "Desktop computers will make the perfect mailbox"</li>
-  <li>1980: Place to share work and build friendships</li>
-  <li>1982: RFC 822 Format of text messages, RFC 821 SMTP</li>
-  <li>1996: Hotmail as first webmail provider</li>
-  <li>2003: According to MS, Hotmail has 145 million visitors</li>
-  <li>2004: FTC jurisdiction over SPAM was codified into the law</li>
-</ol>
-</p>
-</s:content>
-</s:slide>
-
-<s:slide id="architecture-of-email" status="ready">
-<s:title>Workings of e-mail (Client server architecture)</s:title>
-<s:content>
-<p>
-<ol>
-  <li>Mail client (MUA) formats message in internet e-mail format</li>
-  <li>Mail client then uses SMTP (Simple Mail Transfer Protocol) to send message to Mail server (MTA)</li>
-  <li>Mail server looks at destination address and resolves via DNS the mail exchange server</li>
-  <li>Mail server then sends via SMTP to the mail exchange server of destination address</li>
-  <li>Mail exchange server delivers into mailbox of destination address</li>
-  <li>Destination mail client picks up the message via POP3 or IMAP</li>
-</ol>
-</p>
-</s:content>
-</s:slide>
-
-<s:slide id="challenges-of-email" status="ready">
-<s:title>Challenges of e-mail</s:title>
-<s:content>
-<p>
-<ol>
-  <li>Information overload</li>
-  <li>Loosing information</li>
-  <li>Spamming and viruses</li>
-  <li>Privacy concerns</li>
-  <li>Tracking of sent email</li>
+  <li>Neighbours which we don't like</li>
+  <li>Commuters which we think are annoying</li>
+  <li>People in India dying in a bus accident</li>
+  <li>People in China dying by an exploding firework factory</li>
+  <li>...</li>
 </ol>
 </p>
 </s:content>
@@ -145,6 +81,7 @@ Westin Market Street Hotel, San Francisco, USA
 <s:content>
 <p>
 <ol>
+  <li>E-Mail</li>
   <li>File sharing</li>
   <li>Desktop sharing</li>
   <li>Clipboard sharing</li>
@@ -195,8 +132,8 @@ Westin Market Street Hotel, San Francisco, USA
 </s:content>
 </s:slide>
 
-<s:slide id="business-usecases" status="wip">
-<s:title>Business usecases</s:title>
+<s:slide id="business-cases" status="wip">
+<s:title>Business cases</s:title>
 <s:content>
 <p>
 <ol>
@@ -221,14 +158,20 @@ Westin Market Street Hotel, San Francisco, USA
 </s:content>
 </s:slide>
 
-<s:slide id="so-how-do-we-get-started" status="wip">
-<s:title>How do we get started?</s:title>
+<s:slide id="osnps" status="wip">
+<s:title>The Open Social Network/Profile Server</s:title>
 <s:content>
 <p>
 <ol>
-  <li>Evolution versus Revolution</li>
-  <li>Some principles: Open, simple integration, ...</li>
-  <li>Existing APIs, Protocols, Formats</li>
+  <li>Discovery: Find/search a friend</li>
+  <li>Add/Invite a friend</li>
+  <li>OpenID Provider</li>
+  <li>Authenticate</li>
+  <li>Register new indentity</li>
+  <li>Become trusted</li>
+  <li>Share a file with a friend</li>
+  <li>Talk to a friend</li>
+  <li>...</li>
 </ol>
 </p>
 </s:content>
@@ -248,7 +191,7 @@ Westin Market Street Hotel, San Francisco, USA
 </s:slide>
 
 <s:slide id="client-server-architecture" status="wip">
-<s:title>Client Server Architecture</s:title>
+<s:title>Think of E-mail - Client Server Architecture</s:title>
 <s:content>
 <p>
 <ol>
@@ -278,25 +221,6 @@ Westin Market Street Hotel, San Francisco, USA
 <p>
 <ol>
   <li>Examples: NoseRub, Appleseed, Mugshot, FOAFRealm, Yanel</li>
-</ol>
-</p>
-</s:content>
-</s:slide>
-
-<s:slide id="api-and-protocols" status="wip">
-<s:title>Functionality, API and protocols</s:title>
-<s:content>
-<p>
-<ol>
-  <li>Discovery: Find/search a friend</li>
-  <li>Add a friend</li>
-  <li>Invite a friend</li>
-  <li>Authenticate</li>
-  <li>Register new indentity</li>
-  <li>Become trusted</li>
-  <li>Share a file with a friend</li>
-  <li>Talk to a friend</li>
-  <li>...</li>
 </ol>
 </p>
 </s:content>
