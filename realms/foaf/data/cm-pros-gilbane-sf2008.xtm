@@ -56,6 +56,22 @@ Software:      http://www.tm4j.org/
   </occurrence>
 </topic>
 
+<topic id="john-newton">
+  <baseName>
+    <baseNameString>John Newton</baseNameString>
+  </baseName>
+  <instanceOf><topicRef xlink:href="#person"/></instanceOf>
+  <occurrence>
+    <resourceRef xlink:href="http://newton.typepad.com/"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://www.everage.ca/"/>
+  </occurrence>
+</topic>
+
 <topic id="andrew">
   <baseName>
     <baseNameString>Andrew Wilcox</baseNameString>
@@ -66,6 +82,9 @@ Software:      http://www.tm4j.org/
   </occurrence>
   <occurrence>
     <resourceRef xlink:href="http://127.0.0.1:8080/yanel/foaf/profiles/michael-wechner.html"/>
+  </occurrence>
+  <occurrence>
+    <resourceRef xlink:href="http://www.everage.ca/"/>
   </occurrence>
 </topic>
 
