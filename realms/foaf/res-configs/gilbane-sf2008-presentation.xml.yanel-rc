@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+  <yanel:rti name="xml" namespace="http://www.wyona.org/yanel/resource/1.0"/>
+
+  <yanel:property name="xslt" value="/xslt/slideml2html.xsl"/>
+  <yanel:property name="mime-type" value="application/xhtml+xml"/>
+
+<!--
+  <yanel:property name="yanel-path-matcher" value="/*.pdf"/>
+  <yanel:property name="yanel-path" value="/{1}.xml"/>
+-->
+
+<!--
+  <yanel:property name="yanel-path" value="/cm-pros-sf2008-presentation.xml"/>
+-->
+</yanel:resource-config>
