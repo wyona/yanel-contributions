@@ -76,6 +76,22 @@ Westin Market Street Hotel, San Francisco, USA
 </s:content>
 </s:slide>
 
+<s:slide id="principles-of-yanel" status="ready">
+<s:title>Principles of Yanel</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Eat your own dogfood</li>
+  <li>Backward (and Forward) Compatibility (Continuous Integration)</li>
+  <li>Scalability and Performance (Clusterable)</li>
+  <li>Simplicity</li>
+  <li>...</li>
+  <li><a href="http://yanel.wyona.org/principles.html">http://yanel.wyona.org/principles.html</a></li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
 <s:slide id="different-but-the-same" status="ready">
 <s:title>Different, but the same</s:title>
 <s:content>
