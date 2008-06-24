@@ -101,7 +101,10 @@
   <xsl:param name="toc"/>
 
   <xsl:if test="contains($toc.params, 'toc')">
+TODO (see data-repo/data/docbook-xsl-1.73.2/html/autotoc.xsl)
+<!--
     <xsl:copy-of select="$toc"/>
+-->
   </xsl:if>
 
   <xsl:if test="contains($toc.params, 'figure')">
