@@ -114,7 +114,10 @@
       <xsl:apply-templates select="exsl:node-set($p)" mode="unwrap.p"/>
     </xsl:when>
     <xsl:otherwise>
+TODO (see data-repo/data/docbook-xsl-1.73.2/html/html-rtf.xsl)
+    <!--
       <xsl:copy-of select="$p"/>
+      -->
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
