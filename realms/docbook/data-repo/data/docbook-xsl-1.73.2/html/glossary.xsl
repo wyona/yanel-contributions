@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <!DOCTYPE xsl:stylesheet [
-<!ENTITY % common.entities SYSTEM "../common/entities.ent">
+<!ENTITY % common.entities SYSTEM "file:/home/michi/src/wyona/public/yanel/contributions/realms/docbook/data-repo/data/docbook-xsl-1.73.2/common/entities.ent">
 %common.entities;
 ]>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
