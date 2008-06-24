@@ -10,9 +10,18 @@
 <xsl:output omit-xml-declaration="yes"/>
 
 <xsl:param name="get"/>
+<!--
 <xsl:param name="VERSION" select="string(document('')//fm:Version[1])"/>
+-->
+<!--
+<xsl:param name="VERSION" select="string(document('file:/home/michi/src/wyona/public/yanel/contributions/realms/docbook/data-repo/data/docbook-xsl-1.73.2/VERSION')//fm:Version[1])"/>
+-->
+<xsl:param name="VERSION" select="'1.73.2'"/>
 <xsl:param name="Tag" select="concat('V',translate(string(document('')//fm:Version[1]),'.',''))"/>
+<!--
 <xsl:param name="DistroTitle" select="string(document('')//fm:Branch[1])"/>
+-->
+<xsl:param name="DistroTitle" select="'XSL Stylesheets'"/>
 <xsl:param name="sf-relid" select="0"/>
 
 <xsl:param name="DistroName">docbook-xsl</xsl:param>
