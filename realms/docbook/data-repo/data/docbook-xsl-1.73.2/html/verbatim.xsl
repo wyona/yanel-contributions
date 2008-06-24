@@ -319,7 +319,10 @@
     </xsl:when>
     <xsl:otherwise>
       <span style="white-space: pre;">
+TODO (see data-repo/data/docbook-xsl-1.73.2/html/verbatim.xsl)
+      <!--
         <xsl:copy-of select="$rtf"/>
+	-->
       </span>
     </xsl:otherwise>
   </xsl:choose>
