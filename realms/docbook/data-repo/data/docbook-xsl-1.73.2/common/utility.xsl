@@ -187,6 +187,8 @@
   </xsl:param>
   <!-- * emit the actual log message -->
   <xsl:message>
+TODO (see data-repo/data/docbook-xsl-1.73.2/common/utility.xsl)
+<!--
     <xsl:if test="not($level = '')">
       <xsl:value-of select="$level"/>
       <xsl:text>: </xsl:text>
@@ -198,6 +200,7 @@
     <xsl:value-of select="$message-padded"/>
     <xsl:text>  </xsl:text>
     <xsl:value-of select="$source"/>
+-->
   </xsl:message>
 </xsl:template>
 
