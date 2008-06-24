@@ -173,7 +173,10 @@
       <xsl:copy-of select="suwl:unwrapLinks($link)"/>
     </xsl:when>
     <xsl:otherwise>
+      TODO: copy-of link (see data-repo/data/docbook-xsl-1.73.2/html/inline.xsl)
+    <!--
       <xsl:copy-of select="$link"/>
+      -->
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
