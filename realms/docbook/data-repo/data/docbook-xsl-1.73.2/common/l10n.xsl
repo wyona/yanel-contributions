@@ -16,7 +16,11 @@
      ******************************************************************** -->
 
 <xsl:param name="l10n.xml" select="document('../common/l10n.xml')"/>
+<!-- TODO: resolving of document('') does not seem to work properly -->
+<xsl:param name="local.l10n.xml" select="document('../common/l10n.xsl')"/>
+<!--
 <xsl:param name="local.l10n.xml" select="document('')"/>
+-->
 
 <xsl:template name="l10n.language">
   <xsl:param name="target" select="."/>
