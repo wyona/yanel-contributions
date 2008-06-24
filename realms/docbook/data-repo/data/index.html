@@ -19,5 +19,13 @@
 <h1>Welcome to the &quot;Docbook&quot; Realm</h1>
 
 <a href="docbook-xsl-1.73.2/RELEASE-NOTES.xml">docbook-xsl-1.73.2/RELEASE-NOTES.xml</a>
+
+<h2>IMPORTANT: Customize first the XSLTs</h2>
+<p>
+<ul>
+  <li>data-repo/data/docbook-xsl-1.73.2/html/autoidx.xsl: Replace &lt;!ENTITY % common.entities SYSTEM "../common/entities.ent"> by &lt;!ENTITY % common.entities SYSTEM "file:/home/michi/src/wyona/public/yanel/contributions/realms/docbook/data-repo/data/docbook-xsl-1.73.2/common/entities.ent"></li>
+  <li>data-repo/data/docbook-xsl-1.73.2/html/glossary.xsl: Replace &lt;!ENTITY % common.entities SYSTEM "../common/entities.ent"> by &lt;!ENTITY % common.entities SYSTEM "file:/home/michi/src/wyona/public/yanel/contributions/realms/docbook/data-repo/data/docbook-xsl-1.73.2/common/entities.ent"></li>
+</ul>
+</p>
 </body>
 </html>
