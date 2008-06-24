@@ -97,7 +97,10 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:if test="(normalize-space($recto.content) != '') or ($recto.elements.count &gt; 0)">
+      <div>TODO 1 (see /titlepage.templates.xsl)</div>
+<!--
       <div><xsl:copy-of select="$recto.content"/></div>
+-->
     </xsl:if>
     <xsl:variable name="verso.content">
       <xsl:call-template name="article.titlepage.before.verso"/>
@@ -2203,7 +2206,10 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:if test="(normalize-space($recto.content) != '') or ($recto.elements.count &gt; 0)">
+      <div>TODO 3 (see /titlepage.templates.xsl)</div>
+<!--
       <div><xsl:copy-of select="$recto.content"/></div>
+-->
     </xsl:if>
     <xsl:variable name="verso.content">
       <xsl:call-template name="sect1.titlepage.before.verso"/>
@@ -2390,7 +2396,10 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:if test="(normalize-space($recto.content) != '') or ($recto.elements.count &gt; 0)">
+      <div>TODO 2 (see /titlepage.templates.xsl)</div>
+<!--
       <div><xsl:copy-of select="$recto.content"/></div>
+-->
     </xsl:if>
     <xsl:variable name="verso.content">
       <xsl:call-template name="sect2.titlepage.before.verso"/>
