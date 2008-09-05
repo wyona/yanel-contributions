@@ -7,6 +7,10 @@
   exclude-result-prefixes="xhtml"
 >
 
+<!--
+See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from%20Xopus%202%20to%203.new
+-->
+
 <xsl:template match="/">
 <xhtml:html>
   <head>
