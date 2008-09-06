@@ -16,7 +16,7 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
 <xsl:template match="/">
 <xhtml:html>
   <head>
-    <title>Load Xopus ...</title>
+    <title>Starting Xopus ...</title>
     <!--TODO: It seems that Xopus does not load properly if URL contains special "characters"! -->
     <script type="text/javascript" src="{$yarep.back2realm}Xopus-3.2.10/xopus/xopus.js"></script>
 <!--
@@ -28,7 +28,7 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
   </head>
   <body bgcolor="#ffffff">
     <div xopus="true" autostart="true">
-      ...Xopus hasn't started yet...
+      ... either Xopus startup hasn't finished yet or something else is wrong ... (see htdocs/xslt/load-xopus-xhtml.xsl of Yanel Xopus 3 resource)
       <xml>
         <x:config version="1.0" xmlns:x="http://www.xopus.com/xmlns/config">
           <x:javascript src="js/save.js"/>
