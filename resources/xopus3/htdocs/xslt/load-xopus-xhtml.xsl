@@ -15,7 +15,10 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
 <xhtml:html>
   <head>
     <title>Load Xopus ...</title>
-    <script language="JavaScript" src="/xopus/xopus.js"/>
+    <script language="JavaScript" src="yanel/resource-types/http%3a%2f%2fwww.wyona.org%2fyanel%2fresource%2f1.0%3a%3axopus3/Xopus-3.2.10/xopus/xopus.js"/>
+<!--
+BACK2REALM/yanel/resource-types/http%3a%2f%2fwww.wyona.org%2fyanel%2fresource%2f1.0%3a%3atinymce/js/ajaxlookup.js
+-->
   </head>
   <body bgcolor="#FFFFFF">
     <div xopus="true" autostart="true">
