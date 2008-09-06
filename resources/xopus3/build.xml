@@ -31,6 +31,8 @@
       classpathref="classpath"
       debug="true"
     />
+
+<!-- TODO: Also include resource.xml, htdocs, etc. within jar file
     <propertyregex property="new.resource.java.classname.fs.path"
              input="${resource.resource.xml.resource(class)}"
              regexp="[.]"
@@ -46,6 +48,8 @@
     <copy todir="${resource.classes.dir}/${new.resource.java.class.fs.path}">
       <fileset dir="${resource.home.dir}" includes="resource**,htdocs/**,yanel-htdocs/**"/>
     </copy>    
+-->
+
     <mkdir dir="${resource.lib.dir}"/>
     <jar destfile="${resource.lib.dir}/yanel-resource-${resource.name}-${resource.version}.jar"
       basedir="${resource.classes.dir}"
