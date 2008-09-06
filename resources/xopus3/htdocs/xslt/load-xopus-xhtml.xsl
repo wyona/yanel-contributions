@@ -15,30 +15,30 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
 <xhtml:html>
   <head>
     <title>Load Xopus ...</title>
+    <!-- TODO: Back2Realm -->
     <script language="JavaScript" src="yanel/resource-types/http%3a%2f%2fwww.wyona.org%2fyanel%2fresource%2f1.0%3a%3axopus3/Xopus-3.2.10/xopus/xopus.js"/>
-<!--
-BACK2REALM/yanel/resource-types/http%3a%2f%2fwww.wyona.org%2fyanel%2fresource%2f1.0%3a%3atinymce/js/ajaxlookup.js
--->
   </head>
   <body bgcolor="#FFFFFF">
     <div xopus="true" autostart="true">
       ...Xopus hasn't started yet...
       <xml>
-        <pipeline
-            xml="?xml"
-            xsd="?xsd">
-            
-          <view id="defaultView" default="true">
+        <config version="1.0" xmlns="http://www.xopus.com/xmlns/config">
+        <pipeline xml="sample.xml" xsd="sample.xsd">
+          <view name="Default View">
+            <transform xsl="sample.xsl"/>
+<!--
             <transform xsl="/xopusPlugins/preparexinclude.xsl"/>
             <resolveXIncludes/>
             <transform xsl="?xslt">
               <param name="some_param_name">some_param_value</param>
             </transform>
+-->
           </view>
-          <view id="treeView">
-            <transform xsl="/xopus/media/treeview/tree.xsl"></transform>
+          <view name="Tree View">
+            <treeTransform/>
           </view>
         </pipeline>
+        </config>
       </xml>
     </div>
   </body>
