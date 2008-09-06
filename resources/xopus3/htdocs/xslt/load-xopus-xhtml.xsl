@@ -32,7 +32,7 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
       <xml>
         <x:config version="1.0" xmlns:x="http://www.xopus.com/xmlns/config">
           <x:javascript src="js/save.js"/>
-          <x:pipeline xml="sample.xml" xsd="schema.xsd">
+          <x:pipeline xml="sample.xml" xsd="sample.xsd">
             <x:view name="WYSIWYG View">
               <x:transform xsl="sample.xsl"/>
             </x:view>
