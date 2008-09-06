@@ -17,9 +17,9 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
 <xhtml:html>
   <head>
     <title>Load Xopus ...</title>
-    <script language="JavaScript" src="{$yarep.back2realm}yanel/resource-types/http%3a%2f%2fwww.wyona.org%2fyanel%2fresource%2f1.0%3a%3axopus3/Xopus-3.2.10/xopus/xopus.js"/>
+    <script type="text/javascript" src="{$yarep.back2realm}yanel/resource-types/http%3a%2f%2fwww.wyona.org%2fyanel%2fresource%2f1.0%3a%3axopus3/Xopus-3.2.10/xopus/xopus.js"></script>
 <!--
-    <script language="JavaScript" src="{$yarep.back2realm}yanel/resource-types/http://www.wyona.org/yanel/resource/1.0::xopus3/Xopus-3.2.10/xopus/xopus.js"/>
+    <script type="text/javascript" src="{$yarep.back2realm}yanel/resource-types/http://www.wyona.org/yanel/resource/1.0::xopus3/Xopus-3.2.10/xopus/xopus.js"></script>
 -->
   </head>
   <body bgcolor="#ffffff">
