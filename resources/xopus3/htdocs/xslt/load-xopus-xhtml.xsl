@@ -4,8 +4,11 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="xhtml"
+  xmlns:x="http://www.xopus.com/xmlns/config"
 >
+<!--
+  exclude-result-prefixes="xhtml"
+-->
 
 <xsl:param name="yarep.back2realm" select="'BACK2REALM_IS_NULL'"/>
 
@@ -14,7 +17,7 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
 -->
 
 <xsl:template match="/">
-<xhtml:html>
+<html>
   <head>
     <title>Starting Xopus ...</title>
     <!--TODO: It seems that Xopus does not load properly if URL contains special "characters"! -->
@@ -31,24 +34,30 @@ See http://xopus.com/Documentation/Developer%20Guide%5CHow%20To%5CUpgrade%20from
       ... either Xopus startup hasn't finished yet or something else is wrong ... (see htdocs/xslt/load-xopus-xhtml.xsl of Yanel Xopus 3 resource)
       <xml>
         <x:config version="1.0" xmlns:x="http://www.xopus.com/xmlns/config">
+<!--
           <x:javascript src="js/save.js"/>
+-->
           <x:pipeline xml="sample.xml" xsd="sample.xsd">
             <x:view name="WYSIWYG View">
               <x:transform xsl="sample.xsl"/>
             </x:view>
+<!--
             <x:view name="Tags On View">
               <x:transform xsl="tagson.xsl"/>
             </x:view>
+-->
             <x:view name="XML View">
               <x:treeTransform/>
             </x:view>
           </x:pipeline>
+<!--
           <x:import src="config.xml"/>
+-->
         </x:config>
       </xml>
     </div>
   </body>
-</xhtml:html>
+</html>
 </xsl:template>
 
 </xsl:stylesheet>
