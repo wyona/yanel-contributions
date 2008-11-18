@@ -6,12 +6,12 @@
   class="com.wyonapictures.yanel.impl.resources.flv.FlashVideoResource"
   >
 <description>
-Flash Video with Flash Player
+Flash video player in order to play flash videos (flv)
 </description>
 
 <rtd>
-  <property name="href"/>
-  <property name="title"/>
+  <property name="href"/> <!-- For example href="../my-flash-video.flv" -->
+  <property name="title"/> <!-- Title of flash video -->
   <property name="height"/> <!-- sample value 250px -->
 </rtd>
 </resource>
