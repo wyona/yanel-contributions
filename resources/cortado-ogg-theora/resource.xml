@@ -6,12 +6,12 @@
   class="org.wyona.yanel.impl.resources.cortado.OggTheoraResource"
   >
 <description>
-A Ogg-Theora player based on cortado
+A video/audio player based on the cortado player (http://www.flumotion.net/cortado/) using the open codec Ogg-Theora (http://www.theora.org/, http://www.kdenlive.org/)
 </description>
 
 <rtd>
-  <property name="oggPath"/>
-  <property name="path-matcher"/> <!-- optional, see: org.wyona.yanel.core.util.WildcardReplacerHelper -->
+  <property name="oggPath"/> <!-- TODO: What is this good for? I guess the video/audio path -->
+  <property name="path-matcher"/> <!-- optional, TODO: What is this good for? See: org.wyona.yanel.core.util.WildcardReplacerHelper -->
   <property name="title"/>
   <property name="width"/> <!-- optional. default value 368 -->
   <property name="height"/> <!-- optional. default value 288 -->
