@@ -103,6 +103,7 @@ public class FlashVideoResource extends Resource implements ViewableV2 {
 
         sb.append("<script type=\"text/javascript\">");
 
+        // TODO: Resolve href relative to swf file and html page URL!
         sb.append("var FO = {movie:\"" + PathUtil.getResourcesHtdocsPath(this) + "flvplayer.swf\",width:\"425\",height:\"350\",majorversion:\"7\",build:\"0\",bgcolor:\"#FFFFFF\",allowfullscreen:\"true\", flashvars:\"file=" + getResourceConfigProperty("href") + "&amp;image=" + PathUtil.getResourcesHtdocsPath(this) + "wyona-pictures.jpg\" };");
 
         sb.append("UFO.create(FO, \"player1\");");
