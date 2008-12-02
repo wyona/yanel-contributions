@@ -1,0 +1,419 @@
+<?xml version="1.0"?>
+
+<!-- OSCOM 2 Template, written with SlideML 0.9, 2002-08-20 -->
+
+<s:slideset 
+  xmlns:s="http://www.oscom.org/2002/SlideML/0.9/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+<!--
+  xmlns="http://www.w3.org/1999/xhtml"
+-->
+	
+  <s:metadata>
+    <s:title>Open Source Content Management</s:title>
+    <s:author>
+      <s:name>Michael Wechner</s:name> <!-- NOT SlideML specification -->
+      <s:email>michael.wechner@wyona.com</s:email>
+      <s:orgname>Wyona</s:orgname>
+    </s:author>
+    <s:confgroup>
+      <s:confdates>
+        <s:start>2008-12-02</s:start>
+        <s:end>2008-12-04</s:end>
+      </s:confdates> 
+      <s:conftitle>Gilbane Boston 2008, Boston, USA</s:conftitle> 
+      <s:address>
+The Westin Copley, Boston, USA
+      </s:address> 
+    </s:confgroup>
+		
+<!--
+<dc:subject>Fill in some comma-seperated keywords</dc:subject>
+<dc:date>2003-02-06T10:45</dc:date>
+<dc:rights>Fill in some copyright information (optional)</dc:rights>
+<s:abstract>Fill in your abstract</s:abstract>
+-->
+  </s:metadata>
+	
+
+
+
+<s:slide id="bio" status="ready">
+<s:title>Short Bio of Michael Wechner</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Math. Physics at ETH (Swiss Federal Institute of Technology Z&#252;rich)</li>
+  <li>Computer simulations on dendritic growth (Max-Planck Institute)</li>
+
+  <li>Co-Founder <a href="http://www.wyona.com">Wyona</a></li>
+  <li>Co-Founder and former president of <a href="http://www.oscom.org">OSCOM</a></li>
+  <li>Original Creator of <a href="http://lenya.apache.org">Apache Lenya</a> and ASF member</li>
+  <li>Original Creator of <a href="http://yanel.wyona.org">Yanel</a> and <a href="http://www.yulup.org">Yulup</a></li>
+
+  <li>Director of documentary movie <a href="http://www.wyonapictures.com/en/fud/index.html">"FUD - Fear Uncertainty Doubt"</a></li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="qanda" status="ready">
+<s:title>Thanks for your attention</s:title>
+<s:content>
+<p>
+<ol>
+
+  <li>Thanks</li>
+  <li>Contact: <a href="mailto:michael.wechner@wyona.com">michael.wechner@wyona.com</a></li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<!--
+<s:slide id="there-is-no-person-without-a-world" status="ready">
+<s:title>There is no person without a world (Anne Carson)</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Neighbours which we don't like</li>
+  <li>Commuters which we think are annoying</li>
+  <li>People in India dying in a bus accident</li>
+  <li>People in China dying by an exploding firework factory</li>
+  <li>...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="principles-of-yanel" status="ready">
+<s:title>Principles of Yanel</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Eat your own dogfood</li>
+  <li>Backward (and Forward) Compatibility (Continuous Integration)</li>
+  <li>Scalability and Performance (Clusterable)</li>
+  <li>Simplicity</li>
+  <li>...</li>
+  <li><a href="http://yanel.wyona.org/principles.html">http://yanel.wyona.org/principles.html</a></li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="different-but-the-same" status="ready">
+<s:title>Different, but the same</s:title>
+<s:content>
+<p>
+<ol>
+  <li>E-Mail</li>
+  <li>File sharing</li>
+  <li>Desktop sharing</li>
+  <li>Clipboard sharing</li>
+  <li>Chat/Instant messaging</li>
+  <li>VoIP</li>
+  <li>Regular phone</li>
+  <li>Blog (personal mailing list with web interface)</li>
+  <li>...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="about-people" status="ready">
+<s:title>It's all about people</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Family</li>
+  <li>Close friends</li>
+  <li>Not so close friends</li>
+  <li>Neighbours</li>
+  <li>Colleagues at company</li>
+  <li>Customers of company</li>
+  <li>Experts</li>
+  <li>People one doesn't like</li>
+  <li>...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="content-management-apps" status="ready">
+<s:title>Content management applications</s:title>
+<s:content>
+<p>
+<ol>
+  <li>WCMS</li>
+  <li>Wiki (Syntax, Links, ...)</li>
+  <li>DMS</li>
+  <li>CRM</li>
+  <li>ECM/ERP</li>
+  <li>PIM/E-mail</li>
+  <li>DRM</li>
+  <li>...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="business-cases" status="wip">
+<s:title>Business cases</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Customer project: offers, contracts, tasks, meeting minutes, tests, change requests, invoices, support tickets (Demo of TMNav!)</li>
+  <li>E-mail, Skype, ...</li>
+  <li>Job Search (e.g. Java developers)</li>
+  <li>...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="about-relationships" status="wip">
+<s:title>It's all about relationships</s:title>
+<s:content>
+<p>
+<ol>
+  <li>There is nothing without context</li>
+  <li>Topic-Maps and RDF, but do NOT mention it!</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="osnps" status="wip">
+<s:title>The Open Social Network/Profile Server</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Discovery: Find/search a friend</li>
+  <li>Add/Invite a friend</li>
+  <li>OpenID Provider</li>
+  <li>Authenticate</li>
+  <li>Register new indentity</li>
+  <li>Become trusted</li>
+  <li>Share a file with a friend</li>
+  <li>Talk to a friend</li>
+  <li>...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="three-laws-of-open-social-networks" status="ready">
+<s:title>The three laws of an open social network/profile provider</s:title>
+<s:content>
+<p>
+<ol>
+  <li>An OSNP must provide an export/migrate button, which allows one to move his/her data/profile completely to any other OSNP</li>
+  <li>An OSNP must provide a delete button, which allows one to delete his/her own data/profile completely</li>
+  <li>An OSNP must protect one's data/profile, as long as such protection does not conflict with the First or Second law</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="client-server-architecture" status="wip">
+<s:title>Think of E-mail - Client Server Architecture</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Open Social Client</li>
+  <li>Open Social Network/Profile Provider Server</li>
+  <li>Open Social Discovery Server</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="client" status="wip">
+<s:title>Open Social Network Client</s:title>
+<s:content>
+<p>
+<ol>
+  <li>We need to rethink user interfaces (e.g. Combots)</li>
+  <li>Examples: Beatnik (Java), Coop Extended (Firefox)</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="server" status="wip">
+<s:title>Open Social Network Server</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Examples: NoseRub, Appleseed, Mugshot, FOAFRealm, Yanel</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="existing-stuff" status="wip">
+<s:title>Existing formats and protocols</s:title>
+<s:content>
+<p>
+<ol>
+  <li>FOAF</li>
+  <li>DataPortability.org</li>
+  <li>DiSO</li>
+  <li>OpenSocial</li>
+  <li>...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="where-is-the-business-model" status="wip">
+<s:title>What's the business model?</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Does it need a business model? (generate competition)</li>
+  <li>Customization/integration (open/proprietary, ok)</li>
+  <li>Hosting/services (ok)</li>
+  <li>Provider/Advertisement (proprietary, the winner takes all)</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="do-it" status="wip">
+<s:title>Do it!</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Develop open source OSN server and OSN client</li>
+  <li>Deploy at universities and schools</li>
+  <li>USD 3 million first year</li>
+  <li>Or USD 10 million to produce a fictional movie</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="qanda" status="ready">
+<s:title>Thanks and QA</s:title>
+<s:content>
+<p>
+<ol>
+
+  <li>Thanks</li>
+  <li>Questions and Answers</li>
+  <li>Let me think about that (Darjeeling Limited)</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+-->
+
+
+
+
+<!--
+<s:slide id="goals" status="wip">
+<s:title>Goals - Creature Comforts with Yulup and Neutron</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Content Management as simple as it gets</li>
+
+  <li><a href="http://neutron.wyona.org/FutureCMSArchitecture.pdf">Decoupling</a> the user interface from the server (<a href="http://neutron.wyona.org">Neutralizing</a> the server side)</li>
+  <li>Tim Berners-Lee's vision of a <a href="http://de.wikipedia.org/wiki/Writable_Web">writable web</a></li>
+  <li>Bridging the gap between the web and desktop (OOo, Word, ...)</li>
+  <li>Being able to work offline (Subversion like local workspace)</li>
+
+  <li>WYSIWYG editing of arbitrary XML (view generated by XSLT)</li>
+  <li>More than XML (apply more than one schema to the same content)</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="auto-discovery" status="wip">
+<s:title>Auto-Discovery of Introspection</s:title>
+<s:content>
+<p>
+<source>
+
+<![CDATA[
+<html>
+  <head>
+    <!++ Neutron ++>
+    <link href="introspection-neutron.xml" type="application/neutron+xml" rel="neutron-introspection"/>
+    <!++ Atom ++>
+    <link href="introspection-atom.xml" type="application/atomserv+xml" rel="introspection"/>
+]]>
+</source>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="introspection-neutron" status="wip">
+<s:title>Introspection Neutron</s:title>
+<s:content>
+<p>
+<source>
+<![CDATA[
+<introspection>
+  <edit mime-type="application/xhtml+xml" name="Hello World">
+    <checkout url="hello-world.xhtml?yanel.resource.usecase=checkout" method="GET"/>
+    <checkin url="hello-world.xhtml?yanel.resource.usecase=checkin" method="PUT"/>
+  </edit>
+</introspection>
+]]>
+</source>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="specification" status="wip">
+<s:title>Specification</s:title>
+<s:content>
+<p>
+<ol>
+  <li><a href="http://neutron.wyona.org">Neutron</a> Specification</li>
+  <li><a href="http://bitworking.org/projects/atom/">Atom</a> Specification</li>
+
+  <li><a href="http://www.webdav.org">WebDAV</a> Specification</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="demo" status="wip">
+<s:title>Demo</s:title>
+<s:content>
+<p>
+<ol>
+<!++
+  <li><a href="http://127.0.0.1:8080/yanel/yulup-demo/editable-page-without-locking.html">Hello World</a></li>
+  <li>Not just (X)HTML, but also <a href="http://127.0.0.1:8080/yanel/yulup-demo/calendar.xhtml">XML</a>, <a href="http://127.0.0.1:8080/yanel/yulup-demo/plain-text.html">TXT</a>/<a href="http://127.0.0.1:8080/yanel/yanel-website/wiki/hello-world.html">Wiki</a>, ...</li>
+  <li><a href="http://127.0.0.1:8080/yanel/yulup-demo/editable-page-with-locking.html">Authentication/Authorization</a></li>
+  <li><a href="http://127.0.0.1:8080/yanel/yulup-demo/atom/entries/">Atom</a></li>
+  <li><a href="http://127.0.0.1:8080/yanel/yulup-demo/nar-test.html">NAR</a></li>
+  <li><a href="http://127.0.0.1:8080/yanel/yulup-demo/testpage_andi_1.html">Upload/Bridging the gap</a></li>
+++>
+
+  <li><a href="http://demo.yulup.org/editable-page-without-locking.html">Hello World</a></li>
+  <li>Not just (X)HTML, but also <a href="http://demo.yulup.org/calendar.xhtml">XML</a>, <a href="http://demo.yulup.org/plain-text.html">TXT</a>/<a href="http://demo.yulup.org/hello-wiki.html">Wiki</a>, ...</li>
+  <li><a href="http://demo.yulup.org/editable-page-with-locking.html">Authentication/Authorization</a></li>
+  <li><a href="http://demo.yulup.org/atom/entries/">Atom</a></li>
+
+  <li><a href="http://demo.yulup.org/nar-test.html">NAR</a></li>
+  <li><a href="http://demo.yulup.org/testpage_andi_1.html">Upload/Bridging the gap</a></li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+-->
+
+</s:slideset>
