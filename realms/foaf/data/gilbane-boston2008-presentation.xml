@@ -71,6 +71,32 @@ The Westin Copley, Boston, USA
   <li>Hobbyists working at night</li>
   <li>If it costs nothing, then it cannot be worth anything</li>
   <li>Ego/developer has higher priority than user/customer</li>
+  <li>Ethical guidelines (politics can lead to tricky situations)</li>
+  <li>Conflict with existing patents</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="todo" status="wip">
+<s:title>TODO</s:title>
+<s:content>
+<p>
+<ol>
+
+  <li>TODO</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="sucks" status="wip">
+<s:title>Your Open Source project sucks</s:title>
+<s:content>
+<p>
+<ol>
+
+  <li>TODO</li>
 </ol>
 </p>
 </s:content>
