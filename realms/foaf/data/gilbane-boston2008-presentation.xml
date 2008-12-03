@@ -61,42 +61,86 @@ The Westin Copley, Boston, USA
 </s:content>
 </s:slide>
 
-<s:slide id="against-open-source" status="wip">
+<s:slide id="against-open-source" status="ready">
 <s:title>Do not use Open Source</s:title>
 <s:content>
 <p>
 <ol>
-  <li>Decision (Nobody ever lost her job for buying VENDOR products)</li>
   <li>Support (Accountability)</li>
   <li>Hobbyists working at night</li>
   <li>If it costs nothing, then it cannot be worth anything</li>
   <li>Ego/developer has higher priority than user/customer</li>
   <li>Ethical guidelines (politics can lead to tricky situations)</li>
   <li>Conflict with existing patents</li>
+  <li>Decision (Nobody ever lost her job for buying VENDOR products)</li>
 </ol>
 </p>
 </s:content>
 </s:slide>
 
-<s:slide id="todo" status="wip">
-<s:title>TODO</s:title>
+<s:slide id="do-not-be-afraid" status="ready">
+<s:title>Do not be afraid</s:title>
 <s:content>
 <p>
 <ol>
-
-  <li>TODO</li>
+  <li>Commercial companies (less lock-in)</li>
+  <li>Professionals working at day and night</li>
+  <li>Open Source is not for free (either internal or external resources)</li>
+  <li>Open discussions and transparent decision making</li>
+  <li>Open source license (e.g. Apache Software License)</li>
+  <li>Have you ever heard of patent violation re Open Source?</li>
+  <li>Let me think about that ... DOING the homework</li>
 </ol>
 </p>
 </s:content>
 </s:slide>
 
-<s:slide id="sucks" status="wip">
+<s:slide id="sustainability" status="ready">
+<s:title>Sustainability</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Openess/Transparency (Code and operation/governance)</li>
+  <li>Quality of code and service/support</li>
+  <li>Money redistribution</li>
+  <li>RoI versus TCO (<a href="http://en.wikipedia.org/wiki/Total_cost_of_ownership">http://en.wikipedia.org/wiki/Total_cost_of_ownership</a>)</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
+<s:slide id="sucks" status="ready">
 <s:title>Your Open Source project sucks</s:title>
 <s:content>
 <p>
 <ol>
+  <li>Backwards (and forwards) compatibility (versioned interfaces)</li>
+  <li>Upgradeability (Package/Dependency manager)</li>
+  <li><a href="http://yanel.wyona.org/en/documentation/misc/performance.html">Performance</a></li>
+  <li><a href="http://yanel.wyona.org/en/documentation/misc/scalability.html">Scalability</a></li>
+  <li>Redundancy/Clusterable</li>
+  <li>Component based/Modularity and Offline usage</li>
+  <li>Simplicity/Out-of-box usage (minimal setup)</li>
+  <li>Usability (Eat your own dogfood - DAILY)</li>
+  <li>Integration</li>
+  <li>Documentation</li>
+  <li>Predictability (Release Planning and Roadmap)</li>
+  <li>Watching and listening to the user/customer</li>
+  <li>Continuous integration and testing, testing, testing ...</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
 
-  <li>TODO</li>
+<s:slide id="happy-customers" status="ready">
+<s:title>Happy customers</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Government: <a href="http://www.naz.ch">National Emergency Operations Centre (NEOC)</a> (High availability)</li>
+  <li>Insurance: <a href="http://www.mobi.ch">Mobiliar</a> (more than 4000 employees)</li>
+  <li>Retail: <a href="http://www.globus.ch">Globus</a> (Premium customers), <a href="http://www.peach.info">Peach</a> (Integration with KHK/Sage)</li>
+  <li>NGO: <a href="http://www.informatica08.ch">Informatica08</a> (tight budget)</li>
 </ol>
 </p>
 </s:content>
@@ -203,7 +247,7 @@ The Westin Copley, Boston, USA
 </s:content>
 </s:slide>
 
-<s:slide id="business-cases" status="wip">
+<s:slide id="business-cases" status="ready">
 <s:title>Business cases</s:title>
 <s:content>
 <p>
