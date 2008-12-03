@@ -61,6 +61,21 @@ The Westin Copley, Boston, USA
 </s:content>
 </s:slide>
 
+<s:slide id="against-open-source" status="wip">
+<s:title>Do not use Open Source</s:title>
+<s:content>
+<p>
+<ol>
+  <li>Decision (Nobody ever lost her job for buying VENDOR products)</li>
+  <li>Support (Accountability)</li>
+  <li>Hobbyists working at night</li>
+  <li>If it costs nothing, then it cannot be worth anything</li>
+  <li>Ego/developer has higher priority than user/customer</li>
+</ol>
+</p>
+</s:content>
+</s:slide>
+
 <s:slide id="qanda" status="ready">
 <s:title>Thanks for your attention</s:title>
 <s:content>
