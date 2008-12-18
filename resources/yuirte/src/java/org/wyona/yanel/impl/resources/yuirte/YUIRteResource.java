@@ -36,8 +36,8 @@ public class YUIRteResource extends ExecutableUsecaseResource {
     
     private static final String PARAMETER_EDIT_PATH = "edit-path";
     private static final String PARAMETER_CONTINUE_PATH = "continue-path";
-    
     private static final String PARAM_SUBMIT_TIDY = "submit-tidy";
+
     private static final String VIEW_FIX_WELLFORMNESS = "fix-wellformness";
     
     private String content;
@@ -64,7 +64,8 @@ public class YUIRteResource extends ExecutableUsecaseResource {
         final String editPath = getEditPath();
         final String content = getContent();
 
-        log.error(content);
+        if (log.isDebugEnabled()) log.debug("Content while exectuing: " + content);
+        
         try {
             Resource resToEdit = getYanel().getResourceManager().getResource(getEnvironment(), getRealm(), editPath);
             if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
@@ -74,7 +75,6 @@ public class YUIRteResource extends ExecutableUsecaseResource {
                 setParameter(PARAMETER_CONTINUE_PATH, PathUtil.backToRealm(getPath()) + editPath.substring(1)); // allow jelly template to show link to new event
             } else {
                 addError("The resource you wanted to edit does not implement VieableV2 and is therefor not editable with this editor.");
-                log.error("The resource you wanted to edit does not implement VieableV2 and is therefor not editable with this editor.");
             }
         } catch (Exception e) {
             log.error("Exception: " + e);
@@ -83,6 +83,7 @@ public class YUIRteResource extends ExecutableUsecaseResource {
     }
     
     private void tidy() throws UsecaseException {
+        //TODO: tidy should be configured via an external file (e.g. in htdocs)
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Tidy tidy = new Tidy();
         tidy.setXHTML(true);
@@ -103,6 +104,7 @@ public class YUIRteResource extends ExecutableUsecaseResource {
 
     public boolean isWellformed() throws UsecaseException {
         try {
+            //TODO: code borrowed from YanelServlet.java r40436. see line 902. 1. maybe there is a better way to do so. 2. this code could maybe be refactored into a some xml.util lib. 
             javax.xml.parsers.DocumentBuilderFactory dbf= javax.xml.parsers.DocumentBuilderFactory.newInstance();
             javax.xml.parsers.DocumentBuilder parser = dbf.newDocumentBuilder();
             // NOTE: DOCTYPE is being resolved/retrieved (e.g. xhtml schema from w3.org) also
@@ -113,7 +115,6 @@ public class YUIRteResource extends ExecutableUsecaseResource {
             // TODO: What about a resolver factory?
             parser.setEntityResolver(new CatalogResolver());
             String content = getContent();
-            log.error(content);
             parser.parse(IOUtils.toInputStream(content));
             return true;
         } catch (org.xml.sax.SAXException e) {
@@ -127,13 +128,13 @@ public class YUIRteResource extends ExecutableUsecaseResource {
     
     public String getEditorFormContent() throws UsecaseException {
         try {
-            log.error(getEditPath());
+            if(log.isDebugEnabled()) log.debug(getEditPath());
             Resource resToEdit = getYanel().getResourceManager().getResource(getEnvironment(), getRealm(), getEditPath());
             if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
                 InputStream is = ((ModifiableV2) resToEdit).getInputStream();
                 return StringEscapeUtils.escapeXml(IOUtils.toString(is));
             } else {
-                throw new UsecaseException("The resource you wanted to edit does not implement VieableV2 and is therefor not editable with this editor.");
+                return"The resource you wanted to edit does not implement VieableV2 and is therefor not editable with this editor.";
             }
         } catch (Exception e) {
             log.error("Exception: " + e);
@@ -153,7 +154,6 @@ public class YUIRteResource extends ExecutableUsecaseResource {
             InputStream htodoc = ((StreamSource) source).getInputStream();
             return IOUtils.toString(htodoc);
         } catch (Exception e) {
-            log.error("could not get lookup",e);
             return "no parameter edit-path found in the request. don't know what to edit";
         }
     }
@@ -166,8 +166,9 @@ public class YUIRteResource extends ExecutableUsecaseResource {
      * @return 
      */
     private String getContent() {
-        log.error("content: " + content);
+        if(log.isDebugEnabled()) log.debug("Member field content: " + content);
         if (content != null) {
+            if(log.isDebugEnabled()) log.debug("content is allready set.");
             return content;
         } else {
             content = getEnvironment().getRequest().getParameter(getEditPath()); 
