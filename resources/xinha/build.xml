@@ -2,6 +2,15 @@
 
 <project name="yanel-resource" default="compile">
 
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+  <!-- <property name="yanel.home" value="${yanel.source.home}"/> -->
+  <property file="${user.home}/.ant-global.properties"/>
+  <echo>YANEL_HOME is set to: ${yanel.home}</echo>
+
+  <property file="${yanel.home}/src/build/local.build.properties"/>
+  <property file="${yanel.home}/src/build/build.properties"/>
+  
   <import file="src/build/dependencies.xml"/>
 
   <target name="init" description="Initialize build" depends="dependencies">
@@ -23,7 +32,6 @@
     <property name="resource.java.dir" value="${resource.home.dir}/src/java"/>
     <property name="resource.resource.xml" value="${resource.home.dir}/resource.xml"/>
     <xmlproperty prefix="resource.resource.xml" file="${resource.resource.xml}"/>
-    
   </target>
 
   <target name="compile" description="Compile Java classes" depends="init">
@@ -47,7 +55,7 @@
              replace=""
              global="true"
              casesensitive="false" />
-             <echo>hilfes${resource.classes.dir}/${new.resource.java.class.fs.path}</echo>
+             <echo>${resource.classes.dir}/${new.resource.java.class.fs.path}</echo>
     <copy todir="${resource.classes.dir}/${new.resource.java.class.fs.path}">
       <fileset dir="${resource.home.dir}" includes="resource**,htdocs/**,yanel-htdocs/**"/>
     </copy>             
