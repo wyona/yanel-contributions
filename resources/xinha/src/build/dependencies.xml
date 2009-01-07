@@ -4,7 +4,6 @@
 
   <target name="dependencies" description="Dependencies">
     <artifact:remoteRepository id="wyona.remote.repository" url="${maven.url}"/>
-
     
     <!--     get xinha by maven -->    
     <artifact:dependencies filesetId="maven2.xinha.fileset">
