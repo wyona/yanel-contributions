@@ -19,7 +19,7 @@
          //following would be nice, but unsave since there is no convention on css location and nothing that knows about except the xsl.;
          //but one could use this in a customized xinha.jelly
          //config.pageStyleSheets = ["${yanel.back2realm}css/global.css"];
-         config.fullPage = false;
+         config.fullPage = true;
          
          editeur = Xinha.makeEditors(['${resource.getEditPath()}'], config);
          Xinha.startEditors(editeur);
