@@ -9,7 +9,7 @@
     <!--     get tinyMCE by maven -->    
     <artifact:dependencies filesetId="maven2.tinymce.fileset">
       <remoteRepository refid="wyona.remote.repository"/>
-      <dependency groupId="moxiecode" artifactId="tinymce" version="2.1.1.1" scope="provided" type="zip"/>
+      <dependency groupId="moxiecode" artifactId="tinymce" version="3.2.1.1" scope="provided" type="zip"/>
     </artifact:dependencies>
     
     <unzip dest="htdocs">
