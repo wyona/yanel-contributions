@@ -3,10 +3,10 @@
   <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
       <title>Edit ${resource.getEditPath()} with Xinha</title>
-      <link rel="stylesheet" type="text/css" href="${yanel.back2realm}${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/css/xinha-resource.css"/>
+      <link rel="stylesheet" type="text/css" href="${yanel.back2realm}${yanel.reservedPrefix}/resource-types/^http:^2f^2fwww.wyona.org^2fyanel^2fresource^2f1.0::xinha/css/xinha-resource.css"/>
       
       <script type="text/javascript">
-        _editor_url  = resolveRelative("${yanel.back2realm}") + "${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/xinha/";  // (preferably absolute) URL (including trailing slash) where Xinha is installed
+        _editor_url  = resolveRelative("${yanel.back2realm}") + "${yanel.reservedPrefix}/resource-types/^http:^2f^2fwww.wyona.org^2fyanel^2fresource^2f1.0::xinha/xinha/";  // (preferably absolute) URL (including trailing slash) where Xinha is installed
         _editor_lang = "${resource.getRequestedLanguage()}";      // And the language we need to use in the editor.
         _editor_skin = "silva";   // If you want use a skin, add the name (of the folder) here
         
@@ -18,7 +18,7 @@
             return url + '/' + path;
         }
       </script>
-      <script type="text/javascript" src="${yanel.back2realm}${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/xinha/XinhaCore.js"></script>
+      <script type="text/javascript" src="${yanel.back2realm}${yanel.reservedPrefix}/resource-types/^http:^2f^2fwww.wyona.org^2fyanel^2fresource^2f1.0::xinha/xinha/XinhaCore.js"></script>
       <script type="text/javascript">
         var editeur = null;
         function initXinha() {
