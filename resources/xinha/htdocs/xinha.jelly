@@ -4,12 +4,19 @@
     <head>
       <title>Edit ${resource.getEditPath()} with Xinha</title>
       <link rel="stylesheet" type="text/css" href="${yanel.back2realm}${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/css/xinha-resource.css"/>
-      <script language="javascript" type="text/javascript" src="${yanel.back2realm}${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/xinha/jscripts/xinha/xinha.js"></script>
       
       <script type="text/javascript">
-        _editor_url  = "${yanel.back2realm}${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/xinha/"  // (preferably absolute) URL (including trailing slash) where Xinha is installed
+        _editor_url  = resolveRelative("${yanel.back2realm}") + "${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/xinha/";  // (preferably absolute) URL (including trailing slash) where Xinha is installed
         _editor_lang = "${resource.getRequestedLanguage()}";      // And the language we need to use in the editor.
         _editor_skin = "silva";   // If you want use a skin, add the name (of the folder) here
+        
+        // resolves a path relative to the current window.location.href
+        function resolveRelative(path, relativeTo) {
+            var url = window.location.href;
+            url = url.split('?')[0];
+            url = url.substring(0, url.lastIndexOf('/'));
+            return url + '/' + path;
+        }
       </script>
       <script type="text/javascript" src="${yanel.back2realm}${yanel.reservedPrefix}/resource-types/http://www.wyona.org/yanel/resource/1.0::xinha/xinha/XinhaCore.js"></script>
       <script type="text/javascript">
