@@ -69,12 +69,10 @@ public class XinhaResource extends ExecutableUsecaseResource {
      * @see org.wyona.yanel.impl.resources.usecase.ExecutableUsecaseResource#processUsecase(java.lang.String)
      */
     protected View processUsecase(String viewID) throws UsecaseException {
-        checkPreconditions();
-        if (hasErrors()) {
+        if (!checkPreconditions() || hasErrors()) {
             setParameter(PARAMETER_CONTINUE_PATH, PathUtil.backToRealm(getPath()) + getEditPath().substring(1));
-            return generateView("error");
+            return generateView(VIEW_CANCEL);
         }
-        
         if (getParameter(PARAM_SUBMIT) != null) {
             if (!isWellformed(IOUtils.toInputStream(getEditorContent()))) {
                 contentToEdit = getEditorContent();
@@ -93,13 +91,12 @@ public class XinhaResource extends ExecutableUsecaseResource {
         } else if (getParameter(PARAM_CANCEL) != null) {
             cancel();
             return generateView(VIEW_CANCEL);
-        } else {
-            if (!isWellformed(IOUtils.toInputStream(getResourceContent()))) {
-                contentToEdit = tidy(getResourceContent());
-                return generateView(VIEW_FIX_WELLFORMNESS);
-            }
+        } else if (!isWellformed(IOUtils.toInputStream(getResourceContent()))) {
+            contentToEdit = tidy(getResourceContent());
+            return generateView(VIEW_FIX_WELLFORMNESS);
+        }else {
             contentToEdit = getResourceContent();
-            return generateView(DEFAULT_VIEW_ID); // this will show the default view if the param is not set
+            return generateView(viewID); // this will show the default view if the param is not set
         }
     }
     
@@ -109,19 +106,23 @@ public class XinhaResource extends ExecutableUsecaseResource {
     public boolean checkPreconditions() throws UsecaseException {
         Resource resToEdit = getResToEdit();
         if (!ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
-            addError("The resource you wanted to edit does not implement ModifiableV2 and is therefor not editable with this editor.");
+            addError("The resource you wanted to edit does not ireturn mplement ModifiableV2 and is therefor not editable with this editor. ");
+            return false;
         }
         if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Viewable", "2")) {
             try {
                 View view = ((ViewableV2)resToEdit).getView(DEFAULT_VIEW_ID);
                 if (!view.getMimeType().contains("html")) {
-                    addError("Mime-Type not supported: " + view.getMimeType() + ". Only edit html documents with xinha.");
+                    addError("Mime-Type not supported: " + view.getMimeType() + ". Only edit html documents with xinha. ");
+                    return false;
                 }
             } catch (Exception e) {
-                addError("Could not find out mime-type;");
+                addError("Could not find out mime-type. ");
+                return false;
             }
         } else {
-            addError("Could not find out mime-type;");
+            addError("Could not find out mime-type. ");
+            return false;
         }
         return true;
     }
@@ -207,7 +208,7 @@ public class XinhaResource extends ExecutableUsecaseResource {
         } catch (Exception e) {
             throw new UsecaseException(e.getMessage(), e);
         }
-        addInfoMessage("Content cleaned with tidy.");
+        addInfoMessage("Content cleaned with tidy. ");
         return out;
     }
 
@@ -232,7 +233,7 @@ public class XinhaResource extends ExecutableUsecaseResource {
             parser.parse(is);
             return true;
         } catch (org.xml.sax.SAXException e) {
-            addError(e.getMessage());
+            addError("Document is not wellformed: " + e.getMessage() + " ");
             return false;
         } catch (Exception e) {
             addError(e.getMessage());
@@ -276,8 +277,6 @@ public class XinhaResource extends ExecutableUsecaseResource {
         if(log.isDebugEnabled()) log.debug("content set to: " + editorContent);
         return editorContent;
     }
-    
-
     
     /**
      * Get the Resource which is going to be edited
