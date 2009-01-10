@@ -56,16 +56,28 @@ public class XinhaResource extends ExecutableUsecaseResource {
     private static final String PARAMETER_EDIT_PATH = "edit-path";
     private static final String PARAMETER_CONTINUE_PATH = "continue-path";
     private static final String PARAM_SUBMIT_TIDY = "submit-tidy";
-
+    private static final String PARAM_SUBMIT_TIDY_SAVE = "submit-tidy-save";
     private static final String VIEW_FIX_WELLFORMNESS = "fix-wellformness";
     
-    private String content;
+    private String editorContent;
+    private String resourceContent;
+    private String editPath;
+    private String contentToFix;
+    private Resource resToEdit;
 
+    /* (non-Javadoc)
+     * @see org.wyona.yanel.impl.resources.usecase.ExecutableUsecaseResource#processUsecase(java.lang.String)
+     */
     protected View processUsecase(String viewID) throws UsecaseException {
         if (getParameter(PARAM_SUBMIT) != null) {
-            if (!isWellformed()) {
+            if (!isWellformed(IOUtils.toInputStream(getEditorContent()))) {
+                contentToFix = getEditorContent();
                 return generateView(VIEW_FIX_WELLFORMNESS);
             }
+            execute();
+            return generateView(VIEW_DONE);
+        } else if (getParameter(PARAM_SUBMIT_TIDY_SAVE) != null) {
+            tidy();
             execute();
             return generateView(VIEW_DONE);
         } else if (getParameter(PARAM_SUBMIT_TIDY) != null) {
@@ -75,32 +87,113 @@ public class XinhaResource extends ExecutableUsecaseResource {
             cancel();
             return generateView(VIEW_CANCEL);
         } else {
+            if (!isWellformed(IOUtils.toInputStream(getResourceContent()))) {
+                contentToFix = getResourceContent();
+                return generateView(VIEW_FIX_WELLFORMNESS);
+            }
             return generateView(viewID); // this will show the default view if the param is not set
         }
     }
     
-    public void execute() throws UsecaseException {
-        final String editPath = getEditPath();
-        final String content = getContent();
-
-        if (log.isDebugEnabled()) log.debug("Content while exectuing: " + content);
-        
-        try {
-            Resource resToEdit = getYanel().getResourceManager().getResource(getEnvironment(), getRealm(), editPath);
-            if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
-                OutputStream os = ((ModifiableV2) resToEdit).getOutputStream();
-                IOUtils.write(content, os);
-                addInfoMessage("Successfully saved.");
-                setParameter(PARAMETER_CONTINUE_PATH, PathUtil.backToRealm(getPath()) + editPath.substring(1)); // allow jelly template to show link to new event
-            } else {
-                addError("The resource you wanted to edit does not implement VieableV2 and is therefor not editable with this editor.");
-            }
-        } catch (Exception e) {
-            log.error("Exception: " + e);
-            throw new UsecaseException(e.getMessage(), e);
+    /* (non-Javadoc)
+     * @see org.wyona.yanel.impl.resources.usecase.ExecutableUsecaseResource#checkPreconditions()
+     */
+    public boolean checkPreconditions() throws UsecaseException {
+        if (!ResourceAttributeHelper.hasAttributeImplemented(getResToEdit(), "Modifiable", "2")) {
+            addError("The resource you wanted to edit does not implement ModifiableV2 and is therefor not editable with this editor.");
+            return false;
         }
+        return true;
     }
     
+    /* (non-Javadoc)
+     * @see org.wyona.yanel.impl.resources.usecase.ExecutableUsecaseResource#execute()
+     */
+    public void execute() throws UsecaseException {
+        final String content = getEditorContent();
+        final Resource resToEdit = getResToEdit();
+        if (log.isDebugEnabled()) log.debug("saving content: " + content);
+            if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
+                try {
+                    OutputStream os = ((ModifiableV2) resToEdit).getOutputStream();
+                    IOUtils.write(content, os);
+                } catch (Exception e) {
+                    log.error("Exception: " + e);
+                    throw new UsecaseException(e.getMessage(), e);
+                }
+                addInfoMessage("Successfully saved.");
+            } else {
+                addError("Could not save the document.");
+            }
+            setParameter(PARAMETER_CONTINUE_PATH, PathUtil.backToRealm(getPath()) + getEditPath().substring(1)); // allow jelly template to show link to new event
+    }
+    
+    /* (non-Javadoc)
+     * @see org.wyona.yanel.impl.resources.usecase.ExecutableUsecaseResource#cancel()
+     */
+    public void cancel() throws UsecaseException {
+        addInfoMessage("Cancled.");
+        setParameter(PARAMETER_CONTINUE_PATH, PathUtil.backToRealm(getPath()) + getEditPath().substring(1)); // allow jelly template to show link to new event
+    }
+    
+    /**
+     * Get the String containing the path to the resource which is going to be edited
+     * @return String
+     */
+    public String getEditPath() {
+        if (editPath == null) {
+            if(log.isDebugEnabled()) log.debug("editPath not set yet.");
+            editPath = getEnvironment().getRequest().getParameter(PARAMETER_EDIT_PATH);
+        }
+        if(log.isDebugEnabled()) log.debug("editPath set to: " + editPath);
+        return editPath;
+    }
+
+    /**
+     * Get the String with the content of the resource which is going to be edited
+     * @return String 
+     */
+    public String getResourceContent() throws UsecaseException {
+        if (resourceContent == null) {
+            if(log.isDebugEnabled()) log.debug("resourceContent not set yet. Path: " + getEditPath());
+            Resource resToEdit = getResToEdit();
+            if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
+                try {
+                    InputStream is = ((ModifiableV2) resToEdit).getInputStream();
+                    resourceContent = IOUtils.toString(is);
+                } catch (Exception e) {
+                    log.error("Exception: " + e);
+                    throw new UsecaseException(e.getMessage(), e);
+                }
+            } else {
+                addError("This resource can not be edited.");
+            }
+        }
+        if(log.isDebugEnabled()) log.debug("content set to: " + resourceContent);
+        return resourceContent;
+    }
+
+    /**
+     * Get the content proposed to tidy
+     * @return String
+     */
+    public String getContentToFix() {
+        return contentToFix;
+    }
+
+    /**
+     * escape xml
+     * @param String to escape
+     * @return String escaped
+     */
+    public String escapeXML(String string) {
+        return StringEscapeUtils.escapeXml(string);
+    }
+    
+    /**
+     * Tidy content
+     * @throws UsecaseException
+     */
     private void tidy() throws UsecaseException {
         //TODO: tidy should be configured via an external file (e.g. in htdocs)
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -108,20 +201,21 @@ public class XinhaResource extends ExecutableUsecaseResource {
         tidy.setXHTML(true);
         tidy.setInputEncoding("utf-8");
         tidy.setOutputEncoding("utf-8");
-        tidy.parse(IOUtils.toInputStream(getContent()), os);
+        tidy.parse(IOUtils.toInputStream(getEditorContent()), os);
         try {
-            content = os.toString("utf-8");
+            editorContent = os.toString("utf-8");
         } catch (Exception e) {
             throw new UsecaseException(e.getMessage(), e);
         }
-    }
-    
-    public void cancel() throws UsecaseException {
-        addInfoMessage("Cancled.");
-        setParameter(PARAMETER_CONTINUE_PATH, PathUtil.backToRealm(getPath()) + getEditPath().substring(1)); // allow jelly template to show link to new event
+        addInfoMessage("Content cleaned with tidy.");
     }
 
-    public boolean isWellformed() throws UsecaseException {
+    /**
+     * Checks if content is wellformed
+     * @return boolean
+     * @throws UsecaseException
+     */
+    private boolean isWellformed(InputStream is) throws UsecaseException {
         try {
             //TODO: code borrowed from YanelServlet.java r40436. see line 902. 1. maybe there is a better way to do so. 2. this code could maybe be refactored into a some xml.util lib. 
             javax.xml.parsers.DocumentBuilderFactory dbf= javax.xml.parsers.DocumentBuilderFactory.newInstance();
@@ -133,8 +227,7 @@ public class XinhaResource extends ExecutableUsecaseResource {
             //       resp. http://xml.apache.org/commons/components/resolver/
             // TODO: What about a resolver factory?
             parser.setEntityResolver(new CatalogResolver());
-            String content = getContent();
-            parser.parse(IOUtils.toInputStream(content));
+            parser.parse(is);
             return true;
         } catch (org.xml.sax.SAXException e) {
             addError(e.getMessage());
@@ -145,57 +238,36 @@ public class XinhaResource extends ExecutableUsecaseResource {
         }
     }
     
-    public String getEditorFormContent() throws UsecaseException {
-        try {
-            if(log.isDebugEnabled()) log.debug(getEditPath());
-            Resource resToEdit = getYanel().getResourceManager().getResource(getEnvironment(), getRealm(), getEditPath());
-            if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
-                InputStream is = ((ModifiableV2) resToEdit).getInputStream();
-                return StringEscapeUtils.escapeXml(IOUtils.toString(is));
-            } else {
-                return"The resource you wanted to edit does not implement VieableV2 and is therefor not editable with this editor.";
-            }
-        } catch (Exception e) {
-            log.error("Exception: " + e);
-            throw new UsecaseException(e.getMessage(), e);
+    /**
+     * Get the String with the content of the resource which is going to be edited
+     * @return String 
+     */
+    private String getEditorContent() {
+        if (editorContent == null) {
+            if(log.isDebugEnabled()) log.debug("content not set yet.");
+            editorContent = getParameterAsString(getEditPath()); 
         }
+        if(log.isDebugEnabled()) log.debug("content set to: " + editorContent);
+        return editorContent;
     }
+    
 
-    /**
-     * TODO: no lookup resource-type yet
-     * @return
-     * @throws UsecaseException
-     */
-    public String getLookup() throws UsecaseException {
-        try {
-            SourceResolver resolver = new SourceResolver(this);
-            Source source = resolver.resolve("yanelresource:/usecases/lookup.html", null);
-            InputStream htodoc = ((StreamSource) source).getInputStream();
-            return IOUtils.toString(htodoc);
-        } catch (Exception e) {
-            return "no parameter edit-path found in the request. don't know what to edit";
-        }
-    }
-    
-    public String getEditPath() {
-        return request.getParameter(PARAMETER_EDIT_PATH);
-    }
     
     /**
-     * @return 
+     * Get the Resource which is going to be edited
+     * @return Resource
      */
-    private String getContent() {
-        if(log.isDebugEnabled()) log.debug("Member field content: " + content);
-        if (content != null) {
-            if(log.isDebugEnabled()) log.debug("content is allready set.");
-            return content;
-        } else {
-            content = getEnvironment().getRequest().getParameter(getEditPath()); 
+    private Resource getResToEdit() throws UsecaseException {
+        if (resToEdit == null) {
+            if(log.isDebugEnabled()) log.debug("resToEdit not set yet.");
+            try {
+                resToEdit = getYanel().getResourceManager().getResource(getEnvironment(), getRealm(), getEditPath());
+            } catch (Exception e) {
+                log.error("Exception: " + e);
+                throw new UsecaseException(e.getMessage(), e);
+            }
         }
-        return content;
-    }
-    
-    public String getEscapedContent() {
-        return StringEscapeUtils.escapeXml(getContent());
+        if(log.isDebugEnabled()) log.debug("resToEdit set to: " + resToEdit.getResourceTypeLocalName());
+        return resToEdit;
     }
 }
