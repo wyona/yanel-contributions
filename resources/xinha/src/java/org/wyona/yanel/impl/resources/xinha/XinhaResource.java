@@ -62,36 +62,44 @@ public class XinhaResource extends ExecutableUsecaseResource {
     private String editorContent;
     private String resourceContent;
     private String editPath;
-    private String contentToFix;
+    private String contentToEdit;
     private Resource resToEdit;
 
     /* (non-Javadoc)
      * @see org.wyona.yanel.impl.resources.usecase.ExecutableUsecaseResource#processUsecase(java.lang.String)
      */
     protected View processUsecase(String viewID) throws UsecaseException {
+        checkPreconditions();
+        if (hasErrors()) {
+            setParameter(PARAMETER_CONTINUE_PATH, PathUtil.backToRealm(getPath()) + getEditPath().substring(1));
+            return generateView("error");
+        }
+        
         if (getParameter(PARAM_SUBMIT) != null) {
             if (!isWellformed(IOUtils.toInputStream(getEditorContent()))) {
-                contentToFix = getEditorContent();
+                contentToEdit = getEditorContent();
                 return generateView(VIEW_FIX_WELLFORMNESS);
             }
             execute();
             return generateView(VIEW_DONE);
         } else if (getParameter(PARAM_SUBMIT_TIDY_SAVE) != null) {
-            tidy();
+            editorContent = tidy(getEditorContent());
             execute();
             return generateView(VIEW_DONE);
         } else if (getParameter(PARAM_SUBMIT_TIDY) != null) {
-            tidy();
-            return generateView(VIEW_FIX_WELLFORMNESS);
+            editorContent = tidy(getEditorContent());
+            contentToEdit = getEditorContent();
+            return generateView(DEFAULT_VIEW_ID);
         } else if (getParameter(PARAM_CANCEL) != null) {
             cancel();
             return generateView(VIEW_CANCEL);
         } else {
             if (!isWellformed(IOUtils.toInputStream(getResourceContent()))) {
-                contentToFix = getResourceContent();
+                contentToEdit = tidy(getResourceContent());
                 return generateView(VIEW_FIX_WELLFORMNESS);
             }
-            return generateView(viewID); // this will show the default view if the param is not set
+            contentToEdit = getResourceContent();
+            return generateView(DEFAULT_VIEW_ID); // this will show the default view if the param is not set
         }
     }
     
@@ -99,9 +107,21 @@ public class XinhaResource extends ExecutableUsecaseResource {
      * @see org.wyona.yanel.impl.resources.usecase.ExecutableUsecaseResource#checkPreconditions()
      */
     public boolean checkPreconditions() throws UsecaseException {
-        if (!ResourceAttributeHelper.hasAttributeImplemented(getResToEdit(), "Modifiable", "2")) {
+        Resource resToEdit = getResToEdit();
+        if (!ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
             addError("The resource you wanted to edit does not implement ModifiableV2 and is therefor not editable with this editor.");
-            return false;
+        }
+        if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Viewable", "2")) {
+            try {
+                View view = ((ViewableV2)resToEdit).getView(DEFAULT_VIEW_ID);
+                if (!view.getMimeType().contains("html")) {
+                    addError("Mime-Type not supported: " + view.getMimeType() + ". Only edit html documents with xinha.");
+                }
+            } catch (Exception e) {
+                addError("Could not find out mime-type;");
+            }
+        } else {
+            addError("Could not find out mime-type;");
         }
         return true;
     }
@@ -150,35 +170,12 @@ public class XinhaResource extends ExecutableUsecaseResource {
     }
 
     /**
-     * Get the String with the content of the resource which is going to be edited
-     * @return String 
-     */
-    public String getResourceContent() throws UsecaseException {
-        if (resourceContent == null) {
-            if(log.isDebugEnabled()) log.debug("resourceContent not set yet. Path: " + getEditPath());
-            Resource resToEdit = getResToEdit();
-            if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
-                try {
-                    InputStream is = ((ModifiableV2) resToEdit).getInputStream();
-                    resourceContent = IOUtils.toString(is);
-                } catch (Exception e) {
-                    log.error("Exception: " + e);
-                    throw new UsecaseException(e.getMessage(), e);
-                }
-            } else {
-                addError("This resource can not be edited.");
-            }
-        }
-        if(log.isDebugEnabled()) log.debug("content set to: " + resourceContent);
-        return resourceContent;
-    }
-
-    /**
-     * Get the content proposed to tidy
+     * Get the content proposed to edit
+     * used by xinha.jelly
      * @return String
      */
-    public String getContentToFix() {
-        return contentToFix;
+    public String getContentToEdit() {
+        return contentToEdit;
     }
 
     /**
@@ -192,27 +189,32 @@ public class XinhaResource extends ExecutableUsecaseResource {
     
     /**
      * Tidy content
+     * @return String wellformed by tidy
+     * @param String to be cleaned
      * @throws UsecaseException
      */
-    private void tidy() throws UsecaseException {
+    private String tidy(String content) throws UsecaseException {
         //TODO: tidy should be configured via an external file (e.g. in htdocs)
         ByteArrayOutputStream os = new ByteArrayOutputStream();
+        String out = "";
         Tidy tidy = new Tidy();
         tidy.setXHTML(true);
         tidy.setInputEncoding("utf-8");
         tidy.setOutputEncoding("utf-8");
-        tidy.parse(IOUtils.toInputStream(getEditorContent()), os);
+        tidy.parse(IOUtils.toInputStream(content), os);
         try {
-            editorContent = os.toString("utf-8");
+            out = os.toString("utf-8");
         } catch (Exception e) {
             throw new UsecaseException(e.getMessage(), e);
         }
         addInfoMessage("Content cleaned with tidy.");
+        return out;
     }
 
     /**
-     * Checks if content is wellformed
-     * @return boolean
+     * Checks if InputStream is wellformed
+     * @return boolean true if wellformed, false if not
+     * @param InputStream which is checked if wellformed
      * @throws UsecaseException
      */
     private boolean isWellformed(InputStream is) throws UsecaseException {
@@ -240,6 +242,30 @@ public class XinhaResource extends ExecutableUsecaseResource {
     
     /**
      * Get the String with the content of the resource which is going to be edited
+     * @return String 
+     */
+    private String getResourceContent() throws UsecaseException {
+        if (resourceContent == null) {
+            if(log.isDebugEnabled()) log.debug("resourceContent not set yet. Path: " + getEditPath());
+            Resource resToEdit = getResToEdit();
+            if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
+                try {
+                    InputStream is = ((ModifiableV2) resToEdit).getInputStream();
+                    resourceContent = IOUtils.toString(is);
+                } catch (Exception e) {
+                    log.error("Exception: " + e);
+                    throw new UsecaseException(e.getMessage(), e);
+                }
+            } else {
+                addError("This resource can not be edited.");
+            }
+        }
+        if(log.isDebugEnabled()) log.debug("content set to: " + resourceContent);
+        return resourceContent;
+    }
+    
+    /**
+     * Get the String with the content of the editor
      * @return String 
      */
     private String getEditorContent() {
