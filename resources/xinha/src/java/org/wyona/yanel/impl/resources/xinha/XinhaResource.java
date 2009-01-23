@@ -25,6 +25,7 @@ import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.ResourceConfiguration;
 import org.wyona.yanel.core.api.attributes.CreatableV2;
 import org.wyona.yanel.core.api.attributes.ModifiableV2;
+import org.wyona.yanel.core.api.attributes.VersionableV2;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.map.Realm;
@@ -251,6 +252,23 @@ public class XinhaResource extends ExecutableUsecaseResource {
             Resource resToEdit = getResToEdit();
             if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Modifiable", "2")) {
                 try {
+
+                    if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Versionable", "2")) {
+                        VersionableV2 versionable = (VersionableV2)resToEdit;
+                        String userID = getEnvironment().getIdentity().getUsername();
+                        if (versionable.isCheckedOut()) {
+                            String checkoutUserID = versionable.getCheckoutUserID();
+                            if (checkoutUserID.equals(userID)) {
+                                log.warn("Resource " + resToEdit.getPath() + " is already checked out by this user: " + checkoutUserID);
+                            } else {
+                                addError("Resource is already checked out by another user: " + checkoutUserID);
+                                return null;
+                            }
+                        } else {
+                            versionable.checkout(userID);
+                        }
+                    }
+
                     InputStream is = ((ModifiableV2) resToEdit).getInputStream();
                     resourceContent = IOUtils.toString(is);
                 } catch (Exception e) {
