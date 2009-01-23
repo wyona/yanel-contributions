@@ -139,6 +139,18 @@ public class XinhaResource extends ExecutableUsecaseResource {
                 try {
                     OutputStream os = ((ModifiableV2) resToEdit).getOutputStream();
                     IOUtils.write(content, os);
+
+                    if (ResourceAttributeHelper.hasAttributeImplemented(resToEdit, "Versionable", "2")) {
+                        VersionableV2 versionable  = (VersionableV2)resToEdit;
+                        try {
+                            versionable.checkin("Updated with Xinha");
+                        } catch (Exception e) {
+                            String msg = "Could not check in resource: " + resToEdit.getPath() + " " + e.getMessage();
+                            log.error(msg, e);
+                            addError(msg);
+                            throw new UsecaseException(msg, e);
+                        }
+                    }
                 } catch (Exception e) {
                     log.error("Exception: " + e);
                     throw new UsecaseException(e.getMessage(), e);
@@ -261,7 +273,9 @@ public class XinhaResource extends ExecutableUsecaseResource {
                             if (checkoutUserID.equals(userID)) {
                                 log.warn("Resource " + resToEdit.getPath() + " is already checked out by this user: " + checkoutUserID);
                             } else {
-                                addError("Resource is already checked out by another user: " + checkoutUserID);
+                                String msg = "Resource is already checked out by another user: " + checkoutUserID;
+                                log.warn(msg);
+                                addError(msg);
                                 return null;
                             }
                         } else {
