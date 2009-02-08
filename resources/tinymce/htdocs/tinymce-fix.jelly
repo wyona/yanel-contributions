@@ -14,11 +14,12 @@
             <form method="post" action="">
               <input type="hidden" name="edit-path" value="${resource.getEditPath()}"/>
               <textarea id="${resource.getEditPath()}" name="${resource.getEditPath()}" rows="15" cols="80" style="width: 100%">
-                ${resource.getEscapedContent()}
+                ${resource.escapeXML(resource.getContentToEdit())}
               </textarea>
               <br />
               <input type="submit" id="submit" name="submit" value="Save" />
               <input type="submit" id="submit-tidy" name="submit-tidy" value="Tidy" />
+              <input type="submit" id="submit-tidy-save" name="submit-tidy-save" value="Tidy Save" />
               <input type="submit" id="submit" name="cancel" value="Cancel" />
             </form>
           </div>
