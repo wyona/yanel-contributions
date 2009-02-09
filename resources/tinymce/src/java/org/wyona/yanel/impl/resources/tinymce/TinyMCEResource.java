@@ -85,10 +85,10 @@ public class TinyMCEResource extends ExecutableUsecaseResource {
             return generateView(VIEW_CANCEL);
         }
         if (isResToEditCheckedOut()) {
-            addError("Resource is checked out. ");
+            addError("Resource is checked out ");
             if (checkoutUserID != null) {
                 if(checkoutUserID.equals(userID)) {
-                    addError("by YOU! ");
+                    addError("by you (User: " + userID + ")! ");
                 } else if (!checkoutUserID.equals("null")) {
                     addError("by user: " + checkoutUserID + " ");
                     return generateView(VIEW_CANCEL);
