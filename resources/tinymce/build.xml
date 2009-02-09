@@ -4,7 +4,7 @@
 
   <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
-  <!-- <property name="yanel.home" value="${yanel.source.home}"/> -->
+  <property name="yanel.home" value="${yanel.source.home}"/>
   <property file="${user.home}/.ant-global.properties"/>
   <echo>YANEL_HOME is set to: ${yanel.home}</echo>
 
