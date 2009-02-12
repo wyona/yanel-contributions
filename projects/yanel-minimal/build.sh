@@ -1,5 +1,8 @@
 #!/bin/sh
 
+SCRIPT_DIR=$PWD
+#SCRIPT_DIR=`dirname $0`
+
 echo "INFO: Build minimal Yanel version ..."
 
 # ----- Parameters
@@ -20,21 +23,22 @@ fi
 
 # ----- Set Environment Variables
 unset ANT_HOME
-ANT_HOME=$PWD/tools/apache-ant-1.6.5
+ANT_HOME=$SCRIPT_DIR/tools/apache-ant
 #echo $ANT_HOME
+OUR_ANT="ant -lib $SCRIPT_DIR/tools/apache-ant_extras -f build.xml"
 
 unset CATALINA_HOME
 
 PATH=$PWD/tools/maven-2.0.4/bin:$ANT_HOME/bin:$PATH
 #echo $PATH
 
-# ----- Build Yanel
+# ----- Build Yanel Minimal
 #mvn --version
-ant -version
+$OUR_ANT -version
 # One might want to use the option "-f" for building resources, e.g. "./build.sh -f src/resources/xml/build.xml" instead having to build everything
 if [ "$1" = "-f" ];then
-  ant -f $2
+  $OUR_ANT -f $2
   exit 0
 fi
 # Build everything by default
-ant -f build.xml "$@"
+$OUR_ANT -f build.xml "$@"
