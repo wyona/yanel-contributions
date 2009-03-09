@@ -3,6 +3,8 @@ xquery version "1.0";
 : This function generates an XHTML <a>---</a> element,
 : representing a hyperlink in the XHTML namespace.
 :
+: Also see http://www.stylusstudio.com/xquery/xquery_functions.html
+:
 :)
 
 declare namespace xhtml="http://www.w3.org/1999/xhtml";
