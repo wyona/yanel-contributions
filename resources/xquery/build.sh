@@ -17,4 +17,5 @@ echo "Start Saxon XQuery ..."
 
 CLASSPATH=lib/saxon9-dom4j.jar:lib/saxon9-dom.jar:lib/saxon9.jar
 
+# Also see http://www.saxonica.com/documentation/using-xquery/commandline.html
 $JAVA_HOME/bin/java -classpath $CLASSPATH net.sf.saxon.Query -q:$1
