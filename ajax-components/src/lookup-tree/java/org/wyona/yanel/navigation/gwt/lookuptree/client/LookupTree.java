@@ -38,7 +38,7 @@ public class LookupTree implements EntryPoint {
         String lookupPanelBorder = "false";
         String lookupPanelPadding = "15";
         String width = "190";
-        String height = "600";
+        String height = "400";
         String lookupRootNodeLabel = "/";
         String lookupHook = "lookupHook";
         String requestParameterType = "";
@@ -57,15 +57,14 @@ public class LookupTree implements EntryPoint {
         }
         
         Panel panel = new Panel();
-        panel.setBorder(false);
-        panel.setPaddings(15);
+        panel.setBorder(new Boolean(lookupPanelBorder).booleanValue());
+        panel.setPaddings(Integer.parseInt(lookupPanelPadding));
         final TreePanel treePanel = new LookupTreePanel(lookupRootNodeLabel, requestParameterType);
         treePanel.setEnableDD(false);
         treePanel.setContainerScroll(true);
         treePanel.setAutoScroll(true);
-        treePanel.setWidth(190);
-        treePanel.setHeight(600);
-        TreeNode root = new TreeNode();
+        treePanel.setWidth(Integer.parseInt(width));
+        treePanel.setHeight(Integer.parseInt(height));
         treePanel.addListener(new TreePanelListenerAdapter() {
             public void onClick(TreeNode node, EventObject e) {
                 onNodeClick(node.getId());
