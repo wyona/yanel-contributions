@@ -67,7 +67,9 @@ public class LookupTree implements EntryPoint {
         treePanel.setHeight(Integer.parseInt(height));
         treePanel.addListener(new TreePanelListenerAdapter() {
             public void onClick(TreeNode node, EventObject e) {
-                onNodeClick(node.getId());
+                if (node.getAttribute("isSelectable").equals("true")) {
+                    onNodeClick(node.getId());
+                }
             }
         });
         panel.add(treePanel);
