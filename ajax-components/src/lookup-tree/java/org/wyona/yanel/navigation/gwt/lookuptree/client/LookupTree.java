@@ -2,8 +2,10 @@ package org.wyona.yanel.navigation.gwt.lookuptree.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.i18n.client.Dictionary;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.gwtext.client.core.EventObject;
@@ -30,8 +32,12 @@ public class LookupTree implements EntryPoint {
     private String requestParameterType = "";
     private String actionUrl = "";
     private String submitLabel = "submit";
+    private String createFolderNameDefault = "New Folder";
+    private String createFolderSubmitLabel = "create new Folder";
     private String currentPath = "/";
+    private String currentPathLabelString = "Path: ";
     private boolean showUpload = true;
+    private boolean showCreateFolder = true;
     
 
     public void onModuleLoad() {
@@ -48,8 +54,12 @@ public class LookupTree implements EntryPoint {
             lookupHook = dict.get("lookup-hook");
             requestParameterType = dict.get("lookup-request-paramter-type");
             actionUrl = dict.get("lookup-upload-action-url");
+            createFolderNameDefault = dict.get("lookup-create-folder-name-default");
+            createFolderSubmitLabel = dict.get("lookup-create-folder-submit-label");
             submitLabel = dict.get("lookup-upload-submit-button-label");
+            currentPathLabelString = dict.get("lookup-current-path-label");
             showUpload = new Boolean(dict.get("lookup-upload-enabled")).booleanValue();
+            showCreateFolder = new Boolean(dict.get("lookup-create-folder-enabled")).booleanValue();
         } catch (java.util.MissingResourceException e) {
             // just use default values
         }
@@ -72,6 +82,8 @@ public class LookupTree implements EntryPoint {
 
         });
 
+        final Label currentPathLabel = new Label(this.currentPathLabelString + currentPath);
+        
         ResizableConfig config = new ResizableConfig();  
         config.setHandles(Resizable.SOUTH_EAST); 
         
@@ -82,6 +94,10 @@ public class LookupTree implements EntryPoint {
                 grid.setHeight(height);  
             }  
         }); 
+        
+        final LookupCreatFolderPanel createFolderPanel = new LookupCreatFolderPanel(actionUrl, createFolderSubmitLabel, createFolderNameDefault);
+        createFolderPanel.setHeight("30px");
+        createFolderPanel.setGrid(grid);
         
         final LookupUploadPanel form = new LookupUploadPanel(actionUrl, submitLabel);
         form.setGrid(grid);
@@ -103,6 +119,8 @@ public class LookupTree implements EntryPoint {
                 grid.setCurrentPath(currentPath);
                 grid.updateData();
                 form.setCurrentPath(currentPath);
+                createFolderPanel.setCurrentPath(currentPath);
+                currentPathLabel.setText(currentPathLabelString + currentPath);
             }
         });
             
@@ -117,8 +135,16 @@ public class LookupTree implements EntryPoint {
 
         
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        final VerticalPanel gridAndPathPanel = new VerticalPanel();
+        
         horizontalPanel.add(treePanel);
-        horizontalPanel.add(grid);
+        gridAndPathPanel.add(currentPathLabel);
+        gridAndPathPanel.add(grid);
+        if(showCreateFolder) {
+            verticalPanel.add(createFolderPanel);
+        }
+        horizontalPanel.add(gridAndPathPanel);
+
         verticalPanel.add(horizontalPanel);
         panel.add(verticalPanel);
         RootPanel.get(lookupHook).add(panel);
