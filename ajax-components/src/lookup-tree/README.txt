@@ -21,6 +21,9 @@ lookup-request-paramter-type: strange way to pass the request-paramter type. (TO
 lookup-upload-action-url: to where should a upload request be sent.
 lookup-upload-submit-button-label: the label of the submit button of the uplad form
 lookup-upload-enabled: true/false to disable the upload widget.
+lookup-create-folder-name-default: default text of the folder name input field
+lookup-current-path-label": Label in front of the display of the current path.
+lookup-create-folder-enabled": true/false to disable the create-new-folder widget.  
             
 Exampe lookupTreeConfig:
 
@@ -31,10 +34,13 @@ var lookupTreeConfig = {
               "lookup-treepanel-height": "340", 
               "lookup-gridpanel-width": "240", 
               "lookup-gridpanel-height": "340", 
-              "lookup-root-node-label": "test",
+              "lookup-root-node-label": "Root",
               "lookup-hook": "lookupHook",
               "lookup-request-paramter-type": '${resource.getParameterAsString("type")}',
               "lookup-upload-action-url": "${yanel.back2realm}create-new-page.html",
               "lookup-upload-submit-button-label": "Upload",
+              "lookup-create-folder-name-default": "Folder Name",
+              "lookup-current-path-label": "Current Path:", 
+              "lookup-create-folder-enabled": "true" ,         
               "lookup-upload-enabled": "true"
           }; 
