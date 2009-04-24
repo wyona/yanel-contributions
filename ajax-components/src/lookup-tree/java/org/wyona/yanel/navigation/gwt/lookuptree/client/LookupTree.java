@@ -83,6 +83,14 @@ public class LookupTree implements EntryPoint {
             }  
         }); 
         
+        final LookupUploadPanel form = new LookupUploadPanel(actionUrl, submitLabel);
+        form.setGrid(grid);
+        final VerticalPanel verticalPanel = new VerticalPanel();
+        if (showUpload) {
+            form.setHeight("30px");
+            verticalPanel.add(form);
+        }
+        
         final TreePanel treePanel = new LookupTreePanel(lookupRootNodeLabel, requestParameterType);
         treePanel.setEnableDD(false);
         treePanel.setContainerScroll(true);
@@ -94,6 +102,7 @@ public class LookupTree implements EntryPoint {
                 currentPath = node.getId();
                 grid.setCurrentPath(currentPath);
                 grid.updateData();
+                form.setCurrentPath(currentPath);
             }
         });
             
@@ -105,12 +114,7 @@ public class LookupTree implements EntryPoint {
             }  
         }); 
         
-        final VerticalPanel verticalPanel = new VerticalPanel();
-        if (showUpload) {
-            final FormPanel form = new LookupUploadPanel(actionUrl, submitLabel);
-            form.setHeight("30px");
-            verticalPanel.add(form);
-        }
+
         
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
         horizontalPanel.add(treePanel);
