@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Creatable, Modifiable, Deletable v3 resource</title>
+    <style>
+h2 {
+  font-size: 130%;
+  color:     #ffffff;
+  background-color: #525D76;
+}
+pre {
+  background-color: efefef;
+}
+td {
+  background-color: eeeeee;
+  color:            000000;
+}
+
+/* first row */
+table tr:first-child td {
+  background-color: cccccc;
+  color:            000000;
+}
+
+/* or th as first row */
+table th {
+  background-color: cccccc;
+  color:            000000;
+}
+    </style>
+  </head>
+  <body>
+    <h1>Creatable, Modifiable, Deletable v3 resource</h1>
+
+    <h2>Overview</h2>
+
+    <dl>
+      <dt>Name:</dt> <dd>shared</dd>
+      <dt>Namespace:</dt> <dd>http://www.wyona.org/yanel/resource/1.0</dd>
+      <dt>Universal Name:</dt> <dd>&lt;{http://www.wyona.org/yanel/resource/1.0}controller-adapter/&gt;</dd>
+      <dt>Description:</dt> <dd>Java classes of creatable, modifiable, deletable Version 3 proposal</dd>
+      <dt>Java Class:</dt> <dd>org.wyona.yanel.impl.resources.JellyAdapterForCUDResource</dd>
+    </dl>
+
+    <h2>Examples</h2>
+
+<p>TBD</p>
+
+<!--
+    <p><b>Default view</b></p>
+
+<pre>
+    &lt;yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+      &lt;yanel:xml name="redirect" namespace="http://www.wyona.org/yanel/resource/1.0"/>
+
+      &lt;yanel:property name="mime-type" value="text/html"/>
+      &lt;yanel:property name="source-view-mime-type" value="application/xhtml+xml"/>
+
+      &lt;yanel:property name="xslt" value="/xslt/body.xsl"/>
+      &lt;yanel:property name="xslt" value="/xslt/global.xsl"/>
+
+      &lt;yanel:property name="yanel-path" value="/hello/world.xhtml"/>
+      &lt;yanel:property name="workflow-schema" value="/workflows/workflow-with-review.xml"/>
+    &lt;/yanel:resource-config>
+</pre>
+
+    <p><b>Custom views</b></p>
+
+<pre>
+    &lt;yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+      &lt;yanel:rti name="xml" namespace="http://www.wyona.org/yanel/resource/1.0"/>
+
+      &lt;yanel:property name="href" value="http://fallback.default.com"/>
+
+      &lt;yanel:custom-config>
+      &lt;/yanel:custom-config>
+    &lt;/yanel:resource-config>
+</pre>
+
+<p>
+Available serializers are HTML_TRANSITIONAL, XHTML_STRICT, XML, TEXT (whereas default is XHTML_STRICT). See src/impl/java/org/wyona/yanel/impl/resources/BasicXMLResource.java for details.
+</p>
+-->
+
+  </body>
+</html>
