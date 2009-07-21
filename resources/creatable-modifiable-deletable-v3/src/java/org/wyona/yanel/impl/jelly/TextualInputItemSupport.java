@@ -33,7 +33,7 @@ public abstract class TextualInputItemSupport extends AbstractResourceInputItem 
             return;
         }
         
-        if (!(value instanceof String)) throw new IllegalArgumentException("Value of input item '" + name + "' is not a string: " + value.toString());
+        if (!(value instanceof String)) throw new IllegalArgumentException("Value of input item '" + getName() + "' is not a string: " + value.toString());
         
         if( "".equals(((String)value).trim())){
             value = null;
