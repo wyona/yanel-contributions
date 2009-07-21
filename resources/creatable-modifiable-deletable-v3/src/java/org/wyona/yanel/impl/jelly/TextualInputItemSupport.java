@@ -24,13 +24,16 @@ public abstract class TextualInputItemSupport extends AbstractResourceInputItem 
         return this.value;
     }
 
+    /**
+     * Set value
+     */
     public void doSetValue(Object value) {
         if(value == null){
             this.value = null;
             return;
         }
         
-        if (!(value instanceof String)) throw new IllegalArgumentException("Passed argument is not a string: " + value.toString());
+        if (!(value instanceof String)) throw new IllegalArgumentException("Value of input item '" + name + "' is not a string: " + value.toString());
         
         if( "".equals(((String)value).trim())){
             value = null;
@@ -38,5 +41,4 @@ public abstract class TextualInputItemSupport extends AbstractResourceInputItem 
         
         this.value = (String)value;
     }
-
 }
