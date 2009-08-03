@@ -1,0 +1,2 @@
+#!/bin/sh
+tools/apache-ant_extras/build.sh "$@"
