@@ -9,7 +9,7 @@
       <remoteRepository refid="wyona.remote.repository"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-core"
                   version="${yanel.source.version}"/>
-      <dependency groupId="wyona-org-meguni" artifactId="wyona-org-meguni" version="0.1-rREVISION"/>
+      <dependency groupId="wyona-org-meguni" artifactId="wyona-org-meguni" version="0.1-r41793"/>
       <dependency groupId="javax.servlet" artifactId="servlet-api" version="2.3"/>
       <dependency groupId="foaf" artifactId="yanel-resource-foaf-shared" version="1.0-dev-rXXX"/>
       <dependency groupId="foaf" artifactId="yanel-resource-foaf" version="0.0.1-dev-rXXX"/>
@@ -17,7 +17,7 @@
 
     <artifact:dependencies pathId="maven2.resource.classpath" filesetId="maven2.resource.fileset">
       <remoteRepository refid="wyona.remote.repository"/>
-      <dependency groupId="wyona-org-meguni" artifactId="wyona-org-meguni" version="0.1-rREVISION"/>
+      <dependency groupId="wyona-org-meguni" artifactId="wyona-org-meguni" version="0.1-r41793"/>
     </artifact:dependencies>
 
     <property name="maven2.cp" refid="maven2.classpath"/>
