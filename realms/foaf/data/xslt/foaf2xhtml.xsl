@@ -34,7 +34,8 @@
 
 <xsl:template match="/">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<!-- See http://gmpg.org/xfn/join about XFN (XHTML Friends Network) -->
+<head profile="http://gmpg.org/xfn/11">
   <title><xsl:value-of select="/wyona:foaf/rdf:RDF/foaf:Person/foaf:name"/></title>
   <link rel="neutron-introspection" type="application/neutron+xml" href="?yanel.resource.usecase=introspection"/>
   <link rel="meta" type="application/rdf+xml" title="FOAF" href="{$name-without-suffix}.rdf"/>
@@ -95,6 +96,9 @@
 </fieldset>
 </td>
 </tr>
+<tr>
+  <td colspan="2"><a href="http://gmpg.org/xfn/"><img src="http://gmpg.org/xfn/xfn-btn.gif" border="0"/></a></td>
+</tr>
 </table>
 </body>
 </html>
@@ -150,6 +154,7 @@
 </xsl:template>
 
 <xsl:template match="foaf:knows">
+      <!-- See XFN quick reference re rel: http://gmpg.org/xfn/join -->
 <xsl:for-each select="foaf:Person">
   <li>
   <xsl:choose>
@@ -160,12 +165,12 @@
           <a href="print.html?href={$rdf-link}"><xsl:value-of select="foaf:name"/></a>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{substring-before($rdf-link, '.rdf')}.html"><xsl:value-of select="foaf:name"/></a>
+          <a href="{substring-before($rdf-link, '.rdf')}.html" rel="acquaintance"><xsl:value-of select="foaf:name"/></a>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
     <xsl:when test="foaf:homepage">
-      <a href="{foaf:homepage/@rdf:resource}"><xsl:value-of select="foaf:name"/></a>
+      <a href="{foaf:homepage/@rdf:resource}" rel="acquaintance"><xsl:value-of select="foaf:name"/></a>
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="foaf:name"/>
