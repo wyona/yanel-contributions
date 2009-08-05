@@ -111,7 +111,7 @@ public class FindFriendResource extends Resource implements ViewableV2 {
     private StringBuffer getThirdPartyResults(String qs) {
         StringBuffer sb = new StringBuffer("");
         try {
-            ResultSet resultSet = getSearchResults(qs.replaceAll(" ", "+") + "+FOAF");
+            ResultSet resultSet = getSearchResults(qs + "+FOAF");
 
             if (resultSet != null && resultSet.size() > 0) {
                 sb.append("<provider source-name=\"" + resultSet.getSourceName() + "\" source-domain=\"" + resultSet.getSourceDomain() + "\" numberOfResults=\"" + resultSet.size() + "\">");
@@ -151,7 +151,7 @@ public class FindFriendResource extends Resource implements ViewableV2 {
         StringBuffer sb = new StringBuffer("");
 
         Repository pRepo = getProfilesRepository();
-        Node[] pNodes = pRepo.search(qs);
+        Node[] pNodes = pRepo.getSearcher().search(qs);
         if (pNodes != null && pNodes.length > 0) {
             sb.append("<provider source-name=\"" + "Wyona-FOAF" + "\" source-domain=\"" + "http://foaf.wyona.org" + "\" numberOfResults=\"" + pNodes.length + "\">");
             for (int i = 0; i < pNodes.length; i++) {
