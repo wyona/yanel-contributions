@@ -168,6 +168,7 @@
           <a href="{substring-before($rdf-link, '.rdf')}.html" rel="acquaintance"><xsl:value-of select="foaf:name"/></a>
         </xsl:otherwise>
       </xsl:choose>
+      &#160;<img src="{$yarep.back2realm}foafTiny.gif"/>
     </xsl:when>
     <xsl:when test="foaf:homepage">
       <a href="{foaf:homepage/@rdf:resource}" rel="acquaintance"><xsl:value-of select="foaf:name"/></a>
