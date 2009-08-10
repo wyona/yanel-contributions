@@ -29,7 +29,7 @@ import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 /**
  *
  */
-public class FOAFRealm extends org.wyona.yanel.core.map.Realm {
+public class FOAFRealm extends org.wyona.yanel.core.map.RealmDefaultImpl {
 
     private Category log = Category.getInstance(FOAFRealm.class);
 
