@@ -31,7 +31,7 @@ public class TimeTrackerResource extends BasicXMLResource {
         org.wyona.security.core.api.Identity identity = getEnvironment().getIdentity();
         if (identity != null && identity.getUsername() != null) {
             org.wyona.security.core.api.User user = getRealm().getIdentityManager().getUserManager().getUser(identity.getUsername());
-            sb.append("  <user id=\"" + identity.getUsername() + "\">" + user.getDescription() + "</user>");
+            sb.append("  <user id=\"" + identity.getUsername() + "\">" + user.getName() + "</user>");
         } else {
             sb.append("<no-identity-yet/>");
         }

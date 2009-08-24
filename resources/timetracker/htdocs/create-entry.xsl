@@ -16,12 +16,14 @@
   </head>
   <body>
     <a href="?yanel.resource.viewid=xml">Debug XML</a>
-    <h1>Create Time Entry</h1>
-    <form>
       <table>
         <tr>
           <td>Your name:</td><td><xsl:value-of select="/tt:time-tracking/tt:user"/><xsl:apply-templates select="/tt:time-tracking/tt:no-identity-yet"/></td>
         </tr>
+      </table>
+    <h1>Create Time Entry</h1>
+    <form>
+      <table>
         <tr><td>*Date:</td><td><input type="text" name="date" value="TODO"/></td></tr>
         <tr><td>*Client/Project:</td><td><select name="client-project"><option value="todo1">TODO 1</option><option value="todo2">TODO 2</option></select></td></tr>
         <tr><td>*Task/Description:</td><td><input type="text" name="task-description" value=""/></td></tr>
