@@ -4,6 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:tt="http://www.wyona.org/resource/time-tracking/1.0"
 >
 
 <xsl:param name="yarep.back2realm" select="'BACK2REALM_IS_NULL'"/>
@@ -18,7 +19,7 @@
     <form>
       <table>
         <tr>
-          <td>Your name:</td><td>TODO</td>
+          <td>Your name:</td><td><xsl:value-of select="/tt:time-tracking/tt:user"/></td>
         </tr>
         <tr><td>*Date:</td><td><input type="text" name="date" value="TODO"/></td></tr>
         <tr><td>*Client/Project:</td><td><select name="client-project"><option value="todo1">TODO 1</option><option value="todo2">TODO 2</option></select></td></tr>
