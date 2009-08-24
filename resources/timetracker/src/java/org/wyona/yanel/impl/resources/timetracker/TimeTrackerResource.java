@@ -21,14 +21,20 @@ public class TimeTrackerResource extends BasicXMLResource {
     /*
      * @see org.wyona.yanel.impl.resources.BasicXMLResource#getContentXML(String)
      */
-    protected InputStream getContentXML(String viewId) {
+    protected InputStream getContentXML(String viewId) throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("requested viewId: " + viewId);
         }
 
         StringBuilder sb = new StringBuilder("<?xml version=\"1.0\"?>");
         sb.append("<time-tracking xmlns=\"http://www.wyona.org/resource/time-tracking/1.0\">");
-        sb.append("  <user id=\"" + "michi" + "\">" + "Michael Wechner" + "</user>");
+        org.wyona.security.core.api.Identity identity = getEnvironment().getIdentity();
+        if (identity != null && identity.getUsername() != null) {
+            org.wyona.security.core.api.User user = getRealm().getIdentityManager().getUserManager().getUser(identity.getUsername());
+            sb.append("  <user id=\"" + identity.getUsername() + "\">" + user.getDescription() + "</user>");
+        } else {
+            sb.append("<no-identity-yet/>");
+        }
         sb.append("</time-tracking>");
 
         return new ByteArrayInputStream(sb.toString().getBytes());

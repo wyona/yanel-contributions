@@ -15,15 +15,16 @@
     <title>Create time entry</title>
   </head>
   <body>
+    <a href="?yanel.resource.viewid=xml">Debug XML</a>
     <h1>Create Time Entry</h1>
     <form>
       <table>
         <tr>
-          <td>Your name:</td><td><xsl:value-of select="/tt:time-tracking/tt:user"/></td>
+          <td>Your name:</td><td><xsl:value-of select="/tt:time-tracking/tt:user"/><xsl:apply-templates select="/tt:time-tracking/tt:no-identity-yet"/></td>
         </tr>
         <tr><td>*Date:</td><td><input type="text" name="date" value="TODO"/></td></tr>
         <tr><td>*Client/Project:</td><td><select name="client-project"><option value="todo1">TODO 1</option><option value="todo2">TODO 2</option></select></td></tr>
-        <tr><td>*Task/Description:</td><td><input type="text" name="task-description" value="TODO"/></td></tr>
+        <tr><td>*Task/Description:</td><td><input type="text" name="task-description" value=""/></td></tr>
         <tr><td>*Effort/Duration (h):</td><td><input type="text" name="effort" value="0.25"/></td></tr>
         <tr><td>Comment:</td><td><input type="text" name="comment" value=""/></td></tr>
         <tr><td colspan="2"><input type="submit" name="submit" value="Save"/> <input type="submit" name="cancel" value="Cancel"/></td></tr>
@@ -34,6 +35,10 @@
     <p>TODO</p>
   </body>
 </html>
+</xsl:template>
+
+<xsl:template match="tt:no-identity-yet">
+WARNING: No identity yet! (HINT: This resource should be protected)
 </xsl:template>
 
 </xsl:stylesheet>
