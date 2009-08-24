@@ -1,0 +1,3 @@
+<project name="yanel-timetracker-resource-type">
+  <import file="${yanel.source.home}/src/build/resource-types/resource-type.build.xml"/>
+</project>
