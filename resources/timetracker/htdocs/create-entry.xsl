@@ -12,7 +12,7 @@
 <xsl:template match="/">
 <html>
   <head>
-    <title>Create time entry</title>
+    <title>Create Time Entry - Time Tracking</title>
   </head>
   <body>
     <a href="?yanel.resource.viewid=xml">Debug XML</a>
