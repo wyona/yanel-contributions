@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.wyona.yanel.impl.resources;
+package org.wyona.yanel.impl.resources.example;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -32,16 +32,16 @@ import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 
 /**
- * 
+ * Simple resource example displaying the time
  */
-public class ExampleResource extends Resource implements ViewableV1, CreatableV2 {
+public class WorldTimeResource extends Resource implements ViewableV1, CreatableV2 {
 
-    private static Category log = Category.getInstance(ExampleResource.class);
+    private static Category log = Category.getInstance(WorldTimeResource.class);
 
     /**
      * 
      */
-    public ExampleResource() {
+    public WorldTimeResource() {
     }
 
     /**

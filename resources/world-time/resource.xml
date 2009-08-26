@@ -3,7 +3,7 @@
 <resource xmlns="http://www.wyona.org/yanel/1.0"
   name="world-time"
   namespace="http://www.wyona.org/yanel/resource/1.0"
-  class="org.wyona.yanel.impl.resources.ExampleResource"
+  class="org.wyona.yanel.impl.resources.example.WorldTimeResource"
   >
   <description>
     World Time resource as a minimal example
