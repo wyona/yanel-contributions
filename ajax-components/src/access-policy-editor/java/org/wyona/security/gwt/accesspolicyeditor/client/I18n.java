@@ -24,6 +24,17 @@ public class I18n {
      *
      */
     public static String getLabel(String key, String language) {
-        return "WARNING: No such language '" + language + "' implemented!";
+        if (language.equals("en")) {
+            if (key.equals("search-box-label")) {
+                return "Search users and groups: ";
+            }
+        } else if (language.equals("de")) {
+            if (key.equals("search-box-label")) {
+                return "Suche Benutzer/Gruppen: ";
+            }
+        } else {
+            return "WARNING: No such language '" + language + "' implemented!";
+        }
+        return "WARNING: No such key '" + key + "' and language '" + language + "' implemented!";
     }
 }

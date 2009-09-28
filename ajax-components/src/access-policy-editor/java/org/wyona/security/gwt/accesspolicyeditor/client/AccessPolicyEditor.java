@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -62,6 +63,9 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
+        //String language = "en";
+        String language = "de";
+
         String identitiesURL = "DEFAULT-identities-and-usecases.xml";
         String readPolicyURL = "DEFAULT-policy.xml";
         String cancelURL = "DEFAULT-cancel.html";
@@ -93,12 +97,14 @@ public class AccessPolicyEditor implements EntryPoint {
         VerticalPanel vp = new VerticalPanel();
         RootPanel.get("access-policy-editor-hook").add(vp);
 
-        VerticalPanel searchFilterVP = new VerticalPanel();
-        vp.add(searchFilterVP);
+        HorizontalPanel searchFilterPanel = new HorizontalPanel();
+        vp.add(searchFilterPanel);
+
+        searchFilterPanel.add(new Label(I18n.getLabel("search-box-label", language)));
 
         final TextBox searchTB = new TextBox();
         searchTB.setVisibleLength(30);
-        searchFilterVP.add(searchTB);
+        searchFilterPanel.add(searchTB);
 
         searchTB.addKeyboardListener(
                 new KeyboardListenerAdapter() {
@@ -131,20 +137,21 @@ public class AccessPolicyEditor implements EntryPoint {
                         // filterList(list, filter.getText());
                     }
                 });
-        
-        
-//        Button searchButton = new Button("Search User or Group", new ClickListener() {
-//            public void onClick(Widget sender) {
-//                int itemCount = identitiesLBW.getListBox().getItemCount();
-//                for (int i = 0; i < itemCount; i++) {
-//                    String itemText = identitiesLBW.getListBox().getItemText(i);
-//                    if (itemText.indexOf(searchTB.getText()) >= 0) Window.alert("Result: " + itemText);
-//                    
-//                }
-//            }
-//  
-//        });
-//        searchFilterVP.add(searchButton);
+
+/* TODO: Is this still needed?!
+        Button searchButton = new Button("Search User or Group", new ClickListener() {
+            public void onClick(Widget sender) {
+                int itemCount = identitiesLBW.getListBox().getItemCount();
+                for (int i = 0; i < itemCount; i++) {
+                    String itemText = identitiesLBW.getListBox().getItemText(i);
+                    if (itemText.indexOf(searchTB.getText()) >= 0) Window.alert("Result: " + itemText);
+                    
+                }
+            }
+  
+        });
+        searchFilterPanel.add(searchButton);
+*/
 
         HorizontalPanel hp = new HorizontalPanel();
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
