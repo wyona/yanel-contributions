@@ -27,10 +27,14 @@ public class I18n {
         if (language.equals("en")) {
             if (key.equals("search-box-label")) {
                 return "Search users and groups: ";
+            } else if(key.equals("inherit-rights-label")) {
+                return "Inherit rights from parent policies";
             }
         } else if (language.equals("de")) {
             if (key.equals("search-box-label")) {
                 return "Suche Benutzer/Gruppen: ";
+            } else if(key.equals("inherit-rights-label")) {
+                return "Uebernehme vererbte Rechte der Eltern-Policies";
             }
         } else {
             return "WARNING: No such language '" + language + "' implemented!";

@@ -63,8 +63,8 @@ public class AccessPolicyEditor implements EntryPoint {
      *
      */
     public void onModuleLoad() {
-        //String language = "en";
-        String language = "de";
+        String language = "en";
+        //String language = "de";
 
         String identitiesURL = "DEFAULT-identities-and-usecases.xml";
         String readPolicyURL = "DEFAULT-policy.xml";
@@ -88,7 +88,7 @@ public class AccessPolicyEditor implements EntryPoint {
         
         identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
         
-        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies);
+        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies, language);
 
         
         getPolicy(readPolicyURL);
