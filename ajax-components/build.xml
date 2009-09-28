@@ -44,23 +44,30 @@
     <echo>Module name: ${module.name}</echo>
     <echo>Component build directory: ${component.build.dir}</echo>
 
-<!--
     <java classname="com.google.gwt.dev.Compiler" fork="yes">
       <classpath refid="google.compile.classpath" />
       <jvmarg value="-Xmx256M"/>
+
+      <arg value="-war" />
+      <arg value="${component.build.dir}" />
+
       <arg value="${module.name}" />
     </java>
--->
 
+<!--
     <java classname="com.google.gwt.dev.GWTCompiler" fork="yes">
       <classpath refid="google.compile.classpath" />
       <jvmarg value="-Xmx256M"/>
+
       <arg value="-out" />
       <arg value="${component.build.dir}" />
+
       <arg value="-style" />
       <arg value="OBF" />
+
       <arg value="${module.name}" />
     </java>
+-->
   </target>
 
   <target name="google.hostmode" depends="clean" description="Opens your component in the gwt host mode browser">
