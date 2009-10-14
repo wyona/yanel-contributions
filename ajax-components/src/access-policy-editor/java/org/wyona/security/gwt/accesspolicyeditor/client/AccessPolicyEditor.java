@@ -83,14 +83,14 @@ public class AccessPolicyEditor implements EntryPoint {
         }
 
         // Get identities/groups and available rights from server
-        getIdentitiesAndRights(identitiesURL); // TODO: Subtract policy identities!
+        getIdentitiesAndRights(identitiesURL);
 
         identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
         identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
         
         policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies, language);
 
-        // Get policy from server
+        // Get policy from server (within getPolicy() the identities list will be updated accordingly)
         getPolicy(readPolicyURL);
 
         // Setup GUI
@@ -283,46 +283,45 @@ public class AccessPolicyEditor implements EntryPoint {
 
                         this.cancel();
                         
-                        //remove policy users from users
+                        // Remove/Subtract policy-users/groups from "Identities"
                         ArrayList tmpUsers = new ArrayList(Arrays.asList(identitiesAllUsers));
                         ArrayList tmpGroups = new ArrayList(Arrays.asList(identitiesAllGroups));
                         
-                        
-                        
-                        
-//                        int itemCountUI = identitiesAllUsers.length;
-//                        for (int j = 0; j < itemCountUI; j++) {
-//                            String itemTextIAU = identitiesAllUsers[j];
-//                            if (!itemText.equals(itemTextIAU) && !tmpUsers.contains(itemTextIAU)) {
-//                                tmpUsers.add(itemTextIAU);
-//                            } else {
-//                                //Window.alert("not add: " + itemTextIAU + " = " +  itemText);
-//                            }
-//                        }
+/*
+                        int itemCountUI = identitiesAllUsers.length;
+                        for (int j = 0; j < itemCountUI; j++) {
+                            String itemTextIAU = identitiesAllUsers[j];
+                            if (!itemText.equals(itemTextIAU) && !tmpUsers.contains(itemTextIAU)) {
+                                tmpUsers.add(itemTextIAU);
+                            } else {
+                                //Window.alert("not add: " + itemTextIAU + " = " +  itemText);
+                            }
+                        }
+
+                        int itemCountUI = identitiesAllGroups.length;
+                        for (int j = 0; j < itemCountUI; j++) {
+                            String itemTextIAG = identitiesAllGroups[j];
+                            if (!itemText.equals(itemTextIAG)  && !tmpGroups.contains(itemTextIAG)) {
+                                tmpGroups.add(itemTextIAG);
+                            } else {
+                                //Window.alert("not add: " + itemTextIAG + " = " +  itemText);
+                            }
+                        }
+*/
+
+                        // Remove all users from identities list, which already exist within the policy
                         int itemCountUP = policyUsers.length;
                         for (int i = 0; i < itemCountUP; i++) {
                             String itemText = policyUsers[i].getId();
                             tmpUsers.remove(itemText);
-                            
                         }
 
+                        // Remove all groups from identities list, which already exist within the policy
                         int itemCountGP = policyGroups.length;
                         for (int i = 0; i < itemCountGP; i++) {
                             String itemText = policyGroups[i].getId();
                             tmpGroups.remove(itemText);
                         }
-
-//                        int itemCountUI = identitiesAllGroups.length;
-//                        for (int j = 0; j < itemCountUI; j++) {
-//                            String itemTextIAG = identitiesAllGroups[j];
-//                            if (!itemText.equals(itemTextIAG)  && !tmpGroups.contains(itemTextIAG)) {
-//                                tmpGroups.add(itemTextIAG);
-//                            } else {
-//                                //Window.alert("not add: " + itemTextIAG + " = " +  itemText);
-//                            }
-//                        }
-                        
-                        
                         
                         String tmpUsersStr [] = new String [tmpUsers.size ()];
                         tmpUsers.toArray(tmpUsersStr);
