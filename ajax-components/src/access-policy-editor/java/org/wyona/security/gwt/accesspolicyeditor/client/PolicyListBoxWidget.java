@@ -80,7 +80,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     Right[] rights = users[i].getRights();
                     //Window.alert("User: " + users[i].getId() + " (Number of rights: " + rights.length + ")");
                     String value = type+": " + id;
-                    lb.addItem(getListLabel(type, id, rights), value);
+                    lb.addItem(getListItemLabel(type, id, rights), value);
                 }
             }
             if (groups != null) {
@@ -90,7 +90,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     Right[] rights = groups[i].getRights();
                     //Window.alert("Group: " + groups[i].getId() + " (Number of rights: " + rights.length + ")");
                     String value = type+": " + id;
-                    lb.addItem(getListLabel(type, id, rights), value);
+                    lb.addItem(getListItemLabel(type, id, rights), value);
                 }
             } else {
                 Window.alert("No groups!");
@@ -306,11 +306,23 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
+     * Generate list item label, e.g. "u: (view, -, toolbar) user-foo-bar"
+     *
      * @param type u for user and g for group
      * @param id
      * @param rights Rights
      */
-    private String getListLabel(String type, String id, Right[] rights) {
+    private String getListItemLabel(String type, String id, Right[] rights) {
+
+/*
+        if (availableRights == null) {
+            Window.alert("INFO: Available rights not loaded yet! Wait some more seconds ...");
+            for (int i = 0; i < 10; i ++) {
+                // sleep(1);
+            }
+        }
+*/
+
         StringBuffer sb = new StringBuffer(type + ":");
 
         if (availableRights != null) {
@@ -334,7 +346,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
             }
             sb.append(")");
         } else {
-            Window.alert("Available rights not loaded yet!");
+            Window.alert("ERROR: Available rights are null (probably not loaded yet) and hence label cannot be completed!");
         }
         sb.append(" " + id);
         return sb.toString();
