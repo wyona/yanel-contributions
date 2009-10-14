@@ -314,25 +314,25 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         StringBuffer sb = new StringBuffer(type + ":");
 
         if (availableRights != null) {
-        sb.append("(");
-        for (int i = 0; i < availableRights.length; i ++) {
-            boolean rightExists = false;
-            for (int k = 0; k < rights.length; k ++) {
-                if (availableRights[i].getId().equals(rights[k].getId()) && rights[k].getPermission()) {
-                    rightExists = true;
-                    break;
+            sb.append("(");
+            for (int i = 0; i < availableRights.length; i ++) {
+                boolean rightExists = false;
+                for (int k = 0; k < rights.length; k ++) {
+                    if (availableRights[i].getId().equals(rights[k].getId()) && rights[k].getPermission()) {
+                        rightExists = true;
+                        break;
+                    }
+                }
+                if (i > 0) {
+                    sb.append(",");
+                }
+                if (rightExists) {
+                    sb.append(availableRights[i].getId());
+                } else {
+                    sb.append("-");
                 }
             }
-            if (i > 0) {
-                sb.append(",");
-            }
-            if (rightExists) {
-                sb.append(availableRights[i].getId());
-            } else {
-                sb.append("-");
-            }
-        }
-        sb.append(")");
+            sb.append(")");
         } else {
             Window.alert("Available rights not loaded yet!");
         }
