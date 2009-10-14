@@ -8,9 +8,11 @@
     <right id="introspection" permission="false"/>
   </world>
 
+<!--
   <user id="user_1">
     <right id="view"/>
   </user>
+-->
   <user id="user_2">
     <right id="view"/>
     <right id="toolbar"/>
