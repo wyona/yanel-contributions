@@ -3,6 +3,7 @@
 <access-control>
 
   <users>
+    <user id="http://michaelwechner.livejournal.com/">Michael Wechner OpenID</user>
     <user id="foo">Foo</user>
     <user id="user_1">User 1</user>
     <user id="user_2">User 2</user>
@@ -23,10 +24,11 @@
     <user id="user_17">User 17</user>
     <user id="user_18">User 18</user>
     <user id="user_19">User 19</user>
-     <user id="user_20">User 20</user>
+    <user id="user_20">User 20</user>
   </users>
 
   <groups>
+    <group id="login">Login</group>
     <group id="bar">Bar</group>
     <group id="group_1">Group 1</group>
     <group id="group_2">Group 2</group>
