@@ -56,7 +56,8 @@ public class AccessPolicyEditor implements EntryPoint {
     String[] identitiesAllUsers;
     String[] identitiesAllGroups;
     Right[] allRights;
-    
+
+    // How many items shall be displayed within a list box, before one has to use the scroll-bar
     int visibleItemCount = 20;
 
     /**
@@ -81,16 +82,15 @@ public class AccessPolicyEditor implements EntryPoint {
             Window.alert("Exception: " + e.getMessage());
         }
 
-        // Get data from server
+        // Get identities/groups and available rights from server
         getIdentitiesAndRights(identitiesURL); // TODO: Subtract policy identities!
 
         identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
-        
         identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
         
         policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies, language);
 
-        
+        // Get policy from server
         getPolicy(readPolicyURL);
 
         // Setup GUI
