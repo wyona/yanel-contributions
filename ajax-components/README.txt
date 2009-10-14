@@ -3,7 +3,7 @@
   AJAX Components based on GWT (Google Web Toolkit)
   --------------------------------------------------
 
-    0) Download and install Apache Ant
+    0) Download and install Java and Apache Ant
 
     1) Download GWT from http://code.google.com/webtoolkit/download.html
 
@@ -12,7 +12,7 @@
           - the operating system specific gwt dev lib name
        within local.build.properties
 
-    3) Start building components, e.g.
+    3) Start building components (check JAVA_HOME), e.g.
           ant google.compile -Dcomponent.home.dir=src/hello-world
        A build directory should be created within the component directory, e.g.
           src/hello-world/build
