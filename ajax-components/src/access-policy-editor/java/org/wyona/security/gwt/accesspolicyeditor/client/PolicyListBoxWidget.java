@@ -52,7 +52,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     public PolicyListBoxWidget(int visibleItemCount, User[] users, Group[] groups, boolean useInheritedPolicies, String language) {
         initWidget(vp);
 
-        vp.add(new Label("Policy"));
+        vp.add(new Label("Policy:"));
 
         policyInheritanceCB = new CheckBox(I18n.getLabel("inherit-rights-label", language));
         setInheritRightsFlag(useInheritedPolicies);
