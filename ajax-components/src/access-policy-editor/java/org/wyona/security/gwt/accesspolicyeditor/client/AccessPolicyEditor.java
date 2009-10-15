@@ -159,13 +159,14 @@ public class AccessPolicyEditor implements EntryPoint {
 
 	
         HorizontalPanel buttonHP = new HorizontalPanel();
+        buttonHP.setSpacing(5);
         vp.add(buttonHP);
         //buttonHP.add(new Button("Apply Policy"));
 
         // Save Button
         final String savePolicyUrl = GWT.getHostPageBaseURL() + savePolicyURL.replaceAll("&amp;", "&");
         //saveButton = new Button("Save Policy and Exit", new ClickListener() {
-        saveButton = new Button("Save Policy", new ClickListener() {
+        saveButton = new Button("Save/Apply Policy", new ClickListener() {
             public void onClick(Widget sender) {
                 final AsynchronousPolicySetter aps = new AsynchronousPolicySetter(savePolicyUrl);
                 try {
@@ -182,7 +183,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         // Cancel Button
         final String cancelUrl = cancelURL;
-        Button cancelButton = new Button("Cancel", new ClickListener() {
+        Button cancelButton = new Button("Cancel/Close", new ClickListener() {
             public void onClick(Widget sender) {
                 //Window.alert("Redirect to " + cancelUrl);
                 redirectTo(GWT.getHostPageBaseURL() + cancelUrl);
