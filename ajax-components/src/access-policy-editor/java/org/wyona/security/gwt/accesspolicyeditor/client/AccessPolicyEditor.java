@@ -95,6 +95,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
+        vp.setSpacing(15);
         RootPanel.get("access-policy-editor-hook").add(vp);
 
         HorizontalPanel searchFilterPanel = new HorizontalPanel();
@@ -154,7 +155,6 @@ public class AccessPolicyEditor implements EntryPoint {
 */
 
         HorizontalPanel hp = new HorizontalPanel();
-        hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         vp.add(hp);
 
 	
@@ -202,8 +202,11 @@ public class AccessPolicyEditor implements EntryPoint {
 
         //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
 
+        hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
         hp.add(identitiesLBW);
+        hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         hp.add(ariw);
+        hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
         hp.add(policyLBW);
     }
 
