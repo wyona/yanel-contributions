@@ -20,3 +20,5 @@
     4) a) Test components (e.g. open a browser and open one of the test files, for example src/hello-world/build/org.wyona.yanel.gwt.helloworld.HelloWorld/TestHelloWorld.html)
        b) run target google.hostmode to open the gwt host mode browser (e.g. "ant google.hostmode -Dcomponent.home.dir=src/hello-world")
           IMPORTANT: add add a property hostmode.hostpage.name in your components build property file. (see component access-policy-editor)
+
+    5) Debug traffic, e.g. 'sudo ngrep -d eth0 "xml version" "port 8080"' and all the XML files (which contain a header <?xml version="1.0">) which are exchanged between client and server will be displayed.
