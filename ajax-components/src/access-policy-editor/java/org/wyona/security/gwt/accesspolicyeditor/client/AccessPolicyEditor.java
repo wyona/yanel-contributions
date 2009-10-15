@@ -69,6 +69,7 @@ public class AccessPolicyEditor implements EntryPoint {
 
         String identitiesURL = "DEFAULT-identities-and-usecases.xml";
         String readPolicyURL = "DEFAULT-policy.xml";
+        boolean cancelURLBaseEqualsHostPageURL = false;
         String cancelURL = "DEFAULT-cancel.html";
         String savePolicyURL = "DEFAULT-save-policy.xml";
         // Get URLs from host/html page
@@ -77,6 +78,7 @@ public class AccessPolicyEditor implements EntryPoint {
             identitiesURL = dict.get("identities-url");
             readPolicyURL = dict.get("policy-url");
             cancelURL = dict.get("cancel-url");
+            cancelURLBaseEqualsHostPageURL = new Boolean(dict.get("cancel-url-base-equals-host-page-url")).booleanValue();
             savePolicyURL = dict.get("save-url");
         } catch (java.util.MissingResourceException e) {
             Window.alert("Exception: " + e.getMessage());
@@ -183,10 +185,15 @@ public class AccessPolicyEditor implements EntryPoint {
 
         // Cancel Button
         final String cancelUrl = cancelURL;
+        final boolean cancelURLBaseEqualsHostPageURLFinal = cancelURLBaseEqualsHostPageURL;
         Button cancelButton = new Button("Cancel/Close", new ClickListener() {
             public void onClick(Widget sender) {
                 //Window.alert("Redirect to " + cancelUrl);
-                redirectTo(GWT.getHostPageBaseURL() + cancelUrl);
+                if (cancelURLBaseEqualsHostPageURLFinal) {
+                    redirectTo(GWT.getHostPageBaseURL() + cancelUrl);
+                } else {
+                    redirectTo(cancelUrl);
+                }
             }
             public native void redirectTo(String url) /*-{
                 $wnd.location.href=url;
