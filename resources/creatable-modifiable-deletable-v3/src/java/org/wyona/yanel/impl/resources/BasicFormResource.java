@@ -74,7 +74,8 @@ public abstract class BasicFormResource extends BasicXMLResource {
     private LinkedList<NameValuePair> validationErrors = new LinkedList<NameValuePair>();
 
     public View getView(String viewId) throws Exception {
-        if (getResourceConfigProperty("ssl-redirect") != null) {
+        String sslRedirectParam = getResourceConfigProperty("ssl-redirect");
+        if (sslRedirectParam != null && sslRedirectParam.equals("true")) {
             if (!getEnvironment().getRequest().isSecure() && getEnvironment().getRequest().getParameter("ssl") == null) {
                 View view = new View();
                 view.setResponse(false);
