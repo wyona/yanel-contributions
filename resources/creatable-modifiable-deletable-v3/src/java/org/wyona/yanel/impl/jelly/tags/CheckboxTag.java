@@ -31,6 +31,12 @@ public class CheckboxTag extends YanelTag {
                 attributes.addAttribute(XHTML_NAMESPACE, "", "type", "CDATA", "checkbox");
                 attributes.addAttribute(XHTML_NAMESPACE, "", "name", "CDATA", item.getName());
                 attributes.addAttribute(XHTML_NAMESPACE, "", "value", "CDATA", selection[i].getValue());
+                if (selection[i].getValue().equals("true")) {
+                    log.debug("Checked!");
+                    attributes.addAttribute(XHTML_NAMESPACE, "", "checked", "CDATA", "true");
+                } else {
+                    log.debug("NOT Checked!");
+                }
                 
                 if (isSelected(selection[i])) {
                     attributes.addAttribute(XHTML_NAMESPACE, "", "checked", "CDATA", "checked");
