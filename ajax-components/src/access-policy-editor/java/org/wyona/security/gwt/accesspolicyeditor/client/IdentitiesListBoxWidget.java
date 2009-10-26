@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *
+ * List box containing users and groups to choose/select from
  */
 public class IdentitiesListBoxWidget extends Composite implements ClickListener {
 
@@ -39,18 +39,29 @@ public class IdentitiesListBoxWidget extends Composite implements ClickListener 
 
     private VerticalPanel vp = new VerticalPanel();
 
+    private String language;
+
     /**
      *
      */
-    public IdentitiesListBoxWidget(int visibleItemCount) {
+    public IdentitiesListBoxWidget(int visibleItemCount, String language) {
+        this.language = language;
         initWidget(vp);
 
-        vp.add(new Label("Identities:"));
+        vp.add(new Label(I18n.getLabel("list-box-identities", language) + ":"));
 
         lb = new ListBox(true);
         lb.addClickListener(this);
         set(visibleItemCount, null, null);
         vp.add(lb);
+    }
+
+    /**
+     *
+     */
+    public void displayLoadingIdentities() {
+        lb.clear();
+        lb.addItem("Users/groups are being loaded from server ...");
     }
 
     /**

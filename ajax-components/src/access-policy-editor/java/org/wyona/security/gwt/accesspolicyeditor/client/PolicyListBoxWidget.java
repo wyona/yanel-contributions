@@ -315,11 +315,9 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     private String getListItemLabel(String type, String id, Right[] rights) {
 
 /*
-        if (availableRights == null) {
+        while (availableRights == null) {
             Window.alert("INFO: Available rights not loaded yet! Wait some more seconds ...");
-            for (int i = 0; i < 10; i ++) {
-                // sleep(1);
-            }
+            //sleep(1);
         }
 */
 

@@ -29,12 +29,16 @@ public class I18n {
                 return "Search users and groups: ";
             } else if(key.equals("inherit-rights-label")) {
                 return "Inherit rights from parent policies";
+            } else if(key.equals("list-box-identities")) {
+                return "Identities (Users and Groups)";
             }
         } else if (language.equals("de")) {
             if (key.equals("search-box-label")) {
                 return "Suche Benutzer/Gruppen: ";
             } else if(key.equals("inherit-rights-label")) {
                 return "Uebernehme vererbte Rechte der Eltern-Policies";
+            } else if(key.equals("list-box-identities")) {
+                return "Identitaeten (Benutzer und Gruppen)";
             }
         } else {
             return "WARNING: No such language '" + language + "' implemented!";

@@ -87,7 +87,7 @@ public class AccessPolicyEditor implements EntryPoint {
         // Get identities/groups and available rights from server
         getIdentitiesAndRights(identitiesURL);
 
-        identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount);
+        identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, language);
         identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
         
         policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies, language);
@@ -202,7 +202,7 @@ public class AccessPolicyEditor implements EntryPoint {
         saveButton.setStyleName("gwt-wyona-CancelButton");
         buttonHP.add(cancelButton);
 
-        vp.add(new Label("Wyona Access Control Policy (GWT) Editor version 1.0-dev-r45029"));
+        vp.add(new Label("Wyona Access Control Policy (GWT) Editor version 1.0-dev-r45198"));
         
 
         
@@ -236,7 +236,7 @@ public class AccessPolicyEditor implements EntryPoint {
                 Timer t = new Timer() {
                     public void run() {
                         if (request.isPending()) {
-                            // TODO: Show loading ...
+                            identitiesLBW.displayLoadingIdentities();
                             scheduleRepeating(10);
                         } else {
                             // "Redraw" Listbox
