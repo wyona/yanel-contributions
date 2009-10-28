@@ -16,7 +16,7 @@
 package org.wyona.security.gwt.accesspolicyeditor.client;
 
 /**
- *
+ * Also see http://code.google.com/webtoolkit/tutorials/1.6/i18n.html
  */
 public class I18n {
 
