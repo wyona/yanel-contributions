@@ -56,6 +56,8 @@ public class AccessPolicyEditor implements EntryPoint {
     String[] identitiesAllUsers;
     String[] identitiesAllGroups;
     Right[] allRights;
+    boolean rightsIdentitiesRetrievalCompleted = false;
+    boolean policyRetrievalCompleted = false;
 
     // How many items shall be displayed within a list box, before one has to use the scroll-bar
     int visibleItemCount = 20;
@@ -202,7 +204,7 @@ public class AccessPolicyEditor implements EntryPoint {
         saveButton.setStyleName("gwt-wyona-CancelButton");
         buttonHP.add(cancelButton);
 
-        vp.add(new Label("Wyona Access Control Policy (GWT) Editor version 1.0-dev-r45198"));
+        vp.add(new Label("Wyona Access Control Policy (GWT) Editor version 1.0-dev-r45225"));
         
 
         
@@ -236,24 +238,23 @@ public class AccessPolicyEditor implements EntryPoint {
                 Timer t = new Timer() {
                     public void run() {
                         if (request.isPending()) {
+                            rightsIdentitiesRetrievalCompleted = false;
                             identitiesLBW.displayLoadingIdentities();
                             scheduleRepeating(10);
                         } else {
-                            // "Redraw" Listbox
-                            //identitiesLBW.set(visibleItemCount, ag.getUsers(), ag.getGroups());
-                            // TODO: "Redraw" Policy Listbox
-                            //policyLBW.set();
+                            rightsIdentitiesRetrievalCompleted = true;
                             
                             allRights = ag.getRights();
                             identitiesAllUsers = ag.getUsers();
                             identitiesAllGroups = ag.getGroups();
                             this.cancel();
-                            if (allRights.length > 0 || identitiesAllUsers.length > 0 || identitiesAllGroups.length > 0 ) {
+                            // NOTE: Please note that the server might not provide any groups and hence the OR instead the AND!
+                            if (allRights.length > 0 && (identitiesAllUsers.length > 0 || identitiesAllGroups.length > 0)) {
                                 policyLBW.set(allRights);
                                 identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
-                                //Window.alert("Identities have been loaded!" + allRights.length + " " + identitiesAllUsers.length + " " + identitiesAllGroups.length);
+                                //Window.alert("Rights and identities have been loaded!" + allRights.length + " " + identitiesAllUsers.length + " " + identitiesAllGroups.length);
                             } else {
-                                Window.alert("No Identities have been loaded!");
+                                Window.alert("Rights and identities have not been loaded yet!");
                             }
                         }
                     }
@@ -281,12 +282,16 @@ public class AccessPolicyEditor implements EntryPoint {
             // Start new thread
             Timer t = new Timer() {
                 public void run() {
-                    if (request.isPending()) {
-                        // TODO: Show loading ...
+                    if (request.isPending() || !rightsIdentitiesRetrievalCompleted) {
+                        policyLBW.displayLoading(visibleItemCount);
+                        policyRetrievalCompleted = false;
                         scheduleRepeating(10);
                     } else {
+                        policyRetrievalCompleted = true;
+
                         policyUsers = apg.getUsers();
                         policyGroups = apg.getGroups();
+
                         // "Redraw" Listbox
                         policyLBW.setIdentities(visibleItemCount, policyUsers, policyGroups);
 
@@ -299,28 +304,6 @@ public class AccessPolicyEditor implements EntryPoint {
                         ArrayList tmpUsers = new ArrayList(Arrays.asList(identitiesAllUsers));
                         ArrayList tmpGroups = new ArrayList(Arrays.asList(identitiesAllGroups));
                         
-/*
-                        int itemCountUI = identitiesAllUsers.length;
-                        for (int j = 0; j < itemCountUI; j++) {
-                            String itemTextIAU = identitiesAllUsers[j];
-                            if (!itemText.equals(itemTextIAU) && !tmpUsers.contains(itemTextIAU)) {
-                                tmpUsers.add(itemTextIAU);
-                            } else {
-                                //Window.alert("not add: " + itemTextIAU + " = " +  itemText);
-                            }
-                        }
-
-                        int itemCountUI = identitiesAllGroups.length;
-                        for (int j = 0; j < itemCountUI; j++) {
-                            String itemTextIAG = identitiesAllGroups[j];
-                            if (!itemText.equals(itemTextIAG)  && !tmpGroups.contains(itemTextIAG)) {
-                                tmpGroups.add(itemTextIAG);
-                            } else {
-                                //Window.alert("not add: " + itemTextIAG + " = " +  itemText);
-                            }
-                        }
-*/
-
                         // Remove all users from identities list, which already exist within the policy
                         int itemCountUP = policyUsers.length;
                         for (int i = 0; i < itemCountUP; i++) {

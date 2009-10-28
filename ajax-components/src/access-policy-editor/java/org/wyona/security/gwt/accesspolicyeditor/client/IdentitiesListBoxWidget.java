@@ -61,7 +61,8 @@ public class IdentitiesListBoxWidget extends Composite implements ClickListener 
      */
     public void displayLoadingIdentities() {
         lb.clear();
-        lb.addItem("Users/groups are being loaded from server ...");
+        lb.addItem("Loading users/groups ...");
+        lb.addItem("Thanks for being patient!");
     }
 
     /**

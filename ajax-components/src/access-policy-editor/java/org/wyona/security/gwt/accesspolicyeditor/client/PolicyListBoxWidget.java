@@ -60,10 +60,21 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
         lb = new ListBox(true);
         lb.addClickListener(this);
-        setIdentities(visibleItemCount, users, groups);
+        //setIdentities(visibleItemCount, users, groups);
+        displayLoading(visibleItemCount);
         vp.add(lb);
 
         set(null);
+    }
+
+    /**
+     *
+     */
+    public void displayLoading(int visibleItemCount) {
+        lb.clear();
+        lb.setVisibleItemCount(visibleItemCount);
+        lb.addItem("Loading policy ...");
+        lb.addItem("Thanks for being patient!");
     }
 
     /**
