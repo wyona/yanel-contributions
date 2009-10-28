@@ -111,29 +111,28 @@ public class AccessPolicyEditor implements EntryPoint {
         searchTB.addKeyboardListener(
                 new KeyboardListenerAdapter() {
                     public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-                        ListBox idlb = identitiesLBW.getListBox();
-                        ArrayList tmpUsers = new ArrayList();
-                        ArrayList tmpGroups = new ArrayList();
-                        idlb.clear();
-                        int itemCountU = identitiesAllUsers.length;
-                        for (int i = 0; i < itemCountU; i++) {
+                        //ListBox identitiesLB = identitiesLBW.getListBox();
+                        //identitiesLB.clear();
+
+                        ArrayList resultUsers = new ArrayList();
+                        for (int i = 0; i < identitiesAllUsers.length; i++) {
                             String itemText = identitiesAllUsers[i];
                             if (itemText.indexOf(searchTB.getText()) >= 0) {
-                                tmpUsers.add(itemText);
+                                resultUsers.add(itemText);
                             }
                         }
-                        int itemCountG = identitiesAllGroups.length;
-                        for (int i = 0; i < itemCountG; i++) {
+                        ArrayList resultGroups = new ArrayList();
+                        for (int i = 0; i < identitiesAllGroups.length; i++) {
                             String itemText = identitiesAllGroups[i];
                             if (itemText.indexOf(searchTB.getText()) >= 0) {
-                                tmpGroups.add(itemText);
+                                resultGroups.add(itemText);
                             }
                         }
                         
-                        String tmpUsersStr [] = new String [tmpUsers.size ()];
-                        tmpUsers.toArray(tmpUsersStr);
-                        String tmpGroupStr [] = new String [tmpGroups.size ()];
-                        tmpGroups.toArray(tmpGroupStr);
+                        String tmpUsersStr [] = new String [resultUsers.size()];
+                        resultUsers.toArray(tmpUsersStr);
+                        String tmpGroupStr [] = new String [resultGroups.size()];
+                        resultGroups.toArray(tmpGroupStr);
                         
                         identitiesLBW.set(visibleItemCount, tmpUsersStr, tmpGroupStr);
                         // filterList(list, filter.getText());
@@ -201,7 +200,7 @@ public class AccessPolicyEditor implements EntryPoint {
         saveButton.setStyleName("gwt-wyona-CancelButton");
         buttonHP.add(cancelButton);
 
-        vp.add(new Label("Wyona Access Control Policy (GWT) Editor version 1.0-dev-r45226"));
+        vp.add(new Label("Wyona Access Control Policy (GWT) Editor version 1.0-dev-r45233"));
         
 
         
