@@ -87,14 +87,11 @@ public class AccessPolicyEditor implements EntryPoint {
         }
 
         // Get identities/groups and available rights from server
-        getIdentitiesAndRights(identitiesURL);
-
         identitiesLBW = new IdentitiesListBoxWidget(visibleItemCount, language);
-        identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
+        getIdentitiesAndRights(identitiesURL);
         
-        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies, language);
-
         // Get policy from server (within getPolicy() the identities list will be updated accordingly)
+        policyLBW = new PolicyListBoxWidget(visibleItemCount, policyUsers, policyGroups, useInheritedPolicies, language);
         getPolicy(readPolicyURL);
 
         // Setup GUI
@@ -239,7 +236,7 @@ public class AccessPolicyEditor implements EntryPoint {
                     public void run() {
                         if (request.isPending()) {
                             rightsIdentitiesRetrievalCompleted = false;
-                            identitiesLBW.displayLoadingIdentities();
+                            identitiesLBW.displayLoadingIdentities(visibleItemCount);
                             scheduleRepeating(10);
                         } else {
                             rightsIdentitiesRetrievalCompleted = true;
@@ -326,7 +323,6 @@ public class AccessPolicyEditor implements EntryPoint {
                         tmpGroups.toArray(tmpGroupStr);
                         identitiesAllGroups = tmpGroupStr;
                         
-                        identitiesLBW.set(visibleItemCount, new String[0], new String[0]);
                         identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
                         //Window.alert("Policy has been loaded!");
                     }

@@ -59,18 +59,19 @@ public class IdentitiesListBoxWidget extends Composite implements ClickListener 
     /**
      *
      */
-    public void displayLoadingIdentities() {
+    public void displayLoadingIdentities(int visibleItemCount) {
         lb.clear();
+        lb.setVisibleItemCount(visibleItemCount);
         lb.addItem("Loading users/groups ...");
         lb.addItem("Thanks for being patient!");
     }
 
     /**
-     *
+     * Set users and groups as list items
      */
     public void set(int visibleItemCount, String[] users, String[] groups) {
         if (users == null && groups == null) {
-            displayLoadingIdentities();
+            displayLoadingIdentities(visibleItemCount);
             return;
         }
 
