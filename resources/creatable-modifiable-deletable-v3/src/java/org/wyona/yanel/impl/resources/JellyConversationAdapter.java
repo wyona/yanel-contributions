@@ -43,17 +43,12 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
     
     /**
      * Initialize or keep up to date the conversation state
-     * */
+     */
     protected abstract void init() throws Exception;
     
     /**
-     * In this method the conversation should be rollbacked
-     * */
-    public abstract void rollback()throws Exception;
-    
-    /**
      * In this method the conversation should be commited. Data may need to be validated befor commit.
-     * */
+     */
     public abstract void commit()throws Exception;
     
     
