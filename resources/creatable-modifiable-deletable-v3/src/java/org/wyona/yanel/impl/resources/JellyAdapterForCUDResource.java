@@ -63,15 +63,16 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
             if(viewDescriptor == null){
                 throw new IllegalArgumentException("The view descriptor was not found for the given id: '" + viewId + "'");
             }
+            log.debug("View ID: " + viewDescriptor.getId());
             
             if (CANCEL_VIEW_ID.equals(viewDescriptor.getId())) {
-                rollback();
+                log.warn("Cancel ...");
+                doCancel();
                 destroyConversation();
                 return super.getView(CANCEL_VIEW_ID);
             }
             
             // Deal with the input
-            
             init();
             ConversationState cs = getConversationState();
             
@@ -288,30 +289,12 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
             if (cs == null || !supportedUsecases.contains(cs.getUsecase())){
                 throw new UnsupportedOperationException("The following usecase is not supported by this adapter implementation: " + usecase);
             }
-			usecase = cs.getUsecase();
+            usecase = cs.getUsecase();
         }
         
-        //detect the resource that is being adapted. It is either in the request or in the conversation
-        String resourcePath = getAdaptedResourcePath();
-        if(resourcePath == null && cs != null){
-            resourcePath = cs.getResourcePath();
-        }
-        
-
+        String resourcePath = getAdaptedResourcePathFromConversationState();
 
         // TODO: For creation one doesn't need necessarily a resource path, but a resource type definition would be sufficient, whereas for update/modify and delete one needs a resource path
-/*
-        java.util.Map properties = new HashMap();
-        //properties.put("foo", "bar");
-	ResourceConfiguration rc = new ResourceConfiguration(getResourceConfigProperty("adapted-resource-name"), getResourceConfigProperty("adapted-resource-namespace"), properties);
-        Realm realm = yanel.getMap().getRealm(request.getServletPath());
-        Resource adaptedResource = yanel.getResourceManager().getResource(getEnvironment(request, response), realm, path, rc);
-*/
-
-
-
-
-
         if(resourcePath == null){
             String adaptedResourceName = getResourceConfigProperty("adapted-resource-name");
             String adaptedResourceNamespace = getResourceConfigProperty("adapted-resource-namespace");
@@ -387,8 +370,34 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
             log.debug("End commit " + dateFormat.format(new java.util.Date()));
     }
 
-    public void rollback() {
-//        System.out.println("ROLLBACKED! (TODO)");
+    /**
+     * If the conversation/continuation has been canceled, then react accordingly
+     */
+    private void doCancel() throws Exception {
+        String adaptedResourcePath = getAdaptedResourcePathFromConversationState();
+        log.debug("Adapted resource: " +  adaptedResourcePath);
+        Resource adaptedResource = getYanel().getResourceManager().getResource(getEnvironment(), getRealm(), adaptedResourcePath);
+        if (ResourceAttributeHelper.hasAttributeImplemented(adaptedResource, "Viewable", "2") && ResourceAttributeHelper.hasAttributeImplemented(adaptedResource, "Versionable", "2")) {
+            if (((org.wyona.yanel.core.api.attributes.ViewableV2) adaptedResource).exists()) {
+                ((org.wyona.yanel.core.api.attributes.VersionableV2) adaptedResource).cancelCheckout();
+            } else {
+                log.warn("Resource '" + adaptedResourcePath + "' does not exist!");
+            }
+        } else {
+            log.warn("Resource '" + adaptedResourcePath + "' is not ViewableV2/VersionableV2 and hence checkout cannot be canceled!");
+        }
+    }
+
+    /**
+     * Get adapted resource path. It is either in the request or in the conversation.
+     */
+    private String getAdaptedResourcePathFromConversationState() {
+        String adaptedResourcePath = getAdaptedResourcePath();
+        ConversationState cs = getConversationState();
+        if(adaptedResourcePath == null && cs != null) {
+            adaptedResourcePath = cs.getResourcePath();
+        }
+        return adaptedResourcePath;
     }
 
     /**
@@ -399,7 +408,7 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
         if (!ResourceAttributeHelper.hasAttributeImplemented(resource, "Creatable", "3")) {
             throw new Exception("The adapted resource (" + resource.getResourceTypeUniversalName() + ", " + path + ") is not of the type '" + CreatableV3.class.getName() + "'");
         }
-		return (CreatableV3) resource;
+        return (CreatableV3) resource;
     }
     
     private ModifiableV3 getAdaptedResourceAsModifiableV3(String path) throws Exception {
