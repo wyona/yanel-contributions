@@ -145,11 +145,12 @@ abstract class ControllerAdapter extends Resource implements ResourceAdapter, Vi
             return new Continuation(continuationId);
             //return new ContinuationSessionImpl(continuationId, getSession(true));
             //return new ContinuationYarepRepoImpl(continuationId, continuationRepo);
+        } else {
+            Continuation continuation = new Continuation();
+            //Continuation continuation = new ContinuationSessionImpl(getSession(true));
+            //Continuation continuation = new ContinuationYarepRepoImpl(continuationRepo);
+            log.warn("New continuation created: " + continuation.getId());
+            return continuation;
         }
-		Continuation continuation = new Continuation();
-		//Continuation continuation = new ContinuationSessionImpl(getSession(true));
-		//Continuation continuation = new ContinuationYarepRepoImpl(continuationRepo);
-		log.warn("New continuation created: " + continuation.getId());
-		return continuation;
     }
 }
