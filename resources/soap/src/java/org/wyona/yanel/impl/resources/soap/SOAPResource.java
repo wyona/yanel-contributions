@@ -16,6 +16,9 @@ import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 
+/**
+ * SOAP resource
+ */
 public class SOAPResource extends Resource implements ViewableV2 {
 	private static final String SOAP_MIME_TYPE = "application/soap+xml";
 	
