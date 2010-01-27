@@ -141,6 +141,8 @@ public abstract class BasicFormResource extends BasicXMLResource {
     }
     
     /**
+     * @deprecated Use org.wyona.yanel.core.util.MailUtil.send() instead
+     *
      * Sends an email. E.g. use this method to send confirmation mails.
      * 
      * @param from sender email address
@@ -150,6 +152,11 @@ public abstract class BasicFormResource extends BasicXMLResource {
      * @param content email content
      */
     protected void sendMail(String from, String replyTo, String to, String subject, String content) throws Exception {
+        log.warn("DEPRECATED");
+        org.wyona.yanel.core.util.MailUtil.send(from, replyTo, to, subject, content);
+
+
+/*
         // Create a mail session
         java.util.Properties props = new java.util.Properties();
         props.put("mail.smtp.host", getResourceConfigProperty("smtpHost"));
@@ -170,14 +177,17 @@ public abstract class BasicFormResource extends BasicXMLResource {
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         msg.setSubject(subject);
         msg.setText(content);
+*/
 
 /*
         msg.setSubject(subject,"utf-8");
         msg.setContent(content, "text/plain;charset=utf-8");
 */
 
+/*
         // Send the message
         Transport.send(msg);
+*/
     }
     
     /**
