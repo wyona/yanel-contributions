@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *
+ * Move users/groups from identities list into policy and vice versa
  */
 public class AddRemoveIdentitiesWidget extends Composite implements ClickListener {
 
@@ -48,10 +48,11 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
     public AddRemoveIdentitiesWidget(ListBox identitiesListBox, ListBox policyListBox, PolicyListBoxWidget policyLBW) {
         initWidget(fp);
 
-        removeButton = new Button("<", this);
-        fp.add(removeButton);
         addButton = new Button(">", this);
         fp.add(addButton);
+
+        removeButton = new Button("<", this);
+        fp.add(removeButton);
 
         this.identitiesLB = identitiesListBox;
         this.policyLB = policyListBox;
@@ -59,9 +60,10 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
     }
 
     /**
-     *
+     * Move item from one list to the other
      */
     public void onClick(Widget sender) {
+        // TODO: Allow multiple selection
         if (sender == addButton) {
             int i = identitiesLB.getSelectedIndex();
             if (i >= 0) {
