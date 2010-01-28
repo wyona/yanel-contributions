@@ -63,26 +63,35 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
      * Move item from one list to the other
      */
     public void onClick(Widget sender) {
-        // TODO: Allow multiple selection
         if (sender == addButton) {
-            int i = identitiesLB.getSelectedIndex();
-            if (i >= 0) {
-                String selectedIdentity = identitiesLB.getValue(i);
-                //Window.alert("Add selected identity " + selectedIdentity + " to policy");
-                identitiesLB.removeItem(i);
-                policyLBW.addItem(selectedIdentity.substring(0, 1), selectedIdentity.substring(2).trim());
-            } else {
-                Window.alert("No identity selected yet! Please select an identity.");
+            boolean noItemSelected = true;
+            for (int i = identitiesLB.getItemCount() - 1; i >= 0; i--) { // INFO: One needs to step backwards, because the size of the list decreases, because items are being removed if selected
+                if (identitiesLB.isItemSelected(i)) {
+                    String selectedIdentity = identitiesLB.getValue(i);
+                    //Window.alert("Add selected identity " + selectedIdentity + " to policy");
+                    identitiesLB.removeItem(i);
+                    policyLBW.addItem(selectedIdentity.substring(0, 1), selectedIdentity.substring(2).trim());
+                    noItemSelected = false;
+                }
+            }
+
+            if (noItemSelected) {
+                Window.alert("No identity selected yet! Please select an identity within 'Identities' list.");
             }
         } else if (sender == removeButton) {
-            int i = policyLB.getSelectedIndex();
-            if (i >= 0) {
-                String selectedIdentity = policyLB.getValue(i);
-                //Window.alert("Remove selected identity " + selectedIdentity + " from policy");
-                policyLB.removeItem(i);
-                identitiesLB.addItem(removeRights(selectedIdentity));
-            } else {
-                Window.alert("No identity selected yet! Please select an identity.");
+            boolean noItemSelected = true;
+            for (int i = policyLB.getItemCount() - 1; i >= 0; i--) { // INFO: One needs to step backwards, because the size of the list decreases, because items are being removed if selected
+                if (policyLB.isItemSelected(i)) {
+                    String selectedIdentity = policyLB.getValue(i);
+                    //Window.alert("Remove selected identity " + selectedIdentity + " from policy");
+                    policyLB.removeItem(i);
+                    identitiesLB.addItem(removeRights(selectedIdentity));
+                    noItemSelected = false;
+                }
+            }
+
+            if (noItemSelected) {
+                Window.alert("No identity selected yet! Please select an identity within 'Policy' list.");
             }
         }
     }
