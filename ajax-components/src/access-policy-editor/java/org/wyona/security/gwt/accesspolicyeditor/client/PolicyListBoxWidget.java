@@ -58,7 +58,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         setInheritRightsFlag(useInheritedPolicies);
         vp.add(policyInheritanceCB);
 
-        lb = new ListBox(true);
+        lb = new ListBox(true); // NOTE: ListBox#setMultipleSelect(true) can spuriously fail on IE 6.0
         lb.addClickListener(this);
         //setIdentities(visibleItemCount, users, groups);
         displayLoading(visibleItemCount);
