@@ -155,7 +155,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     //Window.alert("Remove \"" + selectedRightCB.getName() + " (" + selectedRightCB.getText() + ")\" right of selected identity " + selectedIdentity + " from policy");
                     newRights = removeRight(currentRights, selectedRight);
                 }
-                setSelectedListItem(newRights);
+                setRightsForSelectedListItem(newRights);
             } else {
                 Window.alert("No identity has been selected! Please select an identity in order to assign rights.");
                 selectedRightCB.setChecked(false);
@@ -277,15 +277,21 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
-     *
+     * Set rights for selected users/groups
      */
-    private void setSelectedListItem(String[] rights) {
-        int index = lb.getSelectedIndex();
-        if (index >= 0) {
-            String id = getIdentityWithoutRights(index);
-            setListItem(id.substring(0, 1), id.substring(2).trim(), rights, index);
-        } else {
-            Window.alert("Exception: No list item selected!");
+    private void setRightsForSelectedListItem(String[] rights) {
+        boolean noItemSelected = true;
+
+        for (int i = 0; i < lb.getItemCount(); i++) {
+            if (lb.isItemSelected(i)) {
+                String id = getIdentityWithoutRights(i);
+                setListItem(id.substring(0, 1), id.substring(2).trim(), rights, i);
+                noItemSelected = false;
+            }
+        }
+
+        if (noItemSelected) {
+            Window.alert("No user/group within 'Policy' list selected!");
         }
     }
 
