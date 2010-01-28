@@ -432,13 +432,16 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     /*
      * @param type User or Group
      * @param name Name of user or group
+     * @param selected Sets wheter list item is selected. True to select the item.
      */
-    public void addItem(String type, String name) {
+    public void addItem(String type, String name, boolean selected) {
         StringBuffer emptyRights = new StringBuffer("(-");
         for (int i = 1; i < availableRightsCB.length; i++) {
             emptyRights.append(",-");
         }
         emptyRights.append(")");
+
         lb.addItem(type + ": " + emptyRights + " " + name, type + ": " + name);
+        lb.setItemSelected(lb.getItemCount() - 1, selected);
     }
 }

@@ -68,9 +68,11 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
             for (int i = identitiesLB.getItemCount() - 1; i >= 0; i--) { // INFO: One needs to step backwards, because the size of the list decreases, because items are being removed if selected
                 if (identitiesLB.isItemSelected(i)) {
                     String selectedIdentity = identitiesLB.getValue(i);
-                    //Window.alert("Add selected identity " + selectedIdentity + " to policy");
                     identitiesLB.removeItem(i);
-                    policyLBW.addItem(selectedIdentity.substring(0, 1), selectedIdentity.substring(2).trim());
+                    String type = selectedIdentity.substring(0, 1); // e.g. 'g' or 'u'
+                    String name = selectedIdentity.substring(2).trim(); // e.g. 'lenya'
+                    //Window.alert("Add selected identity " + selectedIdentity + " (" + item + ", " + value + ") to policy");
+                    policyLBW.addItem(type, name, true);
                     noItemSelected = false;
                 }
             }
