@@ -50,7 +50,8 @@ public class IdentitiesListBoxWidget extends Composite implements ClickListener 
 
         vp.add(new Label(I18n.getLabel("list-box-identities", language) + ":"));
 
-        lb = new ListBox(true);
+        boolean isMultipleSelect = true;
+        lb = new ListBox(isMultipleSelect); // NOTE: ListBox#setMultipleSelect(true) can spuriously fail on IE 6.0
         lb.addClickListener(this);
         set(visibleItemCount, null, null);
         vp.add(lb);
