@@ -1,4 +1,4 @@
-package org.wyona.yanel.impl.resources;
+package org.wyona.yanel.impl.resources.jellyadapterofcmdv3;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,7 +31,7 @@ import org.wyona.yanel.core.source.SourceResolver;
 import org.wyona.yanel.core.transformation.I18nTransformer2;
 import org.wyona.yanel.core.transformation.XIncludeTransformer;
 import org.wyona.yanel.core.util.PathUtil;
-import org.wyona.yanel.impl.resources.ViewDescriptorUsingTemplate.TemplateOption;
+import org.wyona.yanel.impl.resources.jellyadapterofcmdv3.ViewDescriptorUsingTemplate.TemplateOption;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;

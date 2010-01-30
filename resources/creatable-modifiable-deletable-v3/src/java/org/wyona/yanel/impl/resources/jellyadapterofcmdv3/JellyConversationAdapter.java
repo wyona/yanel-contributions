@@ -1,4 +1,4 @@
-package org.wyona.yanel.impl.resources;
+package org.wyona.yanel.impl.resources.jellyadapterofcmdv3;
 
 import javax.xml.transform.Transformer;
 

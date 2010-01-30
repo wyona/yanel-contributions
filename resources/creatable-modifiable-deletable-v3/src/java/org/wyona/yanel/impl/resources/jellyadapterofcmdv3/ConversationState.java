@@ -1,8 +1,8 @@
-package org.wyona.yanel.impl.resources;
+package org.wyona.yanel.impl.resources.jellyadapterofcmdv3;
 
 import java.io.Serializable;
 
-import org.wyona.yanel.impl.resources.ResourceAdapter.Usecase;
+import org.wyona.yanel.impl.resources.jellyadapterofcmdv3.ResourceAdapter.Usecase;
 
 /**
  * Conversation state is stored in the session.

@@ -1,4 +1,4 @@
-package org.wyona.yanel.impl.resources;
+package org.wyona.yanel.impl.resources.jellyadapterofcmdv3;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -58,7 +58,7 @@ import javax.mail.internet.MimeMessage;
  * @author Matthias Leumann
  * 
  */
-public abstract class BasicFormResource extends BasicXMLResource {
+public abstract class BasicFormResource extends org.wyona.yanel.impl.resources.BasicXMLResource {
     
     private static final Logger log = Logger.getLogger(BasicFormResource.class);
     
