@@ -63,25 +63,29 @@ public class AccessPolicyEditor implements EntryPoint {
     int visibleItemCount = 20;
 
     /**
-     *
+     * Execute at the very beginning
      */
     public void onModuleLoad() {
-        String language = "en";
-        //String language = "de";
+        String language = "en"; // DEFAULT
 
         String identitiesURL = "DEFAULT-identities-and-usecases.xml";
         String readPolicyURL = "DEFAULT-policy.xml";
         boolean cancelURLBaseEqualsHostPageURL = false;
         String cancelURL = "DEFAULT-cancel.html";
         String savePolicyURL = "DEFAULT-save-policy.xml";
+        String i18nURL = "DEFAULT-i18n.xml";
         // Get URLs from host/html page
         try {
             Dictionary dict = Dictionary.getDictionary("getURLs");
+            language = dict.get("language");
             identitiesURL = dict.get("identities-url");
             readPolicyURL = dict.get("policy-url");
             cancelURL = dict.get("cancel-url");
             cancelURLBaseEqualsHostPageURL = new Boolean(dict.get("cancel-url-base-equals-host-page-url")).booleanValue();
             savePolicyURL = dict.get("save-url");
+
+            // TODO: Read this URL and use data instead from hardcoded I18n class
+            i18nURL = dict.get("i18n-url");
         } catch (java.util.MissingResourceException e) {
             Window.alert("Exception: " + e.getMessage());
         }
