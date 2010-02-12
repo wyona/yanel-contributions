@@ -38,7 +38,7 @@ public class I18n {
             } else if(key.equals("inherit-rights-label")) {
                 return "Uebernehme vererbte Rechte der Eltern-Policies";
             } else if(key.equals("list-box-identities")) {
-                return "Identitaeten (Benutzer und Gruppen)";
+                return "Identitäten (Benutzer und Gruppen)";
             }
         } else {
             return "WARNING: No such language '" + language + "' implemented!";
