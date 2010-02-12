@@ -220,10 +220,11 @@ public class AccessPolicyEditor implements EntryPoint {
 
     /**
      * Get identities and rights
+     * @param url URL to request identities (users and groups) as XML
      */
     private void getIdentitiesAndRights(String url) {
         if (identitiesAllUsers == null || identitiesAllGroups == null || allRights == null) {
-            //Window.alert("Load identities: " + url);
+            //Window.alert("Load users and groups as XML: " + url);
             url = GWT.getHostPageBaseURL() + url.replaceAll("&amp;", "&");
             //Window.alert("Load IdentitiesAndRights: "+ url);
             final AsynchronousIdentitiesAndRightsGetter ag = new AsynchronousIdentitiesAndRightsGetter(url);
@@ -268,10 +269,11 @@ public class AccessPolicyEditor implements EntryPoint {
 
     /**
      * Get policy
+     * @param url URL to request policy as XML
      */
     private void getPolicy(String url) {
         url = GWT.getHostPageBaseURL() + url.replaceAll("&amp;", "&");
-        //Window.alert("Load policy: " + url);
+        //Window.alert("Load policy as XML: " + url);
         final AsynchronousPolicyGetter apg = new AsynchronousPolicyGetter(url);
         try {
             final com.google.gwt.http.client.Request request = apg.execute();
