@@ -100,10 +100,12 @@ public class AccessPolicyEditor implements EntryPoint {
 
         // Setup GUI
         VerticalPanel vp = new VerticalPanel();
+        vp.setStyleName("gwt-wyona-main-vp");
         vp.setSpacing(15);
         RootPanel.get("access-policy-editor-hook").add(vp);
 
         HorizontalPanel searchFilterPanel = new HorizontalPanel();
+        searchFilterPanel.setStyleName("gwt-wyona-search-hp");
         vp.add(searchFilterPanel);
 
         searchFilterPanel.add(new Label(I18n.getLabel("search-box-label", language)));
