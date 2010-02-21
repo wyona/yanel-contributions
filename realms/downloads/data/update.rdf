@@ -96,7 +96,7 @@
     <um:targetApplicationId>wyona-yanel-webapp-local</um:targetApplicationId>
     <!-- The local productive and the remote update revision need to be within this range -->
     <um:targetApplicationMinRevision>26193</um:targetApplicationMinRevision>
-    <um:targetApplicationMaxRevision>9999999999999</um:targetApplicationMaxRevision>
+    <um:targetApplicationMaxRevision>999999</um:targetApplicationMaxRevision>
     <um:updateLink>http://downloads.yanel.org/downloads/yanel-updater/wyona-yanel-updater-v-1.0-dev-r-26227.war</um:updateLink>
   </rdf:Description>
 
