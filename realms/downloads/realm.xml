@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <realm-config xmlns="http://www.wyona.org/yanel/realm/1.0">
-  <name>Realm for download and update Yanel</name>
+  <name>Realm to facilitate download and update of Yanel</name>
   <rti>config/rti-repository.xml</rti>
   <data>config/data-repository.xml</data>
   <ac-policies>config/ac-policies-repository.xml</ac-policies>
