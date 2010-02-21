@@ -20,9 +20,11 @@
         <!-- TODO: The order seems to matter! -->
         <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-26003"/>
         <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-26221"/>
+        <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-47999"/>
       </rdf:Seq>
     </um:versions>
   </rdf:Description>
+
   <rdf:Description rdf:about="urn:wyona:application:updater">
     <um:type>updater</um:type>
     <um:versions>
@@ -39,6 +41,20 @@
 
 
   <!-- Updates -->
+  <rdf:Description rdf:about="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-47999">
+    <um:id>wyona-yanel-webapp</um:id>
+    <um:title>Yanel Webapp Update</um:title>
+    <um:version>1.0-dev</um:version>
+    <um:revision>47999</um:revision>
+    <um:changelog>Root policy management fixed</um:changelog>
+
+    <um:targetApplicationId>wyona-yanel-updater</um:targetApplicationId>
+    <um:targetApplicationMinRevision>25226</um:targetApplicationMinRevision>
+    <um:targetApplicationMaxRevision>47998</um:targetApplicationMaxRevision>
+
+    <um:updateLink>http://downloads.yanel.org/downloads/yanel-updates/wyona-yanel-webapp-v-1.0-dev-r-47999.war</um:updateLink>
+  </rdf:Description>
+
   <rdf:Description rdf:about="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-26221">
     <um:id>wyona-yanel-webapp</um:id>
     <um:title>Yanel Webapp Update</um:title>
@@ -78,10 +94,10 @@
     <um:revision>26227</um:revision>
     <um:changelog>Updater for Yanel webapps with revisions in the range from 26193 to 26222</um:changelog>
     <um:targetApplicationId>wyona-yanel-webapp-local</um:targetApplicationId>
-    <!-- Both webapps (local and new) need to be within this range -->
+    <!-- The local productive and the remote update revision need to be within this range -->
     <um:targetApplicationMinRevision>26193</um:targetApplicationMinRevision>
-    <um:targetApplicationMaxRevision>26222</um:targetApplicationMaxRevision>
-    <um:updateLink>http://yanel.wyona.org/downloads/yanel-updater/wyona-yanel-updater-v-1.0-dev-r-26227.war</um:updateLink>
+    <um:targetApplicationMaxRevision>9999999999999</um:targetApplicationMaxRevision>
+    <um:updateLink>http://downloads.yanel.org/downloads/yanel-updater/wyona-yanel-updater-v-1.0-dev-r-26227.war</um:updateLink>
   </rdf:Description>
 
 <!--
