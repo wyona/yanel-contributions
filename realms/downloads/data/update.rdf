@@ -20,7 +20,7 @@
         <!-- TODO: The order seems to matter! -->
         <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-26003"/>
         <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-26221"/>
-        <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-47999"/>
+        <rdf:li rdf:resource="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-47967"/>
       </rdf:Seq>
     </um:versions>
   </rdf:Description>
@@ -39,18 +39,18 @@
 
 
   <!-- Updates -->
-  <rdf:Description rdf:about="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-47999">
+  <rdf:Description rdf:about="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-47967">
     <um:id>wyona-yanel-webapp</um:id>
     <um:title>Yanel Webapp Update</um:title>
     <um:version>1.0-dev</um:version>
-    <um:revision>47999</um:revision>
-    <um:changelog>Root policy management fixed</um:changelog>
+    <um:revision>47967</um:revision>
+    <um:changelog>Calendar resource type improved</um:changelog>
 
     <um:targetApplicationId>wyona-yanel-updater</um:targetApplicationId>
-    <um:targetApplicationMinRevision>25226</um:targetApplicationMinRevision>
-    <um:targetApplicationMaxRevision>47998</um:targetApplicationMaxRevision>
+    <um:targetApplicationMinRevision>47000</um:targetApplicationMinRevision>
+    <um:targetApplicationMaxRevision>47966</um:targetApplicationMaxRevision>
 
-    <um:updateLink>http://downloads.yanel.org/downloads/yanel-updates/wyona-yanel-webapp-v-1.0-dev-r-47999.war</um:updateLink>
+    <um:updateLink>http://downloads.yanel.org/downloads/yanel-updates/wyona-yanel-webapp-v-1.0-dev-r-47967.war</um:updateLink>
   </rdf:Description>
 
   <rdf:Description rdf:about="urn:wyona:application:updates:wyona-yanel-webapp-v-1.0-dev-r-26221">
