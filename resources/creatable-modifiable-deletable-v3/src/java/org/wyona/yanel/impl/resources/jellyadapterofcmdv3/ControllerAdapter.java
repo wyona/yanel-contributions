@@ -119,12 +119,19 @@ abstract class ControllerAdapter extends Resource implements ResourceAdapter, Vi
      * @return i18n catalogue name
      */
     protected String[] getI18NCatalogueNames() throws Exception {
-        String[] catalogueNames = getResourceConfigProperties(I18N_CATALOG_PROPERTY);
-        if (catalogueNames == null || catalogueNames.length == 0) {
-            catalogueNames = new String[1];
-            catalogueNames[0] = "global";
+        java.util.ArrayList<String> catalogues = new java.util.ArrayList<String>();
+        String[] rcCatalogues = getResourceConfigProperties("i18n-catalogue");
+        if (rcCatalogues != null) {
+            for (int i = 0; i < rcCatalogues.length; i++) {
+                catalogues.add(rcCatalogues[i]);
+            }
         }
-        return catalogueNames;
+        String realmCatalogue = getRealm().getI18nCatalogue();
+        if (realmCatalogue != null) {
+            catalogues.add(realmCatalogue);
+        }
+        catalogues.add("global");
+        return catalogues.toArray(new String[catalogues.size()]);
     }
     
     public long getSize() throws Exception {
