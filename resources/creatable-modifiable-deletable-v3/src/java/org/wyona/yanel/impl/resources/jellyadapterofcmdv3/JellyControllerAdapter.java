@@ -28,7 +28,7 @@ import org.wyona.yanel.core.Constants;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.serialization.SerializerFactory;
 import org.wyona.yanel.core.source.SourceResolver;
-import org.wyona.yanel.core.transformation.I18nTransformer2;
+import org.wyona.yanel.core.transformation.I18nTransformer3;
 import org.wyona.yanel.core.transformation.XIncludeTransformer;
 import org.wyona.yanel.core.util.PathUtil;
 import org.wyona.yanel.impl.resources.jellyadapterofcmdv3.ViewDescriptorUsingTemplate.TemplateOption;
@@ -293,7 +293,7 @@ public abstract class JellyControllerAdapter extends ControllerAdapter {
         serializer.setOutputStream(baos);
         
         // create i18n transformer:
-        I18nTransformer2 i18nTransformer = new I18nTransformer2(getI18NCatalogueNames(), getRequestedLanguage(), getRealm().getDefaultLanguage());
+        I18nTransformer3 i18nTransformer = new I18nTransformer3(getI18NCatalogueNames(), getRequestedLanguage(), getUserLanguage(), getRealm().getDefaultLanguage(), uriResolver);
         i18nTransformer.setEntityResolver(catalogResolver);
 
 
@@ -465,5 +465,23 @@ public abstract class JellyControllerAdapter extends ControllerAdapter {
         // TODO: Use YanelServlet.TOOLBAR_KEY instead "toolbar"!
         return (String) getEnvironment().getRequest().getSession(true).getAttribute("toolbar");
     }
-    
+
+    /**
+     * Get user language (order: profile, browser, ...)
+     */
+    private String getUserLanguage() throws Exception {
+        Identity identity = getEnvironment().getIdentity();
+        String language = getRequestedLanguage();
+        String userID = identity.getUsername();
+        if (userID != null) {
+            String userLanguage = getRealm().getIdentityManager().getUserManager().getUser(userID).getLanguage();
+            if(userLanguage != null) {
+                language = userLanguage;
+                log.debug("Use user profile language: " + language);
+            } else {
+                log.warn("Use requested language: " + language);
+            }
+        }
+        return language;
+    }
 }
