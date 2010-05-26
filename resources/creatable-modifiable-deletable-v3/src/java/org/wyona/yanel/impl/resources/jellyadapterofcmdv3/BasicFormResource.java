@@ -98,6 +98,9 @@ public abstract class BasicFormResource extends org.wyona.yanel.impl.resources.B
         return super.getView(viewId);
     }
     
+    /**
+     *
+     */
     protected final InputStream getContentXML(String viewId) throws Exception {
         if (!exists()) {
             log.warn("No such resource: " + getPath());
@@ -117,6 +120,7 @@ public abstract class BasicFormResource extends org.wyona.yanel.impl.resources.B
                     appendError(e);
                 }
             } else {
+                log.warn("Validation of input parameters failed!");
                 resultCode = RESULT_CODE_FAILED_INVALID;
                 appendForm();
                 appendValidation();
