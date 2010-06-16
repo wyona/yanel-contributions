@@ -80,7 +80,7 @@ public class AccessPolicyEditor implements EntryPoint {
             language = dict.get("language");
             identitiesURL = dict.get("identities-url");
             readPolicyURL = dict.get("policy-url");
-            cancelURL = dict.get("cancel-url");
+            cancelURL = dict.get("cancel-url").replace("&amp;", "&");
             cancelURLBaseEqualsHostPageURL = new Boolean(dict.get("cancel-url-base-equals-host-page-url")).booleanValue();
             savePolicyURL = dict.get("save-url");
 
