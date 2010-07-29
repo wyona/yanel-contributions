@@ -2,8 +2,12 @@
 
 <resource-types xmlns="http://www.wyona.org/yanel/1.0" version="2008081300">
   <resource-type src="@REALM_SRC_DIR@/src/resources/shared/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/src/resources/foaf/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/src/resources/redirect/" compile="true"/>
+<!--
   <resource-type package="org.wyona.yanel.impl.resources.foaf" src="@REALM_SRC_DIR@/src/resources/foaf/" compile="true"/>
   <resource-type package="org.wyona.yanel.impl.resources.foaf.redirect" src="@REALM_SRC_DIR@/src/resources/redirect/" compile="true"/>
+-->
   <resource-type src="@REALM_SRC_DIR@/src/resources/findfriend/" compile="true"/>
   <resource-type src="@REALM_SRC_DIR@/src/resources/import-foaf/" compile="true"/>
 </resource-types>
