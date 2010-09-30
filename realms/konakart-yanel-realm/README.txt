@@ -60,6 +60,7 @@ Optional configuration:
   Repeat for other files if necessary, e.g. the French translation files.
 
 - Zone (Kanton) configuration: As default the Kanton Zug (ZG) is configured (also see Standorte/Steuern within konakartadmin)
+  (TODO: Add sample configuration to SVN)
     res-configs/fr/shop/registration.html.yanel-rc
     res-configs/de/shop/registration.html.yanel-rc
 
