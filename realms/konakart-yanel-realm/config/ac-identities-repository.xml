@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<repository class="org.wyona.yarep.impl.DefaultRepository">
+  <name>KonaKart access control identities</name>
+
+  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../repos/ac-identities"/>
+
+  <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
+    <content src="../repos/ac-identities"/>
+  </storage>
+</repository>

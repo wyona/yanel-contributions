@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="image"
+  namespace="http://www.wyona.com/yanel/resource/konakart/1.0"
+  class="org.wyona.yanel.resources.konakart.image.KonakartImageResource"
+  >
+<description>
+Image reader resource
+</description>
+
+<rtd>
+  <property name="konakart-images-base-path"/>
+</rtd>
+</resource>

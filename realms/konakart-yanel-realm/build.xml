@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<project name="konakart-realm" default="deploy-jar">
+  <import file="${yanel.source.home}/src/build/realms/realm.build.xml"/>
+
+  <target name="copy-dependencies" depends="yanel-realm.copy-dependencies">
+    <antcall target="deploy-konakart-soap-config"/>
+  </target>
+
+  <target name="deploy-konakart-soap-config" depends="init" description="Deploy KonaKart SOAP configuration">
+    <echo>Deploy KonaKart SOAP configuration: konakart_axis_client.properties to ${build.dir}/webapps/${servlet.context.prefix}/WEB-INF/classes</echo>
+    <copy file="config/konakart_axis_client.properties" todir="${build.dir}/webapps/${servlet.context.prefix}/WEB-INF/classes"/>
+
+<!--
+    <echo>Deploy KonaKart SOAP configuration: konakart_axis_client.properties to ${tomcat1.home.dir}/webapps/${servlet.context.prefix}</echo>
+    <copy file="config/konakart_axis_client.properties" todir="${tomcat1.home.dir}/webapps/${servlet.context.prefix}/WEB-INF/classes"/>
+-->
+  </target>
+</project>

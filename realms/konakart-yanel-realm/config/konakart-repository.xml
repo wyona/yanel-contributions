@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+ 
+<repository class="org.wyona.konakart.model.impl.KonakartJDBCRepository">
+  <name>KonaKart Repository 4.2.0.1</name>
+
+  <data-source>
+    <driverClassName>org.postgresql.Driver</driverClassName>
+
+    <!-- Remote productive settings -->
+<!--
+    <url>jdbc:postgresql://195.226.6.73:5432/konakart</url>
+    <username>postgres</username>
+    <password></password>
+-->
+
+    <!-- Local test settings -->
+    <url>jdbc:postgresql://127.0.0.1:5432/konakart4</url>
+<!--
+    <url>jdbc:postgresql://127.0.0.1:5432/konakart</url>
+-->
+    <username>postgres</username>
+    <password>hobbes</password>
+
+<!--
+    <driverClassName>com.mysql.jdbc.Driver</driverClassName>
+    <url>jdbc:mysql://127.0.0.1:3306/konakart</url>
+    <username>root</username>
+    <password></password>
+-->
+ </data-source>
+</repository>

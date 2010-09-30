@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="konakart-shared"
+  namespace="http://www.wyona.com/yanel/resource/konakart/1.0"
+  class="org.wyona.yanel.resources.konakart.shared.SharedResource"
+  >
+<description>
+Shared functions
+</description>
+
+<rtd>
+<!--
+  <property name="foo" default-value="bar"/>
+-->
+</rtd>
+</resource>

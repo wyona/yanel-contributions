@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<resource-types xmlns="http://www.wyona.org/yanel/1.0">
+
+  <!-- HEADSUP: Make sure to add the trailing slash (/) in the @src attribute! -->
+  
+  <resource-type src="@REALM_SRC_DIR@/res-types/shared/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/image/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/registration/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/shopping-cart/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/checkout/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/product/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/category/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/model/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/delivery/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/payment/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/overview/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/navigation/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/kkforgotpw/" compile="true"/>
+  <resource-type src="@REALM_SRC_DIR@/res-types/settings/" compile="true"/>
+</resource-types>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<realm-config xmlns="http://www.wyona.org/yanel/realm/1.0">
+  <name>KonaKart realm</name>
+
+  <rti>config/res-configs-repository.xml</rti>
+  <data>config/data-repository.xml</data>
+  <ac-policies class="org.wyona.security.impl.PolicyManagerFactoryImplVersion2">config/ac-policies-repository.xml</ac-policies>
+  <ac-identities>config/ac-identities-repository.xml</ac-identities>
+
+  <yarep-repositories>
+    <repository id="konakart-repository" config="config/konakart-repository.xml"/>
+  </yarep-repositories>
+
+<!--
+  <web-authenticator class="org.wyona.yanel.servlet.security.impl.DefaultWebAuthenticatorImpl"/>
+-->
+
+  <default-language>en</default-language>
+  <languages>
+    <language>en</language>
+    <language>de</language>
+    <!--<language>es</language>--> <!-- Also data-repo/data/translations.xml -->
+  </languages>
+  <translation-manager class="org.wyona.yanel.core.attributes.translatable.PrefixTranslationManager"/>
+<!--
+  <language-handler class="org.wyona.yanel.impl.StaticLanguageHandler"/>
+-->
+
+<!--
+  <i18n-catalogue>yanelrepo:/i18n-konakart-realm.xml</i18n-catalogue>
+-->
+
+  <menu class="org.wyona.yanel.servlet.menu.impl.DefaultMenuV2"/>
+</realm-config>

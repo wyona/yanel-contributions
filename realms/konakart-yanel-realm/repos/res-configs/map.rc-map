@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<rc-map>
+  <matcher pattern="/**.jpg" rcpath="/node_yanel-rc.xml"/>
+  <matcher pattern="/**.png" rcpath="/node_yanel-rc.xml"/>
+  <matcher pattern="/**.gif" rcpath="/node_yanel-rc.xml"/>
+  <matcher pattern="/**.doc" rcpath="/node_yanel-rc.xml"/>
+  <matcher pattern="/**.pdf" rcpath="/node_yanel-rc.xml"/>
+</rc-map>

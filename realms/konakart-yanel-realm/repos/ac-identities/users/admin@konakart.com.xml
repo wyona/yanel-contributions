@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<user id="admin@konakart.com" xmlns="http://www.wyona.org/security/1.0">
+  <name>KonaKart Admin</name>
+  <description>KonaKart Admin</description>
+  <email>admin@konakart.com</email>
+  <password type="md5">8e07dafd13495561db9063ebe4db4b27</password>
+
+  <language>en</language>
+<!--
+  <language>de</language>
+-->
+  <expire>2069-02-16T00:00:00</expire>
+</user>
