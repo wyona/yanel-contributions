@@ -41,6 +41,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.net.URLEncoder;
 
+import org.wyona.yanel.core.attributes.viewable.View;
+
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * KonaKart category
  */
