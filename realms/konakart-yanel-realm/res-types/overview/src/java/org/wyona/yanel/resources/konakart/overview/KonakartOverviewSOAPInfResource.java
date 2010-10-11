@@ -633,12 +633,16 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             String sendbranch = getResourceConfigProperty("send-branch-emails");
 
 
-            if(branch != null && "true".equals(sendbranch)) {
-                sendMail(sender, branch, subject, content.toString());
-            } else if(branch != null) {
-                content.append("Filialleiter: " + branch + "<br/>");
+            if(branch != null) {
+                if("true".equals(sendbranch)) {
+                    // Send mail to branch
+                    sendMail(sender, branch, subject, content.toString());
+                } else {
+                    content.append("Filialleiter: " + branch + "<br/>");
+                }
             }
 
+            // Send mail to owner
             sendMail(sender, recipient, subject, content.toString());
         } catch(Exception e) {
             log.error(e, e);
