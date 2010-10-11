@@ -245,6 +245,7 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
+        if(!shared.isKKOnline()) return false;
         int languageId = shared.getLanguageId(getContentLanguage());
         if (languageId == -1) {
             log.error("No such language: " + getContentLanguage());

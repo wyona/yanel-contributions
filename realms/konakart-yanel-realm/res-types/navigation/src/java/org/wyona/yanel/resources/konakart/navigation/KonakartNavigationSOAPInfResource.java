@@ -51,6 +51,7 @@ public class KonakartNavigationSOAPInfResource extends BasicXMLResource {
 
         if(!shared.isKKOnline()) {
             // Konakart is offline...
+            rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "offline"));
             java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
             org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
             return new java.io.ByteArrayInputStream(baout.toByteArray());
