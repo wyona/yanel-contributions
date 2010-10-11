@@ -39,9 +39,6 @@ public class KonakartNavigationSOAPInfResource extends BasicXMLResource {
     protected InputStream getContentXML(String viewId) throws Exception {
         SharedResource shared = new SharedResource();
         KKEngIf kkEngine = shared.getKonakartEngineImpl();
-        int languageId = shared.getLanguageId(getContentLanguage());
-        int customerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
-        String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
 
         // Create W3C DOM document
         Document doc = null;
@@ -51,6 +48,17 @@ public class KonakartNavigationSOAPInfResource extends BasicXMLResource {
             throw new Exception(e.getMessage(), e);
         }
         Element rootElement = doc.getDocumentElement();
+
+        if(!shared.isKKOnline()) {
+            // Konakart is offline...
+            java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
+            org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
+            return new java.io.ByteArrayInputStream(baout.toByteArray());
+        }
+
+        int languageId = shared.getLanguageId(getContentLanguage());
+        int customerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
+        String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
 
         // Get category
         int categoryId = getCategoryId(kkEngine);
@@ -121,6 +129,9 @@ public class KonakartNavigationSOAPInfResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
+
+        if(!shared.isKKOnline()) return false;
+
         int languageId = shared.getLanguageId(getContentLanguage());
 
         if (languageId == -1) {

@@ -53,18 +53,44 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
             log.debug("requested viewId: " + viewId);
         }
 
+        // Get shared resource
         SharedResource shared = new SharedResource();
         KKEngIf kkEngine = shared.getKonakartEngineImpl();
 
+        // Build document
+        org.w3c.dom.Document doc = null;
+
+        try {
+            doc = org.wyona.commons.xml.XMLHelper.createDocument(KONAKART_NAMESPACE, "shopping-cart");
+        } catch (Exception e) {
+            throw new Exception(e.getMessage(), e);
+        }
+
+        // Is KK down?
+        if(!shared.isKKOnline()) {
+            // Konakart is offline...
+            // Simply return an empty shopping cart.
+            Element rootElement = doc.getDocumentElement();
+            rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "no-items-inside-shopping-cart-yet"));
+            java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
+            org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
+            return new java.io.ByteArrayInputStream(baout.toByteArray());
+        }
+
+        // Get language id, customer, basket, etc.
         int languageId = shared.getLanguageId(getContentLanguage());
         int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
         String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
         BasketIf[] items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
 
-        // Clear basket?
+        // Should we clear the basket?
         if(getParameters().get("clear") != null) {
             kkEngine.removeBasketItemsPerCustomer(null, tmpCustomerId);
-            return new ByteArrayInputStream("<shopping-cart/>".getBytes());
+            Element rootElement = doc.getDocumentElement();
+            rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "no-items-inside-shopping-cart-yet"));
+            java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
+            org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
+            return new java.io.ByteArrayInputStream(baout.toByteArray());
         }
 
         // Handle parameters
@@ -140,14 +166,7 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
             }
         }
 
-        // Build document
-        org.w3c.dom.Document doc = null;
 
-        try {
-            doc = org.wyona.commons.xml.XMLHelper.createDocument(KONAKART_NAMESPACE, "shopping-cart");
-        } catch (Exception e) {
-            throw new Exception(e.getMessage(), e);
-        }
 
         // <shopping-cart> (root)
         Element rootElement = doc.getDocumentElement();
@@ -376,8 +395,9 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
-        int languageId = shared.getLanguageId(getContentLanguage());
+        if(!shared.isKKOnline()) return true;
 
+        int languageId = shared.getLanguageId(getContentLanguage());
         if (languageId == -1) {
             log.error("No such language: " + getContentLanguage());
             return false;

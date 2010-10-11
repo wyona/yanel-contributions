@@ -57,8 +57,16 @@ public class UserResource extends BasicXMLResource {
         Element rootElement = doc.getDocumentElement();
 
         SharedResource shared = new SharedResource();
-        KKEngIf kkEngine = shared.getKonakartEngineImpl();
 
+        if(!shared.isKKOnline()) {
+            // Konakart is offline.
+            Element firstnameElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "offline"));
+            java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
+            org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
+            return new java.io.ByteArrayInputStream(baout.toByteArray());
+        }
+
+        KKEngIf kkEngine = shared.getKonakartEngineImpl();
         javax.servlet.http.HttpSession httpSession = getEnvironment().getRequest().getSession(true);
         String konakartSessionID = shared.getSessionId(httpSession);
         int temporaryCustomerID = shared.getTemporaryCustomerId(httpSession);
@@ -124,6 +132,7 @@ public class UserResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
+        if(!shared.isKKOnline()) return true;
         KKEngIf kkEngine = shared.getKonakartEngineImpl();
 
         int languageID = getLanguageID(kkEngine);

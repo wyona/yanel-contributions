@@ -424,4 +424,23 @@ public class SharedResource extends Resource {
 
         return shipping;
     }
+
+    /**
+     * Is Konakart available?
+     */
+    public boolean isKKOnline() {
+        try {
+            SharedResource shared = new SharedResource();
+            KKEngIf kkEngine = shared.getKonakartEngineImpl();
+            // We use getStore to check if Konakart is online
+            // because getStore has no side effects, it just
+            // return some configuration parameters.
+            kkEngine.getStore();
+        } catch(Exception e) {
+            // If getStore fails, we assume Konakart is down.
+            return false;
+        }
+
+        return true;
+    }
 }
