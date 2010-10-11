@@ -49,6 +49,29 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
     private static Logger log = Logger.getLogger(KonakartCategorySOAPInfResource.class);
 
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.ViewableV2#getView(java.lang.String)
+     */
+    public View getView(String viewId) throws Exception {
+        SharedResource shared = new SharedResource();
+        if(!shared.isKKOnline()) {
+            // Konakart is offline
+            // We return error 503 (temporarily unavailable)
+            // because that is the right thing to do! If we
+            // returned 404 (not found) some search engines
+            // might delete us from their index and we don't
+            // want that to happen.
+            View view = new View();
+            view.setResponse(false);
+            HttpServletResponse response = getEnvironment().getResponse();
+            response.sendError(503, "The shop is currently unavailable.");
+            return view;
+        }
+
+        // All is well
+        return getXMLView(viewId, getContentXML(viewId));
+    }
     
     /**
      * Internal class for comparisons of products.
@@ -326,7 +349,7 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
-        if(!shared.isKKOnline()) return false;
+        if(!shared.isKKOnline()) return true;
         int languageId = shared.getLanguageId(getContentLanguage());
 
         if (languageId == -1) {
