@@ -556,6 +556,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             } else {
                 content.append("Sehr geehrter Herr ");
             }
+            content.append(customer.getLastName());
         }
 
         try {
