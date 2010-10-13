@@ -32,17 +32,25 @@ public class KonakartSettingsSOAPInfResource extends BasicXMLResource {
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
 
     protected InputStream getContentXML(String viewId) throws Exception {
-        // Konakart data
         SharedResource shared = new SharedResource();
-        KKEngIf kkEngine = shared.getKonakartEngineImpl();
-        String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
-        int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
-        int languageId = shared.getLanguageId(getContentLanguage());
-
+        
         // Build document
         Document doc = null;
         doc = org.wyona.commons.xml.XMLHelper.createDocument(KONAKART_NAMESPACE, "settings");
         Element rootElement = doc.getDocumentElement();
+
+        if(!shared.isKKOnline()) {
+            Element offline = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "shop-is-offline"));
+            java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
+            org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
+            return new java.io.ByteArrayInputStream(baout.toByteArray());
+        }
+
+        // Konakart data
+        KKEngIf kkEngine = shared.getKonakartEngineImpl();
+        String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
+        int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
+        int languageId = shared.getLanguageId(getContentLanguage());
 
         // Get customer
         CustomerIf customer = shared.getCustomer(sessionId, customerId); 
@@ -376,6 +384,7 @@ public class KonakartSettingsSOAPInfResource extends BasicXMLResource {
     public boolean exists() {
         try {
             SharedResource shared = new SharedResource();
+            if(!shared.isKKOnline()) return true;
             KKEngIf kkEngine = shared.getKonakartEngineImpl();
             String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
             int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
