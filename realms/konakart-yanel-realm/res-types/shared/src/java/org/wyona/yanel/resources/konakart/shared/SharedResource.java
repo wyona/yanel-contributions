@@ -36,6 +36,8 @@ import com.konakart.appif.ShippingQuoteIf;
 import com.konakart.appif.CustomerRegistrationIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.util.KKConstants;
+import com.konakart.app.CreateOrderOptions;
+import com.konakart.appif.CreateOrderOptionsIf;
 
 /**
  * Shared functions.
@@ -132,44 +134,9 @@ public class SharedResource extends Resource {
                 session.removeValue(KONAKART_SESSION_ID);
                 sessionId = getSessionId(session);
             }
-
-            return sessionId;
-        } else {
-            // Register a temporary customer in KonaKart
-            CustomerRegistrationIf reg = new CustomerRegistration();
-
-            // TODO: In KonaKart 5, user the defaultCustomer 
-            // instead of creating new temporary customers all
-            // the time (because they only have to be deleted
-            // time and time again).
-
-            int tmpCustomerId = getTemporaryCustomerId(session);
-            String email = "customer." + tmpCustomerId + TMP_EMAIL_SUFFIX;
-            String passwd = "customer." + tmpCustomerId + ".password";
-
-            // All of those fields have to be set, or otherwise
-            // KonaKart won't accept the registration (even if 
-            // it's forced and we don't care about the values).
-            reg.setEmailAddr(email);
-            reg.setPassword(passwd);
-            reg.setFirstName("Temporary");
-            reg.setLastName("Customer");
-            reg.setGender("?");
-            reg.setBirthDate(new GregorianCalendar());
-            reg.setTelephoneNumber("none");
-            reg.setStreetAddress("none");
-            reg.setCity("none");
-            reg.setPostcode("none");
-            // We use the first country in the database.
-            CountryIf[] cns = kkEngine.getAllCountries();
-            reg.setCountryId(cns[0].getId());
-
-            kkEngine.forceRegisterCustomer(reg);
-            
-            sessionId = kkEngine.login(email, passwd);
-            session.setAttribute(KONAKART_SESSION_ID, sessionId);
-            return sessionId;
         }
+
+        return sessionId;
     }
 
     /**
@@ -283,7 +250,10 @@ public class SharedResource extends Resource {
         // need to give KonaKart a ShippingQuoteIf object anyway...
         // And the only way to get such an object is to get
         // if from KonaKart, so that's what we do here.
-        OrderIf fakeorder = kkEngine.createOrder(sessionId, items, languageId);
+        CreateOrderOptionsIf orderOptions = new CreateOrderOptions();
+        orderOptions.setUseDefaultCustomer(sessionId == null);
+
+        OrderIf fakeorder = kkEngine.createOrderWithOptions(sessionId, items, orderOptions, languageId);
         ShippingQuoteIf[] ships = kkEngine.getShippingQuotes(fakeorder, languageId);
         ShippingQuoteIf shipping = ships[0];
 

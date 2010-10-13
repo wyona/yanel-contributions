@@ -84,19 +84,23 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             try {
                 int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
                 BasketIf[] items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
+
                 order = kkEngine.createOrder(sessionId, items, languageId);
                 ShippingQuoteIf shipping = shared.getShippingCost(items, sessionId, languageId);
                 order.setShippingQuote(shipping);
                 order = kkEngine.getOrderTotals(order, languageId);
+
                 // Add custom discount to order object
                 // This is a bit difficult because of Konakart...
                 // Here, we edit the totalIncTax/totalExTax fields, those
                 // are used for displaying the order total in e.g. a overview
                 order.setTotalExTax(order.getTotalExTax().add(shipping.getTotalIncTax()));
                 order.setTotalIncTax(order.getTotalExTax().add(shipping.getTotalIncTax()));
+
                 // Then we need to edit the OrderTotal objects, those
                 // are used in the "detailed" view, to show e.g. shipping and such
                 OrderTotalIf[] totals = order.getOrderTotals();
+
                 for(OrderTotalIf t : totals) {
                     if(t.getClassName().equals("ot_total")) {
                         // If it's the total, edit it...
@@ -109,10 +113,12 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                         t.setText("<b>CHF" + t.getValue().setScale(2, BigDecimal.ROUND_HALF_EVEN) + "</b>");
                     }
                 }
+
                 // And now we add a OrderTotal object for our "Mengenrabatt",
                 // otherwise Konakart will completely ignore it which sucks.
                 OrderTotalIf[] custom_totals = new OrderTotal[totals.length+1];
                 System.arraycopy(totals, 0, custom_totals, 0, totals.length);
+
                 // Yes, all those fields are necessary
                 custom_totals[totals.length] = new OrderTotal();
                 custom_totals[totals.length].setTitle("Mengenrabatt Wein");
@@ -121,6 +127,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 custom_totals[totals.length].setClassName("ot_custom");
                 custom_totals[totals.length].setOrderId(order.getId());
                 custom_totals[totals.length].setSortOrder(3);
+
                 // And finally...
                 order.setOrderTotals(custom_totals);
 

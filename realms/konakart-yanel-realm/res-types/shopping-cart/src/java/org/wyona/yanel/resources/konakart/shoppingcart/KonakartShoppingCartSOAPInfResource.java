@@ -30,6 +30,8 @@ import com.konakart.appif.OrderIf;
 import com.konakart.appif.ShippingQuoteIf;
 import com.konakart.appif.CustomerRegistrationIf;
 import com.konakart.util.KKConstants;
+import com.konakart.app.CreateOrderOptions;
+import com.konakart.appif.CreateOrderOptionsIf;
 
 import java.lang.Integer;
 import java.math.BigDecimal;
@@ -293,10 +295,11 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
                 Element specialPriceIncTaxElement = (Element) itemElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "special-price-inc-tax"));
             }
 
-            // TODO: In Konakart 5, use createOrderWithOptions()
-            // in order to be able to calculate the shipping cost
-            // without a sessionId (means user is not logged in).
-            OrderIf order = kkEngine.createOrder(sessionId, items, languageId);
+            // Get order totals
+            CreateOrderOptionsIf orderOptions = new CreateOrderOptions();
+            orderOptions.setUseDefaultCustomer(sessionId == null);
+
+            OrderIf order = kkEngine.createOrderWithOptions(sessionId, items, orderOptions, languageId);
             order = kkEngine.getOrderTotals(order, languageId);
 
             // <total-price-ex-tax>
