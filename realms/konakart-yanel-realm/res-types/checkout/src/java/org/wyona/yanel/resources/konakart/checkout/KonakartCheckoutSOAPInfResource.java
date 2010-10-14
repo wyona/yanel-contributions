@@ -6,8 +6,6 @@ package org.wyona.yanel.resources.konakart.checkout;
 
 import org.wyona.yanel.impl.resources.BasicXMLResource;
 import org.wyona.yanel.resources.konakart.shared.SharedResource;
-import org.wyona.yanel.servlet.IdentityMap;
-import org.wyona.yanel.servlet.YanelServlet;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -124,16 +122,9 @@ public class KonakartCheckoutSOAPInfResource extends BasicXMLResource {
         } else if (getEnvironment().getRequest().getParameter("logout") != null) {
             Element logoutElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "logout"));
 
-            // INFO: Yanel logout
+            // Logout
             org.wyona.yanel.core.map.Realm realm = getRealm();
-            IdentityMap identityMap = (IdentityMap)httpSession.getAttribute(YanelServlet.IDENTITY_MAP_KEY);
-            if (identityMap != null && identityMap.containsKey(realm.getID())) {
-                log.info("Logout from realm: " + realm.getID());
-                identityMap.remove(realm.getID());
-            }
-
-            // INFO: KonaKart logout
-            kkEngine.logout(konakartSessionID);
+            shared.logout(realm, httpSession);
             konakartSessionID = shared.getSessionId(httpSession);
         } else {
             Element defaultElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "default"));
@@ -143,14 +134,10 @@ public class KonakartCheckoutSOAPInfResource extends BasicXMLResource {
         customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-session-id", konakartSessionID);
         customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-temp-customer-id", "" + shared.getTemporaryCustomerId(httpSession));
         int customerID = shared.getCustomerId(httpSession);
-        if (customerID > 0) {
+        if(customerID > 0) {
             String emailAddr = kkEngine.getCustomer(konakartSessionID).getEmailAddr();
-            if (emailAddr.equals("customer." + temporaryCustomerID + shared.TMP_EMAIL_SUFFIX)) {
-                log.debug("Not signed-in yet (just as temporary user)!");
-            } else {
-                customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-id", "" + customerID);
-                customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-email", emailAddr);
-            }
+            customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-id", "" + customerID);
+            customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-email", emailAddr);
         } else {
             log.debug("Not signed-in yet!");
         }

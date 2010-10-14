@@ -76,21 +76,17 @@ public class UserResource extends BasicXMLResource {
         int customerID = shared.getCustomerId(httpSession);
         if (customerID > 0) {
             String emailAddr = kkEngine.getCustomer(konakartSessionID).getEmailAddr();
-            if (emailAddr.equals("customer." + temporaryCustomerID + shared.TMP_EMAIL_SUFFIX)) {
-                log.debug("Not signed-in yet (just as temporary user)!");
-            } else {
-                rootElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-id", "" + customerID);
-                rootElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-email", emailAddr);
-                com.konakart.appif.CustomerIf customer = kkEngine.getCustomer(konakartSessionID);
-                Element firstnameElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "firstname"));
-                firstnameElement.appendChild(doc.createTextNode(customer.getFirstName()));
-                Element lastnameElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "lastname"));
-                lastnameElement.appendChild(doc.createTextNode(customer.getLastName()));
-                Element genderElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "gender"));
-                genderElement.appendChild(doc.createTextNode(customer.getGender()));
-            }
+            rootElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-id", "" + customerID);
+            rootElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-email", emailAddr);
+            com.konakart.appif.CustomerIf customer = kkEngine.getCustomer(konakartSessionID);
+            Element firstnameElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "firstname"));
+            firstnameElement.appendChild(doc.createTextNode(customer.getFirstName()));
+            Element lastnameElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "lastname"));
+            lastnameElement.appendChild(doc.createTextNode(customer.getLastName()));
+            Element genderElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "gender"));
+            genderElement.appendChild(doc.createTextNode(customer.getGender()));
         } else {
-            log.warn("DEBUG: Not signed-in yet!");
+            log.debug("Not signed-in yet!");
         }
 
         java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();

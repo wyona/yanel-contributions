@@ -120,6 +120,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 System.arraycopy(totals, 0, custom_totals, 0, totals.length);
 
                 // Yes, all those fields are necessary
+                // TODO: Make this more generic than it currently is.
                 custom_totals[totals.length] = new OrderTotal();
                 custom_totals[totals.length].setTitle("Mengenrabatt Wein");
                 custom_totals[totals.length].setValue(shipping.getTotalIncTax());

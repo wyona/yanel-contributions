@@ -188,17 +188,20 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
         }
 
         javax.servlet.http.HttpSession httpSession = getEnvironment().getRequest().getSession(true);
-        String konakartSessionID = shared.getSessionId(httpSession);
         Element customerElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "customer"));
-        customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-session-id", konakartSessionID);
-        int customerID = shared.getCustomerId(httpSession);
-        String emailAddr = kkEngine.getCustomer(konakartSessionID).getEmailAddr();
-        int temporaryCustomerID = shared.getTemporaryCustomerId(httpSession);
-        if (customerID > 0 && !emailAddr.equals("customer." + temporaryCustomerID + shared.TMP_EMAIL_SUFFIX)) {
-            customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-id", "" + customerID);
-            customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-email", emailAddr);
-        } else {
-            log.info("Not signed in yet.");
+
+        // If user is logged in, get customer id, email, etc.
+        if(sessionId != null) {
+            customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-session-id", sessionId);
+
+            int customerId = shared.getCustomerId(httpSession);
+            String emailAddr = kkEngine.getCustomer(sessionId).getEmailAddr();
+
+            if (customerId > 0) {
+                // Customer ids > 0 are persistent, customer ids < 0 are temporary
+                customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-id", "" + customerId);
+                customerElement.setAttributeNS(KONAKART_NAMESPACE, "konakart-customer-email", emailAddr);
+            }
         }
 
         BigDecimal all_price, single_price;
@@ -440,7 +443,9 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
         item.setProductId(productId);
         item.setQuantity(quantity);
 
-        kkEngine.addToBasket(null, tmpCustomerId, item); // INFO: Do not use session Id, but only temporary customer Id, because as soon as customer signs in the session Id will change, but the temporary customer Id remains
+        // INFO: Do not use session Id, but only temporary customer Id, because as soon as 
+        // customer signs in the session Id will change, but the temporary customer Id remains
+        kkEngine.addToBasket(null, tmpCustomerId, item); 
     }
 
     /**

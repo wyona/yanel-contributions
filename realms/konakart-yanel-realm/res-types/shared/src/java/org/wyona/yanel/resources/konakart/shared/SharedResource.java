@@ -7,6 +7,8 @@ package org.wyona.yanel.resources.konakart.shared;
 import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.map.Realm;
 import org.wyona.yanel.servlet.security.impl.DefaultWebAuthenticatorImpl;
+import org.wyona.yanel.servlet.IdentityMap;
+import org.wyona.yanel.servlet.YanelServlet;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -44,7 +46,6 @@ import com.konakart.appif.CreateOrderOptionsIf;
  */
 public class SharedResource extends Resource {
     public static String KONAKART_SESSION_ID = "konakart-session-id";
-    public static String TMP_EMAIL_SUFFIX = "@temporary.users.xxx";
 
     private static Logger log = Logger.getLogger(SharedResource.class);
     private KKEngIf kkEngine;
@@ -132,7 +133,7 @@ public class SharedResource extends Resource {
             } catch(Exception e) {
                 // Now we need to generate a new sessionId
                 session.removeValue(KONAKART_SESSION_ID);
-                sessionId = getSessionId(session);
+                sessionId = null;
             }
         }
 
@@ -145,12 +146,7 @@ public class SharedResource extends Resource {
     public CustomerIf getCustomer(String sessionId, int customerId) throws Exception {
         if (customerId > 0) {
             CustomerIf customer = kkEngine.getCustomer(sessionId);
-            if (customer.getEmailAddr().endsWith(TMP_EMAIL_SUFFIX)) {
-                // Not signed in, just temp user
-                return null;
-            } else {
-                return customer;
-            }
+            return customer;
         } else {
             // Not signed in
             return null;
@@ -163,6 +159,8 @@ public class SharedResource extends Resource {
      * (abbreviated version), e.g. Fl instead of Flaschen.
      */
     public String getItemUnits(ProductIf product, String languageCode, boolean abbrev) {
+        // TODO: This is a very specific/customized function.
+        // Should be replaced it with a more generic mechanism.
         String model = product.getManufacturerName();
         if(model != null && model.length() > 0) {
             // If it's a wine...
@@ -240,6 +238,24 @@ public class SharedResource extends Resource {
         } catch(Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Perform logout.
+     */
+    public void logout(Realm realm, HttpSession session) throws Exception {
+        // INFO: Yanel logout
+        IdentityMap identityMap = (IdentityMap) session.getAttribute(YanelServlet.IDENTITY_MAP_KEY);
+
+        if(identityMap != null && identityMap.containsKey(realm.getID())) {
+            log.debug("Logout from realm: " + realm.getID());
+            identityMap.remove(realm.getID());
+        }
+
+        // INFO: KonaKart logout
+        String sessionId = getSessionId(session);
+        if(sessionId != null) kkEngine.logout(sessionId);
+        session.removeValue(KONAKART_SESSION_ID);
     }
 
     /**
