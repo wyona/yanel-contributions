@@ -49,7 +49,7 @@ public class KonakartNavigationSOAPInfResource extends BasicXMLResource {
         }
         Element rootElement = doc.getDocumentElement();
 
-        if(!shared.isKKOnline()) {
+        if(!shared.isKKOnline(getRealm())) {
             // Konakart is offline...
             rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "offline"));
             java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
@@ -131,7 +131,7 @@ public class KonakartNavigationSOAPInfResource extends BasicXMLResource {
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
 
-        if(!shared.isKKOnline()) return false;
+        if(!shared.isKKOnline(getRealm())) return false;
 
         int languageId = shared.getLanguageId(getContentLanguage());
 

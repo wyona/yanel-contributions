@@ -9,6 +9,7 @@ import org.wyona.yanel.core.map.Realm;
 import org.wyona.yanel.servlet.security.impl.DefaultWebAuthenticatorImpl;
 import org.wyona.yanel.servlet.IdentityMap;
 import org.wyona.yanel.servlet.YanelServlet;
+import org.wyona.yarep.core.Repository;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -414,7 +415,21 @@ public class SharedResource extends Resource {
     /**
      * Is Konakart available?
      */
-    public boolean isKKOnline() {
+    public boolean isKKOnline(Realm realm) {
+        // First we check for the existence of a file
+        // in the default repository, this allows us to
+        // let the shop appear to be offline for maintenance
+        try {
+            Repository repo = realm.getRepository();
+    
+            if(repo.existsNode("/go-offline")) {
+                return false;
+            }
+        } catch(Exception e) {
+            log.warn(e,e);
+            return false;
+        }
+        
         try {
             SharedResource shared = new SharedResource();
             KKEngIf kkEngine = shared.getKonakartEngineImpl();

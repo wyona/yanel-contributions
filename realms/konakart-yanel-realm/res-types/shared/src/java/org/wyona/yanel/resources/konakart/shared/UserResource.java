@@ -58,7 +58,7 @@ public class UserResource extends BasicXMLResource {
 
         SharedResource shared = new SharedResource();
 
-        if(!shared.isKKOnline()) {
+        if(!shared.isKKOnline(getRealm())) {
             // Konakart is offline.
             Element firstnameElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "offline"));
             java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
@@ -128,7 +128,7 @@ public class UserResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
-        if(!shared.isKKOnline()) return true;
+        if(!shared.isKKOnline(getRealm())) return true;
         KKEngIf kkEngine = shared.getKonakartEngineImpl();
 
         int languageID = getLanguageID(kkEngine);

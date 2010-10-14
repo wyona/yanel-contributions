@@ -59,7 +59,7 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
      */
     public View getView(String viewId) throws Exception {
         SharedResource shared = new SharedResource();
-        if(!shared.isKKOnline()) {
+        if(!shared.isKKOnline(getRealm())) {
             // Konakart is offline
             // We return error 503 (temporarily unavailable)
             // because that is the right thing to do! If we
@@ -353,7 +353,7 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
-        if(!shared.isKKOnline()) return true;
+        if(!shared.isKKOnline(getRealm())) return true;
         int languageId = shared.getLanguageId(getContentLanguage());
 
         if (languageId == -1) {

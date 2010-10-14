@@ -69,7 +69,7 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
         }
 
         // Is KK down?
-        if(!shared.isKKOnline()) {
+        if(!shared.isKKOnline(getRealm())) {
             // Konakart is offline...
             // Simply return an empty shopping cart.
             Element rootElement = doc.getDocumentElement();
@@ -401,7 +401,7 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
      */
     public boolean exists() throws Exception {
         SharedResource shared = new SharedResource();
-        if(!shared.isKKOnline()) return true;
+        if(!shared.isKKOnline(getRealm())) return true;
 
         int languageId = shared.getLanguageId(getContentLanguage());
         if (languageId == -1) {

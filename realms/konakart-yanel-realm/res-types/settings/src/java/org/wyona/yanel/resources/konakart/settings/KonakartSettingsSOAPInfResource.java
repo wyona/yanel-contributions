@@ -39,7 +39,7 @@ public class KonakartSettingsSOAPInfResource extends BasicXMLResource {
         doc = org.wyona.commons.xml.XMLHelper.createDocument(KONAKART_NAMESPACE, "settings");
         Element rootElement = doc.getDocumentElement();
 
-        if(!shared.isKKOnline()) {
+        if(!shared.isKKOnline(getRealm())) {
             Element offline = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "shop-is-offline"));
             java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
             org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
@@ -384,7 +384,7 @@ public class KonakartSettingsSOAPInfResource extends BasicXMLResource {
     public boolean exists() {
         try {
             SharedResource shared = new SharedResource();
-            if(!shared.isKKOnline()) return true;
+            if(!shared.isKKOnline(getRealm())) return true;
             KKEngIf kkEngine = shared.getKonakartEngineImpl();
             String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
             int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
