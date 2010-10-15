@@ -162,6 +162,8 @@ public class SharedResource extends Resource {
     public String getItemUnits(ProductIf product, String languageCode, boolean abbrev) {
         // TODO: This is a very specific/customized function.
         // Should be replaced it with a more generic mechanism.
+        if(product == null) return "";
+
         String model = product.getManufacturerName();
         if(model != null && model.length() > 0) {
             // If it's a wine...
@@ -431,8 +433,7 @@ public class SharedResource extends Resource {
         }
         
         try {
-            SharedResource shared = new SharedResource();
-            KKEngIf kkEngine = shared.getKonakartEngineImpl();
+            KKEngIf kkEngine = getKonakartEngineImpl();
             // We use getStore to check if Konakart is online
             // because getStore has no side effects, it just
             // return some configuration parameters.

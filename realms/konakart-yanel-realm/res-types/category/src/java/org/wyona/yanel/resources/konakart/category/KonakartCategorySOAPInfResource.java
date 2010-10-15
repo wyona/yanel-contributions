@@ -324,9 +324,11 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
                     }
  
                     // Category
-                    CategoryIf prodcat = kkEngine.getCategory(temp_product.getCategoryId(), languageId);
-                    Element catElement = (Element) productElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "category"));
-                    catElement.appendChild(doc.createTextNode(prodcat == null ? "null" : prodcat.getName()));
+                    if(temp_product != null) { 
+                        CategoryIf prodcat = kkEngine.getCategory(temp_product.getCategoryId(), languageId);
+                        Element catElement = (Element) productElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "category"));
+                        catElement.appendChild(doc.createTextNode(prodcat == null ? "null" : prodcat.getName()));
+                    }
                 }
             }
         }
