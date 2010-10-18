@@ -17,6 +17,8 @@ import java.lang.Integer;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.konakart.app.Basket;
 import com.konakart.app.EngineConfig;
@@ -38,28 +40,31 @@ import com.konakart.appif.OrderIf;
 import com.konakart.appif.ShippingQuoteIf;
 import com.konakart.appif.CustomerRegistrationIf;
 import com.konakart.appif.CustomerIf;
+import com.konakart.appif.CreateOrderOptionsIf;
+import com.konakart.appif.EngineConfigIf;
 import com.konakart.util.KKConstants;
 import com.konakart.app.CreateOrderOptions;
-import com.konakart.appif.CreateOrderOptionsIf;
+import com.konakart.app.EngineConfig;
+import com.konakart.app.KKWSEng;
 
 /**
  * Shared functions.
  */
 public class SharedResource extends Resource {
     public static String KONAKART_SESSION_ID = "konakart-session-id";
+    public static String KONAKART_DEFAULT_STOREID = "store1";
 
     private static Logger log = Logger.getLogger(SharedResource.class);
-    private KKEngIf kkEngine;
+
+    private KKEngIf kkEngine;                   // Info: Default store engine
+    private Map<String, KKEngIf> kkEngineMap;   // Info: Engines for other stores
 
     /**
      * Constructor.
      */
     public SharedResource() throws Exception {
-        // We only instantiate the the KonaKart engine once,
-        // and then re-use the object throughout the other functions
-        // INFO: Or read from classes/konakart_app.properties
-        Class<?> engineClass = Class.forName("com.konakart.app.KKWSEng"); 
-        kkEngine = (KKEngIf) engineClass.newInstance();
+        kkEngineMap = new HashMap(); 
+        kkEngine = getKonakartEngineImpl(KONAKART_DEFAULT_STOREID);
     }
 
     /**
@@ -67,7 +72,7 @@ public class SharedResource extends Resource {
      * @param Language
      */
     public int getLanguageId(String lang) throws Exception {
-        LanguageIf kkLang = kkEngine.getLanguagePerCode(lang);
+        LanguageIf kkLang = getKonakartEngineImpl().getLanguagePerCode(lang);
 
         int kkLangInt = -1;
         if (kkLang != null) {
@@ -80,10 +85,27 @@ public class SharedResource extends Resource {
     }
 
     /**
-     * Get KonaKart engine implementation.
+     * Get KonaKart engine implementation for default store.
      */
     public KKEngIf getKonakartEngineImpl() {
         return kkEngine;
+    }
+
+    /**
+     * Get KonaKart engine implementation for a specific store.
+     */
+    public KKEngIf getKonakartEngineImpl(String storeId) throws Exception {
+        // We only instantiate the the KonaKart engine once,
+        // and then store it in a map for re-use later (we'll
+        // most likely need it more than once anyway)
+        if(!kkEngineMap.containsKey(storeId)) {
+            EngineConfigIf conf = new EngineConfig();
+            conf.setStoreId(storeId);
+            kkEngine = new KKWSEng(conf);
+            kkEngineMap.put(storeId, kkEngine);
+        }
+
+        return kkEngineMap.get(storeId);
     }
 
     /**
@@ -93,7 +115,7 @@ public class SharedResource extends Resource {
     public int getCustomerId(HttpSession session) throws Exception {
         String konakartSessionId = getSessionId(session);
         if (konakartSessionId != null && konakartSessionId.length() > 0) {
-            return kkEngine.getCustomer(konakartSessionId).getId();
+            return getKonakartEngineImpl().getCustomer(konakartSessionId).getId();
         } else {
             return getTemporaryCustomerId(session);
         }
@@ -130,7 +152,7 @@ public class SharedResource extends Resource {
             try {
                 // According to the docs, getCustomer() only throws an exception
                 // if the session is expired so this should be a reliable check.
-                kkEngine.getCustomer(sessionId);
+                getKonakartEngineImpl().getCustomer(sessionId);
             } catch(Exception e) {
                 // Now we need to generate a new sessionId
                 session.removeValue(KONAKART_SESSION_ID);
@@ -146,7 +168,7 @@ public class SharedResource extends Resource {
      */
     public CustomerIf getCustomer(String sessionId, int customerId) throws Exception {
         if (customerId > 0) {
-            CustomerIf customer = kkEngine.getCustomer(sessionId);
+            CustomerIf customer = getKonakartEngineImpl().getCustomer(sessionId);
             return customer;
         } else {
             // Not signed in
@@ -229,7 +251,7 @@ public class SharedResource extends Resource {
 
         // INFO: Konakart authentication
         try { 
-            String id = kkEngine.login(username, password);
+            String id = getKonakartEngineImpl().login(username, password);
             if(id != null) {
                 // OPTIONAL: Transfer shopping cart from temporary negative 
                 // customer ID to session of signed-in user to make it persistent.
@@ -257,7 +279,7 @@ public class SharedResource extends Resource {
 
         // INFO: KonaKart logout
         String sessionId = getSessionId(session);
-        if(sessionId != null) kkEngine.logout(sessionId);
+        if(sessionId != null) getKonakartEngineImpl().logout(sessionId);
         session.removeValue(KONAKART_SESSION_ID);
     }
 
@@ -272,6 +294,7 @@ public class SharedResource extends Resource {
         CreateOrderOptionsIf orderOptions = new CreateOrderOptions();
         orderOptions.setUseDefaultCustomer(sessionId == null);
 
+        KKEngIf kkEngine = getKonakartEngineImpl();
         OrderIf fakeorder = kkEngine.createOrderWithOptions(sessionId, items, orderOptions, languageId);
         ShippingQuoteIf[] ships = kkEngine.getShippingQuotes(fakeorder, languageId);
         ShippingQuoteIf shipping = ships[0];
@@ -433,11 +456,10 @@ public class SharedResource extends Resource {
         }
         
         try {
-            KKEngIf kkEngine = getKonakartEngineImpl();
             // We use getStore to check if Konakart is online
             // because getStore has no side effects, it just
             // return some configuration parameters.
-            kkEngine.getStore();
+            getKonakartEngineImpl().getStore();
         } catch(Exception e) {
             // If getStore fails, we assume Konakart is down.
             return false;
