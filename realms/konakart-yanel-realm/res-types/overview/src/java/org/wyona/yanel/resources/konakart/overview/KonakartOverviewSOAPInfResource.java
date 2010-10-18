@@ -365,8 +365,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 if(storeId != null) {
                     try {
                         KKEngIf kkEngineBranch = shared.getKonakartEngineImpl(storeId);
-                        order = kkEngineBranch.getOrderTotals(order, languageId);
-                        int idBranch = kkEngineBranch.saveOrder(sessionId, order, languageId);
+                        OrderIf orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
+                        orderBranch = kkEngineBranch.getOrderTotals(orderBranch, languageId);
+                        orderBranch.setShippingQuote(shipping);
+                        int idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
                     } catch(Exception e) {
                         log.warn(e, e);
                     }
