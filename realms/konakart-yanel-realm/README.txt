@@ -83,9 +83,13 @@ Multi-Store Single DB (Mode 2) Configuration
     konakartadmin.gwt.productsShared = true
 
 - webapps/konakart/WEB-INF/classes/konakart.properties
-    konakart.ws.mode = 0
-    konakart.ws.customersShared = false
-    konakart.ws.productsShared = false
+    konakart.ws.mode = 2
+    konakart.ws.customersShared = true
+    konakart.ws.productsShared = true
+
+Note: A previous version of this document said not to configure the konakart
+webapp in multistore mode, but since SOAP goes through the konakart webapp
+it's necessary to do so or you will run into problems.
 
 - webapps/konakart/WEB-INF/struts-config.xml
     <plug-in className="com.konakart.plugins.KKEngPlugin">
@@ -98,4 +102,18 @@ Multi-Store Single DB (Mode 2) Configuration
       <set-property property="productsShared" value="true"/>
 
 - Run once and only once: 'sh create-enterprise-db.sh'
-      (which creates an additional sample store called 'store2' within the table 'kk_store', whereas one can add more stores within konakartadmin webapp, see left hand menu item 'Verwaltung Shop' ...)
+      Note: You may need to edit paths in the script before running
+      (which creates an additional sample store called 'store2' within the table 'kk_store', 
+      whereas one can add more stores within konakartadmin webapp, see left hand menu 
+      item 'Verwaltung Shop' ...)
+
+
+BIRTViewer/Reporting Setup
+--------------------------
+
+The reporting doesn't work out of the box. You need to go to the Konakart
+directory and edit the file(s):
+
+- webapps/birtviewer/reports/lib/*.rptlib
+
+And setup database access, fix paths. Refer to the Konakart docs for info.
