@@ -51,6 +51,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
     private static Logger log = Logger.getLogger(KonakartOverviewSOAPInfResource.class);
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
 
+    private BranchListHandler handler; // Info: For parsing branches xml file.
+
     protected InputStream getContentXML(String viewId) throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("requested viewId: " + viewId);
@@ -75,6 +77,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         // Root element
         Element rootElement = doc.getDocumentElement();
 
+        // We'll need these later
+        BasketIf[] items = null;
+        ShippingQuoteIf shipping = null;
+
         // Place order?
         if(process) { 
             // If process is true, we're creating and submitting this order
@@ -83,10 +89,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
             try {
                 int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
-                BasketIf[] items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
+                items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
 
                 order = kkEngine.createOrder(sessionId, items, languageId);
-                ShippingQuoteIf shipping = shared.getShippingCost(items, sessionId, languageId);
+                shipping = shared.getShippingCost(items, sessionId, languageId);
                 order.setShippingQuote(shipping);
                 order = kkEngine.getOrderTotals(order, languageId);
 
@@ -353,6 +359,19 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         if(process) {
             try {
                 int id = kkEngine.saveOrder(sessionId, order, languageId);
+
+                // Save to another store (mult-store mode)?
+                String storeId = getBranchStoreId(order.getDeliveryPostcode());
+                if(storeId != null) {
+                    try {
+                        KKEngIf kkEngineBranch = shared.getKonakartEngineImpl(storeId);
+                        order = kkEngineBranch.getOrderTotals(order, languageId);
+                        int idBranch = kkEngineBranch.saveOrder(sessionId, order, languageId);
+                    } catch(Exception e) {
+                        log.warn(e, e);
+                    }
+                }
+                
                 Element prElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "process"));
                 prElem.setAttribute("orderid", "" + id);
 
@@ -641,7 +660,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             String branch = getBranchEmail(order.getDeliveryPostcode());
             String sendbranch = getResourceConfigProperty("send-branch-emails");
 
-
             if(branch != null) {
                 if("true".equals(sendbranch)) {
                     // Send mail to branch
@@ -665,14 +683,38 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         String branchlist = getResourceConfigProperty("email-branches");
 
         if(branchlist != null) {
-            InputSource source = new InputSource(getRealm().getRepository().getNode(branchlist).getInputStream());
-        
-            XMLReader parser = XMLReaderFactory.createXMLReader();
-            BranchListHandler handler = new BranchListHandler(zipcode);
-            parser.setContentHandler(handler);
-            parser.parse(source);
+            if(handler == null) {
+                this.handler = new BranchListHandler(zipcode);
+
+                InputSource source = new InputSource(getRealm().getRepository().getNode(branchlist).getInputStream());
+                XMLReader parser = XMLReaderFactory.createXMLReader();
+                parser.setContentHandler(handler);
+                parser.parse(source);
+            }
     
             return handler.recipient;
+        }
+            
+        return null;
+    }
+
+    /**
+     * Get branch storeId.
+     */
+    public String getBranchStoreId(String zipcode) throws Exception {
+        String branchlist = getResourceConfigProperty("email-branches");
+
+        if(branchlist != null) {
+            if(handler == null) {
+                this.handler = new BranchListHandler(zipcode);
+
+                InputSource source = new InputSource(getRealm().getRepository().getNode(branchlist).getInputStream());
+                XMLReader parser = XMLReaderFactory.createXMLReader();
+                parser.setContentHandler(handler);
+                parser.parse(source);
+            }
+    
+            return handler.storeId;
         }
             
         return null;

@@ -14,7 +14,9 @@ class BranchListHandler extends DefaultHandler {
     private String element;
     private int lower_bound;
     private int zip;
+    private String store_attr;
     public String recipient;
+    public String storeId = null;
 
     BranchListHandler(String zip) {
         this.zip = Integer.parseInt(zip);
@@ -24,7 +26,13 @@ class BranchListHandler extends DefaultHandler {
         element = localName;
 
         if("branch".equalsIgnoreCase(element)) {
-           lower_bound = Integer.parseInt(attributes.getValue("start"));
+            lower_bound = Integer.parseInt(attributes.getValue("start"));
+
+            try {
+                store_attr = attributes.getValue("storeid");
+            } catch(Exception e) {
+                store_attr = null;
+            }
         }
     }
 
@@ -32,6 +40,7 @@ class BranchListHandler extends DefaultHandler {
         if("branch".equalsIgnoreCase(element)) { 
             if(zip >= lower_bound) {
                 recipient = new String(ch, start, length); 
+                storeId = store_attr;
             }
         }
 

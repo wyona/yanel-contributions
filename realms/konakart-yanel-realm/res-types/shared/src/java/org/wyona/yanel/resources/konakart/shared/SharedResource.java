@@ -96,8 +96,8 @@ public class SharedResource extends Resource {
      */
     public KKEngIf getKonakartEngineImpl(String storeId) throws Exception {
         // We only instantiate the the KonaKart engine once,
-        // and then store it in a map for re-use later (we'll
-        // most likely need it more than once anyway)
+        // and then store it in a map for re-use later
+        // (since we'll most likely need it more than once)
         if(!kkEngineMap.containsKey(storeId)) {
             EngineConfigIf conf = new EngineConfig();
             conf.setStoreId(storeId);
