@@ -360,7 +360,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             try {
                 int id = kkEngine.saveOrder(sessionId, order, languageId);
 
-                // Save to another store (mult-store mode)?
+                // Save to another store (multi-store mode)?
                 String storeId = getBranchStoreId(order.getDeliveryPostcode());
                 if(storeId != null) {
                     try {
@@ -662,12 +662,12 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             String branch = getBranchEmail(order.getDeliveryPostcode());
             String sendbranch = getResourceConfigProperty("send-branch-emails");
 
+            content.append("Filiale: " + branch + "<br/>");
+
             if(branch != null) {
                 if("true".equals(sendbranch)) {
                     // Send mail to branch
                     sendMail(sender, branch, subject, content.toString());
-                } else {
-                    content.append("Filialleiter: " + branch + "<br/>");
                 }
             }
 
