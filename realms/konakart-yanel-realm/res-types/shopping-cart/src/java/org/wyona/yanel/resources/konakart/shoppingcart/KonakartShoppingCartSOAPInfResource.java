@@ -68,22 +68,32 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
             throw new Exception(e.getMessage(), e);
         }
 
+        int tmpCustomerId;
+        int languageId;
+        BasketIf[] items;
+
         // Is KK down?
         if(!shared.isKKOnline(getRealm())) {
             // Konakart is offline...
-            // Simply return an empty shopping cart.
-            Element rootElement = doc.getDocumentElement();
-            rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "no-items-inside-shopping-cart-yet"));
-            java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
-            org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
-            return new java.io.ByteArrayInputStream(baout.toByteArray());
+            try {
+                tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
+                languageId = shared.getLanguageId(getContentLanguage());
+                items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
+            } catch(Exception e) {
+                Element rootElement = doc.getDocumentElement();
+                rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "no-items-inside-shopping-cart-yet"));
+                java.io.ByteArrayOutputStream baout = new java.io.ByteArrayOutputStream();
+                org.wyona.commons.xml.XMLHelper.writeDocument(doc, baout);
+                return new java.io.ByteArrayInputStream(baout.toByteArray());
+            }
+        } else {
+            tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
+            languageId = shared.getLanguageId(getContentLanguage());
+            items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
         }
 
         // Get language id, customer, basket, etc.
-        int languageId = shared.getLanguageId(getContentLanguage());
-        int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
         String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
-        BasketIf[] items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
 
         // Should we clear the basket?
         if(getParameters().get("clear") != null) {
