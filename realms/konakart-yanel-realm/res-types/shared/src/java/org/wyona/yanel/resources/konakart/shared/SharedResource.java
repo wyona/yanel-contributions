@@ -45,6 +45,7 @@ import com.konakart.appif.EngineConfigIf;
 import com.konakart.util.KKConstants;
 import com.konakart.app.CreateOrderOptions;
 import com.konakart.app.EngineConfig;
+import com.konakart.app.ShippingQuote;
 import com.konakart.app.KKWSEng;
 
 /**
@@ -285,19 +286,15 @@ public class SharedResource extends Resource {
 
     /**
      * Calculate the shipping cost for a basket.
+     * TODO: Make this function more generic.
      */
     public ShippingQuoteIf getShippingCost(BasketIf[] items, String sessionId, int languageId) throws Exception {
-        // We calculate the shipping cost ourselves, but we
-        // need to give KonaKart a ShippingQuoteIf object anyway...
-        // And the only way to get such an object is to get
-        // if from KonaKart, so that's what we do here.
+        // We calculate the shipping cost ourselves in this function,
+        // because Konakart has certain limitations as to what you can do.
         CreateOrderOptionsIf orderOptions = new CreateOrderOptions();
         orderOptions.setUseDefaultCustomer(sessionId == null);
 
-        KKEngIf kkEngine = getKonakartEngineImpl();
-        OrderIf fakeorder = kkEngine.createOrderWithOptions(sessionId, items, orderOptions, languageId);
-        ShippingQuoteIf[] ships = kkEngine.getShippingQuotes(fakeorder, languageId);
-        ShippingQuoteIf shipping = ships[0];
+        ShippingQuoteIf shipping = new ShippingQuote();
 
         // And now we calculate the shipping cost...
         // Shiping is diffrent for wine and for gift baskets.
@@ -306,6 +303,7 @@ public class SharedResource extends Resource {
         int bottles = 0, baskets = 0;
         BigDecimal bottles_price = new BigDecimal("0");
         BigDecimal baskets_price = new BigDecimal("0");
+
         // Some wines also have "Mengenrabatt". We need to know how many.
         int bottles_rebate = 0;
         BigDecimal bottles_rebate_price = new BigDecimal("0");
