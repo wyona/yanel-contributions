@@ -1,4 +1,4 @@
-/*
+/*-
  * Copyright 2010 Wyona
  */
 
@@ -60,11 +60,14 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
         SharedResource shared = new SharedResource();
         KKEngIf kkEngine = shared.getKonakartEngineImpl();
+        KKEngIf kkEngineBranch = null; // Will be initialized later (if in multi-store mode)
+        boolean multistore = false; // Will have to be checked after reading delivery address
         String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
         int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
         int languageId = shared.getLanguageId(getContentLanguage());
         boolean process = getEnvironment().getRequest().getParameter("process") != null;
-        OrderIf order = null;
+        OrderIf order = null;         // Order object which will be filled with totals
+        OrderIf orderBranch = null;   // Branch order object for multi-store mode
 
         // Build document
         org.w3c.dom.Document doc = null;
@@ -81,74 +84,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         BasketIf[] items = null;
         ShippingQuoteIf shipping = null;
 
-        // Place order?
-        if(process) { 
-            // If process is true, we're creating and submitting this order
-            // at the same time as we are displaying the information. So first,
-            // we need the items in the basket to create an order object.
-
-            try {
-                int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
-                items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
-
-                order = kkEngine.createOrder(sessionId, items, languageId);
-                shipping = shared.getShippingCost(items, sessionId, languageId);
-                order.setShippingQuote(shipping);
-                order = kkEngine.getOrderTotals(order, languageId);
-
-                // Add custom discount to order object
-                // This is a bit difficult because of Konakart...
-                // Here, we edit the totalIncTax/totalExTax fields, those
-                // are used for displaying the order total in e.g. a overview
-                order.setTotalExTax(order.getTotalExTax().add(shipping.getTotalIncTax()));
-                order.setTotalIncTax(order.getTotalExTax().add(shipping.getTotalIncTax()));
-
-                // Then we need to edit the OrderTotal objects, those
-                // are used in the "detailed" view, to show e.g. shipping and such
-                OrderTotalIf[] totals = order.getOrderTotals();
-
-                for(OrderTotalIf t : totals) {
-                    if(t.getClassName().equals("ot_total")) {
-                        // If it's the total, edit it...
-                        // Not only do we need to change the value, 
-                        // we also have to change the text that is displayed
-                        // manually ourselves because if we don't the value
-                        // will be correct in the database but Konakart will
-                        // display something diffrent!
-                        t.setValue(t.getValue().add(shipping.getTotalIncTax()));
-                        t.setText("<b>CHF" + t.getValue().setScale(2, BigDecimal.ROUND_HALF_EVEN) + "</b>");
-                    }
-                }
-
-                // And now we add a OrderTotal object for our "Mengenrabatt",
-                // otherwise Konakart will completely ignore it which sucks.
-                OrderTotalIf[] custom_totals = new OrderTotal[totals.length+1];
-                System.arraycopy(totals, 0, custom_totals, 0, totals.length);
-
-                // Yes, all those fields are necessary
-                // TODO: Make this more generic than it currently is.
-                custom_totals[totals.length] = new OrderTotal();
-                custom_totals[totals.length].setTitle("Mengenrabatt Wein");
-                custom_totals[totals.length].setValue(shipping.getTotalIncTax());
-                custom_totals[totals.length].setText("-CHF" + shipping.getTotalIncTax().multiply(new BigDecimal("-1")).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
-                custom_totals[totals.length].setClassName("ot_custom");
-                custom_totals[totals.length].setOrderId(order.getId());
-                custom_totals[totals.length].setSortOrder(3);
-
-                // And finally...
-                order.setOrderTotals(custom_totals);
-
-                // Store cost in custom fields for use later on
-                order.setCustom1(shipping.getCustom1());
-                order.setCustom2(shipping.getCustom2());
-                order.setCustom3(shipping.getCustom3());
-            } catch(Exception e) {
-                process = false;
-                log.error(e, e);
-                Element perrElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "process-error"));
-                if(e.getMessage() != null) perrElem.appendChild(doc.createTextNode(e.getMessage()));
-            }
-        }
 
         // Get customer
         CustomerIf customer = shared.getCustomer(sessionId, customerId); 
@@ -197,18 +132,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         Element defAddrPhoneElem = (Element) defAddrElem.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "telephone"));
         defAddrPhoneElem.appendChild(doc.createTextNode("" + customer.getTelephoneNumber())); 
 
-        if(process) {
-            try {
-                order.setCustomerAddrId(defaddr.getId());
-                order.setBillingAddrId(defaddr.getId());
-            } catch(Exception e) {
-                process = false; 
-                log.error(e, e);
-                Element perrElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "process-error"));
-                if(e.getMessage() != null) perrElem.appendChild(doc.createTextNode(e.getMessage()));
-            }
-        }
-
         // Get delivery (=default) address
         AddressIf[] addrs = kkEngine.getAddressesPerCustomer(sessionId);
         int devaddrid = Integer.parseInt(customer.getCustom1());
@@ -244,21 +167,48 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         String remarks = (String) getEnvironment().getRequest().getSession(true).getAttribute("checkout-data-remarks");
         if(remarks != null) appendField("remarks", remarks, rootElement, doc);
 
-        if(process) {
-            try { 
-                order.setDeliveryAddrId(devaddr.getId());
-                order.setDeliveryCity(devaddr.getCity());
-                order.setDeliveryName(devaddr.getFirstName() + " " + devaddr.getLastName());
-                order.setDeliveryCountry(devaddr.getCountryName());
-                order.setDeliveryStreetAddress(devaddr.getStreetAddress());
-                order.setDeliveryPostcode(devaddr.getPostcode());
-                if(devaddr.getCompany() != null) order.setDeliveryCompany(devaddr.getCompany());
+        // Place order?
+        if(process) { 
+            // If process is true, we're creating and submitting this order
+            // at the same time as we are displaying the information. So first,
+            // we need the items in the basket to create an order object.
+
+            try {
+                int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
+                items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
+        
+                // Multi-Store?
+                String storeId = getBranchStoreId(devaddr.getPostcode());
+                multistore = storeId != null;
+                if(multistore) kkEngineBranch = shared.getKonakartEngineImpl(storeId);
+
+                // Create orders
+                order = kkEngine.createOrder(sessionId, items, languageId);
+                shipping = shared.getShippingCost(items, sessionId, languageId);
+                order.setShippingQuote(shipping);
+                order = kkEngine.getOrderTotals(order, languageId);
+
+                fixOrderTotals(order, shipping);
+                setOrderAddressFields(order, shipping, devaddr, defaddr);
+
                 // Status trail
                 OrderStatusHistoryIf[] trail = new OrderStatusHistoryIf[1];
                 trail[0] = new OrderStatusHistory();
                 trail[0].setOrderStatus("New order.");
                 trail[0].setCustomerNotified(true);
+
                 order.setStatusTrail(trail);
+
+                if(multistore) {
+                    orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
+                    orderBranch.setShippingQuote(shipping);
+                    orderBranch = kkEngineBranch.getOrderTotals(orderBranch, languageId);
+
+                    fixOrderTotals(orderBranch, shipping);
+                    setOrderAddressFields(orderBranch, shipping, devaddr, defaddr);
+                    orderBranch.setStatusTrail(trail);
+                }
+
             } catch(Exception e) {
                 process = false;
                 log.error(e, e);
@@ -303,6 +253,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             if(process) {
                 try {
                     order.setPaymentMethod("Pluscard");
+                    if(multistore) orderBranch.setPaymentMethod("Pluscard");
                     payment_info_kk = num_suffix + " (" + valid + ")";
                     payment_info_mail = "6004512-" + num_prefix;
                 } catch(Exception e) {
@@ -343,6 +294,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             if(process) {
                 try {
                     order.setPaymentMethod("Creditcard");
+                    if(multistore) orderBranch.setPaymentMethod("Creditcard");
                     String snum = number.replace("[^0-9]+", "");
                     payment_info_kk = type + ": " + num_suffix + " (" + valid + ")";
                     String cvc = (String) session.getAttribute("checkout-card-data-cvc");
@@ -359,18 +311,15 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         if(process) {
             try {
                 int id = kkEngine.saveOrder(sessionId, order, languageId);
+                int idBranch = 0;
 
                 // Save to another store (multi-store mode)?
-                String storeId = getBranchStoreId(order.getDeliveryPostcode());
-                if(storeId != null) {
+                if(multistore) {
                     try {
-                        KKEngIf kkEngineBranch = shared.getKonakartEngineImpl(storeId);
-                        OrderIf orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
-                        orderBranch = kkEngineBranch.getOrderTotals(orderBranch, languageId);
-                        orderBranch.setShippingQuote(shipping);
-                        int idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
+                        idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
                     } catch(Exception e) {
-                        log.warn(e, e);
+                        log.error("Unable to save order to branch!");
+                        log.error(e, e);
                     }
                 }
                 
@@ -391,15 +340,18 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
                 // Status updates
                 kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), true, "New order."); 
+                if(multistore) kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
                 if(remarks != null) {
                     try {
                         kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), true, "Remarks: " + remarks); 
+                        if(multistore) kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "Remarks: " + remarks);
                     } catch(Exception e) { 
                         log.error(e, e);
                     }
                 }
                 if(payment_info_kk != null) {
                    kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), false, "Payment details: " + payment_info_kk);
+                   if(multistore) kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
                 }
 
             } catch(Exception e) {
@@ -535,6 +487,75 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             content.append("<br/><br/><strong>Bemerkungen / Remarques</strong><br/>");
             content.append(remarks);
         }
+    }
+
+    /**
+     * Fix order totals.
+     */
+    public void fixOrderTotals(OrderIf order, ShippingQuoteIf shipping) {
+         // Then we need to edit the OrderTotal objects, those
+         // are used in the "detailed" view, to show e.g. shipping and such
+         OrderTotalIf[] totals = order.getOrderTotals();
+
+         for(OrderTotalIf t : totals) {
+             if(t.getClassName().equals("ot_total")) {
+                 // If it's the total, edit it...
+                 // Not only do we need to change the value, 
+                 // we also have to change the text that is displayed
+                 // manually ourselves because if we don't the value
+                 // will be correct in the database but Konakart will
+                 // display something diffrent!
+                 t.setValue(t.getValue().add(shipping.getTotalIncTax()));
+                 t.setText("<b>CHF" + t.getValue().setScale(2, BigDecimal.ROUND_HALF_EVEN) + "</b>");
+             }
+         }
+
+         // And now we add a OrderTotal object for our "Mengenrabatt",
+         // otherwise Konakart will completely ignore it which sucks.
+         OrderTotalIf[] custom_totals = new OrderTotal[totals.length+1];
+         System.arraycopy(totals, 0, custom_totals, 0, totals.length);
+
+         // Yes, all those fields are necessary
+         // TODO: Make this more generic than it currently is.
+         custom_totals[totals.length] = new OrderTotal();
+         custom_totals[totals.length].setTitle("Mengenrabatt Wein");
+         custom_totals[totals.length].setValue(shipping.getTotalIncTax());
+         custom_totals[totals.length].setText("-CHF" + shipping.getTotalIncTax().multiply(new BigDecimal("-1")).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+         custom_totals[totals.length].setClassName("ot_custom");
+         custom_totals[totals.length].setOrderId(order.getId());
+         custom_totals[totals.length].setSortOrder(3);
+
+         // And finally...
+         order.setOrderTotals(custom_totals);
+    }
+
+
+    /**
+     * Set custom fields, addrs.
+     */
+    public void setOrderAddressFields(OrderIf order, ShippingQuoteIf shipping, AddressIf devaddr, AddressIf defaddr) {
+         // Add custom discount to order object
+         // This is a bit difficult because of Konakart...
+         // Here, we edit the totalIncTax/totalExTax fields, those
+         // are used for displaying the order total in e.g. a overview
+         order.setTotalExTax(order.getTotalExTax().add(shipping.getTotalIncTax()));
+         order.setTotalIncTax(order.getTotalExTax().add(shipping.getTotalIncTax()));
+
+         // Store cost in custom fields for use later on
+         order.setCustom1(shipping.getCustom1());
+         order.setCustom2(shipping.getCustom2());
+         order.setCustom3(shipping.getCustom3());
+
+         // Adresses
+         order.setCustomerAddrId(defaddr.getId());
+         order.setBillingAddrId(defaddr.getId());
+         order.setDeliveryAddrId(devaddr.getId());
+         order.setDeliveryCity(devaddr.getCity());
+         order.setDeliveryName(devaddr.getFirstName() + " " + devaddr.getLastName());
+         order.setDeliveryCountry(devaddr.getCountryName());
+         order.setDeliveryStreetAddress(devaddr.getStreetAddress());
+         order.setDeliveryPostcode(devaddr.getPostcode());
+         if(devaddr.getCompany() != null) order.setDeliveryCompany(devaddr.getCompany());
     }
 
     /**
