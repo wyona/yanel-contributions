@@ -124,6 +124,8 @@ directory and edit the file (update the variable "dbPropsFile"):
 
 in order to enable the database access. Refer to the Konakart docs for info.
 
+Also please make sure to configure within konakartadmin the Birtviewer URLs (see menu item "Configuration Reports").
+
 
 Maintenance of KonaKart (decouple Yanel from KonaKart)
 ------------------------------------------------------
