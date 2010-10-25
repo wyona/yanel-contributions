@@ -118,8 +118,8 @@ BIRTViewer/Reporting Setup
 --------------------------
 
 The reporting doesn't work out of the box. You need to go to the Konakart
-directory and edit the file(s):
+directory and edit the file (update the variable "dbPropsFile"):
 
-- webapps/birtviewer/reports/lib/*.rptlib
+- webapps/birtviewer/reports/lib/konakart.rptlibrary
 
-And setup database access, fix paths. Refer to the Konakart docs for info.
+in order to enable the database access. Refer to the Konakart docs for info.
