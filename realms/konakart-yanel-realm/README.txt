@@ -123,3 +123,15 @@ directory and edit the file (update the variable "dbPropsFile"):
 - webapps/birtviewer/reports/lib/konakart.rptlibrary
 
 in order to enable the database access. Refer to the Konakart docs for info.
+
+
+Maintenance of KonaKart (decouple Yanel from KonaKart)
+------------------------------------------------------
+
+Set the file/flag MY_REALM/data-repo/data/go-offline (or rather the realm default data repository) in order to tell Yanel that KonaKart is not available.
+
+Also see
+
+grep -rl 503 *
+res-types/category/src/java/org/wyona/yanel/resources/konakart/category/KonakartCategorySOAPInfResource.java
+res-types/product/src/java/org/wyona/yanel/resources/konakart/product/KonakartProductSOAPInfResource.java
