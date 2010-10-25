@@ -107,6 +107,12 @@ it's necessary to do so or you will run into problems.
       whereas one can add more stores within konakartadmin webapp, see left hand menu 
       item 'Verwaltung Shop' ...)
 
+- Map ZIP codes onto store IDs:
+    data-repo/data/app2/branch-emails.xml
+    e.g. <branch start="1000" storeid="store2">contact@wyona.com</branch>
+
+TODO: http://www.konakart.com/forum/index.php/topic,1354.0.html
+
 
 BIRTViewer/Reporting Setup
 --------------------------
