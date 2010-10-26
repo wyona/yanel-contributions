@@ -2,9 +2,9 @@
 
 PSQL="psql -U postgres konakart5"
 
-sales_out="sales-volumes.csv"
-orders_out="orders-overview.csv"
-products_out="products-overview.csv"
+sales_out="sales-volumes"
+orders_out="orders-overview"
+products_out="products-overview"
 
 ##
 ## Setup date variables
@@ -15,6 +15,7 @@ month1=$(date -d 'last month' +%m)
 
 year2=$(date +%Y)
 month2=$(date +%m)
+today=$(date +%F)
 
 timestamp1="$year1-$month1-01 00:00"
 timestamp2="$year2-$month2-01 00:00"
@@ -24,7 +25,7 @@ timestamp3=$(date -d 'last month' +'%F %R')
 ## Sales values
 ##
 
-$PSQL <<-EOF > $sales_out
+$PSQL <<-EOF > ${sales_out}-${year1}-${month1}.csv
 	copy (
 	select
 		'$year1-$month1' as month,
@@ -43,7 +44,7 @@ EOF
 ## Order overview
 ##
 
-$PSQL <<-EOF > $orders_out
+$PSQL <<-EOF > ${orders_out}-${today}.csv
 	copy (
 	select
 		o.orders_id, t.value,
@@ -63,11 +64,11 @@ EOF
 ## Products overview
 ##
 
-$PSQL <<-EOF > $products_out
+$PSQL <<-EOF > ${products_out}-${year1}-${month1}.csv
 	copy (
 	select
-		p.products_id, d.products_name,
-		count(p.final_price), sum(p.final_price) as sales_volume
+		p.products_id, d.products_name, p.products_model, sum(p.products_quantity), 
+		sum(p.products_quantity*p.final_price) as sales_volume
 	from
 		orders o, orders_products p, products_description d
 	where
@@ -76,7 +77,7 @@ $PSQL <<-EOF > $products_out
 		o.date_purchased >= (timestamp '$timestamp1') and
 		o.date_purchased < (timestamp '$timestamp2')
 	group by
-		p.products_id, d.products_name
+		p.products_id, d.products_name, p.products_model
 	order by sales_volume desc)
 	to stdout header csv;
 EOF
