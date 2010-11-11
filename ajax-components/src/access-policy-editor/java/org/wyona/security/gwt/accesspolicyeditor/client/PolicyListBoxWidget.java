@@ -435,12 +435,31 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
         }
     }
 
-    /*
+    /**
+     * Append either user or group to policy list
      * @param type User or Group
      * @param name Name of user or group
-     * @param selected Sets wheter list item is selected. True to select the item.
+     * @param selected Sets whether list item is selected. True to select the item.
      */
     public void addItem(String type, String name, boolean selected) {
+        StringBuffer emptyRights = new StringBuffer("(-");
+        for (int i = 1; i < availableRightsCB.length; i++) {
+            emptyRights.append(",-");
+        }
+        emptyRights.append(")");
+
+        lb.addItem(type + ": " + emptyRights + " " + name, type + ": " + name);
+        lb.setItemSelected(lb.getItemCount() - 1, selected);
+    }
+
+    /**
+     * Append either user or group to policy list
+     * @param type User or Group
+     * @param name Name of user or group
+     * @param selected Sets whether list item is selected. True to select the item.
+     */
+    public void insertItemBefore(String type, String name, boolean selected, String typeInsertBefore, String nameInsertBefore) {
+        Window.alert("DEBUG: Insert before ...");
         StringBuffer emptyRights = new StringBuffer("(-");
         for (int i = 1; i < availableRightsCB.length; i++) {
             emptyRights.append(",-");
