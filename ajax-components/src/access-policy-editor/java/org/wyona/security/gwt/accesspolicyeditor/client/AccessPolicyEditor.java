@@ -53,8 +53,6 @@ public class AccessPolicyEditor implements EntryPoint {
     PolicyListBoxWidget policyLBW;
     Button saveButton;
 
-    String[] identitiesAllUsers;
-    String[] identitiesAllGroups;
     Right[] allRights;
     boolean rightsIdentitiesRetrievalCompleted = false;
     boolean policyRetrievalCompleted = false;
@@ -114,34 +112,11 @@ public class AccessPolicyEditor implements EntryPoint {
         searchTB.setVisibleLength(30);
         searchFilterPanel.add(searchTB);
 
+        // Search functionality
         searchTB.addKeyboardListener(
                 new KeyboardListenerAdapter() {
                     public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-                        //ListBox identitiesLB = identitiesLBW.getListBox();
-                        //identitiesLB.clear();
-
-                        ArrayList resultUsers = new ArrayList();
-                        for (int i = 0; i < identitiesAllUsers.length; i++) {
-                            String itemText = identitiesAllUsers[i];
-                            if (itemText.indexOf(searchTB.getText()) >= 0) {
-                                resultUsers.add(itemText);
-                            }
-                        }
-                        ArrayList resultGroups = new ArrayList();
-                        for (int i = 0; i < identitiesAllGroups.length; i++) {
-                            String itemText = identitiesAllGroups[i];
-                            if (itemText.indexOf(searchTB.getText()) >= 0) {
-                                resultGroups.add(itemText);
-                            }
-                        }
-                        
-                        String tmpUsersStr [] = new String [resultUsers.size()];
-                        resultUsers.toArray(tmpUsersStr);
-                        String tmpGroupStr [] = new String [resultGroups.size()];
-                        resultGroups.toArray(tmpGroupStr);
-                        
-                        identitiesLBW.set(visibleItemCount, tmpUsersStr, tmpGroupStr);
-                        // filterList(list, filter.getText());
+                        identitiesLBW.listBySearchMatch(searchTB.getText());
                     }
                 });
 
@@ -211,11 +186,12 @@ public class AccessPolicyEditor implements EntryPoint {
         
 
         
-        AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW.getListBox(), policyLBW.getListBox(), policyLBW);
+        AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW, policyLBW.getListBox(), policyLBW);
         ariw.setStyleName("gwt-wyona-AddRemoveWidget");
 
         //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
 
+        hp.add(getFilterUsersAndGroupsButtonsWidget(language));
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
         hp.add(identitiesLBW);
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
@@ -226,10 +202,10 @@ public class AccessPolicyEditor implements EntryPoint {
 
     /**
      * Get identities and rights
-     * @param url URL to request identities (users and groups) as XML
+     * @param url URL to request identities (users and groups) as XML (also see src/contributions/resources/policymanager/src/java/org/wyona/yanel/impl/resources/policymanager/PolicyManagerResource.java, identities-url)
      */
     private void getIdentitiesAndRights(String url) {
-        if (identitiesAllUsers == null || identitiesAllGroups == null || allRights == null) {
+        if (allRights == null) {
             //Window.alert("Load users and groups as XML: " + url);
             url = GWT.getHostPageBaseURL() + url.replaceAll("&amp;", "&");
             //Window.alert("Load IdentitiesAndRights: "+ url);
@@ -243,19 +219,19 @@ public class AccessPolicyEditor implements EntryPoint {
                     public void run() {
                         if (request.isPending()) {
                             rightsIdentitiesRetrievalCompleted = false;
-                            identitiesLBW.displayLoadingIdentities(visibleItemCount);
+                            identitiesLBW.displayLoadingMessage();
                             scheduleRepeating(10);
                         } else {
                             rightsIdentitiesRetrievalCompleted = true;
                             
                             allRights = ag.getRights();
-                            identitiesAllUsers = ag.getUsers();
-                            identitiesAllGroups = ag.getGroups();
+                            String[] identitiesAllUsers = ag.getUsers();
+                            String[] identitiesAllGroups = ag.getGroups();
                             this.cancel();
                             // NOTE: Please note that the server might not provide any groups and hence the OR instead the AND!
                             if (allRights.length > 0 && (identitiesAllUsers.length > 0 || identitiesAllGroups.length > 0)) {
                                 policyLBW.set(allRights);
-                                identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
+                                identitiesLBW.setUsersAndGroups(identitiesAllUsers, identitiesAllGroups);
                                 //Window.alert("Rights and identities have been loaded!" + allRights.length + " " + identitiesAllUsers.length + " " + identitiesAllGroups.length);
                             } else {
                                 Window.alert("Rights and identities have not been loaded yet!");
@@ -270,6 +246,8 @@ public class AccessPolicyEditor implements EntryPoint {
                 e.printStackTrace();
                 //}
             }
+        } else {
+            Window.alert("Rights are already set!");
         }
     }
 
@@ -306,32 +284,19 @@ public class AccessPolicyEditor implements EntryPoint {
                         this.cancel();
                         
                         // Remove/Subtract policy-users/groups from "Identities"
-                        ArrayList tmpUsers = new ArrayList(Arrays.asList(identitiesAllUsers));
-                        ArrayList tmpGroups = new ArrayList(Arrays.asList(identitiesAllGroups));
                         
                         // Remove all users from identities list, which already exist within the policy
-                        int itemCountUP = policyUsers.length;
-                        for (int i = 0; i < itemCountUP; i++) {
-                            String itemText = policyUsers[i].getId();
-                            tmpUsers.remove(itemText);
+                        for (int i = 0; i < policyUsers.length; i++) {
+                            identitiesLBW.removeUser(policyUsers[i].getId());
                         }
 
                         // Remove all groups from identities list, which already exist within the policy
-                        int itemCountGP = policyGroups.length;
-                        for (int i = 0; i < itemCountGP; i++) {
-                            String itemText = policyGroups[i].getId();
-                            tmpGroups.remove(itemText);
+                        for (int i = 0; i < policyGroups.length; i++) {
+                            identitiesLBW.removeGroup(policyGroups[i].getId());
                         }
-                        
-                        String tmpUsersStr [] = new String [tmpUsers.size ()];
-                        tmpUsers.toArray(tmpUsersStr);
-                        identitiesAllUsers = tmpUsersStr;
-                        
-                        String tmpGroupStr [] = new String [tmpGroups.size ()];
-                        tmpGroups.toArray(tmpGroupStr);
-                        identitiesAllGroups = tmpGroupStr;
-                        
-                        identitiesLBW.set(visibleItemCount, identitiesAllUsers, identitiesAllGroups);
+
+                        identitiesLBW.listAll(); // TODO: Update display inside removeUser() and removeGroup()
+
                         //Window.alert("Policy has been loaded!");
                     }
                 }
@@ -345,9 +310,37 @@ public class AccessPolicyEditor implements EntryPoint {
              //}
         }
     }
-    
 
+    /**
+     * Get filter users and groups buttons widget
+     * @param language I18n language
+     */
+    private Widget getFilterUsersAndGroupsButtonsWidget(String language) {
+        VerticalPanel vp = new VerticalPanel();
+        vp.setStyleName("gwt-wyona-identity-initials-search");
+        vp.addStyleName("gwt-wyona-users-and-groups-buttons-vp");
+
+        Button allButton = new Button(I18n.getLabel("button-all", language), new ClickListener() {
+                public void onClick(Widget sender) {
+                    //Window.alert("DEBUG: Widget clicked with title: " + sender.getTitle());
+                    identitiesLBW.listAll();
+                }
+        });
+        allButton.setTitle("All groups button");
+        vp.add(allButton);
+
+        vp.add(new AlphabeticalFilterButton('a', 'd', identitiesLBW));
+        vp.add(new AlphabeticalFilterButton('e', 'i', identitiesLBW));
+        vp.add(new AlphabeticalFilterButton('j', 'm', identitiesLBW));
+        vp.add(new AlphabeticalFilterButton('n', 'q', identitiesLBW));
+        vp.add(new AlphabeticalFilterButton('r', 'u', identitiesLBW));
+        vp.add(new AlphabeticalFilterButton('v', 'z', identitiesLBW));
+
+        return vp;
+    }
 }
+
+
 
 /**
  *

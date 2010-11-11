@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class AddRemoveIdentitiesWidget extends Composite implements ClickListener {
 
-    private ListBox identitiesLB;
+    private IdentitiesListBoxWidget identitiesLBW;
     private ListBox policyLB;
     private PolicyListBoxWidget policyLBW;
 
@@ -45,7 +45,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
     /**
      *
      */
-    public AddRemoveIdentitiesWidget(ListBox identitiesListBox, ListBox policyListBox, PolicyListBoxWidget policyLBW) {
+    public AddRemoveIdentitiesWidget(IdentitiesListBoxWidget identitiesListBox, ListBox policyListBox, PolicyListBoxWidget policyLBW) {
         initWidget(fp);
 
         addButton = new Button(">", this);
@@ -54,7 +54,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
         removeButton = new Button("<", this);
         fp.add(removeButton);
 
-        this.identitiesLB = identitiesListBox;
+        this.identitiesLBW = identitiesListBox;
         this.policyLB = policyListBox;
         this.policyLBW = policyLBW;
     }
@@ -63,11 +63,20 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
      * Move item from one list to the other
      */
     public void onClick(Widget sender) {
+        ListBox identitiesLB = identitiesLBW.getListBox();
         if (sender == addButton) {
             boolean noItemSelected = true;
             for (int i = identitiesLB.getItemCount() - 1; i >= 0; i--) { // INFO: One needs to step backwards, because the size of the list decreases, because items are being removed if selected
                 if (identitiesLB.isItemSelected(i)) {
                     String selectedIdentity = identitiesLB.getValue(i);
+                    //Window.alert("DEBUG: Move item: " + selectedIdentity);
+                    if (selectedIdentity.startsWith("u:")) {
+                        identitiesLBW.removeUser(selectedIdentity.substring(3));
+                    } else if (selectedIdentity.startsWith("g:")) {
+                        identitiesLBW.removeGroup(selectedIdentity.substring(3));
+                    } else {
+                        Window.alert("ERROR: Neither user nor group: " + selectedIdentity);
+                    }
                     identitiesLB.removeItem(i);
                     String type = selectedIdentity.substring(0, 1); // e.g. 'g' or 'u'
                     String name = selectedIdentity.substring(2).trim(); // e.g. 'lenya'
@@ -85,7 +94,14 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
             for (int i = policyLB.getItemCount() - 1; i >= 0; i--) { // INFO: One needs to step backwards, because the size of the list decreases, because items are being removed if selected
                 if (policyLB.isItemSelected(i)) {
                     String selectedIdentity = policyLB.getValue(i);
-                    //Window.alert("Remove selected identity " + selectedIdentity + " from policy");
+                    //Window.alert("DEBUG: Remove selected identity " + selectedIdentity + " from policy");
+                    if (selectedIdentity.startsWith("u:")) {
+                        identitiesLBW.addUser(selectedIdentity.substring(3));
+                    } else if (selectedIdentity.startsWith("g:")) {
+                        identitiesLBW.addGroup(selectedIdentity.substring(3));
+                    } else {
+                        Window.alert("ERROR: Neither user nor group: " + selectedIdentity);
+                    }
                     policyLB.removeItem(i);
                     identitiesLB.addItem(removeRights(selectedIdentity));
                     noItemSelected = false;
