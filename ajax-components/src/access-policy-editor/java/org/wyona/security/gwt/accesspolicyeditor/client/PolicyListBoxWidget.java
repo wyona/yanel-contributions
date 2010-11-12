@@ -408,7 +408,27 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
-     *
+     * Get all users and groups from list (including the rights)
+     */
+    public java.util.List getItems() {
+        java.util.List items = new java.util.ArrayList();
+        for (int i = 0; i < lb.getItemCount(); i++) {
+            String itemText = lb.getItemText(i);
+            Right[] rights = getRights(itemText);
+            String id = getIdentityWithoutRights(i);
+            if (id.startsWith("u:")) {
+                items.add(new User(id.substring(2).trim(), rights));
+            } else if (id.startsWith("g:")) {
+                items.add(new Group(id.substring(2).trim(), rights));
+            } else {
+                Window.alert("ERROR: Neither user nor group: " + id);
+            }
+        }
+        return items;
+    }
+
+    /**
+     * Get all users from list (including the rights)
      */
     public User[] getUsers() {
         Vector users = new Vector();
@@ -429,7 +449,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
-     *
+     * Get all users from list (including the rights)
      */
     public Group[] getGroups() {
         Vector groups = new Vector();

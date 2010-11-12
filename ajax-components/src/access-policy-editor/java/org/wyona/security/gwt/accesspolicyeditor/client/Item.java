@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Wyona
+ * Copyright 2010 Wyona
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,12 +18,30 @@ package org.wyona.security.gwt.accesspolicyeditor.client;
 /**
  *
  */
-public class User extends Item {
+public class Item {
+
+    private String id;
+    private Right[] rights;
 
     /**
      *
      */
-    public User(String id, Right[] rights) {
-        super(id, rights);
+    public Item(String id, Right[] rights) {
+        this.id = id;
+        this.rights = rights;
+    }
+
+    /**
+     *
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     *
+     */
+    public Right[] getRights() {
+        return rights;
     }
 }

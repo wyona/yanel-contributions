@@ -39,8 +39,56 @@ public class AsynchronousPolicySetter implements RequestCallback {
     }
 
     /**
-     *
+     * Send XML request containing policy with users and groups and corresponding rights
+     * @param items A list of users and groups
      */
+    public Request sendRequest(java.util.List items, boolean useInheritedPolicies) throws RequestException {
+        StringBuffer data = new StringBuffer("<?xml version=\"1.0\"?>");
+        data.append("<policy xmlns=\"http://www.wyona.org/security/1.0\" use-inherited-policies=\"" + useInheritedPolicies + "\">");
+        if (items != null) {
+            for (int i = 0; i < items.size(); i++) {
+                Item item = (Item) items.get(i);
+                if (items.get(i) instanceof User) {
+                    data.append("<user id=\"" + item.getId() + "\">");
+                    Right[] rights = item.getRights();
+                    if (rights != null) {
+                        for (int k = 0; k < rights.length; k++) {
+                            data.append("<right id=\"" + rights[k].getId() + "\" permission=\"" + rights[k].getPermission() + "\">" + rights[k].getId() + "</right>");
+                        }
+                    } else {
+                        // TODO: Do not hardcode rights
+                        data.append("<right id=\"r\" permission=\"false\">" + "r" + "</right>");
+                        data.append("<right id=\"w\" permission=\"false\">" + "w" + "</right>");
+                    }
+                    data.append("</user>");
+                } else if (items.get(i) instanceof Group) {
+                    data.append("<group id=\"" + item.getId() + "\">");
+                    Right[] rights = item.getRights();
+                    if (rights != null) {
+                        for (int k = 0; k < rights.length; k++) {
+                            data.append("<right id=\"" + rights[k].getId() + "\" permission=\"" + rights[k].getPermission() + "\">" + rights[k].getId() + "</right>");
+                        }
+                    } else {
+                        // TODO: Do not hardcode rights
+                        data.append("<right id=\"r\" permission=\"false\">" + "r" + "</right>");
+                        data.append("<right id=\"w\" permission=\"false\">" + "w" + "</right>");
+                    }
+                    data.append("</group>");
+                } else {
+                    Window.alert("ERROR: No items!");
+                }
+            }
+        } else {
+            Window.alert("ERROR: No items!");
+        }
+	data.append("</policy>");
+        return requestBuilder.sendRequest(data.toString(), this);
+    }
+
+    /**
+     * @deprecated Use sendRequest(Item[], boolean) instead
+     */
+/*
     public Request sendRequest(User[] users, Group[] groups, boolean useInheritedPolicies) throws RequestException {
         StringBuffer data = new StringBuffer("<?xml version=\"1.0\"?>");
         data.append("<policy xmlns=\"http://www.wyona.org/security/1.0\" use-inherited-policies=\"" + useInheritedPolicies + "\">");
@@ -79,6 +127,7 @@ public class AsynchronousPolicySetter implements RequestCallback {
 	data.append("</policy>");
         return requestBuilder.sendRequest(data.toString(), this);
     }
+*/
 
     /**
      *

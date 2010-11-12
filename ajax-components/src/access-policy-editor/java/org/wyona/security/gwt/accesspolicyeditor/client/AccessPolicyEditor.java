@@ -151,7 +151,7 @@ public class AccessPolicyEditor implements EntryPoint {
             public void onClick(Widget sender) {
                 final AsynchronousPolicySetter aps = new AsynchronousPolicySetter(savePolicyUrl);
                 try {
-                    com.google.gwt.http.client.Request request = aps.sendRequest(policyLBW.getUsers(), policyLBW.getGroups(), policyLBW.getUseInheritedPolicies());
+                    com.google.gwt.http.client.Request request = aps.sendRequest(policyLBW.getItems(), policyLBW.getUseInheritedPolicies());
                     // TODO: Disable button during save (start a timer in order to enable when response has been received)
                     //saveButton.setEnabled(false);
                 } catch (Exception e) {

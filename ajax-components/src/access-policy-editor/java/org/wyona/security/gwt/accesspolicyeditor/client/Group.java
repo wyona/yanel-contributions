@@ -18,30 +18,12 @@ package org.wyona.security.gwt.accesspolicyeditor.client;
 /**
  *
  */
-public class Group {
-
-    private String id;
-    private Right[] rights;
+public class Group extends Item {
 
     /**
      *
      */
     public Group(String id, Right[] rights) {
-        this.id = id;
-        this.rights = rights;
-    }
-
-    /**
-     *
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     *
-     */
-    public Right[] getRights() {
-        return rights;
+        super(id, rights);
     }
 }
