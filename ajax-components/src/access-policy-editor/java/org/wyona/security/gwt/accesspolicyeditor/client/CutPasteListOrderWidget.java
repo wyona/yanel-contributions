@@ -76,7 +76,7 @@ public class CutPasteListOrderWidget extends Composite implements ClickListener 
             for (int i = policyLB.getItemCount() - 1; i >= 0; i--) { // INFO: One needs to step backwards, because the size of the list decreases, because items are being removed if selected
                 if (policyLB.isItemSelected(i)) {
                     selectedCutItem = policyLB.getValue(i);
-                    Window.alert("INFO: Item '" + selectedCutItem + "' has been selected to be moved within policy. Select now another item and click either the 'Paste above' or 'Paste below' button.");
+                    //Window.alert("INFO: Item '" + selectedCutItem + "' has been selected to be moved within policy. Select now another item and click either the 'Paste above' or 'Paste below' button.");
 
                     //Window.alert("DEBUG: Selected item text: " + policyLB.getItemText(i));
                     selectedCutRights = policyLBW.getRights(policyLB.getItemText(i));
