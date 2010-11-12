@@ -90,8 +90,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     String id = users[i].getId();
                     Right[] rights = users[i].getRights();
                     //Window.alert("User: " + users[i].getId() + " (Number of rights: " + rights.length + ")");
-                    String value = type+": " + id;
-                    lb.addItem(getListItemLabel(type, id, rights), value);
+                    lb.addItem(getListItemLabel(type, id, rights), getListItemValue(type, id));
                 }
             }
             if (groups != null) {
@@ -100,8 +99,7 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
                     String id = groups[i].getId();
                     Right[] rights = groups[i].getRights();
                     //Window.alert("Group: " + groups[i].getId() + " (Number of rights: " + rights.length + ")");
-                    String value = type+": " + id;
-                    lb.addItem(getListItemLabel(type, id, rights), value);
+                    lb.addItem(getListItemLabel(type, id, rights), getListItemValue(type, id));
                 }
             } else {
                 Window.alert("No groups!");
@@ -177,9 +175,11 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
-     * Get rights from identity string, e.g. "u: (r,w) alice"
+     * Get rights from identity string
+     *
+     * @param identity Item label containing type, rights and name, e.g. 'u:() alice'
      */
-    private Right[] getRights(String identity) {
+    Right[] getRights(String identity) {
         if (identity.indexOf("(") > 0) {
             String[] rightsString = identity.substring(identity.indexOf("(") + 1, identity.indexOf(")")).split(",");
 
@@ -278,6 +278,8 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
     /**
      * Set rights for selected users/groups
+     * 
+     * @param rights New rights
      */
     private void setRightsForSelectedListItem(String[] rights) {
         boolean noItemSelected = true;
@@ -323,7 +325,45 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
     }
 
     /**
-     * Generate list item label, e.g. "u: (view, -, toolbar) user-foo-bar"
+     * Get list label, e.g. 'u:(r,-) alice'
+     *
+     * @param type u for user and g for group
+     * @param id
+     * @param rights Rights
+     */
+    private String getListLabel(String type, String id, Right[] rights) {
+        StringBuffer sb = new StringBuffer(type + ":");
+
+        if (rights[0].getPermission()) {
+            sb.append("(" + rights[0].getId());
+        } else {
+            sb.append("(" + "-");
+        }
+        for (int i = 1; i < rights.length; i ++) {
+            if (rights[i].getPermission()) {
+                sb.append("," + rights[i].getId());
+            } else {
+                sb.append("," + "-");
+            }
+        }
+        sb.append(")");
+        sb.append(" " + id);
+        return sb.toString();
+    }
+
+
+    /**
+     * Generate list item value, e.g. "u: user-foo-bar"
+     *
+     * @param type u for user and g for group
+     * @param id
+     */
+    private String getListItemValue(String type, String id) {
+        return type + ": " + id;
+    }
+
+    /**
+     * Generate list item label, e.g. "u:(view, -, toolbar) user-foo-bar"
      *
      * @param type u for user and g for group
      * @param id
@@ -437,36 +477,98 @@ public class PolicyListBoxWidget extends Composite implements ClickListener {
 
     /**
      * Append either user or group to policy list
-     * @param type User or Group
+     *
+     * @param type Type of user or group
      * @param name Name of user or group
      * @param selected Sets whether list item is selected. True to select the item.
      */
     public void addItem(String type, String name, boolean selected) {
-        StringBuffer emptyRights = new StringBuffer("(-");
-        for (int i = 1; i < availableRightsCB.length; i++) {
-            emptyRights.append(",-");
-        }
-        emptyRights.append(")");
-
-        lb.addItem(type + ": " + emptyRights + " " + name, type + ": " + name);
+        lb.addItem(type + ":" + getEmptyRights() + " " + name, getListItemValue(type, name));
         lb.setItemSelected(lb.getItemCount() - 1, selected);
     }
 
     /**
-     * Append either user or group to policy list
-     * @param type User or Group
+     * Insert either user or group at top of policy list
+     *
+     * @param type Type of user or group
      * @param name Name of user or group
      * @param selected Sets whether list item is selected. True to select the item.
      */
-    public void insertItemBefore(String type, String name, boolean selected, String typeInsertBefore, String nameInsertBefore) {
-        Window.alert("DEBUG: Insert before ...");
+    public void insertItemAtTop(String type, String name, boolean selected) {
+        // TOOD: If selected is true, then unselect all other items!
+        lb.insertItem(type + ":" + getEmptyRights() + " " + name, getListItemValue(type, name), 0);
+        lb.setItemSelected(0, selected);
+    }
+
+    /**
+     * Insert either user or group to policy list before an existing list item
+     *
+     * @param type Type of user or group which will be inserted
+     * @param name Name of user or group which will be inserted
+     * @param rights Rights of user or group which will be inserted
+     * @param selected Sets whether list item is selected. True to select the item.
+     * @param typeInsertBefore Type of user or group which is referenced as the target to insert before
+     * @param nameInsertBefore Name of user or group which is referenced as the target to insert before
+     */
+    public void insertItemBefore(String type, String name, Right[] rights, boolean selected, String typeInsertBefore, String nameInsertBefore) {
+        //Window.alert("DEBUG: Insert before ...");
+
+        boolean targetItemExists = false;
+        for (int i = lb.getItemCount() -1; i >= 0; i--) {
+            //Window.alert("DEBUG: Item value: " + lb.getValue(i));
+            if (lb.getValue(i).equals(getListItemValue(typeInsertBefore, nameInsertBefore))) {
+                targetItemExists = true;
+                lb.insertItem(getListLabel(type, name, rights), getListItemValue(type, name), i);
+                break;
+            }
+        }
+
+        if (!targetItemExists) {
+            Window.alert("ERROR: No such item: " + getListItemValue(typeInsertBefore, nameInsertBefore));
+        }
+    }
+
+    /**
+     * Insert either user or group to policy list after an existing list item
+     *
+     * @param type Type of user or group which will be inserted
+     * @param name Name of user or group which will be inserted
+     * @param rights Rights of user or group which will be inserted
+     * @param selected Sets whether list item is selected. True to select the item.
+     * @param typeInsertBefore Type of user or group which is referenced as the target to insert before
+     * @param nameInsertBefore Name of user or group which is referenced as the target to insert before
+     */
+    public void insertItemAfter(String type, String name, Right[] rights, boolean selected, String typeInsertBefore, String nameInsertBefore) {
+        //Window.alert("DEBUG: Insert before ...");
+
+        boolean targetItemExists = false;
+        for (int i = lb.getItemCount() -1; i >= 0; i--) {
+            //Window.alert("DEBUG: Item value: " + lb.getValue(i));
+            if (lb.getValue(i).equals(getListItemValue(typeInsertBefore, nameInsertBefore))) {
+                targetItemExists = true;
+                if (i + 1 < lb.getItemCount()) {
+                    lb.insertItem(getListLabel(type, name, rights), getListItemValue(type, name), i + 1);
+                } else {
+                    lb.addItem(getListLabel(type, name, rights), getListItemValue(type, name));
+                }
+                break;
+            }
+        }
+
+        if (!targetItemExists) {
+            Window.alert("ERROR: No such item: " + getListItemValue(typeInsertBefore, nameInsertBefore));
+        }
+    }
+
+    /**
+     * Generate an empty rights string
+     */
+    private String getEmptyRights() {
         StringBuffer emptyRights = new StringBuffer("(-");
         for (int i = 1; i < availableRightsCB.length; i++) {
             emptyRights.append(",-");
         }
         emptyRights.append(")");
-
-        lb.addItem(type + ": " + emptyRights + " " + name, type + ": " + name);
-        lb.setItemSelected(lb.getItemCount() - 1, selected);
+        return emptyRights.toString();
     }
 }

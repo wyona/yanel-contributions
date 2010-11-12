@@ -42,6 +42,7 @@ public class CutPasteListOrderWidget extends Composite implements ClickListener 
     private Button pasteBelowButton;
 
     private String selectedCutItem = null;
+    private Right[] selectedCutRights = null;
     private String selectedPasteAboveItem = null;
     private String selectedPasteBelowItem = null;
 
@@ -76,8 +77,13 @@ public class CutPasteListOrderWidget extends Composite implements ClickListener 
                 if (policyLB.isItemSelected(i)) {
                     selectedCutItem = policyLB.getValue(i);
                     Window.alert("INFO: Item '" + selectedCutItem + "' has been selected to be moved within policy. Select now another item and click either the 'Paste above' or 'Paste below' button.");
-                    // TODO: Cut only when pasted!
+
+                    //Window.alert("DEBUG: Selected item text: " + policyLB.getItemText(i));
+                    selectedCutRights = policyLBW.getRights(policyLB.getItemText(i));
+
+                    // TODO: Discuss of "Cut" only when pasted!
                     policyLB.removeItem(i);
+
                     noItemSelected = false;
                     break;
                 }
@@ -99,21 +105,23 @@ public class CutPasteListOrderWidget extends Composite implements ClickListener 
                 if (policyLB.isItemSelected(i)) {
                     selectedPasteAboveItem = policyLB.getValue(i);
                     if (selectedCutItem.equals(selectedPasteAboveItem)) {
-                        Window.alert("The paste above identity selected is the same as the cut identity! Please select another identity from 'Policy' list and click the 'Paste above' button again.");
+                        Window.alert("WARN: The paste above identity selected is the same as the cut identity! Please select another identity from 'Policy' list and click the 'Paste above' button again.");
                         return;
                     }
 
-                    Window.alert("DEBUG: Paste the item '" + selectedCutItem + "' above the selected identity '" + selectedPasteAboveItem + "'.");
+                    //Window.alert("DEBUG: Paste the item '" + selectedCutItem + "' above the selected identity '" + selectedPasteAboveItem + "'.");
                     String type = selectedCutItem.substring(0, 1);
                     String name = selectedCutItem.substring(2).trim();
                     String typeInsertBefore = selectedPasteAboveItem.substring(0, 1);
                     String nameInsertBefore = selectedPasteAboveItem.substring(2).trim();
-                    // TODO: Copy rights ...
-                    // TODO: Insert at right position
-                    policyLBW.insertItemBefore(type, name, true, typeInsertBefore, nameInsertBefore); // TODO: Discuss whether item should be selected (see e-mail ...)
+                    boolean keepItemSelected = true; // TODO: Discuss whether item should be selected (see e-mail ...)
+                    policyLBW.insertItemBefore(type, name, selectedCutRights, keepItemSelected, typeInsertBefore, nameInsertBefore);
+
+                    //Window.alert("DEBUG: Paste above is completed.");
 
                     // Reset temporary variables
                     selectedCutItem = null;
+                    selectedCutRights = null;
                     selectedPasteAboveItem = null;
                     selectedPasteBelowItem = null;
 
@@ -126,7 +134,6 @@ public class CutPasteListOrderWidget extends Composite implements ClickListener 
                 Window.alert("No identity selected yet! Please select an identity from 'Policy' list in order to paste above.");
             }
         } else if (sender == pasteBelowButton) {
-            Window.alert("WARN: Paste below user or group implementation not finished yet!");
             boolean noItemSelected = true;
 
             if (selectedCutItem == null) {
@@ -138,17 +145,27 @@ public class CutPasteListOrderWidget extends Composite implements ClickListener 
                 if (policyLB.isItemSelected(i)) {
                     selectedPasteBelowItem = policyLB.getValue(i);
                     if (selectedCutItem.equals(selectedPasteBelowItem)) {
-                        Window.alert("The paste below identity selected is the same as the cut identity! Please select another identity from 'Policy' list and click the 'Paste below' button again.");
+                        Window.alert("WARN: The paste below identity selected is the same as the cut identity! Please select another identity from 'Policy' list and click the 'Paste below' button again.");
                         return;
                     }
 
-                    Window.alert("DEBUG: Paste the item '" + selectedCutItem + "' below the selected identity '" + selectedPasteBelowItem + "'.");
-/*
-                    policyLB.addItem(TODO);
-*/
+                    //Window.alert("DEBUG: Paste the item '" + selectedCutItem + "' below the selected identity '" + selectedPasteBelowItem + "'.");
+
+                    String type = selectedCutItem.substring(0, 1);
+                    String name = selectedCutItem.substring(2).trim();
+                    String typeInsertAfter = selectedPasteBelowItem.substring(0, 1);
+                    String nameInsertAfter = selectedPasteBelowItem.substring(2).trim();
+                    boolean keepItemSelected = true; // TODO: Discuss whether item should be selected (see e-mail ...)
+                    policyLBW.insertItemAfter(type, name, selectedCutRights, keepItemSelected, typeInsertAfter, nameInsertAfter);
+
+                    //Window.alert("DEBUG: Paste below is completed.");
+
+                    // Reset temporary variables
                     selectedCutItem = null;
+                    selectedCutRights = null;
                     selectedPasteAboveItem = null;
                     selectedPasteBelowItem = null;
+
                     noItemSelected = false;
                     break;
                 }

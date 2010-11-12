@@ -185,11 +185,11 @@ public class AccessPolicyEditor implements EntryPoint {
         vp.add(new Label("Wyona Access Control Policy (GWT) Editor version 1.0-dev-rREVISION"));
         
 
-        
         AddRemoveIdentitiesWidget ariw = new AddRemoveIdentitiesWidget(identitiesLBW, policyLBW.getListBox(), policyLBW);
         ariw.setStyleName("gwt-wyona-AddRemoveWidget");
 
-        //Button removeIdentityButton = new Button("DEBUG", new AddRemoveClickListener(identitiesLB));
+        CutPasteListOrderWidget cutPasteWidget = new CutPasteListOrderWidget(policyLBW);
+        cutPasteWidget.setStyleName("gwt-wyona-CutPasteListOrderWidget");
 
         hp.add(getFilterUsersAndGroupsButtonsWidget(language));
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
@@ -198,6 +198,7 @@ public class AccessPolicyEditor implements EntryPoint {
         hp.add(ariw);
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
         hp.add(policyLBW);
+        hp.add(cutPasteWidget);
     }
 
     /**

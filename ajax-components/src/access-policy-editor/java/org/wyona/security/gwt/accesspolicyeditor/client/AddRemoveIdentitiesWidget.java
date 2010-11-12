@@ -81,7 +81,7 @@ public class AddRemoveIdentitiesWidget extends Composite implements ClickListene
                     String type = selectedIdentity.substring(0, 1); // e.g. 'g' or 'u'
                     String name = selectedIdentity.substring(2).trim(); // e.g. 'lenya'
                     //Window.alert("Add selected identity " + selectedIdentity + " (" + item + ", " + value + ") to policy");
-                    policyLBW.addItem(type, name, true);
+                    policyLBW.insertItemAtTop(type, name, true);
                     noItemSelected = false;
                 }
             }
