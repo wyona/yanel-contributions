@@ -28,6 +28,8 @@ Make sure to configure:
     In order to shipping costs one needs to configure a default customer within konakartadmin (--> Customers --> Select one of the customers and click Edit --> select radio "default customer")
     Also see res-types/shopping-cart/src/java/org/wyona/yanel/resources/konakart/shoppingcart/KonakartShoppingCartSOAPInfResource.java --> setUseDefaultCustomer
 
+- Create zone called XX within konakartadmin (--> Standorte --> Zonen --> Click "New" button at bottom --> Select "Switzerland" and enter XX for zone and XX for code and click "Save") such that the registration of users is possible.
+
 Optional configuration:
 
 - Datebase configuration (for direct access)
