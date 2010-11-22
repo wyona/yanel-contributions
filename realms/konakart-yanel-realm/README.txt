@@ -24,6 +24,10 @@ Make sure to configure:
     - Resource config property: konakart-images-base-path (according to 
       res-types/image/resource.xml)
 
+- Default customer (http://www.konakart.com/configurationfaq.php#What_is_a_default_customer_)
+    In order to shipping costs one needs to configure a default customer within konakartadmin (--> Customers --> Select one of the customers and click Edit --> select radio "default customer")
+    Also see res-types/shopping-cart/src/java/org/wyona/yanel/resources/konakart/shoppingcart/KonakartShoppingCartSOAPInfResource.java --> setUseDefaultCustomer
+
 Optional configuration:
 
 - Datebase configuration (for direct access)
@@ -112,6 +116,7 @@ it's necessary to do so or you will run into problems.
     e.g. <branch start="1000" storeid="store2">contact@wyona.com</branch>
 
 TODO: http://www.konakart.com/forum/index.php/topic,1354.0.html
+      res-types/overview/src/java/org/wyona/yanel/resources/konakart/overview/KonakartOverviewSOAPInfResource.java
 
 
 BIRTViewer/Reporting Setup
@@ -130,10 +135,13 @@ Also please make sure to configure within konakartadmin the Birtviewer URLs (see
 Maintenance of KonaKart (decouple Yanel from KonaKart)
 ------------------------------------------------------
 
-Set the file/flag MY_REALM/data-repo/data/go-offline (or rather the realm default data repository) in order to tell Yanel that KonaKart is not available.
-(also see res-types/shared/src/java/org/wyona/yanel/resources/konakart/shared/SharedResource.java#isKKOnline(Realm)
+Set the file/flag MY_REALM/data-repo/data/go-offline (or rather the realm default data repository) in order to tell Yanel that KonaKart won't be offline,
+such that new users won't be able to access KonaKart anymore and signed-in users can finish their orders before actually shuting down KonaKart.
+(also see res-types/shared/src/java/org/wyona/yanel/resources/konakart/shared/SharedResource.java#isKKOnline(Realm))
 
-Also see
+Also see data-repo/data/app2/xslt/shop-navigation.xsl re JavaScript based redirect ...
+
+Also see 503 responses:
 
 grep -rl 503 *
 res-types/category/src/java/org/wyona/yanel/resources/konakart/category/KonakartCategorySOAPInfResource.java
