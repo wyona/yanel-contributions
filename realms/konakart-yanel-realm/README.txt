@@ -131,6 +131,7 @@ Maintenance of KonaKart (decouple Yanel from KonaKart)
 ------------------------------------------------------
 
 Set the file/flag MY_REALM/data-repo/data/go-offline (or rather the realm default data repository) in order to tell Yanel that KonaKart is not available.
+(also see res-types/shared/src/java/org/wyona/yanel/resources/konakart/shared/SharedResource.java#isKKOnline(Realm)
 
 Also see
 
