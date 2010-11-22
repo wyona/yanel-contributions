@@ -436,16 +436,24 @@ public class SharedResource extends Resource {
     }
 
     /**
-     * Is Konakart available?
+     * Check whether KonaKart is online/offline
+     *
+     * @param realm Realm which contains online/offline flag
+     *
+     * @return False if offline and true if online
      */
     public boolean isKKOnline(Realm realm) {
         // First we check for the existence of a file
         // in the default repository, this allows us to
         // let the shop appear to be offline for maintenance
+
+        String offlinePath = "/go-offline";
+
         try {
             Repository repo = realm.getRepository();
     
-            if(repo.existsNode("/go-offline")) {
+            if(repo.existsNode(offlinePath)) {
+                log.warn("KonaKart offline flag exists: '" + offlinePath  + "' (" + repo + ")");
                 return false;
             }
         } catch(Exception e) {
@@ -460,6 +468,7 @@ public class SharedResource extends Resource {
             getKonakartEngineImpl().getStore();
         } catch(Exception e) {
             // If getStore fails, we assume Konakart is down.
+            log.warn("KonaKart seems to be offline, but no '" + offlinePath + "' flag set. Check status of KonaKart and corresponding DB!");
             return false;
         }
 
