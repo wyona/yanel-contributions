@@ -26,9 +26,11 @@ public class KonakartImageResource extends Resource implements ViewableV2  {
      * @see org.wyona.yanel.core.api.attributes.ViewableV2#exists()
      */
     public boolean exists() throws Exception {
-        if (new File(getResourceConfigProperty(BASE_PATH_PROPERTY_NAME) + File.separator + getName()).isFile()) {
+        File file = new File(getResourceConfigProperty(BASE_PATH_PROPERTY_NAME) + File.separator + getName());
+        if (file.isFile()) {
             return true;
         } else {
+            log.warn("No such image: " + file + " (IMPORTANT: Please note that only the name of the image '" + getName() + "' is used, but not the path '" + getPath() + "' itself)");
             return false;
         }
     }
