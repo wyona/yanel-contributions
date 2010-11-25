@@ -11,7 +11,8 @@ Setup of DB content:
   - Startup KonaKart/Yanel and test the data, e.g. can you see categories, can you see products, can you see the product images?
     (Products are sometimes not displayed because the data of only one particular language exists)
   - Re-configure within Konakartadmin the image base path and URL
-  - Create default customer
+  - Create default customer (necessary for price calculation)
+  - Create XX zone (necessary for registration)
 
 Quick Upgrade:
   - Ports: conf/server.xml
