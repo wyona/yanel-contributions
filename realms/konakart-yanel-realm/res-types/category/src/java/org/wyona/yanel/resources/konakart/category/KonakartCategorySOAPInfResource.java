@@ -259,7 +259,13 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
                     // Id, image, name
                     Element productElement = (Element) productsElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "product"));
                     productElement.setAttributeNS(KONAKART_NAMESPACE, "id", "" + products[i].getId());
+
+                    String imageName = products[i].getImage2();
+                    if (imageName == null || (imageName != null && imageName.trim().length() == 0)) {
+                        log.warn("Product '" + products[i].getId() + "' has no image configured (Image 2)! Make sure the KonaKart image library path and base URL are also configured.");
+                    }
                     productElement.setAttributeNS(KONAKART_NAMESPACE, "image-name", "" + products[i].getImage2());
+
                     Element productName = (Element) productElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "name"));
                     productName.appendChild(doc.createTextNode(products[i].getName()));
                     Element sproductName = (Element) productElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "stripped-name"));
