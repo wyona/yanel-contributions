@@ -23,6 +23,9 @@ Make sure to configure:
 - Images Base Path configuration
     - Resource config property: konakart-images-base-path (according to 
       res-types/image/resource.xml)
+    - Konakartadmin --> Configuration --> Images:
+        - Base URL, e.g. http://localhost:8080/yanel/globus/de/produkte/
+        - Base Path, e.g. /Users/michaelwechner/src/konakart/konakart-enterprise-5.1.0.0.5688/webapps/konakart/images
 
 - Default customer (http://www.konakart.com/configurationfaq.php#What_is_a_default_customer_)
     In order to shipping costs one needs to configure a default customer within konakartadmin (--> Customers --> Select one of the customers and click Edit --> select radio "default customer")
