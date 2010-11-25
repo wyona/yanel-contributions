@@ -2,6 +2,17 @@
   README
   ------
 
+Setup of DB content:
+  - Also see http://www.yanel.org/en/documentation/misc/e-commerce/konakart-integration.html
+  - Drop previous DB
+  - Create new DB
+  - Import sample data, e.g. database/PostgreSQL/konakart_demo.sql (whereas make sure to replace port numbers 8780) 
+  - Run create-enterprise-db.sh in order to setup for multi-store (whereas make sure multi store is configured first, see below)
+  - Startup KonaKart/Yanel and test the data, e.g. can you see categories, can you see products, can you see the product images?
+    (Products are sometimes not displayed because the data of only one particular language exists)
+  - Re-configure within Konakartadmin the image base path and URL
+  - Create default customer
+
 Quick Upgrade:
   - Ports: conf/server.xml
   - SOAP: webapps/konakart/WEB-INF/server-config.wsdd
