@@ -77,6 +77,7 @@ Test order with sample credit card numbers: https://www.paypalobjects.com/en_US/
 
 Multi-Store Single DB (Mode 2) Configuration
 --------------------------------------------
+Also see http://www.konakart.com/docs/manualInstallation_EE.html and http://www.konakart.com/docs/multiStoreAdministration.html
 
 - webapps/konakartadmin/WEB-INF/classes/konakartadmin.properties
    konakart.ws.mode = 2
@@ -112,6 +113,7 @@ it's necessary to do so or you will run into problems.
       (which creates an additional sample store called 'store2' within the table 'kk_store', 
       whereas one can add more stores within konakartadmin webapp, see left hand menu 
       item 'Verwaltung Shop' ...)
+      Btw, the shell script above is based on http://www.konakart.com/docs/manualInstallation_EE.html
 
 - Map ZIP codes onto store IDs:
     data-repo/data/app2/branch-emails.xml
