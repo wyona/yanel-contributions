@@ -209,7 +209,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
                 OrderIf orderBranch = null; // INFO: Branch order object for multi-store mode
                 if(multistore) {
-                    log.warn("DEBUG: Create branch order ...");
+                    log.warn("DEBUG: Trying to create branch order ...");
                     orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
                     if (orderBranch != null) {
                         orderBranch.setShippingQuote(shipping);
@@ -219,6 +219,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                         fixOrderTotals(orderBranch, shipping);
                         setOrderAddressFields(orderBranch, shipping, devaddr, defaddr);
                         orderBranch.setStatusTrail(trail);
+                        log.warn("DEBUG: Branch order has been created: " + kkEngineBranch.getStore().getStoreId());
                     } else {
                         log.error("Was not able to create order to branch store: " + storeId);
                     }
