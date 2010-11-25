@@ -53,6 +53,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
     private BranchListHandler handler; // Info: For parsing branches xml file.
 
+    /**
+     * @see org.wyona.yanel.impl.resources.BasicXMLResource#getContentXML(String)
+     */
+    @Override
     protected InputStream getContentXML(String viewId) throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("requested viewId: " + viewId);
@@ -65,9 +69,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
         int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
         int languageId = shared.getLanguageId(getContentLanguage());
-        boolean process = getEnvironment().getRequest().getParameter("process") != null;
         OrderIf order = null;         // Order object which will be filled with totals
-        OrderIf orderBranch = null;   // Branch order object for multi-store mode
 
         // Build document
         org.w3c.dom.Document doc = null;
@@ -167,8 +169,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         String remarks = (String) getEnvironment().getRequest().getSession(true).getAttribute("checkout-data-remarks");
         if(remarks != null) appendField("remarks", remarks, rootElement, doc);
 
-        // Place order?
-        if(process) { 
+        boolean process = getEnvironment().getRequest().getParameter("process") != null;
+        if(process) { // INFO: Check whether order should be processed
             // If process is true, we're creating and submitting this order
             // at the same time as we are displaying the information. So first,
             // we need the items in the basket to create an order object.
@@ -176,13 +178,9 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             try {
                 int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
                 items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId);
-        
-                // Multi-Store?
-                String storeId = getBranchStoreId(devaddr.getPostcode());
-                multistore = storeId != null;
-                if(multistore) kkEngineBranch = shared.getKonakartEngineImpl(storeId);
 
                 // Create orders
+                log.warn("DEBUG: Create default order ...");
                 order = kkEngine.createOrder(sessionId, items, languageId);
                 shipping = shared.getShippingCost(items, sessionId, languageId);
                 order.setShippingQuote(shipping);
@@ -198,15 +196,32 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 trail[0].setCustomerNotified(true);
 
                 order.setStatusTrail(trail);
-
+        
+                // INFO: Check whether ZIP corresponds to a specific store id and hence enable Multi-Store
+                String storeId = getBranchStoreId(devaddr.getPostcode());
+                multistore = storeId != null;
                 if(multistore) {
-                    orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
-                    orderBranch.setShippingQuote(shipping);
-                    orderBranch = kkEngineBranch.getOrderTotals(orderBranch, languageId);
+                    log.warn("DEBUG: Multi-store seems to be enabled: " + devaddr.getPostcode() + ", " + storeId);
+                    kkEngineBranch = shared.getKonakartEngineImpl(storeId);
+                } else {
+                    log.warn("DEBUG: Multi-store seems to be disabled.");
+                }
 
-                    fixOrderTotals(orderBranch, shipping);
-                    setOrderAddressFields(orderBranch, shipping, devaddr, defaddr);
-                    orderBranch.setStatusTrail(trail);
+                OrderIf orderBranch = null; // INFO: Branch order object for multi-store mode
+                if(multistore) {
+                    log.warn("DEBUG: Create branch order ...");
+                    orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
+                    if (orderBranch != null) {
+                        orderBranch.setShippingQuote(shipping);
+                        // TODO: Something goes wrong here ...
+                        orderBranch = kkEngineBranch.getOrderTotals(orderBranch, languageId);
+
+                        fixOrderTotals(orderBranch, shipping);
+                        setOrderAddressFields(orderBranch, shipping, devaddr, defaddr);
+                        orderBranch.setStatusTrail(trail);
+                    } else {
+                        log.error("Was not able to create order to branch store: " + storeId);
+                    }
                 }
 
             } catch(Exception e) {
@@ -215,6 +230,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 Element perrElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "process-error"));
                 if(e.getMessage() != null) perrElem.appendChild(doc.createTextNode(e.getMessage()));
             }
+        } else {
+            log.warn("DEBUG: No order submitted yet. Continue ...");
         }
 
         // Payment info
@@ -253,7 +270,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             if(process) {
                 try {
                     order.setPaymentMethod("Pluscard");
-                    if(multistore) orderBranch.setPaymentMethod("Pluscard");
+                    if(multistore) {
+                        log.warn("TODO: Multi-store ...");
+                        // TODO: orderBranch.setPaymentMethod("Pluscard");
+                    }
                     payment_info_kk = num_suffix + " (" + valid + ")";
                     payment_info_mail = "6004512-" + num_prefix;
                 } catch(Exception e) {
@@ -294,7 +314,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             if(process) {
                 try {
                     order.setPaymentMethod("Creditcard");
-                    if(multistore) orderBranch.setPaymentMethod("Creditcard");
+                    if(multistore) {
+                        log.warn("TODO: Multi-store ..."); 
+                        // TODO: orderBranch.setPaymentMethod("Creditcard");
+                    }
                     String snum = number.replace("[^0-9]+", "");
                     payment_info_kk = type + ": " + num_suffix + " (" + valid + ")";
                     String cvc = (String) session.getAttribute("checkout-card-data-cvc");
@@ -316,7 +339,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 // Save to another store (multi-store mode)?
                 if(multistore) {
                     try {
-                        idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
+                        log.warn("TODO: Multi-store ..."); 
+                        //TODO: idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
                     } catch(Exception e) {
                         log.error("Unable to save order to branch!");
                         log.error(e, e);
@@ -340,18 +364,27 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
                 // Status updates
                 kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), true, "New order."); 
-                if(multistore) kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
+                if(multistore) {
+                    log.warn("TODO: Multi-store ...");
+                    // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
+                }
                 if(remarks != null) {
                     try {
                         kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), true, "Remarks: " + remarks); 
-                        if(multistore) kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "Remarks: " + remarks);
+                        if(multistore) {
+                            log.warn("TODO: Multi-store ...");
+                            // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "Remarks: " + remarks);
+                        }
                     } catch(Exception e) { 
                         log.error(e, e);
                     }
                 }
                 if(payment_info_kk != null) {
                    kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), false, "Payment details: " + payment_info_kk);
-                   if(multistore) kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
+                   if(multistore) {
+                       log.warn("TODO: Multi-store ...");
+                       // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
+                   }
                 }
 
             } catch(Exception e) {
@@ -562,17 +595,11 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
      * Send mail.
      */
     public void sendMail(String sender, String recipient, String subject, String content) {
+        log.warn("DEBUG: Send e-mail to: " + recipient);
         try {
-            String smtpHost = getResourceConfigProperty("email-smtp-host");
-            int smtpPort;
-            try { 
-                smtpPort = Integer.parseInt(getResourceConfigProperty("email-smtp-port"));
-            } catch(Exception e) {
-                smtpPort = -1;
-            }
             // TODO: sender is also used as reply-to
-            //org.wyona.yanel.core.util.MailUtil.send(smtpHost, smtpPort, sender, sender, recipient, subject, content);
-            org.wyona.yanel.core.util.MailUtil.send(smtpHost, smtpPort, sender, sender, recipient, subject, content, "utf-8", "html");
+            // INFO: Use smtp host and port from Yanel global configuration
+            org.wyona.yanel.core.util.MailUtil.send(null, -1, sender, sender, recipient, subject, content, "utf-8", "html");
         } catch(Exception e) {
             log.error(e, e);
         }
@@ -680,15 +707,15 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             String recipient = getResourceConfigProperty("email-to");
             String sender = getResourceConfigProperty("email-from");
             String subject = getResourceConfigProperty("email-subject") + id;
-            String branch = getBranchEmail(order.getDeliveryPostcode());
+            String branchTo = getBranchEmail(order.getDeliveryPostcode());
             String sendbranch = getResourceConfigProperty("send-branch-emails");
 
-            content.append("Filiale: " + branch + "<br/>");
+            content.append("Filiale: " + branchTo + "<br/>");
 
-            if(branch != null) {
+            if(branchTo != null) {
                 if("true".equals(sendbranch)) {
                     // Send mail to branch
-                    sendMail(sender, branch, subject, content.toString());
+                    sendMail(sender, branchTo, subject, content.toString());
                 }
             }
 
@@ -700,7 +727,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
     }
 
     /**
-     * Get branch for zip code
+     * Get branch email which corresponds to ZIP code of customer.
+     * @param zipcode ZIP code of customer
      */
     public String getBranchEmail(String zipcode) throws Exception {
         String branchlist = getResourceConfigProperty("email-branches");
@@ -722,7 +750,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
     }
 
     /**
-     * Get branch storeId.
+     * Get branch store Id which corresponds to ZIP code of customer.
+     * @param zipcode ZIP code of customer
      */
     public String getBranchStoreId(String zipcode) throws Exception {
         String branchlist = getResourceConfigProperty("email-branches");
