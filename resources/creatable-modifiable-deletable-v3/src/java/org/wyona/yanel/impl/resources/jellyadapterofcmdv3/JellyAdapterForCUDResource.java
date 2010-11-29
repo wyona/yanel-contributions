@@ -339,6 +339,7 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
         
         if (Usecase.create.equals(usecase)) {
             CreatableV3 cv3 = getAdaptedResourceAsCreatableV3(path);
+            log.warn("CreatableV3 resource is using the path of the adapted (aka 'template') resource, hence you might want to overwrite it with Resource.setPath(String) within the create(ResourceInput) method!");
             ResourceInput input = (ResourceInput) getConversationState().getModel();
             if(input.validate()){
                 if( log.isDebugEnabled() )
