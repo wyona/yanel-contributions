@@ -54,25 +54,45 @@ public class ResourceInputImpl implements ResourceInput {
     }
 
     /**
-     * Validate various items
+     * Validate items
      */
     public boolean validate() {
-        java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSZ");
-        if( log.isDebugEnabled() )
+        if (log.isDebugEnabled()) {
+            java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSZ");
             log.debug("Start validation " + dateFormat.format(new java.util.Date()) );
+        }
+
         for (Iterator<ResourceInputItem> i = items.iterator(); i.hasNext();) {
             ResourceInputItem item = i.next();
             if (item.getValidationMessage() == null || !item.getValidationMessage().isValidationOK()) {
+                log.warn("DEBUG: Validate item: " + item.getName());
                 item.validate();
+            } else {
+                log.warn("DEBUG: Item '" + item.getName() + "' seems to be valid, hence do not validate.");
             }
         }
-        if( log.isDebugEnabled() )
+
+        if (log.isDebugEnabled()) {
+            java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSZ");
             log.debug("End validation " + dateFormat.format(new java.util.Date()));
-        return getValidationMessages().size() == 0;
+        }
+
+        return isValid();
     }
 
+    /**
+     * Check whether resource input as a whole is valid
+     */
     public boolean isValid() {
-        return getValidationMessages().size() == 0;
+        if (getValidationMessages().size() == 0) {
+            return true;
+        } else {
+            List messages = getValidationMessages();
+            for (int i = 0; i < messages.size(); i++) {
+                log.warn("Item is invalid: " + messages.get(i));
+            }
+            return false;
+        }
     }
 
     /**
