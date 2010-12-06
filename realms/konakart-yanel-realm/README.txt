@@ -22,6 +22,7 @@ Quick Upgrade:
   - Templates: templates/store1 (also make sure to set Velocity template path within konakartadmin and to configure e-mail SMTP, etc.)
   - Admin messages: webapps/konakartadmin/WEB-INF/classes
   - Images path: Make sure to configured images path within konakartadmin and also within your realm (res-configs/shop-product-image_yanel-rc.xml)
+  - Make sure to increase MaxPermSize within bin/startkonakart.sh
 
 Make sure to configure:
 
