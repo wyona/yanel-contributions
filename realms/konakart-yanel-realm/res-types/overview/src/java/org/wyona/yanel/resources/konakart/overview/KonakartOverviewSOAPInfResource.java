@@ -69,7 +69,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
         int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
         int languageId = shared.getLanguageId(getContentLanguage());
-        OrderIf order = null;         // Order object which will be filled with totals
+        OrderIf orderDefault = null;         // Order object which will be filled with totals
 
         // Build document
         org.w3c.dom.Document doc = null;
@@ -181,13 +181,14 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
                 // Create orders
                 log.warn("DEBUG: Create default order ...");
-                order = kkEngine.createOrder(sessionId, items, languageId);
+                orderDefault = kkEngine.createOrder(sessionId, items, languageId);
+                //OrderIf orderDefault = kkEngine.createOrder(sessionId, items, languageId);
                 shipping = shared.getShippingCost(items, sessionId, languageId);
-                order.setShippingQuote(shipping);
-                order = kkEngine.getOrderTotals(order, languageId);
+                orderDefault.setShippingQuote(shipping);
+                orderDefault = kkEngine.getOrderTotals(orderDefault, languageId);
 
-                fixOrderTotals(order, shipping);
-                setOrderAddressFields(order, shipping, devaddr, defaddr);
+                fixOrderTotals(orderDefault, shipping);
+                setOrderAddressFields(orderDefault, shipping, devaddr, defaddr);
 
                 // Status trail
                 OrderStatusHistoryIf[] trail = new OrderStatusHistoryIf[1];
@@ -195,7 +196,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 trail[0].setOrderStatus("New order.");
                 trail[0].setCustomerNotified(true);
 
-                order.setStatusTrail(trail);
+                orderDefault.setStatusTrail(trail);
         
                 // INFO: Check whether ZIP corresponds to a specific store id and hence enable Multi-Store
                 String storeId = getBranchStoreId(devaddr.getPostcode());
@@ -218,8 +219,16 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
                         fixOrderTotals(orderBranch, shipping);
                         setOrderAddressFields(orderBranch, shipping, devaddr, defaddr);
-                        orderBranch.setStatusTrail(trail);
+                        orderBranch.setStatusTrail(trail); // TODO: Add a branch specific trail
+
+                        orderBranch.setPaymentMethod("Pluscard");
+
+                        int idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
                         log.warn("DEBUG: Branch order has been created: " + kkEngineBranch.getStore().getStoreId());
+
+                        // TODO: ...
+                        //kkEngine.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
+                        //kkEngine.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
                     } else {
                         log.error("Was not able to create order to branch store: " + storeId);
                     }
@@ -270,7 +279,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
             if(process) {
                 try {
-                    order.setPaymentMethod("Pluscard");
+                    orderDefault.setPaymentMethod("Pluscard");
                     if(multistore) {
                         log.warn("TODO: Multi-store ...");
                         // TODO: orderBranch.setPaymentMethod("Pluscard");
@@ -314,7 +323,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
             if(process) {
                 try {
-                    order.setPaymentMethod("Creditcard");
+                    orderDefault.setPaymentMethod("Creditcard");
                     if(multistore) {
                         log.warn("TODO: Multi-store ..."); 
                         // TODO: orderBranch.setPaymentMethod("Creditcard");
@@ -334,7 +343,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
         if(process) {
             try {
-                int id = kkEngine.saveOrder(sessionId, order, languageId);
+                int id = kkEngine.saveOrder(sessionId, orderDefault, languageId);
                 int idBranch = 0;
 
                 // Save to another store (multi-store mode)?
@@ -358,20 +367,20 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 Element dateElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "date"));
                 dateElem.appendChild(doc.createTextNode(formattedDate));
 
-                sendMailToCustomer(id, order, customer);
-                sendMailToOwner(id, order, customer, payment_info_mail);
+                sendMailToCustomer(id, orderDefault, customer);
+                sendMailToOwner(id, orderDefault, customer, payment_info_mail);
                 // Let Konakart send the order confirmation...
                 // kkEngine.sendOrderConfirmationEmail(sessionId, id, "Order #" + id, languageId);
 
                 // Status updates
-                kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), true, "New order."); 
+                kkEngine.changeOrderStatus(sessionId, id, orderDefault.getStatus(), true, "New order."); 
                 if(multistore) {
                     log.warn("TODO: Multi-store ...");
                     // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
                 }
                 if(remarks != null) {
                     try {
-                        kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), true, "Remarks: " + remarks); 
+                        kkEngine.changeOrderStatus(sessionId, id, orderDefault.getStatus(), true, "Remarks: " + remarks); 
                         if(multistore) {
                             log.warn("TODO: Multi-store ...");
                             // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "Remarks: " + remarks);
@@ -381,7 +390,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                     }
                 }
                 if(payment_info_kk != null) {
-                   kkEngine.changeOrderStatus(sessionId, id, order.getStatus(), false, "Payment details: " + payment_info_kk);
+                   kkEngine.changeOrderStatus(sessionId, id, orderDefault.getStatus(), false, "Payment details: " + payment_info_kk);
                    if(multistore) {
                        log.warn("TODO: Multi-store ...");
                        // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
