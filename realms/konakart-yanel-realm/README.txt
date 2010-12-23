@@ -131,6 +131,12 @@ it's necessary to do so or you will run into problems.
       item 'Verwaltung Shop' ...)
       Btw, the shell script above is based on http://www.konakart.com/docs/manualInstallation_EE.html
 
+- Make sure to configure the konakart installation directory:
+      - Login to konakartadmin
+      - Click on "Configuration" menu (left hand side)
+      - Click on "Multi-Shop Configuration" menu
+      - Set SQL path
+
 - Map ZIP codes onto store IDs:
     data-repo/data/app2/branch-emails.xml
     e.g. <branch start="1000" storeid="store2">contact@wyona.com</branch>
