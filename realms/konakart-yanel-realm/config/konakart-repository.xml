@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
  
 <repository class="org.wyona.konakart.model.impl.KonakartJDBCRepository">
-  <name>KonaKart Repository 4.2.0.1</name>
+  <name>KonaKart Repository Enterprise 5.1.0.0.5688</name>
 
   <data-source>
     <driverClassName>org.postgresql.Driver</driverClassName>
@@ -14,7 +14,7 @@
 -->
 
     <!-- Local test settings -->
-    <url>jdbc:postgresql://127.0.0.1:5432/konakart4</url>
+    <url>jdbc:postgresql://127.0.0.1:5432/konakart5</url>
 <!--
     <url>jdbc:postgresql://127.0.0.1:5432/konakart</url>
 -->
