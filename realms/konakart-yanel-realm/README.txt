@@ -9,10 +9,14 @@ Setup of DB content:
   - Import sample data, e.g. database/PostgreSQL/konakart_demo.sql (whereas make sure to replace port numbers 8780) (e.g. /Library/PostgreSQL/8.4/bin/psql -d konakart5 -f /Users/alice/konakart-enterprise-5.1.0.0.5688/database/PostgreSQL/konakart_demo.sql)
   - Run create-enterprise-db.sh in order to setup for multi-store (whereas make sure multi store is configured first, see below)
   - Startup KonaKart/Yanel and test the data, e.g. can you see categories, can you see products, can you see the product images?
-    (Products are sometimes not displayed because the data of only one particular language exists)
-  - Re-configure within Konakartadmin the image base path and URL
-  - Create default customer (necessary for price calculation)
-  - Create XX zone (necessary for registration)
+      - Products are sometimes not displayed because the data of only one particular language exists! (see for example category "Printers")
+      - Images are sometimes not displayed because:
+          - Image2, Image3 and Image4 is not set
+          - Image URL (default: http://localhost:8780/konakart/images/) or Image path (default: C:/Program Files/KonaKart/webapps/konakart/images) might be wrong (see konakartadmin -> Configuration -> Images)
+          - Also see res-configs/shop-product-image_yanel-rc.xml
+  - Re-configure within Konakartadmin the image base path and URL (see above)
+  - Create default customer (necessary for price calculation): konakartadmin -> Customers -> Edit "Order Olly" -> Select type "Standardkunde"
+  - Create XX zone (necessary for registration): konakartadmin -> Locations -> Zones -> Select "Switzerland" -> New: Enter "XX" for Zone and Code and select country "Switzerland"
 
 Quick Upgrade:
   - Ports: conf/server.xml
@@ -136,6 +140,7 @@ it's necessary to do so or you will run into problems.
       - Click on "Configuration" menu (left hand side)
       - Click on "Multi-Shop Configuration" menu
       - Set SQL path
+      - "New" versus "Clone": http://www.konakart.com/docs/multiStoreAdministration.html
 
 - Map ZIP codes onto store IDs:
     data-repo/data/app2/branch-emails.xml
