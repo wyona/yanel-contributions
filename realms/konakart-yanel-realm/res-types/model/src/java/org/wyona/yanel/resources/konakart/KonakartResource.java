@@ -37,6 +37,35 @@ public class KonakartResource extends BasicXMLResource {
         try {
             org.wyona.yarep.core.Repository konakartRepo = getRealm().getRepository("konakart-repository");
             Node productsNode = konakartRepo.getNode("/products/");
+            Node ordersNode = konakartRepo.getNode("/orders/");
+
+            Node[] orderNodes = ordersNode.getNodes();
+            if (orderNodes != null) {
+                sb.append("<orders>");
+                for (int i = 0; i < orderNodes.length; i++) {
+                    //sb.append("<product id=\"" + productNodes[i].getName() + "\"/>");
+
+                    Node orderNode = orderNodes[i];
+                    //Node orderNode = ordersNode.getNode(orderNodes[i].getName() + "_" + language);
+                    sb.append("<order id=\"" + orderNode.getName() + "\">");
+                    try {
+/*
+                        log.warn("DEBUG: Product ID: " + productNode.getName());
+                        log.warn("DEBUG: Product name: " + productNode.getProperty("name"));
+*/
+/* TODO ...
+                        sb.append("<name><![CDATA[" + productNode.getProperty("name") + "]]></name>");
+                        sb.append("<description><![CDATA[" + productNode.getProperty("description") + "]]></description>");
+*/
+                    } catch(Exception e) {
+                        sb.append("<exception>Trying to get property: " + e.getMessage() + "</exception>");
+                    }
+                    sb.append("</order>");
+                }
+                sb.append("</orders>");
+            } else {
+                sb.append("<warn>No orders found!</warn>");
+            }
 
             String nodeID = "17";
             if (productsNode.hasNode(nodeID + "_" + language)) {
