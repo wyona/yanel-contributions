@@ -4,9 +4,9 @@
 
 Setup of DB content:
   - Also see http://www.yanel.org/en/documentation/misc/e-commerce/konakart-integration.html
-  - Drop previous DB
-  - Create new DB
-  - Import sample data, e.g. database/PostgreSQL/konakart_demo.sql (whereas make sure to replace port numbers 8780) 
+  - Drop previous DB (e.g. /Library/PostgreSQL/8.4/bin/dropdb konakart5)
+  - Create new DB (e.g. /Library/PostgreSQL/8.4/bin/createdb --encoding unicode konakart5)
+  - Import sample data, e.g. database/PostgreSQL/konakart_demo.sql (whereas make sure to replace port numbers 8780) (e.g. /Library/PostgreSQL/8.4/bin/psql -d konakart5 -f /Users/alice/konakart-enterprise-5.1.0.0.5688/database/PostgreSQL/konakart_demo.sql)
   - Run create-enterprise-db.sh in order to setup for multi-store (whereas make sure multi store is configured first, see below)
   - Startup KonaKart/Yanel and test the data, e.g. can you see categories, can you see products, can you see the product images?
     (Products are sometimes not displayed because the data of only one particular language exists)
