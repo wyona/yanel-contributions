@@ -32,6 +32,8 @@ public class KonakartJDBCRepository extends ORMRepositoryImpl {
             return new KonakartProductOverviewJDBCNode(this, path, null);
         } else if (path.startsWith("/products/")) {
             return new KonakartProductOverviewJDBCNode(this, path, null).getNode(org.wyona.commons.io.PathUtil.getName(path));
+        } else if (path.equals("/orders") || path.equals("/orders/")) {
+            return new KonakartOrderOverviewJDBCNode(this, path, null);
         } else {
             throw new NoSuchNodeException(path);
         }
