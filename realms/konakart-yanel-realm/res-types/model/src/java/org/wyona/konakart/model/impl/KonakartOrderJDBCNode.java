@@ -67,35 +67,39 @@ public class KonakartOrderJDBCNode extends org.wyona.yarep.impl.AbstractNode {
         int languageID = ((KonakartJDBCRepository)repository).getLanguageId("de");
         log.warn("DEBUG: Language ID: " + languageID);
 
-        String query = "SELECT * FROM products_description WHERE products_id = '" + getName() + "' AND language_id = '" + languageID + "'";
+        String query = "SELECT * FROM orders WHERE orders_id = '" + getName() + "'";
+        //String query = "SELECT * FROM orders WHERE orders_id = '" + getName() + "' AND language_id = '" + languageID + "'";
         try {
             Connection con = ((KonakartJDBCRepository)repository).getConnection();
             Statement stm = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = stm.executeQuery(query);
             if(resultSet.next()) { // TODO: filter by language
             //if(resultSet.last() && resultSet.getRow() == 1) {
-                String id = resultSet.getString("products_id");
-                log.warn("DEBUG: Product ID: " + id);
+                String id = resultSet.getString("orders_id");
+                log.warn("DEBUG: Order ID: " + id);
                 //log.debug("Column count: " + resultSet.getMetaData().getColumnCount());
                 
                 org.wyona.yarep.core.Property property;
-                if (name.equals("name")) {
+                if (name.equals("store-id")) {
                     property = new org.wyona.yarep.impl.DefaultProperty(name, org.wyona.yarep.core.PropertyType.STRING, this);
-                    property.setValue(resultSet.getString("products_name"));
-                } else if (name.equals("description")) {
+                    property.setValue(resultSet.getString("store_id"));
+                } else if (name.equals("customer-name")) {
                     property = new org.wyona.yarep.impl.DefaultProperty(name, org.wyona.yarep.core.PropertyType.STRING, this);
-                    property.setValue(resultSet.getString("products_description"));
+                    property.setValue(resultSet.getString("customers_name"));
+                } else if (name.equals("customer-id")) {
+                    property = new org.wyona.yarep.impl.DefaultProperty(name, org.wyona.yarep.core.PropertyType.STRING, this);
+                    property.setValue(resultSet.getString("customers_id"));
                 } else {
                     throw new RepositoryException("No such property: " + name);
                 }
                 return property;
             } else {
-                log.warn("No such product: " + query);
+                log.warn("No such order: " + query);
             }
             resultSet.close();
             stm.close();
             con.close();
-            throw new RepositoryException("No such product: " + query);
+            throw new RepositoryException("No such order: " + query);
         } catch(SQLException e) {
             log.error(e, e);
             throw new RepositoryException(e.getMessage());
