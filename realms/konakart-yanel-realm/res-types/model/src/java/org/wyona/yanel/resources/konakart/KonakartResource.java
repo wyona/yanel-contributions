@@ -49,14 +49,8 @@ public class KonakartResource extends BasicXMLResource {
                     //Node orderNode = ordersNode.getNode(orderNodes[i].getName() + "_" + language);
                     sb.append("<order id=\"" + orderNode.getName() + "\">");
                     try {
-/*
-                        log.warn("DEBUG: Product ID: " + productNode.getName());
-                        log.warn("DEBUG: Product name: " + productNode.getProperty("name"));
-*/
-/* TODO ...
-                        sb.append("<name><![CDATA[" + productNode.getProperty("name") + "]]></name>");
-                        sb.append("<description><![CDATA[" + productNode.getProperty("description") + "]]></description>");
-*/
+                        sb.append("<store-id>" + orderNode.getProperty("store-id").getValueAsString() + "</store-id>");
+                        sb.append("<customer-name>" + orderNode.getProperty("customer-name").getValueAsString() + "</customer-name>");
                     } catch(Exception e) {
                         sb.append("<exception>Trying to get property: " + e.getMessage() + "</exception>");
                     }
