@@ -339,24 +339,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                         log.error("No such order with ID: " + orderId);
                     }
 
-/*
-
-        dispatchOrder(OrderIf order) {
-            String storeId = "Zurich1"; // This should be retrieved from the DB lookup above
-
-            BasePeer.executeStatement("update orders set store_id='" + storeId + "' where orders_id=" + order.getId());
-
-            BasePeer.executeStatement("update orders_products set store_id='" + storeId + "' where orders_id=" + order.getId());
-
-            BasePeer.executeStatement("update orders_products_attributes set store_id='" + storeId + "' where orders_id=" + order.getId());
-
-            BasePeer.executeStatement("update orders_status_history set store_id='" + storeId + "' where orders_id=" + order.getId());
-
-            BasePeer.executeStatement("update orders_total set store_id='" + storeId + "' where orders_id=" + order.getId());
-        }
-*/
- 
-
                     // TODO: Add products to this store and append to category
                     for (OrderProductIf orderProduct : orderDefault.getOrderProducts()) {
                         com.konakart.appif.ProductIf productDefault = orderProduct.getProduct();
