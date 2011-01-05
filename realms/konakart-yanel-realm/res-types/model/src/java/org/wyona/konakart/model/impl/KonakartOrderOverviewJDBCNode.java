@@ -43,26 +43,26 @@ public class KonakartOrderOverviewJDBCNode extends org.wyona.yarep.impl.Abstract
      */
     public Node getNode(String idLang) throws NoSuchNodeException, RepositoryException {
         String[] idLanguage = idLang.split("_");
-        String productID = idLanguage[0];
+        String orderID = idLanguage[0];
         if (idLanguage.length < 2) {
             throw new RepositoryException("No language within node name: " + idLang);
         }
         String languageCode = idLanguage[1];
-        String productPath = path + "/" + productID;
-        String query = "SELECT * FROM products WHERE products_id = '" + productID + "'";
+        String orderPath = path + "/" + orderID;
+        String query = "SELECT * FROM orders WHERE orders_id = '" + orderID + "'";
         try {
             Connection con = ((KonakartJDBCRepository)repository).getConnection();
             Statement stm = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = stm.executeQuery(query);
             if(resultSet.last() && resultSet.getRow() == 1) {
-                String id = resultSet.getString("products_id");
+                String id = resultSet.getString("orders_id");
                 if (log.isDebugEnabled()) {
-                    log.debug("Product ID: " + id);
+                    log.debug("Order ID: " + id);
                     log.debug("Column count: " + resultSet.getMetaData().getColumnCount());
                 }
-                return new KonakartProductJDBCNode(repository, productPath, null);
+                return new KonakartOrderJDBCNode(repository, orderPath, null);
             } else {
-                log.warn("No such product: " + productID + " (" + productPath + ")");
+                log.warn("No such order: " + orderID + " (" + orderPath + ")");
             }
             resultSet.close();
             stm.close();
@@ -86,8 +86,7 @@ public class KonakartOrderOverviewJDBCNode extends org.wyona.yarep.impl.Abstract
      * @see org.wyona.yarep.core.Node#getNodes()
      */
     public Node[] getNodes() throws RepositoryException {
-        String query = "SELECT * FROM orders";
-        //String query = "SELECT products_id FROM products";
+        String query = "SELECT orders_id FROM orders";
         try {
             Connection con = ((KonakartJDBCRepository)repository).getConnection();
             Statement stm = con.createStatement();
@@ -116,11 +115,11 @@ public class KonakartOrderOverviewJDBCNode extends org.wyona.yarep.impl.Abstract
      */
     public boolean hasNode(String idLang) throws RepositoryException {
         String[] idLanguage = idLang.split("_");
-        String productID = idLanguage[0];
+        String orderID = idLanguage[0];
         String languageCode = idLanguage[1];
-        log.warn("DEBUG: ID = " + productID + ", Language = " + languageCode);
+        log.warn("DEBUG: ID = " + orderID + ", Language = " + languageCode);
         int languageID = ((KonakartJDBCRepository)repository).getLanguageId(languageCode);
-        String query = "SELECT * FROM products_description WHERE products_id = '" + productID + "' AND language_id = '" + languageID + "'";
+        String query = "SELECT * FROM orders WHERE orders_id = '" + orderID + "'";
         log.warn("DEBUG: Query: " + query);
         try {
             Connection con = ((KonakartJDBCRepository)repository).getConnection();
@@ -128,14 +127,14 @@ public class KonakartOrderOverviewJDBCNode extends org.wyona.yarep.impl.Abstract
             ResultSet resultSet = stm.executeQuery(query);
             boolean hasNode = false;
             if(resultSet.last() && resultSet.getRow() == 1) {
-                String id = resultSet.getString("products_id");
+                String id = resultSet.getString("orders_id");
                 if (log.isDebugEnabled()) {
-                    log.debug("Product ID: " + id);
+                    log.debug("Order ID: " + id);
                     log.debug("Column count: " + resultSet.getMetaData().getColumnCount());
                 }
                 hasNode = true;
             } else {
-                log.warn("No such product: ID = " + productID + ", Language = " + languageCode);
+                log.warn("No such order: ID = " + orderID + ", Language = " + languageCode);
                 hasNode = false;
             }
             resultSet.close();
