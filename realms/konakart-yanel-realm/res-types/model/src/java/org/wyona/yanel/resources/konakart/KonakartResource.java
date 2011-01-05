@@ -36,9 +36,8 @@ public class KonakartResource extends BasicXMLResource {
         sb.append("<konakart>");
         try {
             org.wyona.yarep.core.Repository konakartRepo = getRealm().getRepository("konakart-repository");
-            Node productsNode = konakartRepo.getNode("/products/");
-            Node ordersNode = konakartRepo.getNode("/orders/");
 
+            Node ordersNode = konakartRepo.getNode("/orders/");
             Node[] orderNodes = ordersNode.getNodes();
             if (orderNodes != null) {
                 sb.append("<orders>");
@@ -46,7 +45,21 @@ public class KonakartResource extends BasicXMLResource {
                     //sb.append("<product id=\"" + productNodes[i].getName() + "\"/>");
 
                     Node orderNode = orderNodes[i];
-                    //Node orderNode = ordersNode.getNode(orderNodes[i].getName() + "_" + language);
+
+                    if (ordersNode.hasNode(orderNodes[i].getName() + "_" + language)) {
+                        Node orderNode2 = ordersNode.getNode(orderNodes[i].getName() + "_" + language);
+                        try {
+                            log.warn("TODO: Do not set store-id ...");
+                            //orderNode2.setProperty("store-id", "store1");
+                            //orderNode2.setProperty("store-id", "store2");
+                            //orderNode2.setProperty("store-id", "globus-bellevue");
+                        } catch(Exception e) {
+                            log.error(e, e);
+                        }
+                    } else {
+                        log.error("No such order: " + orderNodes[i].getName() + "_" + language);
+                    }
+
                     sb.append("<order id=\"" + orderNode.getName() + "\">");
                     try {
                         sb.append("<store-id>" + orderNode.getProperty("store-id").getValueAsString() + "</store-id>");
@@ -61,6 +74,7 @@ public class KonakartResource extends BasicXMLResource {
                 sb.append("<warn>No orders found!</warn>");
             }
 
+            Node productsNode = konakartRepo.getNode("/products/");
             String nodeID = "17";
             if (productsNode.hasNode(nodeID + "_" + language)) {
                 Node singleProductNode = productsNode.getNode(nodeID + "_" + language);
@@ -85,14 +99,11 @@ public class KonakartResource extends BasicXMLResource {
                     Node productNode = productsNode.getNode(productNodes[i].getName() + "_" + language);
                     sb.append("<product id=\"" + productNode.getName() + "\">");
                     try {
-/*
-                        log.warn("DEBUG: Product ID: " + productNode.getName());
-                        log.warn("DEBUG: Product name: " + productNode.getProperty("name"));
-*/
-/* TODO ...
-                        sb.append("<name><![CDATA[" + productNode.getProperty("name") + "]]></name>");
-                        sb.append("<description><![CDATA[" + productNode.getProperty("description") + "]]></description>");
-*/
+                        //log.warn("DEBUG: Product ID: " + productNode.getName());
+                        //log.warn("DEBUG: Product name: " + productNode.getProperty("name"));
+
+                        //sb.append("<name><![CDATA[" + productNode.getProperty("name") + "]]></name>");
+                        //sb.append("<description><![CDATA[" + productNode.getProperty("description") + "]]></description>");
                     } catch(Exception e) {
                         sb.append("<exception>Trying to get property: " + e.getMessage() + "</exception>");
                     }
@@ -102,6 +113,7 @@ public class KonakartResource extends BasicXMLResource {
             } else {
                 sb.append("<warn>No products found!</warn>");
             }
+
         } catch(Exception e) {
             log.error(e, e);
             sb.append("<exception>" + e.getMessage() + "</exception>");
