@@ -65,7 +65,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         SharedResource shared = new SharedResource();
         KKEngIf kkEngine = shared.getKonakartEngineImpl();
         KKEngIf kkEngineBranch = null; // Will be initialized later (if in multi-store mode)
-        boolean multistore = false; // Will have to be checked after reading delivery address
+        //boolean multistore = false; // Will have to be checked after reading delivery address
         String sessionId = shared.getSessionId(getEnvironment().getRequest().getSession(true));
         int customerId = shared.getCustomerId(getEnvironment().getRequest().getSession(true));
         int languageId = shared.getLanguageId(getContentLanguage());
@@ -197,43 +197,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 trail[0].setCustomerNotified(true);
 
                 orderDefault.setStatusTrail(trail);
-        
-                // INFO: Check whether ZIP corresponds to a specific store id and hence enable Multi-Store
-                String storeId = getBranchStoreId(devaddr.getPostcode());
-                multistore = storeId != null;
-                if(multistore) {
-                    log.warn("DEBUG: Multi-store seems to be enabled: " + devaddr.getPostcode() + ", " + storeId);
-                    kkEngineBranch = shared.getKonakartEngineImpl(storeId);
-                } else {
-                    log.warn("DEBUG: Multi-store seems to be disabled.");
-                }
-
-                OrderIf orderBranch = null; // INFO: Branch order object for multi-store mode
-                if(multistore) {
-                    log.warn("DEBUG: Trying to create branch order ...");
-                    orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
-                    if (orderBranch != null) {
-                        orderBranch.setShippingQuote(shipping);
-                        // TODO: Something goes wrong here ...
-                        orderBranch = kkEngineBranch.getOrderTotals(orderBranch, languageId);
-
-                        fixOrderTotals(orderBranch, shipping);
-                        setOrderAddressFields(orderBranch, shipping, devaddr, defaddr);
-                        orderBranch.setStatusTrail(trail); // TODO: Add a branch specific trail
-
-                        orderBranch.setPaymentMethod("Pluscard");
-
-                        int idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
-                        log.warn("DEBUG: Branch order has been created: " + kkEngineBranch.getStore().getStoreId());
-
-                        // TODO: ...
-                        //kkEngine.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
-                        //kkEngine.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
-                    } else {
-                        log.error("Was not able to create order to branch store: " + storeId);
-                    }
-                }
-
             } catch(Exception e) {
                 process = false;
                 log.error(e, e);
@@ -280,10 +243,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             if(process) {
                 try {
                     orderDefault.setPaymentMethod("Pluscard");
-                    if(multistore) {
-                        log.warn("TODO: Multi-store ...");
-                        // TODO: orderBranch.setPaymentMethod("Pluscard");
-                    }
                     payment_info_kk = num_suffix + " (" + valid + ")";
                     payment_info_mail = "6004512-" + num_prefix;
                 } catch(Exception e) {
@@ -324,10 +283,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
             if(process) {
                 try {
                     orderDefault.setPaymentMethod("Creditcard");
-                    if(multistore) {
-                        log.warn("TODO: Multi-store ..."); 
-                        // TODO: orderBranch.setPaymentMethod("Creditcard");
-                    }
                     String snum = number.replace("[^0-9]+", "");
                     payment_info_kk = type + ": " + num_suffix + " (" + valid + ")";
                     String cvc = (String) session.getAttribute("checkout-card-data-cvc");
@@ -343,22 +298,114 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
 
         if(process) {
             try {
-                int id = kkEngine.saveOrder(sessionId, orderDefault, languageId);
-                int idBranch = 0;
+                int orderId = kkEngine.saveOrder(sessionId, orderDefault, languageId);
 
-                // Save to another store (multi-store mode)?
-                if(multistore) {
+                // Status updates
+                kkEngine.changeOrderStatus(sessionId, orderId, orderDefault.getStatus(), true, "New order."); 
+                if(remarks != null) {
                     try {
-                        log.warn("TODO: Multi-store ..."); 
-                        //TODO: idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
-                    } catch(Exception e) {
-                        log.error("Unable to save order to branch!");
+                        kkEngine.changeOrderStatus(sessionId, orderId, orderDefault.getStatus(), true, "Remarks: " + remarks); 
+                    } catch(Exception e) { 
                         log.error(e, e);
                     }
                 }
+                if(payment_info_kk != null) {
+                   kkEngine.changeOrderStatus(sessionId, orderId, orderDefault.getStatus(), false, "Payment details: " + payment_info_kk);
+                }
+
+                // INFO: Check whether ZIP corresponds to a specific store id and hence enable Multi-Store
+                String storeId = getBranchStoreId(devaddr.getPostcode());
+                boolean multistore = storeId != null;
+                if(multistore) {
+                    log.warn("DEBUG: Multi-store seems to be enabled: " + devaddr.getPostcode() + ", " + storeId);
+                    kkEngineBranch = shared.getKonakartEngineImpl(storeId);
+                } else {
+                    log.warn("DEBUG: Multi-store seems to be disabled.");
+                }
+                if(multistore) {
+                    OrderIf orderBranch = null; // INFO: Branch order object for multi-store mode
+                    log.warn("DEBUG: Trying to create branch order ...");
+
+                    org.wyona.yarep.core.Repository konakartRepo = getRealm().getRepository("konakart-repository");
+                    org.wyona.yarep.core.Node ordersNode = konakartRepo.getNode("/orders/");
+                    String language = "en"; // TODO: Not used actually (see implementation ...)
+                    //String orderId = "" + orderDefault.getId();
+                    //String orderId = orderDefault.getOrderNumber();
+                    if (ordersNode.hasNode(orderId + "_" + language)) {
+                        org.wyona.yarep.core.Node orderNode = ordersNode.getNode(orderId + "_" + language);
+                        log.warn("DEBUG: Switch store ID '" + storeId + "' of order: " + orderId);
+                        orderNode.setProperty("store-id", storeId);
+                    } else {
+                        log.error("No such order with ID: " + orderId);
+                    }
+
+/*
+
+        dispatchOrder(OrderIf order) {
+            String storeId = "Zurich1"; // This should be retrieved from the DB lookup above
+
+            BasePeer.executeStatement("update orders set store_id='" + storeId + "' where orders_id=" + order.getId());
+
+            BasePeer.executeStatement("update orders_products set store_id='" + storeId + "' where orders_id=" + order.getId());
+
+            BasePeer.executeStatement("update orders_products_attributes set store_id='" + storeId + "' where orders_id=" + order.getId());
+
+            BasePeer.executeStatement("update orders_status_history set store_id='" + storeId + "' where orders_id=" + order.getId());
+
+            BasePeer.executeStatement("update orders_total set store_id='" + storeId + "' where orders_id=" + order.getId());
+        }
+*/
+ 
+
+                    // TODO: Add products to this store and append to category
+                    for (OrderProductIf orderProduct : orderDefault.getOrderProducts()) {
+                        com.konakart.appif.ProductIf productDefault = orderProduct.getProduct();
+                        // INFO: Please note that the ID of an order-product is not the same as the ID of an actual product
+                        log.warn("DEBUG: Order product ID: " + orderProduct.getId() + ", Product ID: " + productDefault.getId());
+                        log.warn("DEBUG: Category ID of product: " + productDefault.getCategoryId());
+/*
+                        int language = 2;
+                        com.konakart.appif.CategoryIf[] categories = kkEngine.getCategoriesPerProduct(productDefault.getId(), language);
+*/
+                        for (String shopId : kkEngine.getStoreIds()) {
+                            log.warn("DEBUG: Store ID: " + shopId);
+                        }
+/*
+                        AdminStore[] = KKAdminIf.getStores();
+                        AdminStore = ...
+                        AdminProducts = kkAdminIf.searchForProducts(...);
+                        AdminProduct = ...
+                        //kkEngineBranch
+*/
+                    }
+
+/*
+                    orderBranch = kkEngineBranch.createOrder(sessionId, items, languageId);
+                    if (orderBranch != null) {
+                        orderBranch.setShippingQuote(shipping);
+                        // TODO: Something goes wrong here ...
+                        orderBranch = kkEngineBranch.getOrderTotals(orderBranch, languageId);
+
+                        fixOrderTotals(orderBranch, shipping);
+                        setOrderAddressFields(orderBranch, shipping, devaddr, defaddr);
+                        orderBranch.setStatusTrail(trail); // TODO: Add a branch specific trail
+
+                        orderBranch.setPaymentMethod("Pluscard");
+
+                        int idBranch = kkEngineBranch.saveOrder(sessionId, orderBranch, languageId);
+                        log.warn("DEBUG: Branch order has been created: " + kkEngineBranch.getStore().getStoreId());
+
+                        // TODO: ...
+                        //kkEngine.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
+                        //kkEngine.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
+                    } else {
+                        log.error("Was not able to create order to branch store: " + storeId);
+                    }
+*/
+                } // INFO: End multistore
                 
                 Element prElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "process"));
-                prElem.setAttribute("orderid", "" + id);
+                prElem.setAttribute("orderid", "" + orderId);
 
                 // Print date
                 Date today = new Date();
@@ -367,35 +414,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 Element dateElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "date"));
                 dateElem.appendChild(doc.createTextNode(formattedDate));
 
-                sendMailToCustomer(id, orderDefault, customer);
-                sendMailToOwner(id, orderDefault, customer, payment_info_mail);
+                sendMailToCustomer(orderId, orderDefault, customer);
+                sendMailToOwner(orderId, orderDefault, customer, payment_info_mail);
                 // Let Konakart send the order confirmation...
-                // kkEngine.sendOrderConfirmationEmail(sessionId, id, "Order #" + id, languageId);
-
-                // Status updates
-                kkEngine.changeOrderStatus(sessionId, id, orderDefault.getStatus(), true, "New order."); 
-                if(multistore) {
-                    log.warn("TODO: Multi-store ...");
-                    // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "New order.");
-                }
-                if(remarks != null) {
-                    try {
-                        kkEngine.changeOrderStatus(sessionId, id, orderDefault.getStatus(), true, "Remarks: " + remarks); 
-                        if(multistore) {
-                            log.warn("TODO: Multi-store ...");
-                            // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), true, "Remarks: " + remarks);
-                        }
-                    } catch(Exception e) { 
-                        log.error(e, e);
-                    }
-                }
-                if(payment_info_kk != null) {
-                   kkEngine.changeOrderStatus(sessionId, id, orderDefault.getStatus(), false, "Payment details: " + payment_info_kk);
-                   if(multistore) {
-                       log.warn("TODO: Multi-store ...");
-                       // TODO: kkEngineBranch.changeOrderStatus(sessionId, idBranch, orderBranch.getStatus(), false, "Payment details: " + payment_info_kk);
-                   }
-                }
+                // kkEngineBranch.sendOrderConfirmationEmail(sessionId, id, "Order #" + id, languageId);
 
             } catch(Exception e) {
                 process = false;
