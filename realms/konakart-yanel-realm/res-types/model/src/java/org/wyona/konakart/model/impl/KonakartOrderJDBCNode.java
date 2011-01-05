@@ -112,8 +112,61 @@ public class KonakartOrderJDBCNode extends org.wyona.yarep.impl.AbstractNode {
     public void setProperty(Property property) throws RepositoryException {
         //log.debug("Property: " + property.getName() + ", " + property.getValueAsString());
         properties.put(property.getName(), property);
+
+        int languageID = ((KonakartJDBCRepository)repository).getLanguageId("de");
+        log.warn("DEBUG: Language ID: " + languageID);
+
+        if (property.getName().equals("store-id")) {
+            updateStoreID(property.getValueAsString(), "orders");
+            updateStoreID(property.getValueAsString(), "orders_products");
+            updateStoreID(property.getValueAsString(), "orders_products_attributes");
+            updateStoreID(property.getValueAsString(), "orders_status_history");
+            updateStoreID(property.getValueAsString(), "orders_total");
+        } else {
+            throw new RepositoryException("No such property: " + name);
+        }
     }
 
+    /**
+     * Update store ID
+     * @param storeId Store ID
+     * @param tableName Name of database table
+     */
+    private void updateStoreID(String storeId, String tableName) throws RepositoryException {
+        log.warn("DEBUG: Try to update store id '" + storeId + "' of order ID '" + getName() + "' within table '" + tableName + "'.");
+
+        int languageID = ((KonakartJDBCRepository)repository).getLanguageId("de");
+        log.warn("DEBUG: Language ID: " + languageID);
+
+        String query = "SELECT * FROM " + tableName + " WHERE orders_id = '" + getName() + "'";
+        //String query = "SELECT * FROM orders WHERE orders_id = '" + getName() + "' AND language_id = '" + languageID + "'";
+        try {
+            Connection con = ((KonakartJDBCRepository)repository).getConnection();
+            Statement stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet resultSet = stm.executeQuery(query);
+            if(resultSet.next()) { // TODO: filter by language
+            //if(resultSet.last() && resultSet.getRow() == 1) {
+                String id = resultSet.getString("orders_id");
+                log.warn("DEBUG: Update store id '" + storeId + "' of order ID '" + id + "' within table '" + tableName + "'.");
+                //log.debug("Column count: " + resultSet.getMetaData().getColumnCount());
+                
+                resultSet.updateString("store_id", storeId);
+                resultSet.updateRow();
+            } else {
+                log.warn("No such order: " + query);
+            }
+            resultSet.close();
+            stm.close();
+            con.close();
+        } catch(SQLException e) {
+            log.error(e, e);
+            throw new RepositoryException(e.getMessage());
+        }
+    }
+
+    /**
+     *
+     */
     public InputStream getInputStream() throws RepositoryException {
         log.warn("TODO: Not implemented yet!");
         return null;
