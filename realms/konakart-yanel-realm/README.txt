@@ -1,6 +1,6 @@
 
-  README
-  ------
+  README - How to setup Konakart, etc.
+  ------------------------------------
 
 Setup of DB content:
   - Also see http://www.yanel.org/en/documentation/misc/e-commerce/konakart-integration.html
