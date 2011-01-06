@@ -234,15 +234,13 @@ public class SharedResource extends Resource {
      */
     public String login(String username, String password, Realm realm, HttpSession session) throws Exception {
         // INFO: Yanel authentication 
-        // (Also see src/webapp/src/java/org/wyona/yanel/servlet/security/impl/DefaultWebAuthenticatorImpl.java)
         String currentYanelUserId = null;
         org.wyona.security.core.api.Identity identity = YanelServlet.getIdentity(session, realm);
         if (identity != null) {
             currentYanelUserId = identity.getUsername();
         }
-        //String currentYanelUserId = DefaultWebAuthenticatorImpl.getCurrentUserId(session, realm);
         if(currentYanelUserId == null) {
-            if(DefaultWebAuthenticatorImpl.authenticate(username, password, realm, session)) {
+            if(DefaultWebAuthenticatorImpl.authenticate(username, password, realm, session)) { // TODO: replace by getRealm().getWebAuthenticator().doAuthenticate() ...
                 log.info("Yanel authentication successful for user: " + username);
             } else {
                 log.warn("Yanel authentication failed for user: " + username);
