@@ -326,6 +326,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                     OrderIf orderBranch = null; // INFO: Branch order object for multi-store mode
                     log.warn("DEBUG: Trying to create branch order ...");
 
+                    log.warn("DEBUG: Realm: " + getRealm().getName() + ", " + getRealm().getConfigFile());
+                    log.warn("DEBUG: Konakart repository: " + getRealm().getRepository("konakart-repository").getConfigFile());
                     org.wyona.yarep.core.Repository konakartRepo = getRealm().getRepository("konakart-repository");
                     org.wyona.yarep.core.Node ordersNode = konakartRepo.getNode("/orders/");
                     String language = "en"; // TODO: Not used actually (see implementation ...)
