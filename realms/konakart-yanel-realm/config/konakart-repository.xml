@@ -15,11 +15,8 @@
 
     <!-- Local test settings -->
     <url>jdbc:postgresql://127.0.0.1:5432/konakart5</url>
-<!--
-    <url>jdbc:postgresql://127.0.0.1:5432/konakart</url>
--->
     <username>postgres</username>
-    <password>hobbes</password>
+    <password>TODO_SET_PASSWORD</password>
 
 <!--
     <driverClassName>com.mysql.jdbc.Driver</driverClassName>
