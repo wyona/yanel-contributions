@@ -2,7 +2,10 @@
 
 # Also see http://www.konakart.com/docs/manualInstallation_EE.html
 
+# IMPORTANT: Re-configure INSTALL_DIR according to your setup
 INSTALL_DIR=/Users/michaelwechner/src/konakart/konakart-enterprise-5.1.0.0.5688
+
+
 WEBAPPS_DIR=$INSTALL_DIR/webapps
 CLASSES_DIR=$WEBAPPS_DIR/konakartadmin/WEB-INF/classes
 LIB_DIR=$WEBAPPS_DIR/konakartadmin/WEB-INF/lib
