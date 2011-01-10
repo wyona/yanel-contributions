@@ -1,7 +1,10 @@
 package org.wyona.yanel.impl.jelly;
 
-
+/**
+ *
+ */
 public class TextFieldInputItem extends TextualInputItemSupport{
+
     public TextFieldInputItem(String name) {     
         super(name);
     }
