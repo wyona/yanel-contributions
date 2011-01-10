@@ -7,7 +7,7 @@
 
  Since most realms/resources are using this resource as package one needs to build it as package:
 
- - Increase the 'resource.version' number: src/build/build.properties
+ - Increase the 'resource.version' number within src/build/build.properties and remove the build directory
 
  - Make sure to set copy.resource-type-configs.to.webapp=true within YANEL_HOME/src/build/local.build.properties
 
