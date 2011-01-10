@@ -8,11 +8,16 @@ import java.util.List;
 
 import org.wyona.yanel.core.api.attributes.creatable.AbstractResourceInputItem;
 
+import org.apache.log4j.Logger;
+
 /**
  * This InputItem is used to specify an input which has a predefined selection
  * from where one value can be selected.
  */
 public abstract class InputItemWithOneSelectableOption extends AbstractResourceInputItem {
+
+    private static Logger log = Logger.getLogger(InputItemWithOneSelectableOption.class);
+
     private List<Option> options = new ArrayList<Option>();
     private int selected = -1;
 
@@ -52,6 +57,19 @@ public abstract class InputItemWithOneSelectableOption extends AbstractResourceI
     public void add(Option option){
         if(!options.contains(option)){
             options.add(option);
+        }
+    }
+
+    /**
+     * Append an option to the list of existing options and select this particular option.
+     * @param option Option
+     */
+    public void addSelected(Option option) {
+        if(!options.contains(option)){
+            options.add(option);
+            selected = options.size() - 1;
+        } else {
+            log.error("Option " + option.getLabel() + " already exists!");
         }
     }
     
