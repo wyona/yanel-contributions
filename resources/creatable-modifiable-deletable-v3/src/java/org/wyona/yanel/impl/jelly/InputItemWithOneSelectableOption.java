@@ -61,9 +61,11 @@ public abstract class InputItemWithOneSelectableOption extends AbstractResourceI
     }
 
     /**
+     * @deprecated Do use doSetValue(Object) instead, because it already existed before this method was unknowingly introduced.
      * Append an option to the list of existing options and select this particular option.
      * @param option Option
      */
+/*
     public void addSelected(Option option) {
         if(!options.contains(option)){
             options.add(option);
@@ -72,6 +74,7 @@ public abstract class InputItemWithOneSelectableOption extends AbstractResourceI
             log.error("Option " + option.getLabel() + " already exists!");
         }
     }
+*/
     
     /**
      * Removes an option from the list of possible values.
@@ -102,10 +105,11 @@ public abstract class InputItemWithOneSelectableOption extends AbstractResourceI
     }
 
     /**
-     * Handles instance of String and Option
-     * */
+     * Set a particular object to 'selected', whereas handles instance of String and Option, but the actual value will NOT be overwritten
+     * @param value Object which shall be selected
+     */
     public void doSetValue(Object value) {
-        if(value == null){
+        if(value == null) {
             selected = -1;
             return;
         }
