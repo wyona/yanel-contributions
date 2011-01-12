@@ -13,14 +13,18 @@
 
       <dependency groupId="com.konakart" artifactId="konakart" version="5.0.0.0"/>
       <dependency groupId="com.konakart" artifactId="konakart_utils" version="5.0.0.0"/>
+<!--
       <dependency groupId="commons-lang" artifactId="commons-lang" version="2.4"/>
+-->
     </artifact:dependencies>
 
     <artifact:dependencies pathId="maven2.resource.classpath" filesetId="maven2.resource.fileset">
       <remoteRepository refid="wyona.remote.repository"/>
       <dependency groupId="com.konakart" artifactId="konakart" version="5.0.0.0"/>
       <dependency groupId="com.konakart" artifactId="konakart_utils" version="5.0.0.0"/>
+<!--
       <dependency groupId="commons-lang" artifactId="commons-lang" version="2.4"/>
+-->
     </artifact:dependencies>
 
     <property name="maven2.cp" refid="maven2.classpath"/>
