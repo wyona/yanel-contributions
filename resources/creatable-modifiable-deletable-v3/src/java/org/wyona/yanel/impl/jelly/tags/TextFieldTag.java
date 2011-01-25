@@ -9,19 +9,29 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import org.apache.log4j.Logger;
 
+/**
+ *
+ */
 public class TextFieldTag extends YanelTag {
+
     private static Logger log = Logger.getLogger(TextFieldTag.class);
     private ResourceInputItem item = null;
-    
+
+    /**
+     * INFO: It seems like this method is somehow dynamically called by ConvertingWrapDynaBean.set(String,Object)
+     */
     public void setItem(TextualInputItemSupport resourceInputItem) {
         this.item = resourceInputItem;
         if (item != null) {
             log.debug("Item name: " + item.getName() + ", Item value: " + item.getValue()); 
         } else {
-            log.error("Item is null!");
+            log.error("Text field item is null! Please make sure that your creatable/modifiable resource-type and corresponding jelly file are using the same item names.");
         }
     }
-    
+
+    /**
+     * @see org.apache.commons.jelly.Tag#doTag(XMLOutput)
+     */
     public void doTag(XMLOutput out) throws MissingAttributeException, JellyTagException {
         try {
             AttributesImpl attributes = new AttributesImpl();
