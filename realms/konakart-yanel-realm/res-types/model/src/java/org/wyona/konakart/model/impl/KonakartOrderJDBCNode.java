@@ -138,13 +138,13 @@ public class KonakartOrderJDBCNode extends org.wyona.yarep.impl.AbstractNode {
         int languageID = ((KonakartJDBCRepository)repository).getLanguageId("de");
         log.warn("DEBUG: Language ID: " + languageID);
 
-        String query = "SELECT * FROM " + tableName + " WHERE orders_id = '" + getName() + "'";
+        String query = "SELECT * FROM " + tableName + " WHERE orders_id = " + getName();
         //String query = "SELECT * FROM orders WHERE orders_id = '" + getName() + "' AND language_id = '" + languageID + "'";
         try {
             Connection con = ((KonakartJDBCRepository)repository).getConnection();
             Statement stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet resultSet = stm.executeQuery(query);
-            if(resultSet.next()) { // TODO: filter by language
+            while(resultSet.next()) { // TODO: filter by language
             //if(resultSet.last() && resultSet.getRow() == 1) {
                 String id = resultSet.getString("orders_id");
                 log.warn("DEBUG: Update store id '" + storeId + "' of order ID '" + id + "' within table '" + tableName + "'.");
@@ -152,9 +152,9 @@ public class KonakartOrderJDBCNode extends org.wyona.yarep.impl.AbstractNode {
                 
                 resultSet.updateString("store_id", storeId);
                 resultSet.updateRow();
-            } else {
+            } /*else {
                 log.warn("No such order: " + query);
-            }
+            }*/
             resultSet.close();
             stm.close();
             con.close();
