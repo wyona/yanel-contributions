@@ -5,7 +5,7 @@
 package org.wyona.yanel.resources.konakart.category;
 
 import org.wyona.yanel.impl.resources.BasicXMLResource;
-import org.wyona.yanel.resources.konakart.shared.SharedResource;
+import org.wyona.yanel.resources.konakart.shared.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -61,16 +61,7 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
         SharedResource shared = new SharedResource();
         if(!shared.isKKOnline(getRealm())) {
             // Konakart is offline
-            // We return error 503 (temporarily unavailable)
-            // because that is the right thing to do! If we
-            // returned 404 (not found) some search engines
-            // might delete us from their index and we don't
-            // want that to happen.
-            View view = new View();
-            view.setResponse(false);
-            HttpServletResponse response = getEnvironment().getResponse();
-            response.sendError(503, "The shop is currently unavailable.");
-            return view;
+            throw new KonakartOfflineException("Konakart is offline.");
         }
 
         // All is well
