@@ -142,6 +142,12 @@ it's necessary to do so or you will run into problems.
       - Set SQL path
       - "New" versus "Clone": http://www.konakart.com/docs/multiStoreAdministration.html
 
+- Make sure to configure the store configuration:
+      - Login to konakartadmin
+      - Click on "Configuration" menu (left hand side)
+      - Click on "Konfiguration Shop" menu
+      - Set "Installations-Ausgangsverzeichnis"
+
 - Map ZIP codes onto store IDs:
     data-repo/data/app2/branch-emails.xml
     e.g. <branch start="1000" storeid="store2">contact@wyona.com</branch>
