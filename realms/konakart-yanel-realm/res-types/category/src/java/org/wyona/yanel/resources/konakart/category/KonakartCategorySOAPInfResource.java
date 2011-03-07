@@ -63,6 +63,9 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
             // Konakart is offline
             throw new KonakartOfflineException("Konakart is offline.");
         }
+        if (!exists()) {
+            throw new org.wyona.yanel.core.ResourceNotFoundException("No such product category!");
+        }
 
         // All is well
         return getXMLView(viewId, getContentXML(viewId));
