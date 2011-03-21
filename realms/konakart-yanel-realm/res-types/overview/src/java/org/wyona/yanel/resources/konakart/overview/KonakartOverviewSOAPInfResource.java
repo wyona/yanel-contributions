@@ -301,6 +301,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 int orderId = kkEngine.saveOrder(sessionId, orderDefault, languageId);
 
                 // Status updates
+                // TODO: Needs to be "moved" to branch store if multistore is true
                 kkEngine.changeOrderStatus(sessionId, orderId, orderDefault.getStatus(), true, "New order."); 
                 if(remarks != null) {
                     try {
@@ -518,7 +519,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         content.append("<br/>" + order.getBillingStreetAddress());
         content.append("<br/>" + order.getBillingPostcode() + " " + order.getBillingCity());
         content.append("<br/>" + customer.getTelephoneNumber());
-        content.append("<br/>" + customer.getEmailAddr());
+        content.append("<br/><a href=\"mailto:" + customer.getEmailAddr() + "\">" + customer.getEmailAddr() + "</a>");
 
         // Delivery info
         content.append("<br/><br/><strong>Lieferadresse / Adresse de livraison</strong>");
@@ -533,7 +534,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         // Remarks
         String remarks = (String) getEnvironment().getRequest().getSession(true).getAttribute("checkout-data-remarks");
         if(remarks != null) {
-            content.append("<br/><br/><strong>Bemerkungen / Remarques</strong><br/>");
+            content.append("<br/><br/><strong>Grusstext, Mitteilung an Globus / Texte de salutation, message à Globus</strong><br/>");
             content.append(remarks);
         }
     }
