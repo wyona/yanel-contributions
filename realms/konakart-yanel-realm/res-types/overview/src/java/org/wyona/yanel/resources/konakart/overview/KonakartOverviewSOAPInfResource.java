@@ -169,8 +169,23 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         String remarks = (String) getEnvironment().getRequest().getSession(true).getAttribute("checkout-data-remarks");
         if(remarks != null) appendField("remarks", remarks, rootElement, doc);
 
+
         boolean process = getEnvironment().getRequest().getParameter("process") != null;
-        if(process) { // INFO: Check whether order should be processed
+        String confirmParam = getEnvironment().getRequest().getParameter("confirm");
+        boolean confirmGeneralTermsConditions = false;
+        if (confirmParam != null) {
+            log.warn("DEBUG: Confirm general terms and conditions: " + confirmParam);
+            confirmGeneralTermsConditions = true;
+        }
+        if(process && !confirmGeneralTermsConditions) {
+            log.warn("General terms and conditions have not been accepted, hence do not process order...");
+            process = false;
+            Element perrElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "terms-not-accepted-yet"));
+            perrElem.appendChild(doc.createTextNode("General terms and conditions have not been accepted!"));
+        }
+
+
+        if(process) { // INFO: Check whether order should be processed ...
             // If process is true, we're creating and submitting this order
             // at the same time as we are displaying the information. So first,
             // we need the items in the basket to create an order object.
@@ -204,7 +219,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
                 if(e.getMessage() != null) perrElem.appendChild(doc.createTextNode(e.getMessage()));
             }
         } else {
-            log.warn("DEBUG: No order submitted yet. Continue ...");
+            log.warn("DEBUG: Order either not submitted or processed yet. Continue ...");
         }
 
         // Payment info
@@ -792,10 +807,12 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
     /**
      * Append error element for given field.
      */
+/*
     public void appendErr(String field, Element elem, org.w3c.dom.Document doc) {
         Element err = (Element) elem.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "error"));
         err.setAttribute("id", field);
     }
+*/
 
     /**
      * Append field to XML output.
