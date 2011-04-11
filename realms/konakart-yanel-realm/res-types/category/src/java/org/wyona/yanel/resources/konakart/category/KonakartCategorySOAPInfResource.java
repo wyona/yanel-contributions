@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * KonaKart category
  */
-public class KonakartCategorySOAPInfResource extends BasicXMLResource {
+public class KonakartCategorySOAPInfResource extends BasicXMLResource implements org.wyona.yanel.core.api.attributes.AnnotatableV1 {
     
     private static Logger log = Logger.getLogger(KonakartCategorySOAPInfResource.class);
 
@@ -75,6 +75,7 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
      * Internal class for comparisons of products.
      */
     class ProductComparator implements Comparator {
+        // TODO: Also sort by title
         public String field;
         public boolean reverse;
 
@@ -410,5 +411,39 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource {
         }
 
         return selected;
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#getAnnotations()
+     */
+    public String[] getAnnotations() throws Exception {
+        SharedResource shared = new SharedResource();
+        KKEngIf kkEngine = shared.getKonakartEngineImpl();
+        int languageId = shared.getLanguageId(getContentLanguage());
+        int categoryId = getCategoryId(kkEngine);
+        CategoryIf category = kkEngine.getCategory(categoryId, languageId);
+        String[] annotations = {"shop", category.getName()};
+        return annotations;
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#clearAllAnnotations()
+     */
+    public void clearAllAnnotations() throws Exception {
+        log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#removeAnnotation(String)
+     */
+    public void removeAnnotation(String name) throws Exception {
+        log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#setAnnotation(String)
+     */
+    public void setAnnotation(String name) throws Exception {
+        log.warn("No implemented yet!");
     }
 }
