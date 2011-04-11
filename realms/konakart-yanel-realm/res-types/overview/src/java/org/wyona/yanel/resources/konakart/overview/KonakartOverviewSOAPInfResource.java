@@ -44,9 +44,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
 
 /**
- * Show overview
+ * Show overview before buying products and also the actual order process
  */
-public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
+public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements org.wyona.yanel.core.api.attributes.AnnotatableV1 {
     
     private static Logger log = Logger.getLogger(KonakartOverviewSOAPInfResource.class);
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
@@ -847,4 +847,66 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource {
         return true;
     }
 
+    /**
+     * Check whether order should be processed finally
+     */
+    private boolean readyToProcess() {
+        boolean process = getEnvironment().getRequest().getParameter("process") != null;
+        String confirmParam = getEnvironment().getRequest().getParameter("confirm");
+        boolean confirmGeneralTermsConditions = false;
+        if (confirmParam != null) {
+            log.debug("Confirm general terms and conditions: " + confirmParam);
+            confirmGeneralTermsConditions = true;
+        }
+        if(process && !confirmGeneralTermsConditions) {
+            log.warn("General terms and conditions have not been accepted, hence do not process order...");
+            process = false;
+        }
+        return process;
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#getAnnotations()
+     */
+    public String[] getAnnotations() throws Exception {
+        if (readyToProcess()) {
+            SharedResource shared = new SharedResource();
+            KKEngIf kkEngine = shared.getKonakartEngineImpl();
+            int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
+            int languageId = shared.getLanguageId(getContentLanguage());
+            BasketIf[] items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId); // TODO: It seems like the basket has already been deleted!?
+
+            java.util.List<String> annotations = new java.util.ArrayList();
+            annotations.add("shop-buy-products");
+            for (int i = 0; i < items.length; i++) {
+                annotations.add("" + items[i].getProductId());
+                annotations.add(items[i].getProduct().getName());
+            }
+
+            return annotations.toArray(new String[annotations.size()]);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#clearAllAnnotations()
+     */
+    public void clearAllAnnotations() throws Exception {
+        log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#removeAnnotation(String)
+     */
+    public void removeAnnotation(String name) throws Exception {
+        log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#setAnnotation(String)
+     */
+    public void setAnnotation(String name) throws Exception {
+        log.warn("No implemented yet!");
+    }
 }
