@@ -43,9 +43,9 @@ import org.wyona.yanel.core.attributes.viewable.View;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * A simple Resource which extends BasicXMLResource
+ * A product
  */
-public class KonakartProductSOAPInfResource extends BasicXMLResource {
+public class KonakartProductSOAPInfResource extends BasicXMLResource implements org.wyona.yanel.core.api.attributes.AnnotatableV1 {
     
     private static Logger log = Logger.getLogger(KonakartProductSOAPInfResource.class);
 
@@ -291,5 +291,39 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource {
             if(product != null) log.error("Product is not in stock or invisible...");
             return false;
         }
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#getAnnotations()
+     */
+    public String[] getAnnotations() throws Exception {
+        SharedResource shared = new SharedResource();
+        KKEngIf kkEngine = shared.getKonakartEngineImpl();
+        int languageId = shared.getLanguageId(getContentLanguage());
+        int productID = getProductID(kkEngine);
+        ProductIf product = kkEngine.getProduct(null, productID, languageId);
+        String[] annotations = {"shop", product.getName()};
+        return annotations;
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#clearAllAnnotations()
+     */
+    public void clearAllAnnotations() throws Exception {
+        log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#removeAnnotation(String)
+     */
+    public void removeAnnotation(String name) throws Exception {
+        log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#setAnnotation(String)
+     */
+    public void setAnnotation(String name) throws Exception {
+        log.warn("No implemented yet!");
     }
 }
