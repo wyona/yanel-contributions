@@ -422,7 +422,7 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource implements
         int languageId = shared.getLanguageId(getContentLanguage());
         int categoryId = getCategoryId(kkEngine);
         CategoryIf category = kkEngine.getCategory(categoryId, languageId);
-        String[] annotations = {"shop", category.getName()};
+        String[] annotations = {"shop-category", "" + categoryId, category.getName()};
         return annotations;
     }
 
