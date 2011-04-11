@@ -302,7 +302,7 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource implements 
         int languageId = shared.getLanguageId(getContentLanguage());
         int productID = getProductID(kkEngine);
         ProductIf product = kkEngine.getProduct(null, productID, languageId);
-        String[] annotations = {"shop", product.getName()};
+        String[] annotations = {"shop-product", "" + productID, product.getName()};
         return annotations;
     }
 
