@@ -65,10 +65,10 @@ public class ResourceInputImpl implements ResourceInput {
         for (Iterator<ResourceInputItem> i = items.iterator(); i.hasNext();) {
             ResourceInputItem item = i.next();
             if (item.getValidationMessage() == null || !item.getValidationMessage().isValidationOK()) {
-                log.warn("DEBUG: Validate item: " + item.getName());
+                log.debug("Validate item: " + item.getName());
                 item.validate();
             } else {
-                log.warn("DEBUG: Item '" + item.getName() + "' seems to be valid, hence do not validate.");
+                log.debug("Item '" + item.getName() + "' seems to be valid, hence do not validate again.");
             }
         }
 
