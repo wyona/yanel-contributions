@@ -83,6 +83,7 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
             current.setModel(cs.getModel());
             current.setCurrentScreen(cs.getCurrentScreen());
         } else {
+            // TODO: What if there is no referer, e.g. copy/paste from email ...
             cs.setRefererUrl(getEnvironment().getRequest().getHeader("Referer"));
             // The new conversation state becomes current
             current = cs;
