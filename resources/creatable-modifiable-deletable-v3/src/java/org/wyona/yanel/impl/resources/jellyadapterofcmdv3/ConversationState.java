@@ -46,11 +46,17 @@ class ConversationState implements Serializable{
     public Object getModel() {
         return model;
     }
-    
+ 
+    /**
+     * Get referer URL, which can be used for example to redirect if cancel is hit by a user
+     */
     public String getRefererUrl() {
         return refererUrl;
     }
 
+    /**
+     * Set referer URL
+     */
     void setRefererUrl(String refererUrl) {
         this.refererUrl = refererUrl;
         if(gotoUrl == null){
