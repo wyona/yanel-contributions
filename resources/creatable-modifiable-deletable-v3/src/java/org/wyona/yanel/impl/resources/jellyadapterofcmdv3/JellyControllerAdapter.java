@@ -351,6 +351,7 @@ public abstract class JellyControllerAdapter extends ControllerAdapter {
         // NOTE: all parameter values will be of type String. In XSLT: <param name="p" value="'actual_value'"/>
         for (Iterator i = getParameters().entrySet().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
+            log.debug("Add entry to jelly context: " + entry.getKey());
             jellyContext.setVariable(String.valueOf(entry.getKey()), entry.getValue());
         }
         
