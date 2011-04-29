@@ -10,6 +10,9 @@ import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
 
+/**
+ * TODO
+ */
 abstract class ControllerAdapter extends Resource implements ResourceAdapter, ViewableV2 {
     private static Logger log = Logger.getLogger(ControllerAdapter.class);
     public static String YANEL_CONTINUATION_ID = "yanel.continuation.id";
@@ -40,8 +43,21 @@ abstract class ControllerAdapter extends Resource implements ResourceAdapter, Vi
      * @return null when the parameter is not found
      * */
     public final String getAdaptedResourcePath() {
-        if(adaptedResourcePath == null){
-            adaptedResourcePath = getParameterAsString(PARAM_ADAPTED_RESOURCE_PATH); 
+        if(adaptedResourcePath == null) {
+            try {
+                // TODO: TBD order (security, etc.)
+                if (getResourceConfigProperty(PARAM_ADAPTED_RESOURCE_PATH) != null) {
+                    adaptedResourcePath = getResourceConfigProperty(PARAM_ADAPTED_RESOURCE_PATH);
+                    log.debug("Get adapted resource path from resource configuration: " + adaptedResourcePath);
+                } else if (getParameterAsString(PARAM_ADAPTED_RESOURCE_PATH) != null) {
+                    adaptedResourcePath = getParameterAsString(PARAM_ADAPTED_RESOURCE_PATH); 
+                    log.debug("Get adapted resource path from URL/QueryString: " + adaptedResourcePath);
+                } else {
+                    log.error("No adapted resource path!");
+                }
+            } catch(Exception e) {
+                log.error(e, e);
+            }
         }
         return adaptedResourcePath;
     }
@@ -53,9 +69,10 @@ abstract class ControllerAdapter extends Resource implements ResourceAdapter, Vi
     /**
      * Checks if the usecase was set, otherwise looks into available parameters
      * @return null when usecase can't be determined
-     * */
+     */
     public final Usecase getUsecase() {
         if(usecase == null){
+            // TODO: TBD order (security, etc.)
             String u = getParameterAsString(Constants.Request.YANEL_RESOURCE_USECASE);
             if (u == null) {
                 try {
