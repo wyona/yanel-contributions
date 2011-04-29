@@ -22,5 +22,9 @@ Adapts interfaces that want to know about Jelly
   <property name="adapted-resource-name"/>
   <property name="adapted-resource-namespace"/>
 -->
+
+<!-- TODO: See src/java/org/wyona/yanel/impl/resources/jellyadapterofcmdv3/JellyConversationAdapter.java
+  <property name="goto.url"/>
+-->
 </rtd>
 </resource>
