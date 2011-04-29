@@ -65,8 +65,11 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
     }
     
     /**
-     * Checks if the conversation is already in the session and creates it if necessary
-     * */
+     * Checks if the conversation (resource input) is already in the session and creates it if necessary
+     * @param model Resource input
+     * @param usecase Usecase (e.g. create, modify)
+     * @param resourcePath Adapted resource path
+     */
     protected final ConversationState initConversation(Object model, Usecase usecase, String resourcePath){
         log.warn("Continuation: " + getContinuation().getId());
 
@@ -90,8 +93,19 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
             current.setGotoUrl(gotoUrl);
         }
         
-        log.warn("Attach conversation state for usecase '" + current.getUsecase() + "' to session with id '" + getPath() + "'");
+        log.warn("DEBUG: Attach conversation state (resource input) for usecase '" + current.getUsecase() + "' to session with id '" + getPath() + "' (Adapted resource path: " + resourcePath + ")");
+/* DEBUG
+        try {
+            org.wyona.yanel.core.api.attributes.creatable.ResourceInput input = (org.wyona.yanel.core.api.attributes.creatable.ResourceInput)current.getModel();
+            if (input.getItem("id") != null) {
+                log.warn("DEBUG: ID: " + (String) input.getItem("id").getValue());
+            }
+        } catch(Exception e) {
+            log.error(e, e);
+        }
+*/
         getEnvironment().getRequest().getSession(true).setAttribute(getPath(), current);
+
         return current;
     }
     
@@ -109,6 +123,7 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
     /**
      * No additional parameters passed. Subclasses should consult conversation state for additional parameters
      */
+    @Override
     protected void passParameters(JellyContext jellyContext) throws Exception {
         super.passParameters(jellyContext);
         ConversationState cs = getConversationState();
@@ -125,6 +140,7 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
     /**
      * No additional parameters passed. Subclasses should consult conversation state for additional parameters
      */
+    @Override
     protected void passParameters(Transformer transformer) throws Exception {
         super.passParameters(transformer);
         ConversationState cs = getConversationState();
