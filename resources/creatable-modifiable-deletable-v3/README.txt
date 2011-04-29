@@ -9,7 +9,7 @@
 
  - Increase the 'resource.version' number within src/build/build.properties and remove the build directory
 
- - Make sure to set copy.resource-type-configs.to.webapp=true within YANEL_HOME/src/build/local.build.properties
+ - IMPORTANT: Make sure to set copy.resource-type-configs.to.webapp=true within YANEL_HOME/src/build/local.build.properties
 
  - Run ./build.sh -f /Users/michaelwechner/src/wyona/public/yanel/contributions/resources/creatable-modifiable-deletable-v3/build.xml
 
