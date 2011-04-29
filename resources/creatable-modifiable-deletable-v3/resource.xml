@@ -10,5 +10,17 @@ Adapts interfaces that want to know about Jelly
 </description>
 
 <rtd>
+  <property name="adapted.resource.path"/> <!-- e.g. /usecases/meeting-template.html -->
+  <property name="path"/> <!-- e.g. /meetings/submissions/index.html -->
+  <property name="usecase"/> <!-- e.g. create -->
+
+<!-- TODO: See src/java/org/wyona/yanel/impl/resources/jellyadapterofcmdv3/ControllerAdapter.java
+  <property name="i18n-catalogue"/>
+-->
+
+<!-- TODO: See src/java/org/wyona/yanel/impl/resources/jellyadapterofcmdv3/JellyAdapterForCUDResource.java
+  <property name="adapted-resource-name"/>
+  <property name="adapted-resource-namespace"/>
+-->
 </rtd>
 </resource>
