@@ -26,7 +26,7 @@ import org.wyona.yanel.servlet.communication.HttpRequest;
 import org.apache.log4j.Logger;
 
 /**
- * Adapts a CreatableV3.
+ * Adapts a resource which has CreatableV3 implemented.
  * <p>
  * The templates in addition get the following parameters:
  * <ul>
@@ -55,7 +55,7 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
     }
 
     /**
-     *
+     * @see
      */
     public View getView(String viewId)throws Exception{
         try{
@@ -295,7 +295,8 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
         String resourcePath = getAdaptedResourcePathFromConversationState();
 
         // TODO: For creation one doesn't need necessarily a resource path, but a resource type definition would be sufficient, whereas for update/modify and delete one needs a resource path
-        if(resourcePath == null){
+        if(resourcePath == null) {
+            log.warn("TODO: Try getting adapted resource from resource configuration ...");
             String adaptedResourceName = getResourceConfigProperty("adapted-resource-name");
             String adaptedResourceNamespace = getResourceConfigProperty("adapted-resource-namespace");
             if (adaptedResourceName != null && adaptedResourceNamespace != null) {
@@ -322,7 +323,7 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
         } else {
             model = cs.getModel();
         }
-        
+
         initConversation(model, usecase, resourcePath);
     }
 
@@ -339,20 +340,28 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
         
         if (Usecase.create.equals(usecase)) {
             CreatableV3 cv3 = getAdaptedResourceAsCreatableV3(path);
-            log.warn("CreatableV3 resource is using the path of the adapted (aka 'template') resource, hence you might want to overwrite it with Resource.setPath(String) within the create(ResourceInput) method!");
-            ResourceInput input = (ResourceInput) getConversationState().getModel();
+            log.warn("CreatableV3 resource is using the path '" + path + "' of the adapted (aka 'template') resource, hence you might want to overwrite it with Resource.setPath(String) within the create(ResourceInput) method!");
+            ResourceInput input = (ResourceInput) cs.getModel();
             if(input.validate()){
-                if( log.isDebugEnabled() )
+                if(log.isDebugEnabled()) {
                     log.debug("Start create " + dateFormat.format(new java.util.Date()));
+                }
                 cv3.create(input);
-                if( log.isDebugEnabled() )
+/* DEBUG
+                if (input.getItem("id") != null) {
+                    log.warn("DEBUG: ID: " + (String) input.getItem("id").getValue());
+                }
+*/
+                initConversation(input, usecase, path); // TODO: Is this necessary, or is this done by some superclass?
+                if(log.isDebugEnabled()) {
                     log.debug("End create " + dateFormat.format(new java.util.Date()));
-            }else{
+                }
+            } else {
                 throw new IllegalArgumentException("The input for the adapted resource is not valid");
             }
         } else if (Usecase.modify.equals(usecase)) {
             ModifiableV3 mv3 = getAdaptedResourceAsModifiableV3(path);
-            ResourceInput input = (ResourceInput) getConversationState().getModel();
+            ResourceInput input = (ResourceInput) cs.getModel();
             if(input.validate()){
                 mv3.modify(input);
             }else{
@@ -360,7 +369,7 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
             }
         } else if (Usecase.remove.equals(usecase)) {
             DeletableV1 dv1 = getAdaptedResourceAsDeletableV1(path);
-            ResourceInput input = (ResourceInput) getConversationState().getModel();
+            ResourceInput input = (ResourceInput) cs.getModel();
             if(input.validate()){
                 dv1.delete(input);
             }else{
@@ -428,23 +437,43 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
 		return (DeletableV1) resource;
     }
 
+    /**
+     * @see
+     */
+    @Override
     protected void passParameters(Transformer transformer) throws Exception {
         super.passParameters(transformer);
         ConversationState cs = getConversationState();
+        //log.debug("Conversation state: " + cs);
         if (cs != null) {
             transformer.setParameter("resourceInput", cs.getModel());
-            transformer.setParameter("url.before.conversation", cs.getRefererUrl());
+            String refererUrl = cs.getRefererUrl();
+            if (refererUrl != null) {
+                transformer.setParameter("url.before.conversation", refererUrl);
+            } else {
+                log.warn("No referer URL, hence cancel/redirect will not work. Maybe link has been copied/pasted from email");
+            }
         } else {
             log.warn("The conversation was not initialized");
         }
     }
 
+    /**
+     * @see
+     */
+    @Override
     protected void passParameters(JellyContext jellyContext) throws Exception {
         super.passParameters(jellyContext);
         ConversationState cs = getConversationState();
+        //log.debug("Conversation state: " + cs);
         if (cs != null) {
             jellyContext.setVariable("resourceInput", cs.getModel());
-            jellyContext.setVariable("url.before.conversation", cs.getRefererUrl());
+            String refererUrl = cs.getRefererUrl();
+            if (refererUrl != null) {
+                jellyContext.setVariable("url.before.conversation", cs.getRefererUrl());
+            } else {
+                log.warn("No referer URL, hence cancel/redirect will not work. Maybe link has been copied/pasted from email");
+            }
         } else {
             log.warn("The conversation was not initialized");
         }
