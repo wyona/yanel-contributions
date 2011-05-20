@@ -58,7 +58,7 @@
 <xsl:apply-templates select="/foaf:foaf/foaf:provider"/>
 
 <div id="copyright">
-Copyright &#169; 2009 Wyona
+Copyright &#169; 2011 Wyona
 </div>
 </xsl:when>
 
@@ -86,7 +86,7 @@ Copyright &#169; 2009 Wyona
 </p>
 
 <div id="copyright">
-Copyright &#169; 2009 Wyona
+Copyright &#169; 2011 Wyona
 </div>
 </center>
 </xsl:otherwise>
