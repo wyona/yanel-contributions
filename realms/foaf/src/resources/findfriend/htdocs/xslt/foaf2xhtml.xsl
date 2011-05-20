@@ -58,7 +58,7 @@
 <xsl:apply-templates select="/foaf:foaf/foaf:provider"/>
 
 <div id="copyright">
-Copyright &#169; 2011 Wyona - Powered by Yanel
+Copyright &#169; 2011 Wyona - Powered by <a href="http://www.yanel.org">Yanel</a>
 </div>
 </xsl:when>
 
@@ -86,7 +86,7 @@ Copyright &#169; 2011 Wyona - Powered by Yanel
 </p>
 
 <div id="copyright">
-Copyright &#169; 2011 Wyona - Powered by Yanel
+Copyright &#169; 2011 Wyona - Powered by <a href="http://www.yanel.org">Yanel</a>
 </div>
 </center>
 </xsl:otherwise>
