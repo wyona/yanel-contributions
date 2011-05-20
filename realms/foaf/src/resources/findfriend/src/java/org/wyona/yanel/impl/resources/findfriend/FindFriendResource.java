@@ -8,6 +8,7 @@ import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
 import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
+import org.wyona.yanel.core.source.SourceResolver;
 
 import org.wyona.meguni.parser.Parser;
 import org.wyona.meguni.util.ResultSet;
@@ -23,14 +24,14 @@ import javax.xml.transform.stream.StreamResult;
 
 import java.io.File;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  *
  */
 public class FindFriendResource extends Resource implements ViewableV2 {
 
-    private static Category log = Category.getInstance(FindFriendResource.class);
+    private static Logger log = Logger.getLogger(FindFriendResource.class);
 
     /**
      *
@@ -183,8 +184,8 @@ public class FindFriendResource extends Resource implements ViewableV2 {
      *
      */
     private Transformer getTransformer() throws Exception {
-        File xsltFile = org.wyona.commons.io.FileUtil.file(rtd.getConfigFile().getParentFile().getAbsolutePath(), "xslt" + File.separator + "foaf2xhtml.xsl");
-        Transformer tf = TransformerFactory.newInstance().newTransformer(new StreamSource(xsltFile));
+        SourceResolver uriResolver = new SourceResolver(this);
+        Transformer tf = TransformerFactory.newInstance().newTransformer(uriResolver.resolve("rthtdocs:/xslt/foaf2xhtml.xsl", null));
 
         if (getRequest().getParameter("q") != null) {
             tf.setParameter("query", getRequest().getParameter("q"));
