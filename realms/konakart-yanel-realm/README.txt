@@ -19,7 +19,7 @@ Setup of DB content:
   - Re-configure within Konakartadmin the image base path and URL (see above)
   - Create default customer (necessary for price calculation): konakartadmin -> Customers -> Edit "Order Olly" -> Select type "Standardkunde"
   - Create XX zone (necessary for registration): konakartadmin -> Locations -> Zones -> Select "Switzerland" -> New: Enter "XX" for Zone and Code and select country "Switzerland"
-  - In order to generate shipping costs one needs to add two additional manufacturers called 'Geschenk' and 'Wein' (konakartadmin -> Products -> Manufacturers -> New -> ...) and set these for the products which should have shipping costs (konakartadmin -> Products -> Products -> Edit Product -> Details -> Manufacturer)
+  - In order to generate shipping costs one needs to add two additional manufacturers called 'Geschenk' and 'Wein' (konakartadmin -> Products -> Manufacturers -> New -> ...) and set these for the products which should have shipping costs (konakartadmin -> Products -> Products -> Edit Product -> Details -> Manufacturer) (also see res-types/shared/src/java/org/wyona/yanel/resources/konakart/shared/SharedResource.java#getShippingCost(...))
 
 Quick Upgrade:
   - Ports: conf/server.xml
