@@ -26,16 +26,20 @@ Quick Upgrade:
   - Templates: templates/store1 (also make sure to set Velocity template path within konakartadmin and to configure e-mail SMTP, etc.)
   - Admin messages: webapps/konakartadmin/WEB-INF/classes
   - Images path: Make sure to configured images path within konakartadmin and also within your realm (res-configs/shop-product-image_yanel-rc.xml)
-  - Make sure to increase MaxPermSize within bin/startkonakart.sh
+  - Make sure to increase MaxPermSize within bin/startkonakart.sh (e.g. 512m instead 256m)
 
 Make sure to configure:
 
 - SOAP access configuration
     - Domain and Port
-      Edit config/konakart_axis_client.properties or possibly 
+      Edit config/konakart_axis_client.properties and rebuild/restart Yanel
+      or edit directly
       webapps/yanel/WEB-INF/classes/konakart_axis_client.properties
+      and restart Yanel
     - Set parameter 'allowedMethods' ('*' instead 'none') in
       /home/USER/konakart-4.2.0.1/webapps/konakart/WEB-INF/server-config.wsdd
+      (OPTIONAL: webapps/konakartadmin/WEB-INF/server-config.wsdd)
+    - "Connection refused": Test link http://localhost:8780/konakart/services/KKWebServiceEng and make sure that webapps/yanel/WEB-INF/classes/konakart_axis_client.properties contains the same link
 
 - Images Base Path configuration
     - Resource config property: konakart-images-base-path (according to 
