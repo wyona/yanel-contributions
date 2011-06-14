@@ -70,16 +70,23 @@ public class SharedResource extends Resource {
 
     /**
      * Get language ID.
-     * @param Language
+     * @param lang Language, e.g. 'de', 'fr'
+     * @return KonaKart language ID, e.g. 1, 2
      */
     public int getLanguageId(String lang) throws Exception {
-        LanguageIf kkLang = getKonakartEngineImpl().getLanguagePerCode(lang);
+        log.warn("DEBUG: Try to get ID for language: " + lang);
+        LanguageIf kkLang = null;
+        try {
+            kkLang = getKonakartEngineImpl().getLanguagePerCode(lang);
+        } catch(Exception e) {
+            log.error(e, e);
+        }
 
         int kkLangInt = -1;
         if (kkLang != null) {
             kkLangInt = kkLang.getId();
         } else {
-            log.warn("No such language: " + lang);
+            log.warn("Could not get ID for language: " + lang);
         }
 
         return kkLangInt;
