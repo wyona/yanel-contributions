@@ -74,7 +74,7 @@ public class SharedResource extends Resource {
      * @return KonaKart language ID, e.g. 1, 2
      */
     public int getLanguageId(String lang) throws Exception {
-        log.warn("DEBUG: Try to get ID for language: " + lang);
+        //log.debug("Try to get ID for language: " + lang);
         LanguageIf kkLang = null;
         try {
             kkLang = getKonakartEngineImpl().getLanguagePerCode(lang);
