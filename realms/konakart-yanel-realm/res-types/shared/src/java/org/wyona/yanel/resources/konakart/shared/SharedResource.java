@@ -471,6 +471,7 @@ public class SharedResource extends Resource {
             getKonakartEngineImpl().getStore();
         } catch(Exception e) {
             // If getStore fails, we assume Konakart is down.
+            log.warn(e.getMessage());
             log.warn("KonaKart seems to be offline, but no '" + offlinePath + "' flag set. Check status of KonaKart and corresponding DB!");
             return false;
         }
