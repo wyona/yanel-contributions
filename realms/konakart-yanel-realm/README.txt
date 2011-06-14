@@ -2,6 +2,8 @@
   README - How to setup Konakart, etc.
   ------------------------------------
 
+Requirements: KonaKart 5.0 or 5.1 but NOT 5.2 because this realm is currently using the 5.0 SOAP libraries (see for example res-types/shared/src/build/dependencies.xml) which don't seem to be compatible with 5.2
+
 Setup of DB content:
   - Also see http://www.yanel.org/en/documentation/misc/e-commerce/konakart-integration.html
   - Drop previous DB (e.g. /Library/PostgreSQL/8.4/bin/dropdb konakart5)
