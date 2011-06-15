@@ -198,7 +198,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
                 log.warn("DEBUG: Create default order ...");
                 orderDefault = kkEngine.createOrder(sessionId, items, languageId);
                 //OrderIf orderDefault = kkEngine.createOrder(sessionId, items, languageId);
-                shipping = shared.getShippingCost(items, sessionId, languageId);
+                shipping = shared.getShippingCost(items, sessionId, languageId, getEnvironment().getRequest().getSession(true));
                 orderDefault.setShippingQuote(shipping);
                 orderDefault = kkEngine.getOrderTotals(orderDefault, languageId);
 
@@ -510,6 +510,11 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
             lang = getContentLanguage();
         } catch(Exception e) {
             lang = "de";
+        }
+
+        javax.servlet.http.HttpSession session = getEnvironment().getRequest().getSession(true);
+        if (session.getAttribute("coupon") != null) {
+            content.append("<br/><br/>Gutschein: Sie bezahlen keine Lieferkosten auf dieser Bestellung / Bon: les frais de livraison vous sont offerts pour cette commande<br/>");
         }
 
         content.append("<br/><br/><strong>Rechnungsadresse / Adresse de facturation</strong><br/>");

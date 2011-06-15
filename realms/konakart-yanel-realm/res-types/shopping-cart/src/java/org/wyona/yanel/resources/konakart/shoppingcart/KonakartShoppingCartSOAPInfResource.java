@@ -1,4 +1,4 @@
-/*-
+/*
  * Copyright 2010 Wyona
  */
 
@@ -37,6 +37,8 @@ import java.lang.Integer;
 import java.math.BigDecimal;
 import javax.xml.transform.Transformer;
 import java.net.URLEncoder;
+
+import javax.servlet.http.HttpSession;
 
 import org.w3c.dom.Element;
 
@@ -197,7 +199,7 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
             log.debug("Content language: " + getContentLanguage());
         }
 
-        javax.servlet.http.HttpSession httpSession = getEnvironment().getRequest().getSession(true);
+        HttpSession httpSession = getEnvironment().getRequest().getSession(true);
         Element customerElement = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "customer"));
 
         // If user is logged in, get customer id, email, etc.
@@ -335,7 +337,7 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
             ShippingQuoteIf shipping;
 
             try {
-                shipping = shared.getShippingCost(items, sessionId, languageId);
+                shipping = shared.getShippingCost(items, sessionId, languageId, httpSession);
             } catch(Exception e) {
                 // Order is empty or module is broken
                 shipping = null;
@@ -358,13 +360,15 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
                 Element shippingCost = (Element) shoppingCartElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "shipping-price-ex-rebate"));
                 shippingCost.appendChild(doc.createTextNode("" + single_price));
 
-                // Custom shipping cost
+                // INFO: Shipping costs of Wein
                 Element shippingCustom1 = (Element) shoppingCartElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "shipping-custom1"));
                 shippingCustom1.appendChild(doc.createTextNode("" + shipping.getCustom1()));
 
+                // INFO: Shipping costs of Geschenk
                 Element shippingCustom2 = (Element) shoppingCartElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "shipping-custom2"));
                 shippingCustom2.appendChild(doc.createTextNode("" + shipping.getCustom2()));
                 
+                // INFO: Mengenrabatt
                 Element shippingCustom3 = (Element) shoppingCartElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "shipping-custom3"));
                 shippingCustom3.appendChild(doc.createTextNode("" + shipping.getCustom3()));
 
@@ -388,6 +392,10 @@ public class KonakartShoppingCartSOAPInfResource extends BasicXMLResource {
                 // <total-shipping-price-inc-rebate>
                 Element totalPlusShipping = (Element) shoppingCartElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "total-shipping-price-inc-rebate"));
                 totalPlusShipping.appendChild(doc.createTextNode("" + all_price));
+
+                if (httpSession.getAttribute("coupon") != null) {
+                    Element couponElement = (Element) shoppingCartElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "coupon"));
+                }
             } else {
                 // <shipping-module-not-available>
                 // TODO: This is not very good, do something more useful...

@@ -307,6 +307,26 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource {
                     appendErr("pc", rootElement, doc);
                 }
             }
+
+            String coupon  = req.getParameter("coupon");
+            if(coupon != null && coupon.length() > 0) {
+                appendField("coupon", coupon, rootElement, doc);
+                String couponCode = getResourceConfigProperty("coupon-code");
+                if (couponCode != null) {
+                    if (coupon.toLowerCase().equals(couponCode.toLowerCase())) {
+                        javax.servlet.http.HttpSession session = getEnvironment().getRequest().getSession(true);
+                        session.setAttribute("coupon", coupon);
+                    } else {
+                        log.warn("Coupon '" + coupon + "' did not match!");
+                        appendErr("coupon", rootElement, doc);
+                        redirect = false;
+                    }
+                } else {
+                    log.warn("No coupon code property 'coupon-code' configured inside resource configuration!");
+                }
+            } else {
+                log.info("No coupon specified, hence proceed ...");
+            }
         } else {
             String remarks = (String) getEnvironment().getRequest().getSession(true).getAttribute("checkout-data-remarks");
             if(remarks != null) appendField("remarks", remarks, rootElement, doc);

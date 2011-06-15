@@ -1,4 +1,4 @@
-/*-
+/*
  * Copyright 2010 Wyona
  */
 
@@ -298,7 +298,7 @@ public class SharedResource extends Resource {
      * Calculate the shipping cost for a basket.
      * TODO: Make this function more generic.
      */
-    public ShippingQuoteIf getShippingCost(BasketIf[] items, String sessionId, int languageId) throws Exception {
+    public ShippingQuoteIf getShippingCost(BasketIf[] items, String sessionId, int languageId, HttpSession session) throws Exception {
         // We calculate the shipping cost ourselves in this function,
         // because Konakart has certain limitations as to what you can do.
         CreateOrderOptionsIf orderOptions = new CreateOrderOptions();
@@ -376,13 +376,21 @@ public class SharedResource extends Resource {
             }
         }
 
+        String coupon = (String) session.getAttribute("coupon");
+
         if(bottles_shipping_price != null) {
-            try {
-                shipping.setCustom1(bottles_shipping_price.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
-            } catch(Exception e) {
-                shipping.setCustom1(bottles_shipping_price.toString());
+            if (coupon != null) {
+                log.info("No wine shipping costs, because coupon exists");
+                shipping.setCustom1("0");
+            } else {
+                try {
+                    shipping.setCustom1(bottles_shipping_price.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+                } catch(Exception e) {
+                    shipping.setCustom1(bottles_shipping_price.toString());
+                }
             }
         } else {
+            log.info("No wine shipping costs.");
             shipping.setCustom1("");
         }
 
@@ -395,12 +403,18 @@ public class SharedResource extends Resource {
         }
 
         if(baskets_shipping_price != null) {
-            try {
-                shipping.setCustom2(baskets_shipping_price.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
-            } catch(Exception e) {
-                shipping.setCustom2(baskets_shipping_price.toString());
+            if (coupon != null) {
+                log.info("No Geschenk shipping costs, because coupon exists");
+                shipping.setCustom2("0");
+            } else {
+                try {
+                    shipping.setCustom2(baskets_shipping_price.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString());
+                } catch(Exception e) {
+                    shipping.setCustom2(baskets_shipping_price.toString());
+                }
             }
         } else {
+            log.info("No Geschenk shipping costs.");
             shipping.setCustom2("");
         }
 
@@ -435,7 +449,12 @@ public class SharedResource extends Resource {
             total = new BigDecimal("0");
         }
 
-        shipping.setTotalExTax(total);
+        if (coupon == null) {
+            shipping.setTotalExTax(total);
+        } else {
+            log.info("No total shipping costs, because coupon exists.");
+        }
+
         shipping.setTotalIncTax(bottles_total_rebate);
 
         // Name of shipping method
