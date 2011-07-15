@@ -4,6 +4,10 @@
 
 package org.wyona.yanel.resources.konakart.product;
 
+import org.wyona.yanel.core.api.attributes.AnnotatableV1;
+import org.wyona.yanel.core.api.attributes.TrackableV1;
+import org.wyona.yanel.core.attributes.viewable.View;
+import org.wyona.yanel.core.attributes.tracking.TrackingInformationV1;
 import org.wyona.yanel.impl.resources.BasicXMLResource;
 import org.wyona.yanel.resources.konakart.shared.KonakartOfflineException;
 import org.wyona.yanel.resources.konakart.shared.SharedResource;
@@ -39,18 +43,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.net.URLEncoder;
 
-import org.wyona.yanel.core.attributes.viewable.View;
-
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * A product
  */
-public class KonakartProductSOAPInfResource extends BasicXMLResource implements org.wyona.yanel.core.api.attributes.AnnotatableV1 {
+public class KonakartProductSOAPInfResource extends BasicXMLResource implements AnnotatableV1, TrackableV1 {
     
     private static Logger log = Logger.getLogger(KonakartProductSOAPInfResource.class);
 
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
+
+    private TrackingInformationV1 trackInfo;
     
     /**
      * @see org.wyona.yanel.core.api.attributes.ViewableV2#getView(java.lang.String)
@@ -65,7 +69,20 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource implements 
             throw new org.wyona.yanel.core.ResourceNotFoundException("No such product!");
         }
 
-        // All is well
+        if (trackInfo != null) {
+            String[] annotations = getAnnotations();
+            if (annotations != null) {
+                for (int i = 0; i < annotations.length; i++) {
+                    trackInfo.addTag(annotations[i]);
+                }
+            } else {
+                log.error("No annotations!");
+            }
+            trackInfo.setPageType("konakart-product");
+        } else {
+            log.warn("Tracking information bean is null! Check life cycle of resource!");
+        }
+
         return getXMLView(viewId, getContentXML(viewId));
     }
 
@@ -303,7 +320,7 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource implements 
         int languageId = shared.getLanguageId(getContentLanguage());
         int productID = getProductID(kkEngine);
         ProductIf product = kkEngine.getProduct(null, productID, languageId);
-        String[] annotations = {"shop-product", "" + productID, product.getName()};
+        String[] annotations = {"" + productID, product.getName()};
         return annotations;
     }
 
@@ -326,5 +343,12 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource implements 
      */
     public void setAnnotation(String name) throws Exception {
         log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.TrackableV1#doTrack(TrackingInformationV1)
+     */
+    public void doTrack(org.wyona.yanel.core.attributes.tracking.TrackingInformationV1 trackInfo) {
+        this.trackInfo = trackInfo;
     }
 }
