@@ -5,7 +5,8 @@
 package org.wyona.yanel.resources.konakart.product;
 
 import org.wyona.yanel.impl.resources.BasicXMLResource;
-import org.wyona.yanel.resources.konakart.shared.*;
+import org.wyona.yanel.resources.konakart.shared.KonakartOfflineException;
+import org.wyona.yanel.resources.konakart.shared.SharedResource;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
