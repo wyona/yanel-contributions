@@ -6,7 +6,7 @@
   class="org.wyona.yanel.resources.konakart.overview.KonakartOverviewSOAPInfResource"
   >
 <description>
- Show overview of order
+ Show overview of order (products/items which customer wants to purchase)
 </description>
 
 <rtd>
