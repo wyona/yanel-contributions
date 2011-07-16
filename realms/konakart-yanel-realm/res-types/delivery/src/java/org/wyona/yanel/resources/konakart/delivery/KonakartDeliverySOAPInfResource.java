@@ -1,9 +1,11 @@
 /*
  * Copyright 2010 Wyona
  */
-
 package org.wyona.yanel.resources.konakart.delivery;
 
+import org.wyona.yanel.core.api.attributes.TrackableV1;
+import org.wyona.yanel.core.attributes.tracking.TrackingInformationV1;
+import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.impl.resources.BasicXMLResource;
 import org.wyona.yanel.resources.konakart.shared.SharedResource;
 
@@ -21,7 +23,6 @@ import com.konakart.appif.ShippingQuoteIf;
 
 import org.w3c.dom.Element;
 
-import org.wyona.yanel.core.attributes.viewable.View;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.regex.Pattern;
@@ -30,11 +31,13 @@ import java.util.regex.Matcher;
 /**
  * Ask for delivery information
  */
-public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
+public class KonakartDeliverySOAPInfResource extends BasicXMLResource implements TrackableV1 {
     
     private static Logger log = Logger.getLogger(KonakartDeliverySOAPInfResource.class);
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
     private boolean redirect;
+
+    private TrackingInformationV1 trackInfo;
 
     /**
      * @see org.wyona.yanel.core.api.attributes.ViewableV2#getView(java.lang.String)
@@ -52,9 +55,19 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
         return v;
     }
 
+    /**
+     * @see org.wyona.yanel.impl.resources.BasicXMLResource#getContentXML(String)
+     */
+    @Override
     protected InputStream getContentXML(String viewId) throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("requested viewId: " + viewId);
+        }
+
+        if (trackInfo != null) {
+            trackInfo.setPageType("konakart-delivery-information");
+        } else {
+            log.warn("Tracking information bean is null! Check life cycle of resource!");
         }
 
         redirect = false;
@@ -131,6 +144,8 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
             javax.servlet.http.HttpServletRequest req = getEnvironment().getRequest();
             String delivery_addr = req.getParameter("delivery_address");
 
+            trackInfo.setRequestAction("set-shipping-address");
+
             if("same_address".equalsIgnoreCase(delivery_addr)) {
                 // Use billing addr as shipping addr
                 customer.setCustom1(Integer.toString(defaddr.getId()));
@@ -142,7 +157,9 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
                     req.getSession(true).setAttribute("checkout-data-remarks", val);
                     appendField("remarks", val, rootElement, doc);
                 }
+                trackInfo.addCustomField("shipping-address", "same-as-profile");
             } else {
+                trackInfo.addCustomField("shipping-address", "different-than-profile");
                 // Process form input
                 // Note: We re-use the defaddr object since we don't need it anymore.
                 String val;
@@ -165,6 +182,7 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
                 if(val != null && val.length() > 0) {
                     defaddr.setFirstName(val);
                     appendField("firstname", val, rootElement, doc);
+                    trackInfo.addCustomField("firstname", val);
                 } else {
                     appendErr("firstname", rootElement, doc);
                     address_valid = false;
@@ -174,6 +192,7 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
                 if(val != null && val.length() > 0) {
                     defaddr.setLastName(val);
                     appendField("lastname", val, rootElement, doc);
+                    trackInfo.addCustomField("lastname", val);
                 } else {
                     appendErr("lastname", rootElement, doc);
                     address_valid = false;
@@ -254,6 +273,7 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
             // If 'edit' is set, we read the current values
             // from the database end display them again for editing
             if(edit != null) {
+                trackInfo.setRequestAction("edit-shipping-address");
                 // Get delivery (=default) address
                 AddressIf[] addrs = kkEngine.getAddressesPerCustomer(sessionId);
                 int devaddrid = Integer.parseInt(customer.getCustom1());
@@ -280,6 +300,8 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
 
                 String remarks = (String) getEnvironment().getRequest().getSession(true).getAttribute("checkout-data-remarks");
                 if(remarks != null) appendField("remarks", remarks, rootElement, doc);
+            } else {
+                trackInfo.setRequestAction("enter-shipping-address");
             }
         }
 
@@ -328,5 +350,12 @@ public class KonakartDeliverySOAPInfResource extends BasicXMLResource {
         Element err = (Element) elem.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "field"));
         err.setAttribute("id", field);
         err.appendChild(doc.createTextNode("" + val));
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.TrackableV1#doTrack(TrackingInformationV1)
+     */
+    public void doTrack(org.wyona.yanel.core.attributes.tracking.TrackingInformationV1 trackInfo) {
+        this.trackInfo = trackInfo;
     }
 }
