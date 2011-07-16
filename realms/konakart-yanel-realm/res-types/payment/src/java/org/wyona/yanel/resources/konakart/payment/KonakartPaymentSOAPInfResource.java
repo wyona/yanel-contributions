@@ -1,9 +1,11 @@
 /*
  * Copyright 2010 Wyona
  */
-
 package org.wyona.yanel.resources.konakart.payment;
 
+import org.wyona.yanel.core.api.attributes.TrackableV1;
+import org.wyona.yanel.core.attributes.tracking.TrackingInformationV1;
+import org.wyona.yanel.core.attributes.viewable.View;
 import org.wyona.yanel.impl.resources.BasicXMLResource;
 import org.wyona.yanel.resources.konakart.shared.SharedResource;
 
@@ -21,7 +23,6 @@ import com.konakart.appif.ShippingQuoteIf;
 
 import org.w3c.dom.Element;
 
-import org.wyona.yanel.core.attributes.viewable.View;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.regex.Pattern;
@@ -31,28 +32,45 @@ import java.lang.Character;
 /**
  * Ask for payment information
  */
-public class KonakartPaymentSOAPInfResource extends BasicXMLResource {
+public class KonakartPaymentSOAPInfResource extends BasicXMLResource implements TrackableV1 {
     
     private static Logger log = Logger.getLogger(KonakartPaymentSOAPInfResource.class);
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
     private boolean redirect;
 
+    private TrackingInformationV1 trackInfo;
+
     /**
      * @see org.wyona.yanel.core.api.attributes.ViewableV2#getView(java.lang.String)
      */
     public View getView(String viewId) throws Exception {
-        View v = super.getView(viewId);
+        if (trackInfo != null) {
+            trackInfo.setPageType("konakart-payment-information");
+        } else {
+            log.warn("Tracking information bean is null! Check life cycle of resource!");
+        }
+
+        View defaultView = super.getView(viewId); // NOTE: Please note that the 'redirect' variable is set during calling getView(...), hence this method needs to be called first
+
         if(redirect) {
             View view = new View();
             view.setResponse(false);
             HttpServletResponse response = getEnvironment().getResponse();
             response.setStatus(302);
-            response.setHeader("Location", getResourceConfigProperty("overview-url"));
+            String redirectURL = getResourceConfigProperty("overview-url");
+            response.setHeader("Location", redirectURL);
+            log.info("Redirect: " + redirectURL);
             return view;
+        } else {
+            log.debug("Do not redirect yet...");
+            return defaultView;
         }
-        return v;
     }
 
+    /**
+     * @see org.wyona.yanel.impl.resources.BasicXMLResource#getContentXML(String)
+     */
+    @Override
     protected InputStream getContentXML(String viewId) throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("requested viewId: " + viewId);
@@ -122,6 +140,8 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource {
         // we process the form and proceed/redirect
         String process = getEnvironment().getRequest().getParameter("process");
         if(process != null) {
+            trackInfo.setRequestAction("set-payment-information");
+
             // Should we redirect?
             redirect = true;
 
@@ -328,6 +348,7 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource {
                 log.info("No coupon specified, hence proceed ...");
             }
         } else {
+            trackInfo.setRequestAction("enter-payment-information");
             String remarks = (String) getEnvironment().getRequest().getSession(true).getAttribute("checkout-data-remarks");
             if(remarks != null) appendField("remarks", remarks, rootElement, doc);
         }
@@ -423,5 +444,12 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource {
         }
 
         return true;
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.TrackableV1#doTrack(TrackingInformationV1)
+     */
+    public void doTrack(org.wyona.yanel.core.attributes.tracking.TrackingInformationV1 trackInfo) {
+        this.trackInfo = trackInfo;
     }
 }
