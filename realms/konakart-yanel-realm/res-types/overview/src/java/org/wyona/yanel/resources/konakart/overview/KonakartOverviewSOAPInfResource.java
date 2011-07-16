@@ -1,9 +1,12 @@
-/*-
+/*
  * Copyright 2010 Wyona
  */
 
 package org.wyona.yanel.resources.konakart.overview;
 
+import org.wyona.yanel.core.api.attributes.AnnotatableV1;
+import org.wyona.yanel.core.api.attributes.TrackableV1;
+import org.wyona.yanel.core.attributes.tracking.TrackingInformationV1;
 import org.wyona.yanel.impl.resources.BasicXMLResource;
 import org.wyona.yanel.resources.konakart.shared.SharedResource;
 
@@ -46,12 +49,14 @@ import org.xml.sax.InputSource;
 /**
  * Show overview before buying products and also the actual order process
  */
-public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements org.wyona.yanel.core.api.attributes.AnnotatableV1 {
+public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements AnnotatableV1, TrackableV1 {
     
     private static Logger log = Logger.getLogger(KonakartOverviewSOAPInfResource.class);
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
 
     private BranchListHandler handler; // Info: For parsing branches xml file.
+
+    private TrackingInformationV1 trackInfo;
 
     /**
      * @see org.wyona.yanel.impl.resources.BasicXMLResource#getContentXML(String)
@@ -60,6 +65,20 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
     protected InputStream getContentXML(String viewId) throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("requested viewId: " + viewId);
+        }
+
+        if (trackInfo != null) {
+            String[] annotations = getAnnotations();
+            if (annotations != null) {
+                for (int i = 0; i < annotations.length; i++) {
+                    trackInfo.addTag(annotations[i]);
+                }
+            } else {
+                log.error("No annotations!");
+            }
+            trackInfo.setPageType("konakart-order-overview");
+        } else {
+            log.warn("Tracking information bean is null! Check life cycle of resource!");
         }
 
         SharedResource shared = new SharedResource();
@@ -218,8 +237,18 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
                 Element perrElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "process-error"));
                 if(e.getMessage() != null) perrElem.appendChild(doc.createTextNode(e.getMessage()));
             }
+            if (trackInfo != null) {
+                trackInfo.setRequestAction("order-processed");
+            } else {
+                log.warn("Tracking information bean is null! Check life cycle of resource!");
+            }
         } else {
             log.warn("DEBUG: Order either not submitted or processed yet. Continue ...");
+            if (trackInfo != null) {
+                trackInfo.setRequestAction("review-order");
+            } else {
+                log.warn("Tracking information bean is null! Check life cycle of resource!");
+            }
         }
 
         // Payment info
@@ -874,7 +903,8 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
      * @see org.wyona.yanel.core.api.attributes.AnnotatableV1#getAnnotations()
      */
     public String[] getAnnotations() throws Exception {
-        if (readyToProcess()) {
+        if (true) {
+        //if (readyToProcess()) {
             SharedResource shared = new SharedResource();
             KKEngIf kkEngine = shared.getKonakartEngineImpl();
             int tmpCustomerId = shared.getTemporaryCustomerId(getEnvironment().getRequest().getSession(true));
@@ -882,7 +912,6 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
             BasketIf[] items = kkEngine.getBasketItemsPerCustomer(null, tmpCustomerId, languageId); // TODO: It seems like the basket has already been deleted!?
 
             java.util.List<String> annotations = new java.util.ArrayList();
-            annotations.add("shop-buy-products");
             for (int i = 0; i < items.length; i++) {
                 annotations.add("" + items[i].getProductId());
                 annotations.add(items[i].getProduct().getName());
@@ -890,6 +919,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
 
             return annotations.toArray(new String[annotations.size()]);
         } else {
+            log.warn("No annotations!");
             return null;
         }
     }
@@ -913,5 +943,12 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
      */
     public void setAnnotation(String name) throws Exception {
         log.warn("No implemented yet!");
+    }
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.TrackableV1#doTrack(TrackingInformationV1)
+     */
+    public void doTrack(org.wyona.yanel.core.attributes.tracking.TrackingInformationV1 trackInfo) {
+        this.trackInfo = trackInfo;
     }
 }
