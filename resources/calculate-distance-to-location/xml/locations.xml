@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Get latitude and longitude from http://www.mygeoposition.com/ -->
+<locations>
+  <node id="zuerich-bahnhofstrasse">
+     <name>Globus Zurich Bahnhofstrasse</name>
+     <latitude>47.375868</latitude>
+     <longitude>8.537985</longitude>
+  </node>
+  <node id="zuerich-bellevue">
+     <name>Globus Zurich Bellevue</name>
+     <latitude>47.366681</latitude>
+     <longitude>8.546261</longitude>
+  </node>
+  <node>
+     <name>
+        Globus Glattzentrum
+     </name>
+     <latitude>
+        47.409109
+     </latitude>
+     <longitude>
+        8.595740
+     </longitude>
+  </node>
+  <node>
+     <name>
+        Globus Bern City
+     </name>
+     <latitude>
+        46.947934
+     </latitude>
+     <longitude>
+        7.442678
+     </longitude>
+  </node>
+  <node>
+     <name>
+        Globus Bern Westside
+     </name>
+     <latitude>
+        46.944426
+     </latitude>
+     <longitude>
+        7.374287
+     </longitude>
+  </node>
+  <node>
+     <name>
+        Globus Basel
+     </name>
+     <latitude>
+        47.558666
+     </latitude>
+     <longitude>
+        7.587699
+     </longitude>
+  </node>
+  <node id="chur">
+     <name>Globus Chur</name>
+     <latitude>46.852983</latitude>
+     <longitude>9.529826</longitude>
+  </node>
+  <node>
+     <name>
+        Globus Luzern
+     </name>
+     <latitude>
+        47.049961
+     </latitude>
+     <longitude>
+        8.308251
+     </longitude>
+  </node>
+  <node>
+     <name>
+        Globus St. Gallen
+     </name>
+     <latitude>
+        47.423589
+     </latitude>
+     <longitude>
+        9.374465
+     </longitude>
+  </node>
+  <node>
+     <name>
+        Globus Geneve Rue du Rhone
+     </name>
+     <latitude>
+        46.204183
+     </latitude>
+     <longitude>
+        6.147402
+     </longitude>
+  </node>
+    <node>
+     <name>
+        Globus Geneve Balexert
+     </name>
+     <latitude>
+        46.218966
+     </latitude>
+     <longitude>
+        6.113016
+     </longitude>
+  </node>
+    <node>
+     <name>
+        Globus Lausanne
+     </name>
+     <latitude>
+        46.521336
+     </latitude>
+     <longitude>
+        6.633547
+     </longitude>
+  </node>
+    <node>
+     <name>
+        Globus Neuchatel
+     </name>
+     <latitude>
+        46.991325
+     </latitude>
+     <longitude>
+        6.929419
+     </longitude>
+  </node>
+    <node>
+     <name>
+        Globus Locarno
+     </name>
+     <latitude>
+        46.169870
+     </latitude>
+     <longitude>
+        8.798650
+     </longitude>
+  </node>
+    <node>
+     <name>
+        Globus Outlet Dietlikon
+     </name>
+     <latitude>
+        47.415998
+     </latitude>
+     <longitude>
+        8.621574
+     </longitude>
+  </node>
+</locations>

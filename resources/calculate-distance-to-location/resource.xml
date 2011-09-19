@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<resource xmlns="http://www.wyona.org/yanel/1.0"
+  name="calculate-distance-resource"
+  namespace="http://www.wyona.org/yanel/resource/1.0"
+  class="org.wyona.yanel.impl.resources.distanceCalculator.DistanceCalculatorResource"
+  >
+<description>
+calculates the distance between the user and some places and finally sorts it
+</description>
+
+<rtd>
+  <!-- INFO: Optional. See distance-example.html.yanel-rc as an example, whereas the default repository of a realm will be used. If not specified, then xml/locations.xml will be used. -->
+  <property name="xml-path"/>
+</rtd>
+</resource>
