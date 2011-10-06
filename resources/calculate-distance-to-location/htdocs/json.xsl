@@ -6,7 +6,7 @@
 
 <xsl:template match="/">{
 "locations":[
-<xsl:for-each select="/locations/loc">{"location":"<xsl:value-of select="@name"/>","distance":"<xsl:value-of select="@distance"/>","link":"<xsl:value-of select="@id"/>.html"}<xsl:if test="position() != last()">,
+<xsl:for-each select="/locations/loc">{"location":"<xsl:value-of select="@name"/>","distance":"<xsl:value-of select="@distance"/>km","link":"<xsl:value-of select="@id"/>.html"}<xsl:if test="position() != last()">,
 </xsl:if></xsl:for-each>
 ]
 }
