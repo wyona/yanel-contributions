@@ -70,6 +70,13 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource implements 
         }
 
         if (trackInfo != null) {
+            KKEngIf kkEngine = shared.getKonakartEngineImpl();
+            int languageId = shared.getLanguageId(getContentLanguage());
+            int productID = getProductID(kkEngine);
+            ProductIf product = kkEngine.getProduct(null, productID, languageId);
+            trackInfo.addTag(product.getName());
+            trackInfo.addCustomField("kk-product-id", "" + productID);
+/*
             String[] annotations = getAnnotations();
             if (annotations != null) {
                 for (int i = 0; i < annotations.length; i++) {
@@ -78,7 +85,9 @@ public class KonakartProductSOAPInfResource extends BasicXMLResource implements 
             } else {
                 log.error("No annotations!");
             }
-            trackInfo.setPageType("konakart-product");
+*/
+            trackInfo.setPageType("productDetail"); // INFO: According to com.wyona.yanelboost.esperAnalyzerInterestDetector.cfg
+            //trackInfo.setPageType("konakart-product");
         } else {
             log.warn("Tracking information bean is null! Check life cycle of resource!");
         }
