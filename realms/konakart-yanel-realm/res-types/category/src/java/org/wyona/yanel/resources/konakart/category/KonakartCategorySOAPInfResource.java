@@ -73,6 +73,13 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource implements
         }
 
         if (trackInfo != null) {
+            KKEngIf kkEngine = shared.getKonakartEngineImpl();
+            int languageId = shared.getLanguageId(getContentLanguage());
+            int categoryId = getCategoryId(kkEngine);
+            CategoryIf category = kkEngine.getCategory(categoryId, languageId);
+            trackInfo.addTag(category.getName());
+            trackInfo.addCustomField("kk-cat-id", "" + categoryId);
+/*
             String[] annotations = getAnnotations();
             if (annotations != null) {
                 for (int i = 0; i < annotations.length; i++) {
@@ -81,6 +88,7 @@ public class KonakartCategorySOAPInfResource extends BasicXMLResource implements
             } else {
                 log.error("No annotations!");
             }
+*/
             trackInfo.setPageType("konakart-category");
         } else {
             log.warn("Tracking information bean is null! Check life cycle of resource!");
