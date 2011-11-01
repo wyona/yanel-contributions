@@ -10,9 +10,9 @@ import org.wyona.yanel.impl.resources.jellyadapterofcmdv3.ResourceAdapter.Usecas
  * However, the model is transient.
  */
 class ConversationState implements Serializable{
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1724827714145174641L;
 
-	//private static final long serialVersionUID = 1724827714145174641L;
     private Usecase usecase;
 
     /**
