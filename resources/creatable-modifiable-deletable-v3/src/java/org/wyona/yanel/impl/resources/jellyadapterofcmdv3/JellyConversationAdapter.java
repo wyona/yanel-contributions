@@ -58,14 +58,16 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
      * @return - <code>null</code> when called before initConversation(), in other cases the conversation state object (maybe invalidated already)
      * */
     protected final ConversationState getConversationState(){
+        log.warn("DEBUG: Get conversation state ...");
         if(conversationState == null){
+            log.warn("DEBUG: Get conversation state from session.");
             conversationState = (ConversationState)getEnvironment().getRequest().getSession(true).getAttribute(getPath());
         }
         return conversationState;
     }
     
     /**
-     * Checks if the conversation (resource input) is already in the session and creates it if necessary
+     * Checks whether the conversation (resource input) is already attached to the session and adds it if necessary
      * @param model Resource input
      * @param usecase Usecase (e.g. create, modify)
      * @param resourcePath Adapted resource path
@@ -80,6 +82,7 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
         ConversationState current = getConversationState();
         if (current != null && !current.isInvalidated()) {
             // Refresh the properties, because they are changing during the conversation
+            log.warn("DEBUG: Refresh the properties, because they are changing during the conversation");
             current.setModel(cs.getModel());
             current.setCurrentScreen(cs.getCurrentScreen());
         } else {
@@ -95,11 +98,14 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
         }
         
         log.warn("DEBUG: Attach conversation state (resource input) for usecase '" + current.getUsecase() + "' to session with id '" + getPath() + "' (Adapted resource path: " + resourcePath + ")");
+
 /* DEBUG
         try {
             org.wyona.yanel.core.api.attributes.creatable.ResourceInput input = (org.wyona.yanel.core.api.attributes.creatable.ResourceInput)current.getModel();
             if (input.getItem("id") != null) {
                 log.warn("DEBUG: ID: " + (String) input.getItem("id").getValue());
+            } else {
+                log.warn("DEBUG: No item with name 'id'");
             }
         } catch(Exception e) {
             log.error(e, e);
