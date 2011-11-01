@@ -33,3 +33,42 @@
  --------------------
 
  - Add this <resource-type package="org.wyona.yanel.impl.resources.jellyadapterofcmdv3"/> to your resource types configuration
+
+
+ Developing this resource:
+ -------------------------
+
+ - Comment existing dependency inside src/build/dependencies.xml and src/build/pom-core.xml
+
+ - build clean Yanel
+
+ - Remove libraries from local Maven Repository, e.g. rm /Users/michaelwechner/.m2/repository/wyona-org-yanel/yanel-resource-creatable-modifiable-deletable-v3/
+
+ - Set new version at yanel-contributions/resources/creatable-modifiable-deletable-v3/src/build/build.properties
+
+ - Reference source inside conf/local/local.resource-types.xml
+
+ - Build resource: ./build.sh -f ../yanel-contributions/resources/creatable-modifiable-deletable-v3/build.xml
+
+ - Add this new version to src/build/pom-core.xml (NOT yet to src/build/dependencies.xml)
+
+ - Re-build Yanel
+
+ - Keep changing source code, rebuilding and testing of this resource
+
+ - If ready, then create self-contained binary/jar (IMPORTANT: See above how to set copy.resource-type-configs.to.webapp=true)
+
+ - Copy binary/jar to Maven server
+
+ - Add ths new version to src/build/dependencies.xml
+
+ - Build clean Yanel
+
+ - Reference library inside conf/local/local.resource-types.xml (and remove/comment reference to source)
+
+ - Clean local Maven repository, e.g. rm /Users/michaelwechner/.m2/repository/wyona-org-yanel/yanel-resource-creatable-modifiable-deletable-v
+3/
+
+ - Re-build Yanel and make sure there is only one resource library and that it is self-contained: jar -tf local/apache-tomcat-5.5.20/webapps/yanel/WEB-INF/lib/yanel-resource-creatable-modifiable-deletable-VERSION.jar | grep resource.xml
+
+- Commit/push changes
