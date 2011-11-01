@@ -318,7 +318,7 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
                 DeletableV1 dv1 = getAdaptedResourceAsDeletableV1(resourcePath);
                 model = dv1.getResourceInputForDeletion();
             } else {
-                log.warn("Could not identify usecase");
+                log.warn("Could not identify usecase: " + usecase);
             }
         } else {
             model = cs.getModel();
@@ -328,7 +328,7 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
     }
 
     /**
-     * Validates and calls the create() or modify() or delete() method
+     * Validates and calls the create(), modify() or delete() method
      */
     public void commit() throws Exception {
         java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSZ");
@@ -363,8 +363,9 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
             ModifiableV3 mv3 = getAdaptedResourceAsModifiableV3(path);
             ResourceInput input = (ResourceInput) cs.getModel();
             if(input.validate()){
+                log.warn("DEBUG: Start modifying resource...");
                 mv3.modify(input);
-            }else{
+            } else {
                 throw new IllegalArgumentException("The input for the adapted resource is not valid");
             }
         } else if (Usecase.remove.equals(usecase)) {
@@ -389,7 +390,11 @@ public class JellyAdapterForCUDResource extends JellyConversationAdapter {
         Resource adaptedResource = getYanel().getResourceManager().getResource(getEnvironment(), getRealm(), adaptedResourcePath);
         if (ResourceAttributeHelper.hasAttributeImplemented(adaptedResource, "Viewable", "2") && ResourceAttributeHelper.hasAttributeImplemented(adaptedResource, "Versionable", "2")) {
             if (((org.wyona.yanel.core.api.attributes.ViewableV2) adaptedResource).exists()) {
-                ((org.wyona.yanel.core.api.attributes.VersionableV2) adaptedResource).cancelCheckout();
+                if (((org.wyona.yanel.core.api.attributes.VersionableV2) adaptedResource).isCheckedOut()) {
+                    ((org.wyona.yanel.core.api.attributes.VersionableV2) adaptedResource).cancelCheckout();
+                } else {
+                    log.warn("Adapted resource '" + adaptedResource.getPath() + "' is not checked out, hence will not cancel checkout.");
+                }
             } else {
                 log.warn("Resource '" + adaptedResourcePath + "' does not exist!");
             }
