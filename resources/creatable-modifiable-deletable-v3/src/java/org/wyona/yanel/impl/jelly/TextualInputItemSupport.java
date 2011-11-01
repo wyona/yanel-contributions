@@ -2,24 +2,40 @@ package org.wyona.yanel.impl.jelly;
 
 import org.wyona.yanel.core.api.attributes.creatable.AbstractResourceInputItem;
 
+import org.apache.log4j.Logger;
 
+/**
+ *
+ */
 public abstract class TextualInputItemSupport extends AbstractResourceInputItem {
+
+    private static Logger log = Logger.getLogger(TextualInputItemSupport.class);
     
     private String value;
     
     public TextualInputItemSupport(String name) {
         super(name);
     }
-    
+
+    /**
+     * @param name Name of text field
+     * @param value Value of text field
+     */
     public TextualInputItemSupport(String name, String value) {
         super(name);
         if(value != null && "".equals(value.trim())){
+            log.warn("Value is empty, hence set value to null.");
             value = null;
         }
-        
+
+        log.warn("DEBUG: Value: " + value);
         this.value = value;
     }
-    
+
+    /**
+     * @see org.wyona.yanel.core.api.attributes.creatable.ResourceInputItem#getValue()
+     */
+    @Override
     public Object getValue() {
         return this.value;
     }
