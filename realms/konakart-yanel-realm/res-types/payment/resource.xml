@@ -10,8 +10,7 @@ Ask for payment information
 </description>
 
 <rtd>
-<!--
-  <property name="foo" default-value="bar"/>
--->
+  <!-- OPTIONAL: The coupon code can be configured inside the resource configuration -->
+  <property name="coupon-code"/>
 </rtd>
 </resource>
