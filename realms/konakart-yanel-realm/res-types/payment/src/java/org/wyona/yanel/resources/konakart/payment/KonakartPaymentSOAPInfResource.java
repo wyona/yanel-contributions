@@ -191,6 +191,8 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource implements 
                     if(val.matches("[0-9]{3,4}")) {
                         cccode = val;
                     } else {
+                        log.warn("Credit card code does not seem to be valid!");
+                        valid = false;
                         appendErr("cccode.invalid", rootElement, doc);
                     }
                 } else {
@@ -246,6 +248,7 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource implements 
                     session.setAttribute("checkout-card-data-cvc", cccode);
                     session.setAttribute("checkout-card-data-valid", ccvalid);
                 } else {
+                    log.warn("Some of the data does not seem to be valid, hence do not redirect yet...");
                     redirect = false;
                     appendErr("cc", rootElement, doc);
                 }
