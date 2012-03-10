@@ -9,7 +9,9 @@
   <ac-identities>config/ac-identities-repository.xml</ac-identities>
 
   <yarep-repositories>
+<!-- INFO: This repository configuration is only necessary if one wants to connect directly to the KonaKart DB, which is done via the resource 'res-types/model/src/java/org/wyona/yanel/resources/konakart/KonakartResource.java' (<yanel:rti name="model" namespace="http://www.wyona.com/yanel/resource/konakart/1.0"/>) and can be tested for example by calling http://127.0.0.1:8080/yanel/KONAKART_REALM_ID/products.xml
     <repository id="konakart-repository" config="config/konakart-repository.xml"/>
+-->
   </yarep-repositories>
 
 <!--
