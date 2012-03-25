@@ -61,10 +61,13 @@ public class FOAFRealm extends org.wyona.yanel.core.map.RealmDefaultImpl {
     }
 
     /**
-     *
+     * @see org.wyona.yanel.core.map.Realm#destroy()
      */
+    @Override
     public void destroy() throws Exception {
-        this.destroy();
+        super.destroy();
+        log.info("Try to close profiles repository...");
         getProfilesRepository().close();
+        log.info("Profiles repository has bee closed.");
     }
 }
