@@ -2,10 +2,24 @@
   README - How to setup Konakart, etc.
   ------------------------------------
 
+Basic Steps:
+------------
+
+1) Setup DB, e.g. PostgreSQL
+2) Import data into DB
+3) Install KonaKart-Webapp (e.g. konakart-community-5.1.0.0.5688)
+4) Configure connection between KonaKart-Webapp and DB
+4.1) Frontend: webapps/konakart/WEB-INF/classes/konakart.properties
+4.2) Backend: webapps/konakartadmin/WEB-INF/classes/konakartadmin.properties
+5) Configure SOAP connection between Yanel-KonaKart-realm and KonaKart-Webapp
+5.1) Enable SOAP inside KonaKart (webapps/konakart/WEB-INF/server-config.wsdd)
+5.2) yanel-contributions/realms/konakart-yanel-realm/config/konakart_axis_client.properties
+
+
 Requirements: KonaKart 5.0 or 5.1 but NOT 5.2 because this realm is currently using the 5.0 SOAP libraries (see for example res-types/shared/src/build/dependencies.xml) which don't seem to be compatible with 5.2
 
 Setup of DB content:
-  - Also see http://www.yanel.org/en/documentation/misc/e-commerce/konakart-integration.html
+  - Also see http://www.yanel.org/en/documentation/misc/e-commerce/index.html
   - Drop previous DB (e.g. /Library/PostgreSQL/8.4/bin/dropdb konakart5)
   - Create new DB (e.g. /Library/PostgreSQL/8.4/bin/createdb --encoding unicode konakart5)
   - Import sample data, e.g. database/PostgreSQL/konakart_demo.sql (whereas make sure to replace port numbers 8780) (e.g. /Library/PostgreSQL/8.4/bin/psql -d konakart5 -f /Users/alice/konakart-enterprise-5.1.0.0.5688/database/PostgreSQL/konakart_demo.sql)
