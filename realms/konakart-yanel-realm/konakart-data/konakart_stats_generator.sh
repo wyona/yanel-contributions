@@ -48,7 +48,7 @@ $PSQL <<-EOF > ${orders_out}-${today}.csv
 	copy (
 	select
 		o.orders_id, t.value,
-		o.date_purchased, s.orders_status_name
+		o.date_purchased, s.orders_status_name, o.delivery_postcode
 	from
 		orders o, orders_total t, orders_status s
 	where
