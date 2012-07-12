@@ -1,4 +1,4 @@
-/*-
+/*
  * Copyright 2010 Wyona
  */
 
@@ -25,6 +25,9 @@ import org.wyona.security.core.api.User;
 import javax.servlet.http.HttpServletRequest;
 import org.wyona.yanel.resources.konakart.shared.SharedResource;
 
+/**
+ * Forgot password implementation for KonaKart, whereas the email is sent by KonaKart and not this resource
+ */
 public class KonakartForgotPwSOAPInfResource extends ForgotPassword {
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
     
@@ -46,8 +49,9 @@ public class KonakartForgotPwSOAPInfResource extends ForgotPassword {
     }
 
     /**
-     * Send email to user requesting to reset the password
+     * @see org.wyona.yanel.resources.konakart.forgotpw.ForgotPassword#sendEmail(String, String)
      */
+    @Override
     protected void sendEmail(String guid, String emailAddress) throws Exception {
         NameValueIf[] nvs = new NameValue[1];
         nvs[0] = new NameValue();
