@@ -341,7 +341,7 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
 
             String globusCardNumber = (String) session.getAttribute("checkout-globuscard-number");
             if (globusCardNumber != null) {
-                Element globusCardNumberElem = (Element) cc.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "globucard-number"));
+                Element globusCardNumberElem = (Element) cc.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "globuscard-number"));
                 globusCardNumberElem.appendChild(doc.createTextNode(globusCardNumber));
             }
         }
