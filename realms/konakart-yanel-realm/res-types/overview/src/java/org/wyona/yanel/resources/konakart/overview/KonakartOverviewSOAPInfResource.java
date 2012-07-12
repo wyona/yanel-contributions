@@ -338,6 +338,12 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
                     if(e.getMessage() != null) perrElem.appendChild(doc.createTextNode(e.getMessage()));
                 } 
             }
+
+            String globusCardNumber = (String) session.getAttribute("checkout-globuscard-number");
+            if (globusCardNumber != null) {
+                Element globusCardNumberElem = (Element) cc.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "globucard-number"));
+                globusCardNumberElem.appendChild(doc.createTextNode(globusCardNumber));
+            }
         }
 
         if(process) {
