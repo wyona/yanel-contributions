@@ -78,8 +78,8 @@ Optional configuration:
 
 - SMTP E-Mail configuration: In order to have KonaKart sending emails one needs to configure within konakartadmin (--> Konfiguration --> E-Mail-Optionen):
     - SMTP Server, e.g. mail.wyona.com
-    - E-Mail Antwort an, e.g. contact@wyona.com
-    - E-Mail-Eigenschaften-Dateiname, e.g. /Users/michaelwechner/src/konakart/konakart-4.2.0.1/conf/konakart_mail.properties
+    - E-Mail "From" and "Reply To", e.g. noreply@wyona.com
+    - E-Mail-Properties-Filename (for other Parameters, e.g. mail.smtp.port=587), e.g. /Users/michaelwechner/src/konakart/konakart-community-5.1.0.0.5688/conf/konakart_mail.properties (Restart Konakart)
 
 - Sender E-Mail Address:
    - Configure within konakartadmin: Konfiguration --> Konfiguration Shop --> "E-Mail-Adresse" and "E-Mail von"
