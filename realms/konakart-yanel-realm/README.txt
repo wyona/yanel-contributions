@@ -40,7 +40,7 @@ Quick Upgrade:
   - SOAP: webapps/konakart/WEB-INF/server-config.wsdd
   - Database: webapps/konakart/WEB-INF/classes/konakart.properties
               webapps/konakartadmin/WEB-INF/classes/konakartadmin.properties
-  - Templates: templates/store1 (also make sure to set Velocity template path within konakartadmin and to configure e-mail SMTP, etc.)
+  - Templates: templates/store1 (also make sure to set Velocity template path within konakartadmin (http://localhost:8780/konakartadmin/#kk_panel_templates) and to configure e-mail SMTP, etc. (http://localhost:8780/konakartadmin/#kk_panel_emailOptions))
   - Admin messages: webapps/konakartadmin/WEB-INF/classes
   - Images path: Make sure to configured images path within konakartadmin and also within your realm (res-configs/shop-product-image_yanel-rc.xml)
   - Make sure to increase MaxPermSize within bin/startkonakart.sh (e.g. 512m instead 256m)
