@@ -262,6 +262,9 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource implements 
                     session.setAttribute("checkout-card-data-number", ccnumber);
                     session.setAttribute("checkout-card-data-cvc", cccode);
                     session.setAttribute("checkout-card-data-valid", ccvalid);
+                    if(globusCardNumber != null && globusCardNumber.length() > 0) {
+                        session.setAttribute("checkout-globuscard-number", globusCardNumber);
+                    }
                 } else {
                     log.warn("Some of the data does not seem to be valid, hence do not redirect yet...");
                     redirect = false;
