@@ -449,8 +449,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
                 Element dateElem = (Element) rootElement.appendChild(doc.createElementNS(KONAKART_NAMESPACE, "date"));
                 dateElem.appendChild(doc.createTextNode(formattedDate));
 
+                // INFO: Send order emails
                 sendMailToCustomer(orderId, orderDefault, customer);
                 sendMailToOwner(orderId, orderDefault, customer, payment_info_mail);
+
                 // Let Konakart send the order confirmation...
                 // kkEngineBranch.sendOrderConfirmationEmail(sessionId, id, "Order #" + id, languageId);
 
@@ -725,6 +727,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
             content.append("Pluscard");
         } else {
             content.append("Kreditkarte / Carte de crédit");
+            String globusCardNumber = (String) session.getAttribute("checkout-globuscard-number");
+            if (globusCardNumber != null) {
+                content.append("<br/>GlobusCard: " + globusCardNumber);
+            }
         }
 
         content.append("<br/><br/>");
@@ -770,6 +776,10 @@ public class KonakartOverviewSOAPInfResource extends BasicXMLResource implements
         content.append(order.getPaymentMethod());
         content.append("<br/>" + name); 
         content.append("<br/>" + payment);
+        String globusCardNumber = (String) session.getAttribute("checkout-globuscard-number");
+        if (globusCardNumber != null) {
+            content.append("<br/>GlobusCard: " + globusCardNumber);
+        }
 
         content.append("<br/><br/><hr/><br/>");
 
