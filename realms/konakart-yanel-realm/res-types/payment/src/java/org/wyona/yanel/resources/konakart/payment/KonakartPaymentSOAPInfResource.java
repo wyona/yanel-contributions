@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.lang.Character;
 
+import org.krysalis.barcode4j.impl.upcean.EAN13LogicImpl;
+
 /**
  * Ask for payment information
  */
@@ -225,6 +227,19 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource implements 
                 } else {
                     valid = false;
                     appendErr("ccvalid_year", rootElement, doc);
+                }
+
+                // INFO: Validate GlobusCard number
+                String globusCardNumber = req.getParameter("ccglobuscardnumber");
+                if(globusCardNumber != null && globusCardNumber.length() > 0) { // INFO: GlobusCard number is optional
+                    if(checkEAN13(globusCardNumber)) {
+                        log.warn("Seems to be a valid GlobusCard number: " + globusCardNumber);
+                    } else {
+                        log.warn("GlobusCard number '" + globusCardNumber + "' is invalid!");
+                        valid = false;
+                        appendErr("globuscard.number.invalid", rootElement, doc);
+                    }
+                    appendField("globuscard.number", globusCardNumber, rootElement, doc);
                 }
 
                 req.getSession(true).removeAttribute("checkout-data-remarks");
@@ -454,5 +469,30 @@ public class KonakartPaymentSOAPInfResource extends BasicXMLResource implements 
      */
     public void doTrack(org.wyona.yanel.core.attributes.tracking.TrackingInformationV1 trackInfo) {
         this.trackInfo = trackInfo;
+    }
+
+    /**
+     * Validate EAN 13
+     * @param code
+     */
+    private static boolean checkEAN13(String code) {
+        if (code.length() != 13) {
+            log.warn("Code '" + code + "' length is not 13!");
+            return false;
+        }
+        try {
+            EAN13LogicImpl.validateMessage(code);
+        } catch (Exception e) {
+            log.error(e, e);
+            return false;
+        }
+        String char12 = code.substring(0, 12);
+        char checkdigit = EAN13LogicImpl.calcChecksum(char12);
+        if ((char12 + checkdigit).equals(code)) {
+            return true;
+        } else {
+            log.warn("char12 '" + char12 + "' and checkdigit '" + checkdigit + "' did not match code: " + code);
+            return false;
+        }
     }
 }
