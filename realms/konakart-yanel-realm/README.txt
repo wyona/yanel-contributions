@@ -9,8 +9,8 @@ Basic Steps:
 2) Import data into DB
 3) Install KonaKart-Webapp (e.g. konakart-community-5.1.0.0.5688)
 4) Configure connection between KonaKart-Webapp and DB
-4.1) Frontend: webapps/konakart/WEB-INF/classes/konakart.properties
-4.2) Backend: webapps/konakartadmin/WEB-INF/classes/konakartadmin.properties
+4.1) Frontend: webapps/konakart/WEB-INF/classes/konakart.properties (http://localhost:8780/konakart/)
+4.2) Backend: webapps/konakartadmin/WEB-INF/classes/konakartadmin.properties (http://localhost:8780/konakartadmin/, U: admin@konakart.com, P: princess)
 5) Configure SOAP connection between Yanel-KonaKart-realm and KonaKart-Webapp
 5.1) Enable SOAP inside KonaKart (webapps/konakart/WEB-INF/server-config.wsdd)
 5.2) yanel-contributions/realms/konakart-yanel-realm/config/konakart_axis_client.properties
