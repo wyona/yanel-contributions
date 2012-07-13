@@ -250,14 +250,11 @@ public class SharedResource extends Resource {
             if(DefaultWebAuthenticatorImpl.authenticate(username, password, realm, session)) { // TODO: replace by getRealm().getWebAuthenticator().doAuthenticate() ...
                 log.info("Yanel authentication successful for user: " + username);
             } else {
-                log.warn("Yanel authentication failed for user: " + username);
+                log.warn("Yanel authentication failed for user '" + username + "', but that does not concern KonaKart, hence let's try to authenticate at KonaKart...");
             }
         } else {
             log.warn(
-                "Alread signed into Yanel as '" + currentYanelUserId + 
-                "', hence do not authenticate at Yanel as '" + username + 
-                "', whereas please note that user probably has different " +
-                "IDs for Yanel and KonaKart.");
+                "Alread signed into Yanel as '" + currentYanelUserId + "', hence do not authenticate again at Yanel as '" + username + "', whereas please note that user probably has different IDs for Yanel and KonaKart.");
         }
 
         // INFO: Konakart authentication
@@ -269,9 +266,13 @@ public class SharedResource extends Resource {
                 // E.g; use margeBaskets in KKEngIf interface; see also documentation at
                 // http://www.konakart.com/javadoc/server/com/konakart/appif/KKEngIf.html
                 session.setAttribute(KONAKART_SESSION_ID, id);
+                return id;
+            } else {
+                log.warn("No KonaKart session ID retrieved for user '" + username + "', hence consider KonaKart authentication failed.");
+                return null;
             }
-            return id;
         } catch(Exception e) {
+            log.error(e, e);
             return null;
         }
     }
