@@ -89,7 +89,7 @@ public class ResourceInputImpl implements ResourceInput {
         } else {
             List messages = getValidationMessages();
             for (int i = 0; i < messages.size(); i++) {
-                log.warn("Item is invalid: " + messages.get(i));
+                log.warn("Input item '" + ((ValidationMessage)messages.get(i)).getItemName() + "' is invalid: " + messages.get(i));
             }
             return false;
         }
@@ -126,7 +126,7 @@ public class ResourceInputImpl implements ResourceInput {
         for (Iterator i = items.iterator(); i.hasNext();) {
             ResourceInputItem toCheck = (ResourceInputItem) i.next();
             if (toCheck.getName().equals(item.getName())) {
-                throw new IllegalArgumentException("Item with the name already exists");
+                throw new IllegalArgumentException("Item with the name '" + item.getName() + "' already exists");
             }
         }
 
