@@ -3,7 +3,7 @@ package org.wyona.yanel.core.api.attributes.creatable;
 /**
  * Keeps the info about the validation of an input item
  */
-public class ValidationMessage{
+public class ValidationMessage {
     private String itemName;
     private Object value;
     private String message;
@@ -23,6 +23,9 @@ public class ValidationMessage{
         this.validationOK = validationOK;
     }
 
+    /**
+     * Get name of item
+     */
     public String getItemName() {
         return itemName;
     }
