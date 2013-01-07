@@ -461,7 +461,10 @@ public abstract class JellyControllerAdapter extends ControllerAdapter {
             return null;
         }
     }
-    
+
+    /**
+     *
+     */
     protected final String getToolbarStatus() {
         // TODO: Use YanelServlet.TOOLBAR_KEY instead "toolbar"!
         return (String) getEnvironment().getRequest().getSession(true).getAttribute("toolbar");
