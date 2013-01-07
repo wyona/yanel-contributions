@@ -31,6 +31,9 @@ public class ValidationMessage{
         return value;
     }
 
+    /**
+     * Get message as string
+     */
     public String getMessage() {
         return message;
     }
@@ -41,5 +44,12 @@ public class ValidationMessage{
 
     public boolean isValidationOK() {
         return validationOK;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return getMessage();
     }
 }
