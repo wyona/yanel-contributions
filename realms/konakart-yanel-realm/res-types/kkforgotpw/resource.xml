@@ -10,8 +10,9 @@ Konakart forgot password resource
 </description>
 
 <rtd>
-<!--
-  <property name="foo" default-value="bar"/>
--->
+  <!-- Optional email configuration. Please note that as default Konakart will send the email! -->
+  <property name="smtpFrom"/>
+  <property name="smtpHost"/>
+  <property name="smtpPort"/>
 </rtd>
 </resource>
