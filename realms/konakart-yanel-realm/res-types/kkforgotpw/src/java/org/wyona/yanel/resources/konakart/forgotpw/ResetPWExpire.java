@@ -26,10 +26,10 @@ public class ResetPWExpire {
     private String email;
 
     /**
-     *
+     * @param userId ID of user
      */
-    public ResetPWExpire(String userid, long datetime, String guid, String email) {
-        this.userId = userid;
+    public ResetPWExpire(String userId, long datetime, String guid, String email) {
+        this.userId = userId;
         this.dateTime = datetime;
         this.guid = guid;
         this.email = email;
