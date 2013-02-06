@@ -118,6 +118,7 @@ public class ForgotPassword extends BasicXMLResource {
         String guid = request.getParameter(PW_RESET_ID);
 
         if (action.equals(SUBMITFORGOTPASSWORD)) {
+            log.warn("DEBUG: Submit email address in order to receive request UUID...");
             String strVal = processForgotPW(request);
             Element statusElement = (Element) rootElement.appendChild(adoc.createElementNS(NAMESPACE, "show-message"));
             if(!strVal.equals("success")) {
@@ -125,8 +126,9 @@ public class ForgotPassword extends BasicXMLResource {
             } else {
                 statusElement.setTextContent("request-sent");
             }
-        } else if (request.getParameter(PW_RESET_ID) != null && !request.getParameter(PW_RESET_ID).equals("") && !action.equals(SUBMITNEWPW) &&
+        } else if (guid != null && !guid.equals("") && !action.equals(SUBMITNEWPW) &&
                    request.getParameter("userid") != null && !request.getParameter("userid").equals("")) {
+            log.warn("DEBUG: Request screen (by providing request UUID) in order to enter new password...");
             User usr = getUserForRequest(guid, totalValidHrs);
             if(usr == null) {
                 Element statusElement = (Element) rootElement.appendChild(adoc.createElementNS(NAMESPACE, "show-message"));
@@ -139,6 +141,7 @@ public class ForgotPassword extends BasicXMLResource {
                 }
             }
         } else if(action.equals(SUBMITNEWPW)) {
+            log.warn("DEBUG: Submit new password...");
             String retStr = validateAndUpdatePassword(request); // INFO: Validate submitted passwords and if valid, then update password
             Element statusElement = (Element) rootElement.appendChild(adoc.createElementNS(NAMESPACE, "show-message"));
             if(!retStr.equals("success")) { // INFO: Password either did not match or were too short
@@ -152,9 +155,12 @@ public class ForgotPassword extends BasicXMLResource {
                 statusElement.setTextContent("success");
             }
         } else {
-            log.debug("default handler");
+            log.warn("DEBUG: Request start screen in order to enter email address...");
             String smtpEmailServer = getResourceConfigProperty(SMTP_HOST_PROPERTY_NAME);
             if (smtpEmailServer != null || (getYanel().getSMTPHost() != null && getYanel().getSMTPPort() >= 0)) {
+                rootElement.appendChild(adoc.createElementNS(NAMESPACE, "requestemail"));
+
+/* TBD: Does this commented code make any sense?!
                 String from = getResourceConfigProperty("smtpFrom");
                 if (from != null) {
                     rootElement.appendChild(adoc.createElementNS(NAMESPACE, "requestemail"));
@@ -166,6 +172,8 @@ public class ForgotPassword extends BasicXMLResource {
                     }
                     exceptionElement.setTextContent("The FROM address has not been configured yet. Please make sure to configure the FROM address within: " + resConfigFilename);
                 }
+*/
+
             } else {
                 Element exceptionElement = (Element) rootElement.appendChild(adoc.createElementNS(NAMESPACE, "exception"));
                 String resConfigFilename = "global-resource-configs/user-forgot-pw_yanel-rc.xml";
@@ -179,7 +187,7 @@ public class ForgotPassword extends BasicXMLResource {
 
     /**
      * Get user for a specific request ID
-     * @param requestID Request ID
+     * @param requestID Request ID, e.g. '5b1d7b4d-aa22-4858-9459-3776b7e5d354'
      */
     protected User getUserForRequest(String requestID, long duration_hour) throws Exception {
         log.warn("DEBUG: Find user for request with ID: " + requestID);
@@ -191,17 +199,17 @@ public class ForgotPassword extends BasicXMLResource {
             db = dbf.newDocumentBuilder();
             Document doc = db.parse(requestNode.getInputStream());
             Element rootElem = doc.getDocumentElement();
-            String userid = rootElem.getAttribute("id");
 
             Element requestTimeElem = org.wyona.commons.xml.XMLHelper.getChildElements(rootElem, "request-time", null)[0];
             long savedDateTime = new Long(requestTimeElem.getAttribute("millis")).longValue();
-            log.warn("Request time: " + savedDateTime);
+            log.warn("DEBUG: Request time: " + savedDateTime);
             if(isExpired(savedDateTime, duration_hour)) {
                 log.warn("Request is expired");
                 return null;
             }
 
-            return realm.getIdentityManager().getUserManager().getUser(userid);
+            String userID = rootElem.getAttribute("id");
+            return realm.getIdentityManager().getUserManager().getUser(userID);
         } else {
             log.warn("No such request ID: " + requestID);
             return null;
@@ -230,13 +238,13 @@ public class ForgotPassword extends BasicXMLResource {
     }
 
 
-    /* Determine the requested view: defaultView, submitProfile,
-    * submitPassword,submitGroup, submitDelete
-    *
-    * @param request
-    * @return name of the desired view
-    */
-   protected String determineAction(HttpServletRequest request) throws Exception {
+    /**
+     * Determine the requested view: defaultView, submitProfile, submitPassword,submitGroup, submitDelete
+     *
+     * @param request
+     * @return name of the desired view
+     */
+    protected String determineAction(HttpServletRequest request) throws Exception {
        boolean submit = false;
        String action = "defaultView";
 
@@ -424,6 +432,9 @@ public class ForgotPassword extends BasicXMLResource {
         emailBody = emailBody + "\n\nNOTE: This link is only available during the next " + hrsValid + " hours!";
         if (log.isDebugEnabled()) log.debug(emailBody);
         String from = getResourceConfigProperty("smtpFrom");
+        if (from == null) {
+            log.error("The FROM address has not been configured yet. Please make sure to configure the FROM address inside the resource configuration!");
+        }
         String to =  emailAddress;
 
         String emailServer = getResourceConfigProperty(SMTP_HOST_PROPERTY_NAME);
