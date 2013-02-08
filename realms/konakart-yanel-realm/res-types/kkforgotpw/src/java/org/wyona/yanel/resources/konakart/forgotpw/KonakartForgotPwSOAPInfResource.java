@@ -36,6 +36,10 @@ public class KonakartForgotPwSOAPInfResource extends ForgotPassword {
     private int customerId;
     private String sessionId;
 
+    /**
+     * @see org.wyona.yanel.impl.resources.BasicXMLResource#getContentXML(String)
+     */
+    @Override
     protected InputStream getContentXML(String viewId) throws Exception {
         // Set up variables
         SharedResource shared = new SharedResource();
