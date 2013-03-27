@@ -29,6 +29,8 @@ import org.wyona.yanel.resources.konakart.shared.SharedResource;
  * Forgot password implementation for KonaKart, whereas the email is sent by KonaKart and not this Yanel resource
  */
 public class KonakartForgotPwSOAPInfResource extends ForgotPassword {
+    private static Logger log = Logger.getLogger(KonakartForgotPwSOAPInfResource.class);
+
     private static String KONAKART_NAMESPACE = "http://www.konakart.com/1.0";
     
     private KKEngIf kkEngine;
@@ -70,17 +72,18 @@ public class KonakartForgotPwSOAPInfResource extends ForgotPassword {
     }
 
     /**
-     * Updates the user profile
-     *
-     * @param request The request containing the data to update
+     * @see org.wyona.yanel.resources.konakart.forgotpw.ForgotPassword#processForgotPW(HttpServletRequest)
      */
+    @Override
     protected String processForgotPW(HttpServletRequest request) throws Exception {
         String email = request.getParameter("email");
         if(email == null || email.length() <= 5) {
+            log.warn("No email specified or email too short!");
             return "email-not-valid";
         } else if(kkEngine.doesCustomerExistForEmail(email)) {
             return super.processForgotPW(request);
         } else {
+            log.warn("Email '" + email + "' not valid!");
             return "email-not-valid";
         }
     }
