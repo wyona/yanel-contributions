@@ -115,6 +115,14 @@ public abstract class BasicFormResource extends org.wyona.yanel.impl.resources.B
             validate();
             if (isInputValid()) {
                 try {
+                    String spamInput = getParameterAsString("trap");
+                    if (spamInput != null) {
+                        String errMessage = "It seems like the form has been submitted by a spam bot or by somebody who has javascript disabled! Value of input field: '" + spamInput + "'";
+                        sendSpamNotification();
+                        resultCode = RESULT_CODE_FAILED_ERROR;
+                        throw new Exception(errMessage);
+                    }
+
                     resultCode = execute();
                     appendConfirmation();
                 } catch (Exception e) {
@@ -294,4 +302,16 @@ public abstract class BasicFormResource extends org.wyona.yanel.impl.resources.B
         }
     }
 
+    /**
+     * Send an email to administrator if form is being spammed
+     */
+    protected void sendSpamNotification() throws Exception {
+        if (getResourceConfigProperty("spamSendMailTo") != null) {
+            String from = getResourceConfigProperty("spamSendMailTo");
+            String to = from;
+            org.wyona.yanel.core.util.MailUtil.send(from, to, "SPAM: It seems like the form '" + getPath() + "' has been spammed!", "It seems like the form '" + getPath() + "' has been spammed!");
+        } else {
+            log.warn("No administrator email address configured! Please set the property 'spamSendMailTo' inside your resource configuration...");
+        }
+    }
 }
