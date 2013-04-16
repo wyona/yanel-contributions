@@ -7,20 +7,25 @@ import org.wyona.yanel.impl.jelly.FileItem;
 
 /**
  * This validator checks, if the items value, which is a file item, is of the
- * specified content type.
+ * specified content type, e.g. 'image/jpeg'
  * 
  */
 public class FileItemTypeValidator implements Validator {
 
     private String failMessage = null;
-
     private String contentType = null;
 
+    /**
+     * @param contentType Content type of file item, e.g. 'image/jpeg'
+     */
     public FileItemTypeValidator(String failMessage, String contentType) {
         this.failMessage = failMessage;
         this.contentType = contentType;
     }
 
+    /**
+     * @see org.wyona.yanel.core.api.attributes.creatable.Validator#validate(ResourceInputItem)
+     */
     public ValidationMessage validate(ResourceInputItem item) {
         Object value = item.getValue();
         ValidationMessage vm = null;
@@ -33,7 +38,7 @@ public class FileItemTypeValidator implements Validator {
                 if (fileItem.getContentType().equals(contentType)) {
                     vm = new ValidationMessage(item.getName(), value, true);
                 } else {
-                    vm = new ValidationMessage(item.getName(), value, failMessage, false);
+                    vm = new ValidationMessage(item.getName(), value, failMessage + " (The content type of the file item is '" + fileItem.getContentType() + "')", false);
                 }
             }
         }
