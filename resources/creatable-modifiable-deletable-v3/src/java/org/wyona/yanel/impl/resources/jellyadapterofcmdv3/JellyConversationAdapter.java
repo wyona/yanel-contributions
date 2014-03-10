@@ -4,7 +4,8 @@ import javax.xml.transform.Transformer;
 
 import org.apache.commons.jelly.JellyContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Deals with conversations.
@@ -15,7 +16,7 @@ import org.apache.log4j.Logger;
 //session and may be accessed by different browser instances
 abstract class JellyConversationAdapter extends JellyControllerAdapter {
 
-    private static Logger log = Logger.getLogger(JellyConversationAdapter.class);
+    private static Logger log = LogManager.getLogger(JellyConversationAdapter.class);
 
     /**
      * This is the view where the user should get after all the activities are finished.

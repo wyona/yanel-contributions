@@ -23,7 +23,8 @@ import org.wyona.yanel.core.util.ResourceAttributeHelper;
 import org.wyona.yanel.impl.jelly.FileItem;
 import org.wyona.yanel.servlet.communication.HttpRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Adapts a resource which has CreatableV3 implemented.
@@ -39,7 +40,7 @@ import org.apache.log4j.Logger;
  * */
 public class JellyAdapterForCUDResource extends JellyConversationAdapter {
 
-    private static Logger log = Logger.getLogger(JellyAdapterForCUDResource.class);
+    private static Logger log = LogManager.getLogger(JellyAdapterForCUDResource.class);
 
     // Collection items are special. Values can be removed or added/set to specific index
     public static final String REMOVE_ACTION = "remove";

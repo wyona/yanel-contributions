@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import org.wyona.yanel.core.Constants;
 import org.wyona.yanel.core.Resource;
 import org.wyona.yanel.core.api.attributes.ViewableV2;
@@ -14,7 +16,7 @@ import org.wyona.yanel.core.attributes.viewable.ViewDescriptor;
  * TODO
  */
 abstract class ControllerAdapter extends Resource implements ResourceAdapter, ViewableV2 {
-    private static Logger log = Logger.getLogger(ControllerAdapter.class);
+    private static Logger log = LogManager.getLogger(ControllerAdapter.class);
     public static String YANEL_CONTINUATION_ID = "yanel.continuation.id";
     
     /**
