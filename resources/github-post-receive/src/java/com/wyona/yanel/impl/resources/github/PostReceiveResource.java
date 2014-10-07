@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 /**
- *
+ * See https://developer.github.com/webhooks/
  */
 public class PostReceiveResource extends Resource implements ViewableV2  {
     
