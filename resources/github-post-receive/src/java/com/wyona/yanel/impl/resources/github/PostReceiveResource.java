@@ -43,8 +43,52 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         String xHubSignature = getEnvironment().getRequest().getHeader("X-Hub-Signature"); // INFO: https://developer.github.com/webhooks/
         log.warn("DEBUG: X-Hub-Signature: " + xHubSignature);
 
-        String contentType = getEnvironment().getRequest().getContentType();
+        String json = getJSon();
+        if (json != null) {
+            // INFO: Parse json, e.g. http://json.parser.online.fr/
+            // TOOD: Get changed files ('/commits/modified'), repository ('/repository/name' and '/repository/html_url') and branch ('/ref')
+        } else {
+            log.error("No json received!");
+        }
 
+        View view = new View();
+        view.setMimeType("text/plain");
+        view.setInputStream(new java.io.ByteArrayInputStream("post-receive".getBytes()));
+
+        return view;
+    }
+
+    /**
+     *
+     */
+    private String getModifiedFiles(String json) {
+        // TODO: https://jsonp.java.net/
+        org.json.JSONObject jsonObj = new org.json.JSONObject(json);
+
+        String branch = jsonObj.getString("ref");
+        log.warn("DEBUG: Branch: " + branch);
+
+        String repoName = jsonObj.getJSONObject("repository").getString("name");
+        log.warn("DEBUG: Repository name: " + repoName);
+
+        String repoURL = jsonObj.getJSONObject("repository").getString("url");
+        log.warn("DEBUG: Repository URL: " + repoURL);
+
+        org.json.JSONArray commits = jsonObj.getJSONArray("commits");
+        for (int i = 0; i < commits.length(); i++) {
+            String modifiedFile = commits.getJSONObject(i).getString("modified");
+            log.warn("DEBUG: Modified file: " + modifiedFile);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get json from HTTP Post
+     * @return json, e.g. {"ref":"refs/heads/continuous-deployment","bef .... pe":"User","site_admin":false}}
+     */
+    private String getJSon () {
+        String contentType = getEnvironment().getRequest().getContentType();
         if ("application/x-www-form-urlencoded".equals(contentType)) {
             log.warn("DEBUG: Decode application/x-www-form-urlencoded ...");
 
@@ -52,10 +96,9 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
             if (paramNames.hasMoreElements()) {
                 String name = paramNames.nextElement().toString();
                 if ("payload".equals(name)) {
-                    String paramValue = java.net.URLDecoder.decode(getEnvironment().getRequest().getParameter("payload"));
-                    log.warn("DEBUG: Key-value pairs: " + paramValue);
-
-                    // TOOD: Get value of 'commits/modified' and 'repository/name' and 'repository/html_url'
+                    String json = java.net.URLDecoder.decode(getEnvironment().getRequest().getParameter("payload"));
+                    log.warn("DEBUG: Key-value pairs as json: " + json);
+                    return json;
                 } else {
                     log.error("POST does not contain a parameter called 'payload', but only a parameter called '" + name + "'!");
                 }
@@ -67,12 +110,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         } else {
             log.error("Content type '" + contentType + "' not supported yet!");
         }
-
-        View view = new View();
-        view.setMimeType("text/plain");
-        view.setInputStream(new java.io.ByteArrayInputStream("post-receive".getBytes()));
-
-        return view;
+        return null;
     }
 
     /**
