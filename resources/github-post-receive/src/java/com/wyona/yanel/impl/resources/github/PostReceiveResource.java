@@ -90,7 +90,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
 
         String repoName = jsonObj.getJSONObject("repository").getString("name");
         log.warn("DEBUG: Repository name: " + repoName);
-        bean.setBranch(repoName);
+        bean.setRepositoryName(repoName);
 
         String repoURL = jsonObj.getJSONObject("repository").getString("url");
         log.warn("DEBUG: Repository URL: " + repoURL);
