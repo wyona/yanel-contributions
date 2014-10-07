@@ -78,7 +78,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         for (int i = 0; i < commits.length(); i++) {
             org.json.JSONArray modifiedFiles = commits.getJSONObject(i).getJSONArray("modified");
             for (int k = 0; k < modifiedFiles.length(); k++) {
-                log.warn("DEBUG: Modified file: " + modifiedFiles.getJSONObject(k));
+                log.warn("DEBUG: Modified file: " + modifiedFiles.get(k));
             }
         }
 
