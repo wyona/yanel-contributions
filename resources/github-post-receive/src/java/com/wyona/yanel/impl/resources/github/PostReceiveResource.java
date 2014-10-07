@@ -37,12 +37,29 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
      * @see org.wyona.yanel.core.api.attributes.ViewableV2#getView(String)
      */
     public View getView(String viewId) throws Exception {
-        // TOOD: Detect mime-type, e.g. either 'application/x-www-form-urlencoded' or 'application/json' ...
-        log.warn("DEBUG: Decode application/x-www-form-urlencoded ...");
+        String xGithubDelivery = getEnvironment().getRequest().getHeader("X-Github-Delivery");
+        log.warn("DEBUG: X-Github-Delivery: " + xGithubDelivery);
 
-        java.util.Enumeration<String> paramNames = getEnvironment().getRequest().getParameterNames();
-        while(paramNames.hasMoreElements()) {
-            log.warn("DEBUG: Parameter name: " + paramNames.nextElement().toString());
+        String contentType = getEnvironment().getRequest().getContentType();
+
+        if ("application/x-www-form-urlencoded".equals(contentType)) {
+            log.warn("DEBUG: Decode application/x-www-form-urlencoded ...");
+
+            java.util.Enumeration<String> paramNames = getEnvironment().getRequest().getParameterNames();
+            if (paramNames.hasMoreElements()) {
+                String name = paramNames.nextElement().toString();
+                if ("payload".equals(name)) {
+                    String paramValue = getEnvironment().getRequest().getParameter("payload");
+                } else {
+                    log.error("POST does not contain a parameter called 'payload', but only a parameter called '" + name + "'!");
+                }
+            } else {
+                log.error("POST does not contain any parameters!");
+            }
+        } else if ("application/json".equals(contentType)) {
+            log.error("Content type '" + contentType + "' not supported yet!");
+        } else {
+            log.error("Content type '" + contentType + "' not supported yet!");
         }
 
         View view = new View();
