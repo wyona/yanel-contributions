@@ -40,6 +40,9 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         String xGithubDelivery = getEnvironment().getRequest().getHeader("X-Github-Delivery");
         log.warn("DEBUG: X-Github-Delivery: " + xGithubDelivery);
 
+        String xHubSignature = getEnvironment().getRequest().getHeader("X-Hub-Signature"); // INFO: https://developer.github.com/webhooks/
+        log.warn("DEBUG: X-Hub-Signature: " + xHubSignature);
+
         String contentType = getEnvironment().getRequest().getContentType();
 
         if ("application/x-www-form-urlencoded".equals(contentType)) {
@@ -49,7 +52,10 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
             if (paramNames.hasMoreElements()) {
                 String name = paramNames.nextElement().toString();
                 if ("payload".equals(name)) {
-                    String paramValue = getEnvironment().getRequest().getParameter("payload");
+                    String paramValue = java.net.URLDecoder.decode(getEnvironment().getRequest().getParameter("payload"));
+                    log.warn("DEBUG: Key-value pairs: " + paramValue);
+
+                    // TOOD: Get value of 'commits/modified' and 'repository/name' and 'repository/html_url'
                 } else {
                     log.error("POST does not contain a parameter called 'payload', but only a parameter called '" + name + "'!");
                 }
