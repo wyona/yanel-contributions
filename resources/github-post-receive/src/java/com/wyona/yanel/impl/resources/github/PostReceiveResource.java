@@ -38,10 +38,10 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
      */
     public View getView(String viewId) throws Exception {
         String xGithubDelivery = getEnvironment().getRequest().getHeader("X-Github-Delivery");
-        log.warn("DEBUG: X-Github-Delivery: " + xGithubDelivery);
+        log.debug("X-Github-Delivery: " + xGithubDelivery);
 
         String xHubSignature = getEnvironment().getRequest().getHeader("X-Hub-Signature"); // INFO: https://developer.github.com/webhooks/
-        log.warn("DEBUG: X-Hub-Signature: " + xHubSignature);
+        log.debug("X-Hub-Signature: " + xHubSignature);
 
         String json = getJSon();
         if (json != null) {
@@ -76,8 +76,10 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
 
         org.json.JSONArray commits = jsonObj.getJSONArray("commits");
         for (int i = 0; i < commits.length(); i++) {
-            String modifiedFile = commits.getJSONObject(i).getString("modified");
-            log.warn("DEBUG: Modified file: " + modifiedFile);
+            org.json.JSONArray modifiedFiles = commits.getJSONObject(i).getJSONArray("modified");
+            for (int k = 0; k < modifiedFiles.length(); k++) {
+                log.warn("DEBUG: Modified file: " + modifiedFiles.getJSONObject(k));
+            }
         }
 
         return null;
@@ -97,7 +99,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
                 String name = paramNames.nextElement().toString();
                 if ("payload".equals(name)) {
                     String json = java.net.URLDecoder.decode(getEnvironment().getRequest().getParameter("payload"));
-                    log.warn("DEBUG: Key-value pairs as json: " + json);
+                    log.debug("Key-value pairs as json: " + json);
                     return json;
                 } else {
                     log.error("POST does not contain a parameter called 'payload', but only a parameter called '" + name + "'!");
