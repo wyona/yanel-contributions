@@ -9,11 +9,16 @@
       <remoteRepository refid="wyona.remote.repository"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-core" version="${yanel.source.version}"/>
       <dependency groupId="wyona-org-yanel" artifactId="yanel-webapp" version="${yanel.source.version}"/>
+  
+
+      <!-- http://mvnrepository.com/artifact/org.json/json/20140107, https://github.com/douglascrockford/JSON-java/, http://www.json.org/java/index.html -->
+      <dependency groupId="org.json" artifactId="json" version="20140107"/>
     </artifact:dependencies>
 
     <artifact:dependencies pathId="maven2.resource.classpath" filesetId="maven2.resource.fileset">
       <remoteRepository refid="wyona.remote.repository"/>
       <!-- No resource specific libs yet -->
+      <dependency groupId="org.json" artifactId="json" version="20140107"/>
     </artifact:dependencies>
 
     <property name="maven2.cp" refid="maven2.classpath"/>
