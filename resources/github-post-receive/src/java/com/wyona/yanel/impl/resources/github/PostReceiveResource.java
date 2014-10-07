@@ -46,7 +46,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         String json = getJSon();
         if (json != null) {
             // INFO: Parse json, e.g. http://json.parser.online.fr/
-            // TOOD: Get changed files ('/commits/modified'), repository ('/repository/name' and '/repository/html_url') and branch ('/ref')
+            String[] modifiedFiles = getModifiedFiles(json);
         } else {
             log.error("No json received!");
         }
@@ -61,7 +61,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
     /**
      *
      */
-    private String getModifiedFiles(String json) {
+    private String[] getModifiedFiles(String json) {
         // TODO: https://jsonp.java.net/
         org.json.JSONObject jsonObj = new org.json.JSONObject(json);
 
