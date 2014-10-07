@@ -37,6 +37,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
      * @see org.wyona.yanel.core.api.attributes.ViewableV2#getView(String)
      */
     public View getView(String viewId) throws Exception {
+        // TOOD: Detect mime-type, e.g. either 'application/x-www-form-urlencoded' or 'application/json' ...
         log.warn("DEBUG: Decode application/x-www-form-urlencoded ...");
 
         java.util.Enumeration<String> paramNames = getEnvironment().getRequest().getParameterNames();
