@@ -46,12 +46,8 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         View view = new View();
 
         String contentType = getEnvironment().getRequest().getContentType();
-        if ("application/x-www-form-urlencoded".equals(contentType)) {
+        if ("application/x-www-form-urlencoded".equals(contentType) || "application/json".equals(contentType)) {
             // INFO: Everything fine, let us proceed ...
-/* TODO: Implement content type 'application/json'
-        } else if ("application/json".equals(contentType)) {
-            log.error("Content type '" + contentType + "' not supported yet!");
-*/
         } else {
             log.error("Content type '" + contentType + "' not supported yet!");
             view.setResponse(false);
@@ -170,7 +166,16 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
                 log.error("POST does not contain any parameters!");
             }
         } else if ("application/json".equals(contentType)) {
-            log.error("Content type '" + contentType + "' not supported yet!");
+            log.warn("DEBUG: Get json from request body ...");
+            try {
+                java.io.InputStream in = getEnvironment().getRequest().getInputStream();
+                String body = org.apache.commons.io.IOUtils.toString(in);
+                in.close();
+                return body;
+            } catch(Exception e) {
+                log.error(e, e);
+                return null;
+            }
         } else {
             log.error("Content type '" + contentType + "' not supported yet!");
         }
