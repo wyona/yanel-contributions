@@ -32,7 +32,7 @@ public class PostReceiveResourceWebTest extends AbstractHtmlUnitTest {
      * Requests post receive URL and verifies content.
      */
     public void testPostReceiveResource() throws Exception {
-        loadResource("wyona-com/scm-postreceive");
+        loadResource("wyona-com/scm-postreceive"); // IMPORTANT: Please make sure that the realm is configured with the prefix 'wyona-com'!
         assertResourceContainsText("post-receive");
         String contentType = response.getContentType();
         assertTrue("Returned content type should be text/plain", contentType.equals("text/plain"));
