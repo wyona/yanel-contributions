@@ -48,7 +48,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         String contentType = getEnvironment().getRequest().getContentType();
         if ("application/x-www-form-urlencoded".equals(contentType)) {
             // INFO: Everything fine, let us proceed ...
-/*
+/* TODO: Implement content type 'application/json'
         } else if ("application/json".equals(contentType)) {
             log.error("Content type '" + contentType + "' not supported yet!");
 */
