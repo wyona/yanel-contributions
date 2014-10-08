@@ -43,6 +43,23 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         String xHubSignature = getEnvironment().getRequest().getHeader("X-Hub-Signature"); // INFO: https://developer.github.com/webhooks/
         log.debug("X-Hub-Signature: " + xHubSignature);
 
+        View view = new View();
+
+        String contentType = getEnvironment().getRequest().getContentType();
+        if ("application/x-www-form-urlencoded".equals(contentType)) {
+            // INFO: Everything fine, let us proceed ...
+/*
+        } else if ("application/json".equals(contentType)) {
+            log.error("Content type '" + contentType + "' not supported yet!");
+*/
+        } else {
+            log.error("Content type '" + contentType + "' not supported yet!");
+            view.setResponse(false);
+            javax.servlet.http.HttpServletResponse response = getEnvironment().getResponse();
+            response.setStatus(501);
+            return view;
+        }
+
         String json = getJSon();
         if (json != null) {
             // INFO: Parse json, e.g. http://json.parser.online.fr/
@@ -52,7 +69,6 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
             log.error("No json received!");
         }
 
-        View view = new View();
         view.setMimeType("text/plain");
         view.setInputStream(new java.io.ByteArrayInputStream("post-receive".getBytes()));
 
