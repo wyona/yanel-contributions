@@ -93,6 +93,22 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         log.warn("DEBUG: Branch: " + bean.getBranch());
 
         log.warn("DEBUG: Repository: " + bean.getRepositoryName() + ", " + bean.getRepositoryURL());
+
+        String from = "contact@wyona.com";
+        String replyTo = "contact@wyona.com";
+        String to = "michael.wechner@wyona.com";
+        String subject = "Continuous Integration";
+        StringBuilder content = new StringBuilder();
+        content.append("Branch: " + bean.getBranch());
+        content.append("\nRepository: " + bean.getRepositoryName() + ", " + bean.getRepositoryURL());
+        for (int i = 0; i < files.length; i++) {
+            content.append("\nModified file: " + files[i]);
+        }
+        try {
+            org.wyona.yanel.core.util.MailUtil.send(from, replyTo, to, subject, content.toString());
+        } catch(Exception e) {
+            log.error(e, e);
+        }
     }
 
     /**
