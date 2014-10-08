@@ -90,6 +90,7 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
 
         log.warn("DEBUG: Repository: " + bean.getRepositoryName() + ", " + bean.getRepositoryURL());
 
+        // TODO: Make sending email configurable
         String from = "contact@wyona.com";
         String replyTo = "contact@wyona.com";
         String to = "michael.wechner@wyona.com";
