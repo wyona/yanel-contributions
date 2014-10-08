@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package foo.bar.yanel.impl.resources;
+package com.wyona.yanel.impl.resources.github;
 
 import org.wyona.yanel.htmlunit.AbstractHtmlUnitTest;
 
@@ -24,15 +24,17 @@ import org.wyona.yanel.htmlunit.AbstractHtmlUnitTest;
 public class PostReceiveResourceWebTest extends AbstractHtmlUnitTest {
 
     protected void setUp() throws Exception {
-        this.testName = "!NOT IMPLEMENTED YET! PLEASE IMPLEMENT! PostReceiveResource Web Test";
+        this.testName = "PostReceiveResource Web Test";
         super.setUp();
     }
 
     /**
-     * Loads a page and verifies its title.
+     * Requests post receive URL and verifies content.
      */
-    public void testXMLResource() throws Exception {
-        //TODO: implement your test.
+    public void testPostReceiveResource() throws Exception {
+        loadResource("wyona-com/scm-postreceive");
+        assertResourceContainsText("post-receive");
+        String contentType = response.getContentType();
+        assertTrue("Returned content type should be text/plain", contentType.equals("text/plain"));
     }
-
 }
