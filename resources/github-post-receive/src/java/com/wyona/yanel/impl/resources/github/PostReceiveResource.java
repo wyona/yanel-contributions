@@ -67,6 +67,10 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
             addContinuousIntegrationTask(bean);
         } else {
             log.error("No json received!");
+            view.setResponse(false);
+            javax.servlet.http.HttpServletResponse response = getEnvironment().getResponse();
+            response.setStatus(500);
+            return view;
         }
 
         view.setMimeType("text/plain");
