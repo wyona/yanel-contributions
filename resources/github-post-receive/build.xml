@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-
-<project name="yanel-github-post-receive-RT" default="deploy-jar">
-  <import file="${yanel.source.home}/src/build/resource-types/resource-type.build.xml"/>
-</project>
