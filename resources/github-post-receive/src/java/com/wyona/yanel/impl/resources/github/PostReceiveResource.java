@@ -106,6 +106,16 @@ public class PostReceiveResource extends Resource implements ViewableV2  {
         } catch(Exception e) {
             log.error(e, e);
         }
+
+/*
+        GitRepository repo = new GitRepository(bean.getRepositoryName(), bean.getRepositoryURL());
+        Project[] projects = getProjects(repo);
+        for (int i= 0; i < projects.length;i ++) {
+            projects[i].pull(bean.getBranch(), repo);
+            projects[i].addChangeToHistory(bean.getModifiedFiles(), repo);
+            projects[i].sendNotifications(bean.getModifiedFiles(), repo);
+        }
+*/
     }
 
     /**
