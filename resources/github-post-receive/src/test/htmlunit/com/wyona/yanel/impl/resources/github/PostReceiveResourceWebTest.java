@@ -32,7 +32,7 @@ public class PostReceiveResourceWebTest extends AbstractHtmlUnitTest {
      * Requests post receive URL using content type 'application/x-www-form-urlencoded' and verifies content.
      */
     public void testPostReceiveResourceAppXWWWFormURLEncoded() throws Exception {
-        com.gargoylesoftware.htmlunit.WebRequest webRequest = new com.gargoylesoftware.htmlunit.WebRequest(new java.net.URL("http://127.0.0.1:8080/yanel/wyona-com/scm-postreceive"));
+        com.gargoylesoftware.htmlunit.WebRequest webRequest = new com.gargoylesoftware.htmlunit.WebRequest(new java.net.URL("http://127.0.0.1:8080/yanel/continuous/scm-postreceive"));
         //webRequest.setAdditionalHeader("content-type", "application/json");
         webRequest.setAdditionalHeader("content-type", "application/x-www-form-urlencoded");
         webRequest.setHttpMethod(com.gargoylesoftware.htmlunit.HttpMethod.POST);
@@ -56,7 +56,7 @@ public class PostReceiveResourceWebTest extends AbstractHtmlUnitTest {
      * Requests post receive URL using content type 'application/json' and verifies content.
      */
     public void testPostReceiveResourceAppJson() throws Exception {
-        com.gargoylesoftware.htmlunit.WebRequest webRequest = new com.gargoylesoftware.htmlunit.WebRequest(new java.net.URL("http://127.0.0.1:8080/yanel/wyona-com/scm-postreceive"));
+        com.gargoylesoftware.htmlunit.WebRequest webRequest = new com.gargoylesoftware.htmlunit.WebRequest(new java.net.URL("http://127.0.0.1:8080/yanel/continuous/scm-postreceive"));
         webRequest.setAdditionalHeader("content-type", "application/json");
         webRequest.setHttpMethod(com.gargoylesoftware.htmlunit.HttpMethod.POST);
         webRequest.setRequestBody(getJson());
