@@ -458,7 +458,7 @@ public abstract class JellyControllerAdapter extends ControllerAdapter {
     protected final String getClient(String userAgent) {
         if (userAgent != null && userAgent.indexOf("Firefox") > 0) {
             return "firefox";
-        } else if (userAgent != null && userAgent.indexOf("MSIE") > 0) {
+        } else if (userAgent != null && (userAgent.indexOf("MSIE") > 0 || userAgent.indexOf("Windows") > 0)) {
             return "msie";
         } else {
             log.warn("Client could not be recognized: " + userAgent);
