@@ -36,7 +36,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * This resource type takes care only of the custom configuration.
@@ -80,7 +81,7 @@ import org.apache.log4j.Logger;
  * */
 public abstract class JellyControllerAdapter extends ControllerAdapter {
     
-    private static Logger log = Logger.getLogger(JellyControllerAdapter.class);
+    private static Logger log = LogManager.getLogger(JellyControllerAdapter.class);
 
     // Jelly can be configured to escape the text that it gets from JAVA
     // This parameter allows to disable escaping.
@@ -450,11 +451,14 @@ public abstract class JellyControllerAdapter extends ControllerAdapter {
         if (identity != null) return identity.getUsername();
         return null;
     }
-    
+
+    /**
+     * Get simplified user agent
+     */
     protected final String getClient(String userAgent) {
-        if (userAgent.indexOf("Firefox") > 0) {
+        if (userAgent != null && userAgent.indexOf("Firefox") > 0) {
             return "firefox";
-        } else if (userAgent.indexOf("MSIE") > 0) {
+        } else if (userAgent != null && userAgent.indexOf("MSIE") > 0) {
             return "msie";
         } else {
             log.warn("Client could not be recognized: " + userAgent);
