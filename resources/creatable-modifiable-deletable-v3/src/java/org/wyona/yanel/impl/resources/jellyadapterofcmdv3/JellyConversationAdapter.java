@@ -57,11 +57,11 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
      * Returns the conversation state object. It may be available in the session
      * or invalidated (no more in the session).
      * @return - <code>null</code> when called before initConversation(), in other cases the conversation state object (maybe invalidated already)
-     * */
+     */
     protected final ConversationState getConversationState(){
         log.warn("DEBUG: Get conversation state ...");
         if(conversationState == null){
-            log.warn("DEBUG: Get conversation state from session.");
+            log.warn("DEBUG: Get conversation state from session...");
             conversationState = (ConversationState)getEnvironment().getRequest().getSession(true).getAttribute(getPath());
         }
         return conversationState;
@@ -73,32 +73,32 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
      * @param usecase Usecase (e.g. create, modify)
      * @param resourcePath Adapted resource path
      */
-    protected final ConversationState initConversation(Object model, Usecase usecase, String resourcePath){
-        log.warn("Continuation: " + getContinuation().getId());
+    protected final ConversationState initConversation(Object model, Usecase usecase, String resourcePath) throws Exception {
+        log.warn("DEBUG: Continuation: " + getContinuation().getId() + ", Resource path: " + resourcePath + ", Usecase: " + usecase);
 
         ConversationState cs = new ConversationState(model);
         cs.setUsecase(usecase);
         cs.setResourcePath(resourcePath);
         
-        ConversationState current = getConversationState();
-        if (current != null && !current.isInvalidated()) {
+        ConversationState currentState = getConversationState();
+        if (currentState != null && !currentState.isInvalidated()) {
             // Refresh the properties, because they are changing during the conversation
             log.warn("DEBUG: Refresh the properties, because they are changing during the conversation");
-            current.setModel(cs.getModel());
-            current.setCurrentScreen(cs.getCurrentScreen());
+            currentState.setModel(cs.getModel());
+            currentState.setCurrentScreen(cs.getCurrentScreen());
         } else {
             // TODO: What if there is no referer, e.g. copy/paste from email ...
             cs.setRefererUrl(getEnvironment().getRequest().getHeader("Referer"));
             // The new conversation state becomes current
-            current = cs;
+            currentState = cs;
         }
         
         String gotoUrl = getParameterAsString(PARAM_GOTO_URL);
         if(gotoUrl != null){
-            current.setGotoUrl(gotoUrl);
+            currentState.setGotoUrl(gotoUrl);
         }
         
-        log.warn("DEBUG: Attach conversation state (resource input) for usecase '" + current.getUsecase() + "' to session with id '" + getPath() + "' (Adapted resource path: " + resourcePath + ")");
+        log.warn("DEBUG: Attach conversation state (resource input) for usecase '" + currentState.getUsecase() + "' to session with id '" + getPath() + "' (Adapted resource path: " + resourcePath + ")");
 
 /* DEBUG
         try {
@@ -112,9 +112,13 @@ abstract class JellyConversationAdapter extends JellyControllerAdapter {
             log.error(e, e);
         }
 */
-        getEnvironment().getRequest().getSession(true).setAttribute(getPath(), current);
+        if (getEnvironment().getRequest().getSession(true).getAttribute(getPath()) != null) {
+            log.error("There is already a conversation state attached to session for path '" + getPath() + "'!");
+            //throw new Exception("Conversation state for path '" + getPath() + "' already set!");
+        }
+        getEnvironment().getRequest().getSession(true).setAttribute(getPath(), currentState);
 
-        return current;
+        return currentState;
     }
     
     /**
